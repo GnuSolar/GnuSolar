@@ -177,8 +177,6 @@ class Eigentool(QApplication):
         
         self.ui.nextQuoteName.setText(config.getNextQuoteName())
         self.ui.nextInvoiceName.setText(config.getNextInvoiceName())
-
-        #exit()
     
     def fillTableProjects(self, state=""):
         global config
