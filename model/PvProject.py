@@ -10,7 +10,6 @@ import datetime
 
 from model.Contact import *
 from model.Location import *
-from model.Kev import *
 from model.Contact import *
 from model.Progress import *
 from model.PowerCompany import *
@@ -22,7 +21,6 @@ class PvProject:
         self.owner = Contact()
         self.plantLocation = Location()
         self.powerCompany = PowerCompany()
-        self.kev = Kev()
         self.progress = Progress()
         self.comment = None
         
@@ -38,36 +36,6 @@ class PvProject:
 
         if path != "":
             self.open(path)
-
-
-    def fieldsFromKev(self):
-        # only copy over fields if they are not Null or empty
-        if not self.owner.title:
-            self.owner.title = self.kev.beneficiaryTitle
-        if not self.owner.firstName:
-            self.owner.firstName = self.kev.beneficiaryFirstName
-        if not self.owner.lastName:
-            self.owner.lastName = self.kev.beneficiaryLastName
-        if not self.owner.address.street:
-            self.owner.address.street = self.kev.beneficiaryStreet
-        if not self.owner.address.streetNumber:
-            self.owner.address.streetNumber = self.kev.beneficiaryHouseNumber
-        if not self.owner.address.zip:
-            self.owner.address.zip = self.kev.beneficiaryZip
-        if not self.owner.address.city:
-            self.owner.address.city = self.kev.beneficiaryCity
-        if not self.owner.email:
-            self.owner.email = self.kev.beneficiaryEmail
-        if not self.owner.phone:
-            self.owner.phone = self.kev.beneficiaryPhone
-        if not self.plantLocation.street:
-            self.plantLocation.street = self.kev.plantLocationStreet
-        if not self.plantLocation.streetNumber:
-            self.plantLocation.streetNumber = self.kev.plantLocationHouseNumber
-        if not self.plantLocation.zip:
-            self.plantLocation.zip = self.kev.plantLocationZip
-        if not self.plantLocation.city:
-            self.plantLocation.city = self.kev.plantLocationCity
 
     def initFromAddress(self, street, streetNumber, zipCode, city):
         if not self.plantLocation.street:

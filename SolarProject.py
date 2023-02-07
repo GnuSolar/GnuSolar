@@ -48,7 +48,6 @@ class SolarProject(QApplication):
         self.ui.action_Quit.triggered.connect(self.action_Quit)
         self.ui.action_Preferences.triggered.connect(self.action_Preferences)
 
-        self.ui.fieldsFromKev.clicked.connect(self.action_FieldsFromKev)
         self.ui.openProjectFolder.clicked.connect(self.action_OpenProjectFolder)
         self.ui.copyClientAddressFromLocation.clicked.connect(self.action_CopyClientAddressFromLocation)
         self.ui.coordinatesFromAddress.clicked.connect(self.action_CoordinatesFromAddress)
@@ -100,14 +99,8 @@ class SolarProject(QApplication):
         self.path = fileName
         self.saveFile()
 
-
     def action_Quit(self):
         exit()
-
-    def action_FieldsFromKev(self):
-        self.updateModel()
-        self.model.fieldsFromKev()
-        self.updateUi()
 
     def action_OpenProjectFolder(self):
         if self.path == "":

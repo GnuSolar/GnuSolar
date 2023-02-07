@@ -225,125 +225,6 @@ class Eigentool(QApplication):
             else:
                 self.ui.tableWidgetProjects.hideRow(i)
         
-        
-        
-    def checkKevState(self):
-        global config
-
-        button = self.sender()
-        index = self.ui.tableWidget.indexAt(button.pos())
-        currentRow = index.row()
-        project_name = str(self.ui.tableWidget.item(currentRow, 0).text())
-        
-        pvp_path = config.projectRoot + os.sep + project_name + os.sep + "plant.pvp"
-        pv = PvProject(pvp_path)
-        ret = pv.kev.checkState()
-        pv.save()
-        
-        self.setKevRow(pv, currentRow)
-
-        # something went wrong
-        if not ret:
-            return
-
-    def searchRegistration(self):
-        global config
-
-        button = self.sender()
-        index = self.ui.tableWidget.indexAt(button.pos())
-        currentRow = index.row()
-        project_name = str(self.ui.tableWidget.item(currentRow, 0).text())
-        
-        pvp_path = config.projectRoot + os.sep + project_name + os.sep + "plant.pvp"
-        pv = PvProject(pvp_path)
-#        ret = pv.kev.tryRegistrationDates()
-        ret = pv.kev.tryZipCodes()
-        pv.save()
-
-        self.setKevRow(pv, currentRow)
-        
-        # something went wrong
-        if not ret:
-            return
-    
-    def addKevEntry(self, pathPvp):
-        global config
-
-        try:
-            pv = PvProject(pathPvp)
-        except:
-            print("Decode Error:" + pathPvp)
-            return
-
-        projectName = pathPvp
-        projectName = projectName.replace(config.projectRoot + os.sep, "")
-        projectName = projectName.replace(os.sep + "plant.pvp", "")
-        
-        rowN = self.ui.tableWidget.rowCount()
-        self.ui.tableWidget.insertRow(rowN)
-        self.ui.tableWidget.setItem(rowN, 0,QTableWidgetItem(projectName))
-        self.setKevRow(pv, rowN)
-
-    def setKevRow(self, pv, rowN):
-        self.ui.tableWidget.setItem(rowN, 1, QTableWidgetItem(pv.kev.number))
-        self.ui.tableWidget.setItem(rowN, 2, QTableWidgetItem(pv.kev.beneficiaryZip))
-        self.ui.tableWidget.setItem(rowN, 3, QTableWidgetItem(pv.kev.registrationDate))
-        self.ui.tableWidget.setItem(rowN, 4, QTableWidgetItem(str(pv.state)))
-        self.ui.tableWidget.setItem(rowN, 5, QTableWidgetItem(str(pv.kev.state) + " " + str(pv.kev.getStateDate(pv.kev.state)) ))
-        self.ui.tableWidget.setItem(rowN, 6, QTableWidgetItem(pv.kev.fetchState))
-        txt = ""
-        if pv.kev.ibmComplete:
-            txt = txt + "K"
-        if pv.kev.ibmForm:
-            txt = txt + "I"
-        if pv.kev.notarisation:
-            txt = txt + "B"
-        if pv.kev.landRegisteryExtract:
-            txt = txt + "G"
-        self.ui.tableWidget.setItem(rowN, 7, QTableWidgetItem(txt))
-        txt = ""
-        if pv.kev.optionEivForm:
-            txt = txt + " X "
-        self.ui.tableWidget.setItem(rowN, 8, QTableWidgetItem(txt))
-        txt = ""
-        if pv.kev.optionKevForm:
-            txt = txt + " X "
-        self.ui.tableWidget.setItem(rowN, 9, QTableWidgetItem(txt))
-        txt = ""
-        if pv.kev.ibanForm:
-            txt = txt + " X "
-        self.ui.tableWidget.setItem(rowN, 10, QTableWidgetItem(txt))
-
-        self.ui.tableWidget.setItem(rowN, 11, QTableWidgetItem(str(pv.kev.beneficiaryFirstName) + " " + str(pv.kev.beneficiaryLastName) + ", " + str(pv.kev.beneficiaryCity)))
-
-        qpb = QtWidgets.QPushButton("Check KEV State")
-        qpb.clicked.connect(self.checkKevState)
-        self.ui.tableWidget.setCellWidget(rowN, 12, qpb)
-
-        qpb2 = QtWidgets.QPushButton("Search Registration")
-        qpb2.clicked.connect(self.searchRegistration)
-        self.ui.tableWidget.setCellWidget(rowN, 13, qpb2)
-        
-        if pv.kev.state == "KevRunning" or pv.kev.state == "EivCleared":
-            for i in range(0, 12):
-                self.ui.tableWidget.item(rowN, i).setBackground(QtGui.QColor(20,200,20))
-
-    def addQuotesEntry(self, pathQuote):
-        global config
-
-        rowN = self.ui.tableWidgetQuotes.rowCount()
-        self.ui.tableWidgetQuotes.insertRow(rowN)
-
-        quoteFileName = os.path.basename(pathQuote)
-        projectName = pathQuote
-        projectName = projectName.replace(config.projectRoot + os.sep, "")
-        projectName = projectName.replace(os.sep + quoteFileName, "")
-        quoteNumber = quoteFileName[9:len(quoteFileName)-4]
-        
-        self.ui.tableWidgetQuotes.setItem(rowN, 0, QTableWidgetItem(projectName))
-        self.ui.tableWidgetQuotes.setItem(rowN, 1, QTableWidgetItem(quoteFileName))
-        self.ui.tableWidgetQuotes.setItem(rowN, 2, QTableWidgetItem(quoteNumber))
-
     def addProjectEntry(self, pathProject, pathPvp, state=""):
         global config
 
@@ -407,7 +288,6 @@ class Eigentool(QApplication):
         self.projectOpenPath(pvp_path)
 
         return
-
 
     def projectOpen(self, index):
         global config
