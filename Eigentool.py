@@ -33,7 +33,6 @@ class Eigentool(QApplication):
         self.fillLastNames()
 
         self.ui.action_Preferences.triggered.connect(self.openConfig)
-        self.ui.importPvProjects.clicked.connect(self.importPvProjects)
         self.ui.createProject.clicked.connect(self.createProject)
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
 
@@ -373,56 +372,6 @@ class Eigentool(QApplication):
         self.ui.tableWidgetProjects.setItem(rowN, 5, QTableWidgetItem(pv.progress.quote1Sent))
         self.ui.tableWidgetProjects.setItem(rowN, 6, QTableWidgetItem(pv.progress.orderReceived))
         self.ui.tableWidgetProjects.setItem(rowN, 7, QTableWidgetItem(pv.progress.launch))
-
-    # Scan folder structure and create plant.pvp from files (KEV registration, info.txt, ...)
-    def importPvProjects(self):
-        quit_msg = "Really scan folder structure and create plant.pvp files?"
-        reply = QtWidgets.QMessageBox.question(self.window, 'Message', 
-                         quit_msg, QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
-
-        if reply == QtWidgets.QMessageBox.No:
-            return
-
-        progress = QProgressDialog("Importing ...", None, 0, 2, self.window)
-        progress.setWindowModality(QtCore.Qt.WindowModal)
-        progress.show()
-        
-        # loop over all folder two folders deep
-        for d1 in os.listdir(config.projectRoot):
-            p1 = config.projectRoot + os.sep + d1
-            if not os.path.isdir(p1):
-                continue
-
-            for d2 in os.listdir(p1):
-
-                p2 = p1 + os.sep + d2
-                if not os.path.isdir(p2):
-                    continue
-                
-                # testing single project import
-                #p2 = "/path/to/project/dir"
-                progress.setLabelText("Importing ... " + p2)
-                progress.setValue(1)
-                QApplication.processEvents()
-
-                pvpPath = p2 + os.sep + "plant.pvp"
-                if os.path.isfile(pvpPath):
-                    # reimport
-                    pv = PvProject(pvpPath)
-                    ret = pv.importFromDir(p2)
-                    pv.save()
-                else:
-                    # create
-                    pv = PvProject()
-                    ret = pv.importFromDir(p2)
-                    pv.saveAs(pvpPath)
-
-                # testing single project import
-                #exit()
-
-        progress.close()
-
-        return
 
     def createProject(self):
         global config

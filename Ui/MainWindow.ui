@@ -33,7 +33,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_sync">
        <attribute name="title">
@@ -265,19 +265,6 @@
           </rect>
          </property>
         </widget>
-       </widget>
-       <widget class="QPushButton" name="importPvProjects">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>460</y>
-          <width>121</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>importPvProjects</string>
-        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_projects">

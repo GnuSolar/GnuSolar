@@ -83,38 +83,6 @@ class PvProject:
         today = date.today()
         self.progress.inquiryReceived = today.isoformat()
         return
-
-    # create object structure from project Directory
-    def importFromDir(self, basePath):
-        #print("importFromDir " + basePath)
-        
-        # initialise Kev from OnlineAnmeldung pdf
-        ret = self.kev.initFromFiles(basePath)
-        
-        # copy base fields from kev
-        self.fieldsFromKev()
-        
-        self.progress.initFromFiles(basePath)
-        
-        # from KEV fetch state fill progress dates
-        eivCleared = self.kev.getStateDate("EivCleared")
-        waitingList = self.kev.getStateDate("WaitingList")
-        
-        if not eivCleared:
-            eivCleared = self.kev.getStateDate("KevRunning")
-        
-        if eivCleared and not self.progress.eivPayed:
-            self.progress.eivPayed = eivCleared
-        
-        if waitingList and not self.progress.eivComplete:
-            self.progress.eivComplete = waitingList
-            
-        # Falls Anlage gebaut und EIV ausbezahlt => archiv
-        # if self.kev.state == "EivCleared" and self.progress.launch is not None and self.progress.launch != "":
-        #    self.progress.archived = self.progress.launch
-        
-        return ret
-
             
     def toJson(self):
         jsonpickle.set_preferred_backend('json')
