@@ -1,5 +1,4 @@
 2022-03-07
  Projekt erstellen: Felder löschen
- Projekte: Doppelklick auf ganzes Feld
  Solarprojekt: Bauherr nach Adresse von tel.search.ch
  
