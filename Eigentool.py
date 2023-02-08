@@ -292,7 +292,7 @@ class Eigentool(QApplication):
     def projectOpen(self, index):
         global config
 
-        project_name = index.data()
+        project_name = self.ui.tableWidgetProjects.item(index.row(), 0).text()
         pvp_path = config.projectRoot + os.sep + project_name + os.sep + "plant.pvp"
         self.projectOpenPath(pvp_path)
 
