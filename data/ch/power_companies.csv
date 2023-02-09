@@ -1,0 +1,1031 @@
+vse_id,name,zip_code,city
+100000,Alpiq AG,4601,Olten
+100010,Technische Betriebe Glarus,8750,Glarus
+100020,eug Elektra Untergäu,4616,Kappel
+100030,Elektra Widen Betriebs AG,8967,Widen
+100040,"Gemeinde Männedorf, Energieversorgung",8708,Männedorf
+100050,IB Langenthal AG,4900,Langenthal
+100060,Regionalwerke AG Baden,5401,Baden
+100070,Technische Betriebe Würenlos,5436,Würenlos
+100080,Gemeindewerke Galgenen,8854,Galgenen
+100090,die werke versorgung wallisellen ag,8304,Wallisellen
+100100,Elektrizitätswerk Rümlang Genossenschaft,8153,Rümlang
+100110,Technische Werke Eschlikon,8360,Eschlikon TG
+100120,Technische Betriebe Glarus Nord,8752,Näfels
+100130,Elektrizitätsversorgung Muhen,5037,Muhen
+100140,Gemeindewerke Villmergen,5612,Villmergen
+100150,Aziende Municipalizzate Stabio - AMS,6855,Stabio
+100160,tbgs - Technische Betriebe Glarus Süd,8762,Schwanden
+100170,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+100180,MFEnergie,8877,Murg
+100190,AET Azienda Elettrica Ticinese,6513,Monte Carasso
+100200,Elektrizitätsversorgung Lotzwil,4932,Lotzwil
+100210,EW Höfe AG,8807,Freienbach
+100220,Gemeindewerke Fällanden,8117,Fällanden
+100230,Azienda Multiservizi Bellinzona (AMB),6500,Bellinzona
+100240,VO Energies Distribution SA,1350,Orbe
+100250,Elektrizitätswerk Ermatingen,8272,Ermatingen
+100260,Technische Betriebe der Gemeinde Sulgen,8583,Sulgen
+100270,Forces Motrices de l'Avançon SA,1880,Bex
+100280,EW Jaun Energie AG,1656,Jaun
+100290,Société Electrique Intercommunale de la Côte SA (SEIC),1196,Gland
+100300,Technische Betriebe Flawil,9230,Flawil
+100310,EWA-energieUri AG,6460,Altdorf
+100320,Technische Betriebe Rorschach,9400,Rorschach
+100330,Elektrizitäts- und Wasserwerk Sevelen,9475,Sevelen
+100340,Technische Betriebe Waldkirch,9205,Waldkirch
+100350,Technische Betriebe Glarus Nord,8752,Näfels
+100360,CKW AG,6015,Luzern
+100370,Werke Wangen-Brüttisellen,8306,Brüttisellen
+100380,Kantonales Elektrizitätswerk Nidwalden,6371,Stans
+100390,Gemeindewerke Schübelbach,8862,Schübelbach
+100400,rwt Regionalwerk Toggenburg AG,9602,Bazenheid
+100410,Romande Energie SA,1110,Morges
+100420,Société anonyme d'Electricité d'Ardon,1957,Ardon
+100430,Technische Gemeindebetriebe TGB,9220,Bischofszell
+100440,Service de l'Electricité SEB,1030,Bussigny
+100450,Martin Zeller AG Flums,8890,Flums
+100460,Wasser- & Elektrizitätswerk Steinhausen,6312,Steinhausen
+100470,Arbon Energie AG,9320,Arbon
+100480,energia alpina,7188,Sedrun
+100490,EBL (Genossenschaft Elektra Baselland),4410,Liestal
+100500,Energie Uster AG,8610,Uster
+100510,Elektrizitätsversorgung Mörschwil,9402,Mörschwil
+100520,Gemeindebetriebe Aarwangen,4912,Aarwangen
+100530,EKT Energie AG,9320,Arbon
+100540,SWL Energie AG,5600,Lenzburg
+100550,Rabiosa Energie,7075,Churwalden
+100560,Elektrizitätsversorgung Würenlingen,5303,Würenlingen
+100570,Elektra Zihlschlacht Riet,8588,Zihlschlacht
+100580,Elektra Haeuslenen,8522,Häuslenen
+100590,Elektra Unterlunkhofen,8918,Unterlunkhofen
+100600,Technische Gemeindebetriebe Hauptwil-Gottshaus,9213,Hauptwil
+100610,NetZulg AG,3612,Steffisburg
+100620,Technische Betriebe Altstätten,9450,Altstätten
+100630,Groupe E SA,1763,Granges-Paccot
+100640,Groupe E SA,2035,Corcelles NE
+100650,Elektra Walzenhausen,9428,Walzenhausen
+100660,Services Industriels de Nyon,1260,Nyon
+100670,EW GOMS Energie AG,3995,Ernen
+100680,AG Kraftwerk Wägital,8854,Siebnen
+100690,Energie Service Biel / Bienne,2500,Biel/Bienne
+100700,St. Moritz Energie,7500,St. Moritz
+100710,EW Aadorf,8355,Aadorf
+100720,Regio Energie Solothurn,4502,Solothurn
+100730,Technische Betriebe Glarus Nord,8752,Näfels
+100740,Kraftwerke Frisal AG,5400,Baden
+100750,Elektra Genossenschaft Rietheim,5415,Nussbaumen AG
+100760,Elektra-Korporation Wolfhalden EKW,9427,Wolfhalden
+100770,Elektrizitäts & Wasserwerk Mels,8887,Mels
+100780,Mueve Biel-Seeland AG,2503,Biel/Bienne
+100790,Elektrizitätswerk Azmoos,9478,Azmoos
+100800,Elektrizitätswerk Uznach AG,8730,Uznach
+100810,Technische Betriebe Glarus,8750,Glarus
+100820,Yverdon-les-bains Energies,1401,Yverdon-les-Bains
+100830,Primeo Energie AG,4142,Münchenstein
+100840,Elektrizitäts- und Wasserwerk der Stadt Buchs,9470,Buchs
+100850,Services Industriels Lausanne,1002,Lausanne
+100860,Elektrizitätswerk Embrach,8424,Embrach
+100870,EnBAG AG,3900,Brig
+100880,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+100890,Elektrizitätsgenossenschaft Marthalen,8460,Marthalen
+100900,Kraftwerke Oberhasli AG (KWO),3862,Innertkirchen
+100910,BKW Energie AG,3013,Bern
+100920,Gemeindebetriebe Wilderswil,3812,Wilderswil
+100930,Elektrizitätswerk Vaz/Obervaz,7078,Lenzerheide
+100940,Dorfkorporation Mosnang,9607,Mosnang
+100950,CIMO Compagnie Industrielle de Monthey SA,1870,Monthey
+100960,Services industriels de Lutry,1095,Lutry
+100970,rwt Regionalwerk Toggenburg AG,9602,Bazenheid
+100980,Elektrizitätswerk Schindellegi,8835,Feusisberg
+100990,Flims Trin Energie AG,7017,Flims Dorf
+101000,ewz Elektrizitätswerk der Stadt Zürich,8050,Zürich
+101010,EWS Energie AG,5734,Reinach
+101020,Bas-Valais Energie SA,1110,Morges
+101030,Energie Freiamt AG,5630,Muri
+101040,Elektrizitätswerk der Politischen Gemeinde Tägerwilen,8274,Tägerwilen
+101050,Genossenschaft Elektra Äusseres Wasseramt EAW,4554,Etziken
+101060,Elektra Hermetschwil-Staffeln,5626,Hermetschwil
+101070,Axpo Grid AG,5401,Baden
+101080,Elektrizitätswerk der Gemeinde Reichenburg,8864,Reichenburg
+101090,Aziende Industriali di Lugano (AIL) SA,6933,Muzzano
+101100,Energie Seeland AG,3250,Lyss
+101110,Romande Energie SA,1110,Morges
+101120,Elektrizitätsgenossenschaft Bubikon,8608,Bubikon
+101130,EW Rothrist AG,4852,Rothrist
+101140,EWS AG,6438,Ibach
+101150,Azienda Elettrica Comunale,6612,Ascona
+101160,AEW Energie AG,5000,Aarau
+101170,AEW Energie AG,5000,Aarau
+101180,EWD Elektrizitätswerk Davos AG,7270,Davos Platz
+101190,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+101200,Aare Versorgungs AG (AVAG),4600,Olten
+101210,Repower,7742,Poschiavo
+101220,Repower,7742,Poschiavo
+101230,Repower,7742,Poschiavo
+101240,Glattwerk AG,8600,Dübendorf
+101250,Energie Wasser Bern,3001,Bern
+101260,Elektrizitätsversorgung Niederbipp,4704,Niederbipp
+101270,OIKEN,1951,Sion
+101280,Energie- und Wasserversorgung Appenzell,9050,Appenzell
+101290,EW Wald AG,8636,Wald
+101300,Regio Energie Amriswil (REA),8580,Amriswil
+101310,Technische Betriebe Glarus Nord,8752,Näfels
+101320,Stadtwerke Gossau,9200,Gossau
+101330,Energieversorgung Pieterlen,2542,Pieterlen
+101340,Elektra Fischingen,8376,Fischingen
+101350,Elektrizitätsgenossenschaft Mühlau,5642,Mühlau
+101360,Energie Versorgung Riggisberg AG,3132,Riggisberg
+101370,Elektra Beinwil,5637,Beinwil (Freiamt)
+101380,Elektra Genossenschaft Auw,5644,Auw
+101390,Eli10 S.A.,2022,Bevaix
+101400,Monthey Energies SA,1870,Monthey
+101410,Services Techniques de la Municipalité de St-Imier,2610,St-Imier
+101420,Ville de Pully,1009,Pully
+101430,OIKEN,1951,Sion
+101440,Versorgungswerke Melchnau,4917,Melchnau
+101450,Dorfkorporation Bronschhofen,9552,Bronschhofen
+101460,Axpo Hydro Surselva AG,5401,Baden
+101470,Kraftwerk Reichenau AG c/o Axpo AG,5401,Baden
+101480,EDSR Energiedienste Staldenried AG,3933,Staldenried
+101490,Elektrizitätsversorgung Diessenhofen,8253,Diessenhofen
+101500,ewl energie wasser luzern,6005,Luzern
+101510,Energie Hunzenschwil AG,5502,Hunzenschwil
+101520,Städtische Betriebe Olten (sbo),4600,Olten
+101530,Elektrizitätswerke des Kantons Zürich - EKZ,8002,Zürich
+101540,Technische Betriebe Glarus Nord,8752,Näfels
+101550,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+101560,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+101570,Commune de Belmont-sur-Lausanne,1092,Belmont-sur-Lausanne
+101580,Technische Betriebe St. Margrethen,9430,St. Margrethen SG
+101590,Azienda Elettrica di Massagno SA,6900,Massagno
+101600,Gruyère Energie SA,1630,Bulle
+101610,TBS Strom AG,5034,Suhr
+101620,EWL Genossenschaft,3822,Lauterbrunnen
+101630,VO Energies Distribution SA,1350,Orbe
+101640,Elektrizitätsversorgung Dintikon,5606,Dintikon
+101650,Elektrizitäts- und Wasserversorgung Port,2562,Port
+101660,StWZ Energie AG,4800,Zofingen
+101670,IWB Industrielle Werke Basel,4002,Basel
+101680,Rhiienergie AG,7015,Tamins
+101690,Eli10 S.A.,2022,Bevaix
+101700,Elektrizitätsversorgung Murgenthal,4853,Murgenthal
+101710,Elektrizitätsversorgung Seedorf,3267,Seedorf BE
+101720,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+101730,SBB AG - Geschäftsbereich Energie,3052,Zollikofen
+101740,Technische Betriebe Glarus,8750,Glarus
+101750,AGE SA,6830,Chiasso
+101760,SN Energie AG,9000,St.Gallen
+101770,EE-ENERGIA ENGIADINA,7550,Scuol
+101780,Swissgrid AG,5000,Aarau
+101790,Elektrizitätswerk Obwalden,6064,Kerns
+101800,Elektrizitätsversorgung Madiswil,4934,Madiswil
+101810,Elektra Andwil,9204,Andwil SG
+101820,Regionale Technische Betriebe RTB,5103,Wildegg
+101830,Elektra Mümliswil-Ramiswil,4717,Mümliswil
+101840,Elektrizitätswerk der Gemeinde Scharans,7412,Scharans
+101850,Gemeindebetriebe Roggwil (GBR),4914,Roggwil BE
+101860,Stadtwerk Winterthur,8403,Winterthur
+101870,EW Aadorf,8355,Aadorf
+101880,GEBNET AG,4583,Aetigkofen
+101890,BKW,4901,Langenthal
+101900,Elektrizitätswerk Oberglatt,8154,Oberglatt ZH
+101910,Elektrizitäts-Genossenschaft Mülligen,5243,Mülligen
+101920,Elektrizitätsversorgung Ursenbach,4937,Ursenbach
+101930,Industrielle Betriebe Huttwil AG,4950,Huttwil
+101940,Dorfkorporation Ebnat-Kappel,9642,Ebnat-Kappel
+101950,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+101960,Elektrizitätsversorgung Rorschacherberg,9404,Rorschacherberg
+101970,Elektra Haeuslenen,8522,Häuslenen
+101980,Elektrizitätsversorgung Wittenbach,9300,Wittenbach
+101990,St. Galler Stadtwerke,9001,St.Gallen
+102000,Werkbetrieb Elektrizität Amlikon-Bissegg,8514,Amlikon-Bissegg
+102010,EWD,4552,Derendingen
+102020,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+102030,ebs Energie AG,6431,Schwyz
+102040,HEnergie Härkingen HEH,4624,Härkingen
+102050,Axpo Power AG,5401,Baden
+102060,Società Elettrica Sopracenerina SA (SES),6600,Locarno
+102070,SH POWER,8200,Schaffhausen
+102080,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+102090,Technische Betriebe Grabs,9472,Grabs
+102100,Elektrizitätsversorgung der Gemeinde Eriswil,4952,Eriswil
+102110,EW Rothrist AG,4852,Rothrist
+102120,Elektra Genossenschaft Arni-Islisberg,8905,Islisberg AG
+102130,IBB Energie AG,5200,Brugg
+102140,TB Gränichen Energie AG,5722,Gränichen
+102150,WWZ Netze AG,6301,Zug
+102160,WWZ Netze AG,6301,Zug
+102170,Genedis,1904,Vernayaz
+102180,Elektrizitätsversorgung Oberbuchsiten,4625,Oberbuchsiten
+102190,Steiner Energie AG,6102,Malters
+102200,Services Industriels de la Commune de Fully,1926,Fully
+102210,Genossenschaft EW Romanshorn,8590,Romanshorn
+102220,BKW Energie AG,3013,Bern
+102221,BKW Energie AG,3013,Bern
+102222,BKW Energie AG,3013,Bern
+102223,BKW Energie AG,3013,Bern
+102224,BKW Energie AG,3013,Bern
+102225,BKW Energie AG,3013,Bern
+102226,BKW Energie AG,3013,Bern
+102227,BKW Energie AG,3013,Bern
+102228,BKW Energie AG,3013,Bern
+102229,BKW Energie AG,3013,Bern
+102230,BKW Übertragungsnetz AG,3000,Bern
+102231,BKW Übertragungsnetz AG,3000,Bern
+102232,BKW Übertragungsnetz AG,3000,Bern
+102233,BKW Übertragungsnetz AG,3000,Bern
+102234,BKW Übertragungsnetz AG,3000,Bern
+102235,BKW Übertragungsnetz AG,3000,Bern
+102236,BKW Übertragungsnetz AG,3000,Bern
+102237,BKW Übertragungsnetz AG,3000,Bern
+102238,BKW Übertragungsnetz AG,3000,Bern
+102239,BKW Übertragungsnetz AG,3000,Bern
+102240,Elektra Steinach,9323,Steinach
+102250,Services Industriels de Genève (SIG),1219,Le Lignon
+102260,Elektra Itingen,4452,Itingen
+102270,SEDRE SA,1934,Le Châble VS
+102280,Energie Kreuzlingen,8280,Kreuzlingen
+102290,SIE SA,1023,Crissier
+102300,Infrastruktur Zürichsee AG,8706,Meilen
+102310,Service Electrique Orsières,1937,Orsières
+102320,Elektra Reigoldswil,4418,Reigoldswil
+102330,Werkbetrieb Elektrizität Amlikon-Bissegg,8514,Amlikon-Bissegg
+102340,Wasser- und Elektrizitätswerk Walenstadt,8880,Walenstadt
+102350,Elektrizitätswerk des Kantons Schaffhausen AG,8201,Schaffhausen
+102360,Energieversorgung,8524,Uesslingen
+102370,Energie Kestenholz,4703,Kestenholz
+102380,Werke am Zürichsee AG,8700,Küsnacht
+102390,Einwohnergemeinde Blumenstein,3638,Blumenstein
+102400,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+102410,BKW,4901,Langenthal
+102420,Eniwa AG,5033,Buchs AG
+102430,Lucendro SA,6513,Monte Carasso
+102440,Société Electrique des Forces de l'Aubonne SA (SEFA),1170,Aubonne
+102450,EBL (Genossenschaft Elektra Baselland),4410,Liestal
+102460,EWS Elektrizitätswerk Staufen,5603,Staufen
+102470,Technische Betriebe Oberentfelden,5036,Oberentfelden
+102480,Werkbetriebe Matzingen,9548,Matzingen
+102490,Société Electrique de la Vallée de Joux SA,1341,L'Orient
+102500,Energie Oberhofen AG,3653,Oberhofen am Thunersee
+102510,Cooperativa Elettrica di Faido,6760,Faido
+102520,RELL AG,3952,Susten
+102530,Thurwerke AG,9630,Wattwil
+102540,Genossenschaft Licht- und Kraftwerke Glattfelden,8192,Glattfelden
+102550,Services Techniques Tramelan,2720,Tramelan
+102560,AG Elektrizitätswerk Maienfeld,7304,Maienfeld
+102570,Rhätische Bahn AG,7302,Landquart
+102580,Technische Betriebe Glarus Nord,8752,Näfels
+102590,Elektrizitätswerk Jenins,7307,Jenins
+102600,EWJR Elektrizitätswerk Jona-Rapperswil AG,8645,Rapperswil-Jona
+102610,Repower,7742,Poschiavo
+102620,Werkbetriebe Wynau,4923,Wynau
+102630,Elektra Seeberg-Grasswil-Riedtwil,3365,Grasswil
+102640,Energie Opfikon AG,8152,Opfikon
+102650,Swisspower AG,3011,Bern
+102660,Repower,7742,Poschiavo
+102670,Elektrizitätswerk Samnaun,7562,Samnaun-Compatsch
+102680,Genossenschaft Elektra Salmsach,8590,Romanshorn
+102690,Technische Betriebe Weinfelden AG,8570,Weinfelden
+102700,AEK Energie AG,4502,Solothurn
+102710,Elektra Genossenschaft Sommeri,8580,Sommeri
+102720,Elektrizitäts- und Wasserwerk Windisch,5210,Windisch
+102730,Elektra Leibstadt,5325,Leibstadt
+102740,Entsorgung Region Zofingen - erzo,4665,Oftringen
+102750,Genossenschaft EW Münchwilen (EWM),9542,Münchwilen
+102760,Elektrizitätswerk Quarten,8882,Unterterzen
+102770,Gemeindeverband für Kehrichtbeseitigung Region Aarau-Lenzburg (GEKAL),5033,Buchs AG
+102780,Technische Betriebe Glarus Nord,8752,Näfels
+102790,tbgs - Technische Betriebe Glarus Süd,8762,Schwanden
+102800,Elektrizitätswerk Mulin der Gemeinde Trin,7016,Trin Mulin
+102810,EWA Energie Wasser Aarberg AG,3270,Aarberg
+102820,ELEKTRA Bözen,5076,Bözen
+102830,AEW Energie AG,5000,Aarau
+102840,Elektrizitätsversorgung Ligerz,2514,Ligerz
+102850,EGO Elektrizitätsgenossenschaft Otelfingen,8112,Otelfingen
+102860,EW Lindau AG,8312,Winterberg
+102870,Stadt Nidau,2560,Nidau
+102880,VfA-Verein für Abfallentsorgung,9470,Buchs SG
+102890,Genossenschaft Energie Fischingen,8374,Dussnang
+102900,Industrielle Betriebe Interlaken AG,3800,Interlaken
+102910,Elektrizitätsversorgung Brügg,2555,Brügg BE
+102920,Elektrizitätswerke des Kantons Zürich - EKZ,8002,Zürich
+102930,Elektrizitätswerk Vals,7132,Vals
+102940,Kraftwerk Bäch AG,8807,Freienbach
+102950,Energie Grüningen AG,8627,Grüningen
+102960,Werke am Zürichsee AG,8700,Küsnacht
+102970,Gemeindewerke Horgen,8810,Horgen
+102980,Emmenhof Energie AG,4552,Derendingen
+102990,Elektrizitätswerk Andelfingen,8450,Andelfingen
+103000,SWG,2540,Grenchen
+103010,EWK Herzogenbuchsee AG,3360,Herzogenbuchsee
+103020,Gemeindewerk Beckenried,6375,Beckenried
+103030,tba energie ag,4663,Aarburg
+103040,Elektrizitäts-Genossenschaft Siggenthal,5415,Nussbaumen
+103050,Elektra Gaiserwald,9030,Abtwil
+103060,Elektrizitätswerk Schmerikon AG,8716,Schmerikon
+103070,Kraftwerk Feusisberg AG,8807,Freienbach
+103080,Genossenschaft Elektrizitäts- und Wasserwerk Dozwil,8582,Dozwil
+103090,BKW Energie AG,3013,Bern
+103100,Kraftwerk Schaffhausen AG,8200,Schaffhausen
+103110,EGH Elektro - Genossenschaft Hünenberg,6331,Hünenberg
+103120,Kraftwerk Augst AG,4302,Augst
+103130,FMV SA,1950,Sion
+103140,Elektrizitätsversorgung Tübach,9327,Tübach
+103150,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+103160,Kraftwerk Ferrera AG,7742,Poschiavo
+103170,SEDRE SA,1934,Le Châble VS
+103180,Innobas AG,8890,Flums
+103190,Elektrizitätswerk Urnäsch AG,9107,Urnäsch
+103200,IBC Energie Wasser Chur,7000,Chur
+103210,Elektrizitätsversorgung Oberdiessbach,3672,Oberdiessbach
+103220,Elektra Ins,3232,Ins
+103230,Société des Forces Motrices du Châtelot SA (SFMC),1763,Granges-Paccot
+103240,Forces Motrices de Conches S.A.,1700,Fribourg
+103250,Elektrizitätswerk der Gemeinde Lengwil,8574,Lengwil
+103260,Genossenschaft EW Romanshorn,8590,Romanshorn
+103270,Technische Betriebe Birmenstorf,5413,Birmenstorf AG
+103280,RELL AG,3952,Susten
+103290,Bas-Valais Energie SA,1110,Morges
+103300,Services industriels de Delémont,2800,Delémont
+103310,Commune de Boudevilliers,2043,Boudevilliers
+103320,Elektra-Genossenschaft Rottenschwil-Werd,8919,Rottenschwil
+103330,Elektrizitätsversorgung Eggenwil,5445,Eggenwil
+103340,Elektrizität Wasser Neuenhof ewn,5401,Baden
+103350,Thurplus,8500,Frauenfeld
+103360,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+103370,Elektra Oberegg,9413,Oberegg
+103380,Administration Communale Bourg-Saint-Pierre,1946,Bourg-St-Pierre
+103390,Gemeindebetriebe Brienz,3855,Brienz BE
+103400,Elektrizitätsversorgung Innerthal (EVI),8858,Innerthal
+103410,Aarewerke AG,5313,Klingnau
+103420,Elektrizitätswerk Vilters-Wangs,7323,Wangs
+103430,Groupe E SA,1763,Granges-Paccot
+103440,Technische Betriebe Goldach,9403,Goldach
+103450,Elektrizitätsversorgung Oberbüren,9245,Oberbüren
+103460,Elektra Sins,5643,Sins
+103470,EW Sirnach AG,8370,Sirnach
+103480,Elektra-Genossenschaft Baldingen,5333,Baldingen
+103490,Services Industriels de La Neuveville,2520,La Neuveville
+103500,Elektrizitätsversorgung der Gemeinde Sils,7411,Sils im Domleschg
+103510,Elektrizitätsversorgung Teufenthal,5723,Teufenthal AG
+103520,BKW Energie AG,3013,Bern
+103530,EE-ENERGIA ENGIADINA,7550,Scuol
+103540,EE-ENERGIA ENGIADINA,7550,Scuol
+103550,InfraWerkeMünsingen,3110,Münsingen
+103560,Elektrizitätsversorgung Altnau,8595,Altnau
+103570,Elektrizitätswerk Wangen,8855,Wangen SZ
+103580,Elektrizitätsversorgung Spreitenbach,8957,Spreitenbach
+103590,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+103600,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+103610,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+103620,Elektrizitätsversorgung Ueken,5028,Ueken
+103630,Elektrizitäts-Versorgung Killwangen,8956,Killwangen
+103640,Elektrizitätswerk der Gemeinde Güttingen,8594,Güttingen
+103650,Dorfkorporation Oberschan,9479,Oberschan
+103660,SATOM SA,1870,Monthey
+103670,Politische Gemeinde Wilen,9535,Wilen b. Wil
+103680,Technische Gemeindebetriebe Wängi,9545,Wängi
+103690,Elektrizitätswerk Unterbäch,3944,Unterbäch VS
+103700,Robert Fuchs AG,8834,Schindellegi
+103710,Genossenschaft Werk Bichelsee-Balterswil,8362,Balterswil
+103720,Elektrizitätswerke des Kantons Zürich - EKZ,8002,Zürich
+103730,Limeco,8953,Dietikon
+103740,Elektrizitätswerk Rheinwald,7435,Splügen
+103750,Youtility AG,3014,Bern
+103760,Elektra Niederbüren,9246,Niederbüren
+103770,EnAlpin AG,3930,Visp
+103780,EnAlpin AG,3930,Visp
+103790,Licht- und Wasserwerk AG,3718,Kandersteg
+103800,BKW Energie AG,3013,Bern
+103810,Dorfkorporation Schwarzenbach,9536,Schwarzenbach SG
+103820,Werke am Zürichsee AG,8700,Küsnacht
+103830,Energie Thun AG,3607,Thun
+103840,rwt Regionalwerk Toggenburg AG,9602,Bazenheid
+103850,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+103860,EVS Energieversorgung Schänis AG,8718,Schänis
+103870,Thurwerke AG,9630,Wattwil
+103880,Service électricité de la commune de Trient,1929,Trient
+103890,Elektrizitätswerk Wangen,8855,Wangen SZ
+103900,Elektrizitätsgenossenschaft Gehrau-Häusern,8556,Wigoltingen
+103910,Sinergy Infrastructure SA,1920,Martigny
+103920,KVA Turgi,5300,Turgi
+103930,Licht-und Kraftgenossenschaft Richigen,3078,Richigen
+103940,Technische Gemeindebetriebe Wängi,9545,Wängi
+103950,Elektrizitätsversorgung Oberriet (SG),9463,Oberriet SG
+103960,Elektra Rudolfstetten-Friedlisberg AG,8964,Rudolfstetten
+103970,EnerCom Kirchberg AG,3422,Kirchberg
+103980,SAE Immobilien AG,6314,Unterägeri
+103990,Einwohnergemeinde Gemeindebetriebe,2553,Safnern
+104000,Eli10 S.A.,2022,Bevaix
+104010,StWZ Energie AG,4800,Zofingen
+104020,EWZ Elektrizitätswerk Zermatt AG,3920,Zermatt
+104030,Aziende Industriali Mendrisio - AIM,6850,Mendrisio
+104040,Elektrokorporation Lutenwil,9650,Nesslau
+104050,Elektrizitätswerke des Kantons Zürich - EKZ,8002,Zürich
+104060,Gemeinde Albula/Alvra,7450,Tiefencastel
+104070,Elggis Kraft AG,8754,Netstal
+104080,Service électricité de la commune de Develier,2802,Develier
+104090,Elektrizitätsgenossenschaft Schüpbach,3535,Schüpbach
+104100,Einwohnergemeinde Twann,2513,Twann
+104110,Consorzio Energia Elettrica Calanca,6545,Selma
+104120,Elektrizitätsverwaltung Kallnach,3283,Kallnach
+104130,Elektra Buchen-Teuffenthal,3623,Teuffenthal b. Thun
+104140,EE-ENERGIA ENGIADINA,7550,Scuol
+104150,EE-ENERGIA ENGIADINA,7550,Scuol
+104160,Elektra Gams,9473,Gams
+104170,Eli10 S.A.,2022,Bevaix
+104180,Technische Betriebe Wil,9500,Wil
+104190,THURPOWER AG,9500,Wil SG
+104200,Politische Gemeinde Affeltrangen Technische Werke Elektrizität,9556,Affeltrangen
+104210,Société des Forces Motrices Grand St. Bernard SA,1110,Morges
+104220,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+104230,Bas-Valais Energie SA,1110,Morges
+104240,Gemeindewerke Arth,6415,Arth
+104250,Elektrizitätswerk der politischen Gemeinde Langrickenbach,8585,Langrickenbach
+104260,Rheinkraftwerk Neuhausen AG,5332,Rekingen AG
+104270,Elektrizitätsgenossenschaft Zwischenflüh und Umgebung,3756,Zwischenflüh
+104280,Elektra-Genossenschaft Homburg,8508,Homburg
+104290,Elektra Neukirch Egnach,9315,Neukirch (Egnach)
+104300,Elektra-Korporation Schachen,9411,Schachen b. Reute
+104310,Groupe E SA,1763,Granges-Paccot
+104320,Elektra Thal,4713,Matzendorf
+104330,Elektrizitätsversorgung Altendorf AG,8852,Altendorf
+104340,Elektra-Genossenschaft Siglistorf-Wislikofen-Mellstorf,5462,Siglistorf
+104350,Elektra Neuendorf,4623,Neuendorf
+104360,Elektrizitätswerk der Gemeinde Mammern,8265,Mammern
+104370,Dorfkorporation Weite,9476,Weite
+104380,Elektrizitätswerk der Gemeinde Schmitten,7493,Schmitten (Albula)
+104390,Elektrizitätswerk Mellingen,5507,Mellingen
+104400,Elektrizitätswerk Obergoms AG,3985,Münster VS
+104410,Ovra electrica Medel,7184,Curaglia
+104420,Media Mesolcina Energia,6562,Soazza
+104430,Forces Motrices de l’Aboyeu SA,1921,Martigny-Croix
+104440,Elektrizitätsgenossenschaft Saas Balen,3930,Visp
+104450,Elektra Untereggen,9033,Untereggen
+104460,AEW Energie AG,5000,Aarau
+104470,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+104480,Elektrizitätswerke des Kantons Zürich - EKZ,8002,Zürich
+104490,Technische Werke der Gemeinde Thundorf,8512,Thundorf
+104500,Elektrizitätsversorgung Wartau,9478,Azmoos
+104510,Elektra Genossenschaft Schneisingen,5425,Schneisingen
+104520,Energieversorgungsstelle der Gemeinde Thusis,7430,Thusis
+104530,Elektrizitätswerk Tschiertschen-Praden,7063,Praden
+104540,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+104550,Technische Werke der Gemeinde Birwinken,8585,Mattwil
+104560,Sinergy Infrastructure SA,1920,Martigny
+104570,Elektrizitätswerk Ursern,6490,Andermatt
+104580,AEW Energie AG,5000,Aarau
+104590,Elektragenossenschaft Geltwil,5637,Geltwil
+104600,Arosa Energie,7050,Arosa
+104610,Elektrizitätswerk Samnaun,7562,Samnaun-Compatsch
+104620,AEW Energie AG,5000,Aarau
+104630,Elektra Politische Gemeinde Pfyn,8505,Pfyn
+104640,Elektra Neukirch Egnach,9315,Neukirch (Egnach)
+104650,Elektrizitätswerk der PG Wagenhausen,8259,Kaltenbach
+104660,tbgs - Technische Betriebe Glarus Süd,8762,Schwanden
+104670,EW Sirnach AG,8370,Sirnach
+104680,Elektra Augst,4302,Augst BL
+104690,Grande Dixence SA,1950,Sion
+104700,Werkbetrieb Elektrizität Amlikon-Bissegg,8514,Amlikon-Bissegg
+104710,Société Électrique du Val-de-Travers S.A.,2108,Couvet
+104720,AEW Energie AG,5000,Aarau
+104730,Elektra Remetschwil,5453,Remetschwil
+104740,Genossenschaft Energie Fischingen,8374,Dussnang
+104750,Société des Forces Electriques de La Goule,2610,Saint-Imier
+104760,Technische Gemeindebetriebe Berg,8572,Berg TG
+104770,Elektra Böttstein,5315,Böttstein
+104780,Elektrizitätsversorgung St. Stephan,3772,St. Stephan
+104790,Elektra Eggersriet,9034,Eggersriet
+104800,Elektrizitätsgenossenschaft Villnachern,5213,Villnachern
+104810,Elektrizitätswerk Wohlenschwil,5512,Wohlenschwil
+104820,Genossenschaft Elektra Ehrendingen,5420,Ehrendingen
+104830,EW Lachen AG,8853,Lachen SZ
+104840,Martin Zeller AG Flums,8890,Flums
+104850,Politische Gemeinde Gachnang,8547,Gachnang
+104860,Services Techniques de la Commune de Paudex,1094,Paudex
+104870,"Genossenschaft Elektra, Jegenstorf",3303,Jegenstorf
+104880,Gemeindewerke Pfäffikon,8330,Pfäffikon ZH
+104890,WERKE Rheineck,9424,Rheineck
+104900,Elektrizitätswerke des Kantons Zürich - EKZ,8002,Zürich
+104910,Grand Resort Bad Ragaz AG,7310,Bad Ragaz
+104920,Gemeindewerke Dietlikon,8305,Dietlikon
+104930,Elektra-Genossenschaft Olsberg,4305,Olsberg
+104940,Elektrizitätswerk Sennwald,9466,Sennwald
+104950,Elektra Oberrohrdorf,5452,Oberrohrdorf
+104960,a.en Aare Energie AG,4600,Olten
+104970,Elektrizitäts-Genossenschaft Boswil-Bünzen,5623,Boswil
+104980,Elektrizitätsversorgung Kaltbrunn AG,8722,Kaltbrunn
+104990,SEDRE SA,1934,Le Châble VS
+105000,"Gemeinde Hallau, Elektrizitätswerk",8215,Hallau
+105010,Elektrizitätswerk Gemeinde Bergün Filisur,7477,Filisur
+105020,Forces Motrices de la Gougra SA,1950,Sion
+105030,Energie Belp AG,3123,Belp
+105040,Provedimaint electric Val Müstair,7536,Sta. Maria Val Müstair
+105050,Sinergy Infrastructure SA,1920,Martigny
+105060,Sinergy Infrastructure SA,1920,Martigny
+105070,Elektrizitätsversorgung Thalheim,5112,Thalheim AG
+105080,EMAG Energie Münchenbuchsee AG,3053,Münchenbuchsee
+105090,Elektrizitätsversorgung der Gemeinde Saas-Fee,3906,Saas-Fee
+105100,Elektrizitätsgenossenschaft Diemtigen,3754,Diemtigen
+105110,Elektrizitätsversorgung Marbach (SG),9437,Marbach SG
+105120,Genossenschaft Elektra Fislisbach,5442,Fislisbach
+105130,Elektra Energie Genossenschaft,3673,Linden
+105140,Elektrizitätsversorgung Benken,8717,Benken SG
+105150,Elektrizitätsversorgung Benken ZH,8463,Benken ZH
+105160,Elektroversorgung Untervaz,7204,Untervaz
+105170,Genossenschaft Energie Fischingen,8374,Dussnang
+105180,Technische Betriebe Thal,9425,Thal
+105190,Azienda Elettrica Comunale Torricella-Taverne,6808,Torricella
+105200,Politische Gemeinde Stettfurt,9507,Stettfurt
+105210,Limmatkraftwerke AG,5400,Baden
+105210,Kraftwerke Zervreila AG,9000,St. Gallen
+105220,Elektra Opfersei,6133,Hergiswil b. Willisau
+105230,Services Techniques de la Commune de Cortaillod,2016,Cortaillod
+105250,Elektrizitätswerk der Gemeinde Lantsch/Lenz,7083,Lantsch/Lenz
+105260,Industrielle Betriebe Kloten AG,8302,Kloten
+105270,Kraftwerk Birsfelden AG,4127,Birsfelden
+105280,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+105290,Elektrizitätsversorgung Saas-Almagell,3905,Saas-Almagell
+105300,Technische Betriebe Glarus Nord,8752,Näfels
+105310,Elektrizitätswerk Safiental,7107,Safien Platz
+105320,Salanfe S.A.,1003,Lausanne
+105330,Forces Motrices Hongrin-Léman S.A. (FMHL),1001,Lausanne
+105340,Energie Electrique du Simplon S.A. (EES),1003,Lausanne
+105350,Electra-Massa S.A.,1003,Lausanne
+105360,Elektrische Korporation Blomberg-Brandholz,9642,Ebnat-Kappel
+105370,Elektrizitätswerk der Politischen Gemeinde Basadingen-Schlattingen,8254,Basadingen
+105380,Elektra Emmenmatt,3543,Emmenmatt
+105390,Electricité d'Emosson S.A.,1920,Martigny
+105400,Technische Betriebe Kemmental,8573,Siegershausen
+105410,Officine idroelettriche della Maggia S.A.,6600,Locarno
+105420,Officine idroelettriche di Blenio S.A.,6604,Locarno
+105430,Arosa Energie,7050,Arosa
+105440,Elektrizitätswerk Safiental,7107,Safien Platz
+105450,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+105460,Gemeinde Albula/Alvra,7450,Tiefencastel
+105470,Kraftwerk Wassen AG,6484,Wassen
+105480,Kraftwerk Göschenen AG,6487,Göschenen
+105490,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+105500,Kraftwerke Ilanz AG,5400,Baden
+105510,Kraftwerke Sarganserland AG,5400,Baden
+105520,Kraftwerke Linth-Limmern AG,5400,Baden
+105530,Elektrizitätswerk Rheinau AG,5400,Baden
+105540,SBB AG Kraftwerk Rupperswil-Auenstein AG,3082,Zollikofen
+105550,Elektra Büttikon,5619,Büttikon AG
+105560,Services industriels de Peseux,2034,Peseux
+105570,IB-Murten,3280,Murten
+105580,Elektra und Wasserkorporation Grub SG,9036,Grub SG
+105590,EVU Flums AG,8890,Flums
+105600,Dorfkorporation Trübbach Wasser- und Elektrizitätsversorgung,9477,Trübbach
+105610,Linth Kraft AG,8754,Netstal
+105620,Gemeindewerke Erstfeld,6472,Erstfeld
+105630,Energie Grosshöchstetten AG,3506,Grosshöchstetten
+105640,Elektrizitätswerk der Gemeinde Salenstein,8268,Salenstein
+105650,Eli10 S.A.,2022,Bevaix
+105660,Elektrizitätswerk Dürrenäsch,5724,Dürrenäsch
+105670,Elektrizitätsversorgung Kaisten,5082,Kaisten
+105680,Services Industriels Moutier,2740,Moutier
+105690,Elektrizitätsversorgung Beinwil am See,5712,Beinwil am See
+105700,Genossenschaft Elektrizitätswerk Räterschen EWR,8352,Elsau
+105710,Elektra Maisprach,4464,Maisprach
+105720,Dorfkorporation Ebnat-Kappel,9642,Ebnat-Kappel
+105730,Elektrizitätswerk Schafisheim,5503,Schafisheim
+105740,Bielersee Kraftwerke AG (BIK),2501,Biel/Bienne
+105750,Genossenschaft ELEKTRA Koppigen-Willadingen,3425,Koppigen
+105760,Rhonewerke AG,1950,Sion
+105770,Politische Gemeinde Bettwiesen,9553,Bettwiesen
+105780,EW Elektra Auenhofen,8580,Hefenhofen
+105790,AEW Energie AG,5000,Aarau
+105800,Elektrizitäts-Genossenschaft Schönholzerswilen,8577,Schönholzerswilen
+105810,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+105820,EE-ENERGIA ENGIADINA,7550,Scuol
+105830,Technische Betriebe Weinfelden AG,8570,Weinfelden
+105840,Elektra-Genossenschaft Homburg,8508,Homburg
+105850,Werkbetriebe Kefikon,8546,Kefikon TG
+105860,AEW Energie AG,5000,Aarau
+105870,Elektrizitätsversorgung Rebstein,9445,Rebstein
+105880,Städtische Elektrizitätsversorgung Laufenburg,5080,Laufenburg
+105890,BKW,4901,Langenthal
+105900,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+105910,Elektra Neukirch Egnach,9315,Neukirch (Egnach)
+105920,WWZ Energie AG,6301,Zug
+105930,Società Elettrica Sopracenerina SA (SES),6600,Locarno
+105940,Eniwa Kraftwerk AG,5033,Buchs AG
+105950,Axpo Power AG,5401,Baden
+105960,Bas-Valais Energie SA,1110,Morges
+105970,Verzasca S.A.,6900,Lugano
+105980,Elektrizitätswerk Tschiertschen-Praden,7063,Praden
+105990,Elektra Berg,9305,Berg SG
+106000,EOF Energie Oberes Fricktal AG,5073,Gipf-Oberfrick
+106010,Dorfgemeinde Willigen,3860,Meiringen
+106020,Gemeinde Albula/Alvra,7450,Tiefencastel
+106030,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+106040,Städtische Elektrizitätsversorgung Laufenburg,5080,Laufenburg
+106050,AEW Energie AG,5000,Aarau
+106060,Elektrizitätsanlage Bellmund EAB,2564,Bellmund
+106070,Politische Gemeinde Kradolf-Schönenberg,9215,Schönenberg an der Thur
+106080,tbgs - Technische Betriebe Glarus Süd,8762,Schwanden
+106090,Engadiner Kraftwerke AG,7530,Zernez
+106100,Elektra Schwanden i.E.,3433,Schwanden im Emmental
+106110,Elektra-Genossenschaft Homburg,8508,Homburg
+106120,EnBAG AG,3900,Brig
+106130,EnBAG AG,3900,Brig
+106140,Elektrizitätsgenossenschaft Rümikon,8352,Elsau
+106150,EDF Alpes Investissements Sàrl,1920,Martigny
+106160,IBC Energie Wasser Chur,7000,Chur
+106170,Elektrizitätsversorgung Werk-Schlatt,8252,Schlatt TG
+106180,EGW Weiach Elektrizitätsgenossenschaft,8192,Glattfelden
+106190,Elektra Genossenschaft Kesswil,8593,Kesswil
+106200,Elektrizitätswerk der Gemeinde Eischoll,3943,Eischoll
+106210,EV Gebenstorf AG,5200,Brugg
+106220,Elektrizitäts-Genossenschaft Merenschwand,5634,Merenschwand
+106230,Gemeinde Bottighofen,8598,Bottighofen
+106240,Viteos SA,2000,Neuchâtel
+106250,Gemeinde- Elektrizitätswerk Gottlieben,8274,Gottlieben
+106260,Elektrizitätswerk Gemeinde Bergün Filisur,7477,Filisur
+106270,EW Turgi Hydroelectra AG,9435,Heerbrugg
+106280,Elektrizitäts-Genossenschaft Riniken (EGR),5223,Riniken
+106290,Genossenschaft Energie Fischingen,8374,Dussnang
+106300,Kraftwerke Vorderrhein AG,5400,Baden
+106310,AEW Energie AG,5000,Aarau
+106320,Commune mixte de Nods,2518,Nods
+106330,Einwohnergemeinde Biglen,3507,Biglen
+106340,Kraftwerk Sarneraa AG,6015,Luzern
+106350,Stadtwerke Konstanz GmbH,78464,Konstanz
+106360,Elektra-Genossenschaft Abtwil,5646,Abtwil
+106370,Arosa Energie,7050,Arosa
+106380,Forces Motrices d'Orsières (FMO),1937,Orsières
+106390,Elektra Sissach,4450,Sissach
+106400,EW Oftringen AG,4665,Oftringen
+106410,Gemeindeverwaltung Braunau,9502,Braunau
+106420,Elektrizitäts-Genossenschaft Herdern,8506,Lanzenneunforn
+106430,Elektra Sins,5643,Sins
+106440,Elektra Luthern,6156,Luthern
+106450,Energieversorgung Schams / Avers,7440,Andeer
+106460,Genossenschaft Energie Fischingen,8374,Dussnang
+106470,Elektrizitäts-Genossenschaft Schönholzerswilen,8577,Schönholzerswilen
+106480,Elektrizitätsversorgung der Politischen Gemeinde Felben-Wellhausen,8552,Felben-Wellhausen
+106490,Kraftwerke Hinterrhein AG,7430,Thusis
+106500,Kraftwerk Sanetsch AG,3000,Bern
+106510,GEBNET AG,4583,Aetigkofen
+106520,Elektrizitätswerk Sennwald,9466,Sennwald
+106530,Elektrizitätsversorgung Grub,9035,Grub AR
+106540,Saline de Bex SA,1880,Bex
+106550,EOF Energie Oberes Fricktal AG,5073,Gipf-Oberfrick
+106560,Elektra-Genossenschaft Homburg,8508,Homburg
+106570,Technische Betriebe Rupperswil,5102,Rupperswil
+106580,Energieversorgung Talschaft Lötschen,3952,Susten
+106590,Impianti elettrici Bivio,7457,Bivio
+106600,Axpo Solutions AG,5401,Baden
+106610,Elektra Arni,3508,Arni BE
+106620,Elektrizitätswerk Göschenen,6487,Göschenen
+106630,Gemeindeverwaltung Sisseln,4334,Sisseln AG
+106640,Elektra-Genossenschaft Hefenhofen,8580,Hefenhofen
+106650,RELL AG,3952,Susten
+106660,EW Aadorf,8355,Aadorf
+106670,Genossenschaft Elektra Vogelsang,8374,Dussnang
+106680,Genossenschaft Elektra Roggwil-Freidorf,9325,Roggwil TG
+106690,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+106700,"Genossenschaft Elektra, Jegenstorf",3303,Jegenstorf
+106710,Elektrizitätswerk Niederhelfenschwil,9527,Niederhelfenschwil
+106720,eoh Elektra Oekingen - Halten,4566,Oekingen
+106730,Elektra Mettauertal und Umgebung,5277,Hottwil
+106740,EW der Politischen Gemeinde Wäldi,8564,Hefenhausen
+106750,Stadtwerke Wetzikon,8620,Wetzikon
+106760,Dorfkorporation Wolfertswil,9116,Wolfertswil
+106770,Weseta Kraftwerke AG,8765,Engi
+106780,Elektra Aristau,5628,Aristau
+106790,Elektra-Genossenschaft Fischbach-Göslikon,5525,Fischbach-Göslikon
+106800,Kraftwerk Schächental AG,6460,Altdorf UR
+106810,Comune di Bregaglia,7606,Promontogno
+106820,Azienda elettrica comunale Airolo,6780,Airolo
+106830,Elektrizitätswerk Herrliberg,8704,Herrliberg
+106840,Gemeinde Albula/Alvra,7450,Tiefencastel
+106850,Hydrantenkorporation & Elektraversorgung Schoenengrund,9105,Schönengrund
+106860,Technische Gemeindebetriebe Hauptwil-Gottshaus,9213,Hauptwil
+106870,Elektrizitätswerke des Kantons Zürich - EKZ,8002,Zürich
+106880,Technische Betriebe Kemmental,8573,Siegershausen
+106890,EE-ENERGIA ENGIADINA,7550,Scuol
+106900,Elektrizitätsversorgung Häggenschwil,9312,Häggenschwil
+106910,Elektra Genossenschaft Holderbank (SO),4718,Holderbank SO
+106920,Elektrizitätsversorgung Diepoldsau,9444,Diepoldsau
+106930,Elektrizitätswerk der Gemeinde Neunforn,8526,Oberneunforn
+106940,Technische Betriebe Wil,9500,Wil
+106950,Calancasca AG,5400,Baden
+106960,Officine Idroelettriche di Mesolcina SA (OIM),6558,Lostallo
+106970,Albula-Landwasser Kraftwerke AG,5400,Baden
+106980,Forces Motrices de Mauvoisin SA,5400,Baden
+106990,Kraftwerke Mattmark AG,5400,Baden
+107000,Gemeinde Albula/Alvra,7450,Tiefencastel
+107010,EWK Energie AG,5742,Kölliken
+107020,Elektra Genossenschaft Oberlunkhofen,8917,Oberlunkhofen
+107030,GEBNET AG,4583,Aetigkofen
+107040,Elektra Ufhusen,6153,Ufhusen
+107050,Elektra Bettwil,5618,Bettwil
+107060,Einwohnergemeinde Schwadernau,2556,Schwadernau
+107070,BKW Energie AG,3013,Bern
+107080,Einwohnergemeinde Lengnau,2543,Lengnau BE
+107090,Axpo Solutions AG,5401,Baden
+107100,"Genossenschaft Elektra, Jegenstorf",3303,Jegenstorf
+107110,"Einwohnergemeinde Rüti bei Büren, Abt. Elektrizitätsversorgung",3295,Rüti b. Büren
+107120,Elektra Hergiswil-Dorf,6133,Hergiswil b. Willisau
+107130,Gemeindewerke Rüti,8630,Rüti
+107140,Elektrizitäts-Genossenschaft Benzenschwil,5636,Benzenschwil
+107150,Elektrizitätswerk Obergoms AG,3985,Münster VS
+107160,Energie- und Wasserversorgung Oberburg,3414,Oberburg
+107170,tbgs - Technische Betriebe Glarus Süd,8762,Schwanden
+107180,GEBNET AG,4583,Aetigkofen
+107190,Technische Betriebe Kemmental,8573,Siegershausen
+107200,Elektrizitätsgenossenschaft Gsteig,3785,Gsteig b. Gstaad
+107210,Einwohnergemeinde Lüterkofen-Ichertswil,4571,Lüterkofen
+107220,Technische Werke der Gemeinde Tobel-Tägerschen,9555,Tobel
+107230,Elektra Genossenschaft Kaiserstuhl,5466,Kaiserstuhl
+107240,Stromversorgung Gondo - Zwischbergen,3907,Gondo
+107250,EW Aadorf,8355,Aadorf
+107260,Trimmiser Industrielle Betriebe,7203,Trimmis
+107270,Elektra-Genossenschaft Homburg,8508,Homburg
+107280,Elektra-Korporation Engishofen,8586,Erlen
+107290,Werkbetrieb Elektrizität Amlikon-Bissegg,8514,Amlikon-Bissegg
+107300,Elektra Schnottwil,3253,Schnottwil
+107310,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+107320,GEBNET AG,4583,Aetigkofen
+107330,Gemeindeverwaltung Diessbach,3264,Diessbach b. Büren
+107340,Elektrizitätsgenossenschaft Moosegg,3438,Lauperswil
+107350,Elektra Rüthi (SG),9464,Rüthi (Rheintal)
+107360,Vadec SA - Site de La Chaux-de-Fonds,2300,La Chaux-de-Fonds
+107370,Elektrizitätswerk der Gemeinde Törbel,3923,Törbel
+107380,GEBNET AG,4583,Aetigkofen
+107390,GEBNET AG,4583,Aetigkofen
+107400,Elektrizitätsversorgung Balgach,9436,Balgach
+107410,Politische Gemeinde Müllheim,8555,Müllheim Dorf
+107420,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+107430,Politische Gemeinde Herdern,8506,Lanzenneunforn
+107440,EMS-CHEMIE AG,7013,Domat/Ems
+107450,Genossenschaft Elektra Busslingen,5453,Remetschwil
+107460,Azienda Elettrica Comunale Bedretto,6781,Villa Bedretto
+107470,ewl Kraftwerke AG,6005,Luzern
+107480,SOGESA,1934,Le Châble VS
+107490,Elektrizitätswerk der Politischen Gemeinde Hohentannen,9216,Hohentannen
+107500,Arosa Energie,7050,Arosa
+107510,Alpen Energie,3860,Meiringen
+107520,Gemeindeverwaltung Wuppenau,9514,Wuppenau
+107530,"Genossenschaft Elektra, Jegenstorf",3303,Jegenstorf
+107540,Genossenschaft Werk Bichelsee-Balterswil,8362,Balterswil
+107550,EE-ENERGIA ENGIADINA,7550,Scuol
+107560,Elektrizitätsversorgung Siselen,2577,Siselen BE
+107570,Licht- und Wasserwerk Adelboden AG,3715,Adelboden
+107580,Simmentaler Kraftwerke AG,3013,Bern
+107590,Eli10 S.A.,2022,Bevaix
+107600,Energieversorgung Büren AG,3294,Büren an der Aare
+107610,Localnet AG,3400,Burgdorf
+107620,Société des Forces Motrices de Chancy-Pougny SA,1237,Avully
+107630,Vadec SA - Site de La Chaux-de-Fonds,2300,La Chaux-de-Fonds
+107640,IBC Energie Wasser Chur,7000,Chur
+107650,Werke Fehraltorf,8320,Fehraltorf
+107660,Energie Gossau AG,8625,Gossau ZH
+107670,Elettricità Industriale SA (ELIN),5400,Baden
+107680,Elektrizitätswerk Heiden AG,9410,Heiden
+107690,Jungfraubahn AG,3800,Interlaken
+107700,Kernkraftwerk Leibstadt AG,5325,Leibstadt
+107710,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+107720,tbgs - Technische Betriebe Glarus Süd,8762,Schwanden
+107730,Elektrizitätsgenossenschaft Lufingen,8426,Lufingen
+107740,Societad Ovra electrica Lumbrein,7148,Lumbrein
+107750,Technische Gemeindebetriebe Märstetten,8560,Märstetten
+107760,Infrastruktur Zürichsee AG,8706,Meilen
+107770,Energia Samedan,7503,Samedan
+107780,Electricité de la Lienne S.A.,1950,Sion
+107790,Leteygeon S.A.,1950,Sion
+107800,Gemeindewerke Stäfa,8712,Stäfa
+107810,Stadtverwaltung EW Werkbetriebe,8266,Steckborn
+107820,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+107830,Energie AG Sumiswald,3455,Grünen
+107840,Elektrizitätswerk Tuggen,8856,Tuggen
+107850,Kleinkraftwerk Saien AG,9107,Urnäsch
+107860,Energie Wettingen AG,5430,Wettingen
+107870,Elektrizitätswerk Wigoltingen,8556,Wigoltingen
+107880,IB Wohlen AG,5610,Wohlen
+107890,Elektra Zufikon,5621,Zufikon
+107900,Lizerne et Morge S.A.,1951,Sion
+107910,Chemins de fer du Jura SA,2720,Tramelan
+107920,Gemischte Gemeinde Brienzwiler,3856,Brienzwiler
+107930,GEVAG,7203,Trimmis
+107940,Axpo Biomasse AG,5401,Baden
+107950,EVG Grächen AG,3925,Grächen
+107960,EOF Energie Oberes Fricktal AG,5073,Gipf-Oberfrick
+107970,Alpiq AG,4601,Olten
+107980,"Iberdrola Generacion S.A., Bilbao,",8001,Zürich
+107990,HYDRO Exploitation SA,1950,Sion
+108000,Blinnenwerk AG,3998,Reckingen VS
+108010,Technische Gemeindebetriebe Hauptwil-Gottshaus,9213,Hauptwil
+108020,Elektrizitätsversorgung Egerkingen,4622,Egerkingen
+108030,Genossenschaft Werk Bichelsee-Balterswil,8362,Balterswil
+108040,Elektrizitätsversorgung Zeihen (EVZ),5079,Zeihen
+108050,Elektra-Genossenschaft Künten,5444,Künten
+108060,Gemeindeverwaltung Vorderthal,8857,Vorderthal
+108070,Elektra Eichberg,9453,Eichberg
+108080,Elektra Rüderswil,3437,Rüderswil
+108090,Service électricité de Soulce,2864,Commune de Haute-Sorne
+108100,GEBNET AG,4583,Aetigkofen
+108110,Elektrizitätsgenossenschaft Zeneggen,3934,Zeneggen
+108120,Elektrizitätswerk Rheinwald,7435,Splügen
+108130,Einwohnergemeinde Arch,3296,Arch
+108140,Genossenschaft Elektra Hatswil,8580,Hefenhofen
+108150,Elektrizitätsversorgung Leuzigen,3297,Leuzigen
+108160,Elektra Oberwil,3298,Oberwil b. Büren
+108170,Elektrizitätswerk Zuzwil (SG),9524,Zuzwil SG
+108180,Elektrizitätsgenossenschaft Jonen,8916,Jonen
+108190,Administration Communale,2825,Courchapoix
+108200,Technische Gemeindebetriebe TGB,9220,Bischofszell
+108210,Genossenschaft Elektra Rapperswil (BE),3255,Rapperswil BE
+108220,Politische Gemeinde Erlen Werkverwaltung Elektrizitätswerk,8586,Erlen
+108230,Elektrizitäts-Genossenschaft Aettenschwil,5645,Aettenschwil
+108240,Elektra Beinwil,5637,Beinwil (Freiamt)
+108250,Elektrizitätswerk Rheinwald,7435,Splügen
+108260,Kraftwerke Engelbergeraa  Aa,6370,Oberdorf NW
+108270,Genossenschaft Elektra Nennigkofen,4574,Nennigkofen
+108280,Elektra Zeiningen,4314,Zeiningen
+108290,Werkbetriebe Matzingen,9548,Matzingen
+108300,Elektrizitäts-Genossenschaft Brüschwil-Sonnenberg,8580,Hefenhofen
+108310,EW der Politischen Gemeinde Wäldi,8564,Hefenhausen
+108320,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+108330,Elektrizitätswerk der politischen Gemeinde Lommis,9506,Lommis
+108340,Elektrizitätswerk der Gemeinde Güttingen,8594,Güttingen
+108350,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+108360,Comune di Bregaglia,7606,Promontogno
+108370,Technische Betriebe Seon AG,5703,Seon
+108380,Elektrizitäts-Genossenschaft Schönholzerswilen,8577,Schönholzerswilen
+108390,Elektra Horn AG,9326,Horn
+108400,Elektrizitätswerk Riedbach,3932,Visperterminen
+108410,Aziende Industriali di Lugano (AIL) SA,6933,Muzzano
+108420,Technische Gemeindebetriebe Märstetten,8560,Märstetten
+108430,Elektrizitätsgenossenschaft Allenwinden,6319,Allenwinden
+108440,Elektra Oberwil-Lieli,8966,Oberwil-Lieli
+108450,Politische Gemeinde Zihlschlacht-Sitterdorf,8588,Zihlschlacht
+108460,Technische Betriebe Glarus,8750,Glarus
+108470,Elektrizitätsversorgung Schöftland,5040,Schöftland
+108480,"SI Vérossaz, Administration communale",1891,Vérossaz
+108490,Elektra-Korporation Reute,9411,Reute AR
+108500,GEBNET AG,4583,Aetigkofen
+108510,Services industriels de Romanel,1032,Romanel-sur-Lausanne
+108520,Elektrizitätsversorgung Villigen (EVV),5234,Villigen
+108530,Arosa Energie,7050,Arosa
+108540,EV Energieversorgung Biberist,4562,Biberist
+108550,Energie- und Wasserversorgung Ins,3232,Ins
+108560,Romande Energie SA,1110,Morges
+108570,Bas-Valais Energie SA,1110,Morges
+108580,B-Valgrid SA,1950,Sion
+108590,Valgrid SA,1950,Sion
+108600,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+108610,GEBNET AG,4583,Aetigkofen
+108620,GEBNET AG,4583,Aetigkofen
+108630,GEBNET AG,4583,Aetigkofen
+108640,SBB AG - Geschäftsbereich Energie,3052,Zollikofen
+108650,Genossenschaft Elektra Egnach,9322,Egnach
+108660,Gemeinde Subingen,4553,Subingen
+108670,Elektra Steinebrunn,9315,Neukirch
+108680,Einwohnergemeinde Kriegstetten,4566,Kriegstetten
+108690,Einwohnergemeinde Lommiswil,4514,Lommiswil
+108700,Einwohnergemeinde Zuchwil,4528,Zuchwil
+108710,Elektrizitätsgenossenschaft Schangnau,6197,Schangnau
+108720,Elektra Berneck,9442,Berneck
+108730,Elektrizitätsversorgung der Gemeinde Warth-Weiningen,8532,Warth
+108740,Elektrizitätsversorgung Bargen,3282,Bargen
+108750,Comune di Poschiavo,7742,Poschiavo
+108760,Elektra Wolfwil,4628,Wolfwil
+108770,Elektrizitätsversorgung Berikon EVB,8965,Berikon
+108780,Elektrizitätswerk der politischen Gemeinde Münsterlingen,8596,Münsterlingen
+108790,Elektrakorporation Dangwang,8554,Bonau
+108800,Genossenschaft Elektra Egnach,9322,Egnach
+108810,Elektra Besenbüren,5627,Besenbüren
+108820,Viteos SA,2000,Neuchâtel
+108830,SEDRE SA,1934,Le Châble VS
+108840,VED Visp Energie Dienste AG,3930,Visp
+108850,EVWR Energiedienste Visp-Westlich Raron AG,3930,Visp
+108860,EVR Energieversorgung Raron AG,3930,Visp
+108870,EVN Energieversorgung Nikolai AG,3930,Visp
+108880,VED Visp Energie Dienste AG,3930,Visp
+108890,Services industriels,1869,Massongex
+108900,Elektra-Genossenschaft Siglistorf-Wislikofen-Mellstorf,5462,Siglistorf
+108910,Società Semplice Comuni Concedenti ELIN,6562,Soazza
+108920,Elektrokorporation Wald-St. Peterzell,9105,Schönengrund
+108930,Elektrizitäts-Genossenschaft Schönholzerswilen,8577,Schönholzerswilen
+108940,Gemeindeverwaltung Wuppenau,9514,Wuppenau
+108950,Azienda Elettrica Buseno,6562,Soazza
+108960,Azienda Elettrica Cama,6557,Cama
+108970,Media Mesolcina Energia,6562,Soazza
+108980,Elektra Raperswilen,8558,Raperswilen
+108990,Elektrizitätsgenossenschaft Schwenden,3757,Schwenden im Diemtigtal
+109000,VED Visp Energie Dienste AG,3930,Visp
+109010,Elektrizitäts- und Wasserwerk Niederwil (EWN),5524,Niederwil AG
+109020,EW Hüttlingen,8553,Hüttlingen-Mettendorf
+109030,Service Electrique de Liddes,1945,Liddes
+109040,Elektrizitätsversorgung der Gemeinde Widnau,9443,Widnau
+109050,Elektrizitätsversorgung der Gemeinde Rickenbach,9532,Rickenbach b. Wil
+109060,Elektrizitäts- und Wasserversorgung Au,9434,Au SG
+109070,Gemeinde Albula/Alvra,7450,Tiefencastel
+109080,Elektrizitätswerk der politischen Gemeinde Hüttwilen,8536,Hüttwilen
+109090,Elektrizitätsversorgungsunternehmen (EVU) Täsch,3929,Täsch
+109100,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+109110,EE-ENERGIA ENGIADINA,7550,Scuol
+109120,Gemeinde Zernez,7530,Zernez
+109130,EE-ENERGIA ENGIADINA,7550,Scuol
+109140,Politische Gemeinde Bürglen,8575,Bürglen TG
+109150,Elektra-Genossenschaft Homburg,8508,Homburg
+109160,Energieversorgung,8524,Uesslingen
+109170,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+109180,Elektrizitätswerk Randa AG,3928,Randa
+109190,Elektra-Genossenschaft Waldhäusern,5624,Waldhäusern
+109200,Elektrizitätsversorgung,3910,Saas-Grund
+109210,Elektrizitätswerk Stalden (VS),3922,Stalden VS
+109220,Elektrizitätswerk Wigoltingen,8556,Wigoltingen
+109230,Bas-Valais Energie SA,1110,Morges
+109240,IBB Energie AG,5200,Brugg
+109250,St. Gallisch-Appenzellische Kraftwerke AG,9000,St. Gallen
+109260,Società Elettrica Sopracenerina SA (SES),6600,Locarno
+109270,Politische Gemeinde Berlingen Elektrizitätswerk,8267,Berlingen
+109280,Einwohnergemeinde Lüsslingen-Nennigkofen,4574,Nennigkofen
+109290,Werkbetriebe Matzingen,9548,Matzingen
+109300,Gemeindebetriebe Büetigen,3263,Büetigen
+109310,Elektrogenossenschaft Ulisbach,9631,Ulisbach
+109320,Arosa Energie,7050,Arosa
+109330,Arosa Energie,7050,Arosa
+109340,Elektrizitätswerk der Gemeinde Bussnang,9565,Bussnang
+109350,Elektra-Genossenschaft Bellikon-Hausen,5454,Bellikon
+109360,Politische Gemeinde Eschenz Elektrizitätswerk,8264,Eschenz
+109370,Gemeinde Albula/Alvra,7450,Tiefencastel
+109380,Elektrizitätswerk Safiental,7107,Safien Platz
+109390,Arosa Energie,7050,Arosa
+109400,Elektra Betenwil Baumannshaus,9325,Roggwil TG
+109410,Elektrakorporation Wagerswil,8564,Wagerswil
+109420,Genossenschaft Elektra Roggwil-Freidorf,9325,Roggwil TG
+109430,Elektrizitätswerk der Gemeinde Bussnang,9565,Bussnang
+109440,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+109450,Services industriels de la Commune de St. Maurice,1890,St-Maurice
+109460,Genossenschaft Stromversorgung,3922,Kalpetran
+109470,Elektra Maugwil-Uerental-Boxloo-Weid,9552,Bronschhofen
+109480,Elektrizitätsgenossenschaft Oberwil i.S.,3765,Oberwil im Simmental
+109490,Energieversorgung Talschaft Lötschen,3952,Susten
+109500,Energiedienste Steg Hohtenn,3952,Susten
+109510,Azienda Elettrica Comunale Brusio,7743,Brusio
+109520,Gemeindeverwaltung Eisten,3922,Eisten
+109530,Elektra Niederbuchsiten,4626,Niederbuchsiten
+109540,Politische Gemeinde Herdern,8506,Lanzenneunforn
+109550,Elektra Fulenbach,4629,Fulenbach
+109560,Elektrizitätsversorgung Beinwil am See,5712,Beinwil am See
+109570,Elektro-Genossenschaft Oberrüti,5647,Oberrüti
+109580,Gommerkraftwerke AG,3995,Ernen
+109590,Energieversorgung EVA,2558,Aegerten
+109600,Elektra Haeuslenen,8522,Häuslenen
+109610,Elektrogenossenschaft Bisisthal,6436,Muotathal
+109620,Immobilien Gletsch AG,3988,Ulrichen
+109630,Commune mixte de Plateau de Diesse,2515,Prêles
+109640,Elektragenossenschaft Mellikon,5415,Nussbaumen AG
+109650,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+109660,Verband Schweizerischer Elektrizitätsunternehmen VSE,5000,Aarau
+109670,Media Mesolcina Energia,6562,Soazza
+109680,Azienda Elettrica Comunale Mesocco,6563,Mesocco
+109690,Consorzio azienda elettrica Grevasalvas,7517,Plaun da Lej
+109700,Comune di Bregaglia,7606,Promontogno
+109710,Comune di Bregaglia,7606,Promontogno
+109720,Comune di Bregaglia,7606,Promontogno
+109730,Forces Motrices du Grand-St-Bernard,1937,Orsières
+109740,Forces Motrices de Sembrancher,1933,Sembrancher
+109750,Axpo Power AG,5312,Döttingen
+109760,Swissgrid AG,5000,Aarau
+109770,EOF Energie Oberes Fricktal AG,5073,Gipf-Oberfrick
+109780,Elektrizitätsgenossenschaft Binn,3996,Binn
+109790,Aziende Industriali di Lugano (AIL) SA,6933,Muzzano
+109800,Stromversorgung Simplon-Dorf,3907,Simplon Dorf
+109810,Werke am Zürichsee AG,8700,Küsnacht
+109820,MÜVE Biel - Seeland AG,2503,Biel/Bienne
+109830,Einwohnergemeinde Luterbach,4542,Luterbach
+109840,Einwohnergemeinde Langendorf,4513,Langendorf
+109850,Technische Betriebe Glarus,8750,Glarus
+109860,Technische Betriebe Glarus Nord,8752,Näfels
+109870,Einwohnergemeinde Gerlafingen,4563,Gerlafingen
+109880,Genossenschaft Werk Bichelsee-Balterswil,8362,Balterswil
+109890,EOF Energie Oberes Fricktal AG,5073,Gipf-Oberfrick
+109900,tbgs - Technische Betriebe Glarus Süd,8762,Schwanden
+109910,EKZ Einsiedeln AG,8953,Dietikon
+109920,Elektrizitätsgenossenschaft Moos-Dieselbach,9116,Wolfertswil
+109930,VO Energies Distribution SA,1350,Orbe
+109940,Elektrizitätswerk Safiental,7107,Safien Platz
+109950,Elektra Gretzenbach AG,5014,Gretzenbach
+109960,Repower,7742,Poschiavo
+109970,Energia del Moesano SA,6537,Grono
+109980,Elektra Trungen,9552,Bronschhofen
+109990,Eli10 S.A.,2022,Bevaix
+110000,Elektrizitätsversorgung der Gemeinde Sils,7411,Sils im Domleschg
+110010,Comune di Bregaglia,7606,Promontogno
+110020,Gemeinde Sufers,7434,Sufers
+110030,Dransgrid SA,1937,Orsières
+110040,Elektrizitätswerk der Gemeinde Surses,7453,Tinizong
+110050,SEDRE SA,1934,Le Châble VS
+110060,Albula Netz AG,7477,Filisur
+110070,ADEV Energiegenossenschaft,4410,Liestal
+110080,OIKEN,1951,Sion
+110090,Media Mesolcina Energia,6562,Soazza
+110100,Energia S-Chanf (ESC),7525,S-chanf
+110110,Lonza AG,3930,Visp
