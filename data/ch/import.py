@@ -92,12 +92,20 @@ with open('2022-10-21_EVU_Gemeinde.csv', newline='') as csvfile:
             pc_id = db_row[0]
         
         # now search for municipality
+        # first by Gemeinde-Nr
         sql = "SELECT * FROM municipality WHERE code=?"
         res = cur.execute(sql, [mun_nr])
         db_row = res.fetchone()
         if db_row is None:
-            print("Municipality not found code=%s name=%s" % (mun_nr, mun_name))
-            continue
+            # now by name
+            sql = "SELECT * FROM municipality WHERE name=?"
+            res = cur.execute(sql, [mun_name])
+            db_row = res.fetchone()
+            if db_row is None:
+                print("Municipality not found code=%s name=%s" % (mun_nr, mun_name))
+                continue
+            else:
+                mun_id = db_row[0]
         else:
             mun_id = db_row[0]
         
