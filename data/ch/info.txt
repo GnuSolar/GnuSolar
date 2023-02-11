@@ -1,0 +1,15 @@
+Gemäss Verordnung über geografische Namen (GeoNV) [1] veröffentlicht das Bundesamt für Statistik (BFS)
+das amtliche Gemeindeverzeichnis[2] sowie das amtliche Ortschaftenverzeichnis mit PLZ[3].
+
+Das amtliche Gemeindeverzeichnis kann als xlxs herungergeladen werden unter [6]
+Das amtliche Ortschaftenverzeichnis kann als csv heruntergeladen werden unter [5]  (über [4] -> readme.txt)
+Die zuständigen Verteilnetzbetreiber und strompreise kann unter [8] heruntergeladen werden (über [7])
+
+[1] https://www.fedlex.admin.ch/eli/cc/2008/393/de#a19
+[2] https://www.bfs.admin.ch/bfs/de/home/grundlagen/agvch.assetdetail.23886073.html
+[3] https://www.swisstopo.admin.ch/de/geodata/amtliche-verzeichnisse/ortschaftenverzeichnis.html#132_1670506797985
+[4] https://data.geo.admin.ch/ch.swisstopo-vd.ortschaftenverzeichnis_plz/
+[5] https://data.geo.admin.ch/ch.swisstopo-vd.ortschaftenverzeichnis_plz/PLZO_CSV_LV03.zip
+[6] https://dam-api.bfs.admin.ch/hub/api/dam/assets/23886073/master
+[7] https://www.elcom.admin.ch/elcom/de/home/themen/strompreise/tarif-rohdaten-verteilnetzbetreiber.html
+[8] https://www.elcom.admin.ch/dam/elcom/de/dokumente/2022/ch-gemeinden-und-zustaendige-nb.xlsx.download.xlsx/CH%20Gemeinden%20und%20zust%C3%A4ndige%20NB%20(Stand%2021.10.2022).xlsx
