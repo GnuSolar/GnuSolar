@@ -50,7 +50,7 @@ class SolarProject(QApplication):
 
         self.ui.openProjectFolder.clicked.connect(self.action_OpenProjectFolder)
         self.ui.copyClientAddressFromLocation.clicked.connect(self.action_CopyClientAddressFromLocation)
-        self.ui.coordinatesFromAddress.clicked.connect(self.action_CoordinatesFromAddress)
+        self.ui.updateFromAddress.clicked.connect(self.action_UpdateFromAddress)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
 
         self.ui.pb_finalInvoiceSent.clicked.connect(self.action_finalInvoiceSent)
@@ -110,15 +110,15 @@ class SolarProject(QApplication):
 
     def action_CopyClientAddressFromLocation(self):
         self.updateModel()
-        self.model.owner.address.street       = self.model.plantLocation.street
-        self.model.owner.address.streetNumber = self.model.plantLocation.streetNumber
-        self.model.owner.address.zip          = self.model.plantLocation.zip
-        self.model.owner.address.city         = self.model.plantLocation.city
+        self.model.owner.street       = self.model.plantLocation.street
+        self.model.owner.streetNumber = self.model.plantLocation.streetNumber
+        self.model.owner.zip          = self.model.plantLocation.zip
+        self.model.owner.city         = self.model.plantLocation.city
         self.updateUi()
 
-    def action_CoordinatesFromAddress(self):
+    def action_UpdateFromAddress(self):
         self.updateModel()
-        self.model.plantLocation.coordinatesFromAddress()
+        self.model.updateFromAddress()
         self.updateUi()
 
     def action_finalInvoiceSent(self):

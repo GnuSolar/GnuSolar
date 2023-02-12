@@ -20,6 +20,7 @@ class PvProject:
         self._savePath = None
         self.owner = Contact()
         self.plantLocation = Location()
+        self.municipality = Municipality()
         self.powerCompany = PowerCompany()
         self.progress = Progress()
         self.comment = None
@@ -51,7 +52,20 @@ class PvProject:
         today = date.today()
         self.progress.inquiryReceived = today.isoformat()
         return
-            
+
+    # updates location, municipality and powerCompany from Address
+    
+    def updateFromAddress(self):
+        self.plantLocation.coordinatesFromAddress()
+        self.plantLocation.queryPlotNumber()
+        
+        if self.plantLocation.municipalityCode:
+            self.municipality.fromCode(self.plantLocation.municipalityCode)
+
+        if self.municipality.fkPowerCompany:
+            self.powerCompany.fromId(self.municipality.fkPowerCompany)
+        
+
     def toJson(self):
         jsonpickle.set_preferred_backend('json')
         jsonpickle.set_encoder_options('json', sort_keys=True, indent=4)
@@ -68,6 +82,17 @@ class PvProject:
         
     def fromJson(self, json_str):
         ret = jsonpickle.decode(json_str)
+
+        # Migrate data from older models.
+        
+        # owner.address is no more
+        try:
+            ret.owner.street = ret.owner.address.street
+            ret.owner.streetNumber = ret.owner.address.streetNumber
+            ret.owner.zip = ret.owner.address.zip
+            ret.owner.city = ret.owner.address.city
+        except Exception:
+            pass
 
         # loop over all attributes from self and copy them over from ret
         # makes sure if you open a file with an older model, the attributes 

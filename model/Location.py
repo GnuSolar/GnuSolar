@@ -1,17 +1,17 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-15 -*-
 
-# Location / Address
+# Location is a physical place on earth, with coordinates, power supplier, administration area
+
 import json
 import requests
 
 from model.Municipality import *
+from model.PowerCompany import *
 
 class Location:
     
     def __init__(self):
-        self.addressLine1 = None
-        self.addressLine2 = None
         self.street = None
         self.streetNumber = None
         self.zip = None
@@ -45,8 +45,6 @@ class Location:
         self.swissGridY = str(results[0]["geometry"]["y"])
         self.municipalityCode = str(results[0]["attributes"]["com_fosnr"])
         self.municipalityName = str(results[0]["attributes"]["com_name"])
-
-        self.queryPlotNumber()
         
         return
         
@@ -76,3 +74,4 @@ class Location:
             return
 
         self.plotNumber = results[0]["properties"]["number"]
+

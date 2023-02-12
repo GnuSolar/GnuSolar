@@ -30,7 +30,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabWidgetPage1">
        <attribute name="title">
@@ -288,7 +288,7 @@
           <string>Strasse / Nummer</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_address_zip">
+        <widget class="QLineEdit" name="pvp_owner_zip">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -298,7 +298,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_address_street">
+        <widget class="QLineEdit" name="pvp_owner_street">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -308,7 +308,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_address_streetNumber">
+        <widget class="QLineEdit" name="pvp_owner_streetNumber">
          <property name="geometry">
           <rect>
            <x>440</x>
@@ -331,7 +331,7 @@
           <string>PLZ / Ort</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_address_city">
+        <widget class="QLineEdit" name="pvp_owner_city">
          <property name="geometry">
           <rect>
            <x>240</x>
@@ -483,7 +483,7 @@
          <string>von Anlagestandort</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="coordinatesFromAddress">
+       <widget class="QPushButton" name="updateFromAddress">
         <property name="geometry">
          <rect>
           <x>590</x>
@@ -493,7 +493,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Koordinaten von Adresse</string>
+         <string>Update von Adresse</string>
         </property>
        </widget>
        <widget class="QPushButton" name="createQuote">
@@ -1415,7 +1415,7 @@
           <string>Netzbetreiber</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="evu">
+        <widget class="QLineEdit" name="pvp_powerCompany_name">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -1580,10 +1580,10 @@
   <tabstop>pvp_owner_title</tabstop>
   <tabstop>pvp_owner_lastName</tabstop>
   <tabstop>pvp_owner_firstName</tabstop>
-  <tabstop>pvp_owner_address_street</tabstop>
-  <tabstop>pvp_owner_address_streetNumber</tabstop>
-  <tabstop>pvp_owner_address_zip</tabstop>
-  <tabstop>pvp_owner_address_city</tabstop>
+  <tabstop>pvp_owner_street</tabstop>
+  <tabstop>pvp_owner_streetNumber</tabstop>
+  <tabstop>pvp_owner_zip</tabstop>
+  <tabstop>pvp_owner_city</tabstop>
   <tabstop>pvp_owner_email</tabstop>
   <tabstop>pvp_owner_phone</tabstop>
   <tabstop>pb_finalInvoiceSent_2</tabstop>

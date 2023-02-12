@@ -243,7 +243,7 @@ class Eigentool(QApplication):
         projectName = pathProject
         projectName = projectName.replace(config.projectRoot + os.sep, "")
         
-        ownerName = str(pv.owner.firstName) + " " + str(pv.owner.lastName) + " " + str(pv.owner.address.city)
+        ownerName = str(pv.owner.firstName) + " " + str(pv.owner.lastName) + " " + str(pv.owner.city)
         
         self.ui.tableWidgetProjects.setItem(rowN, 0, QTableWidgetItem(projectName))
         self.ui.tableWidgetProjects.setItem(rowN, 1, QTableWidgetItem(pv.progress.getState()))
