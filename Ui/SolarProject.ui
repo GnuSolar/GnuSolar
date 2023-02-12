@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>855</width>
-    <height>876</height>
+    <width>1096</width>
+    <height>941</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,6 +26,9 @@
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -39,7 +42,7 @@
           <x>10</x>
           <y>10</y>
           <width>541</width>
-          <height>151</height>
+          <height>161</height>
          </rect>
         </property>
         <property name="title">
@@ -152,7 +155,7 @@
           <rect>
            <x>170</x>
            <y>120</y>
-           <width>101</width>
+           <width>121</width>
            <height>25</height>
           </rect>
          </property>
@@ -160,9 +163,9 @@
         <widget class="QLineEdit" name="pvp_plantLocation_swissGridY">
          <property name="geometry">
           <rect>
-           <x>290</x>
+           <x>310</x>
            <y>120</y>
-           <width>91</width>
+           <width>121</width>
            <height>25</height>
           </rect>
          </property>
@@ -170,7 +173,7 @@
         <widget class="QLabel" name="label_20">
          <property name="geometry">
           <rect>
-           <x>280</x>
+           <x>300</x>
            <y>120</y>
            <width>21</width>
            <height>17</height>
@@ -185,7 +188,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>170</y>
+          <y>180</y>
           <width>541</width>
           <height>301</height>
          </rect>
@@ -435,7 +438,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>480</y>
+          <y>490</y>
           <width>761</width>
           <height>291</height>
          </rect>
@@ -471,7 +474,7 @@
         <property name="geometry">
          <rect>
           <x>590</x>
-          <y>260</y>
+          <y>270</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -1238,6 +1241,69 @@
         </widget>
        </widget>
       </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Administration</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>541</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Gemeinde</string>
+        </property>
+        <widget class="QLabel" name="label_16">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Gemeinde / Nummer</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_plantLocation_municipality_name">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>30</y>
+           <width>261</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_plantLocation_municipality_code">
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>30</y>
+           <width>71</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -1247,8 +1313,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>855</width>
-     <height>20</height>
+     <width>1096</width>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

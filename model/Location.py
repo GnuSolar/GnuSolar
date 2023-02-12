@@ -5,6 +5,8 @@
 import json
 import requests
 
+from model.Municipality import *
+
 class Location:
     
     def __init__(self):
@@ -19,6 +21,7 @@ class Location:
         self.plotNumber = None
         self.swissGridX = None
         self.swissGridY = None
+        self.municipality = Municipality()
 
     def coordinatesFromAddress(self):
         url = r"https://api3.geo.admin.ch/rest/services/api/MapServer/find"
