@@ -18,10 +18,11 @@ class Location:
         self.city = None
         self.region = None
         self.country = None
-        self.plotNumber = None
+        self.plotNumber = None      # Parzelle Nummer
         self.swissGridX = None
         self.swissGridY = None
-        self.municipality = Municipality()
+        self.municipalityCode = None  # Gemeinde Nummer, BFS-Nr. same as masterdata.municipality.code
+        self.municipalityName = None  # Gemeinde Name
 
     def coordinatesFromAddress(self):
         url = r"https://api3.geo.admin.ch/rest/services/api/MapServer/find"
@@ -42,6 +43,8 @@ class Location:
         
         self.swissGridX = str(results[0]["geometry"]["x"])
         self.swissGridY = str(results[0]["geometry"]["y"])
+        self.municipalityCode = str(results[0]["attributes"]["com_fosnr"])
+        self.municipalityName = str(results[0]["attributes"]["com_name"])
 
         self.queryPlotNumber()
         

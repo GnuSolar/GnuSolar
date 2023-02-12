@@ -1251,7 +1251,7 @@
           <x>10</x>
           <y>10</y>
           <width>541</width>
-          <height>71</height>
+          <height>221</height>
          </rect>
         </property>
         <property name="title">
@@ -1270,12 +1270,12 @@
           <string>Gemeinde / Nummer</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_municipality_name">
+        <widget class="QLineEdit" name="pvp_plantLocation_municipalityName">
          <property name="geometry">
           <rect>
            <x>170</x>
            <y>30</y>
-           <width>261</width>
+           <width>281</width>
            <height>25</height>
           </rect>
          </property>
@@ -1283,13 +1283,13 @@
           <string/>
          </property>
          <property name="readOnly">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_municipality_code">
+        <widget class="QLineEdit" name="pvp_plantLocation_municipalityCode">
          <property name="geometry">
           <rect>
-           <x>440</x>
+           <x>460</x>
            <y>30</y>
            <width>71</width>
            <height>25</height>
@@ -1299,7 +1299,194 @@
           <string/>
          </property>
          <property name="readOnly">
-          <bool>false</bool>
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_17">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Bauzone</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_18">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Meldeformular</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_19">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>120</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Bauverwaltung</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="evu_4">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>60</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="evu_5">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>90</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="evu_6">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>120</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>250</y>
+          <width>541</width>
+          <height>221</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Netzbetreiber</string>
+        </property>
+        <widget class="QLabel" name="label_24">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Netzbetreiber</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="evu">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>30</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_27">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Anschlussgesuch</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="evu_2">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>90</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_28">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Kontakt</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="evu_3">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>60</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </widget>
