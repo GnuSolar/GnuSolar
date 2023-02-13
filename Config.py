@@ -22,13 +22,23 @@ class Config():
         
         self.nextQuoteNumber = 0
         self.nextInvoiceNumber = 0
+        
+        # Installer info
+        self.installer_company = ""
+        self.installer_firstName = ""
+        self.installer_lastName = ""
+        self.installer_street = ""
+        self.installer_streetNumber = ""
+        self.installer_zip = ""
+        self.installer_city = ""
+        self.installer_phone = ""
+        self.installer_email = ""
 
     def write(self):
         f = open(self.configPath, "w")
         s = json.dumps(self.__dict__, indent=4, sort_keys=True)
         f.write(s)
         f.close()
-        
 
     def load(self):
         from os.path import expanduser
@@ -51,7 +61,6 @@ class Config():
         self._copyOver(self, ret)
         #self.__dict__ = ret.copy()
 
-
     def show(self):
         self.window = QDialog()
         self.ui = Ui_Preferences()
@@ -62,21 +71,39 @@ class Config():
         self.ui.templatePath.setText(self.templatePath)
         self.ui.nextQuoteNumber.setText(str(self.nextQuoteNumber))
         self.ui.nextInvoiceNumber.setText(str(self.nextInvoiceNumber))
-        
-        self.window.show()
 
+        self.ui.installer_company.setText(self.installer_company)
+        self.ui.installer_firstName.setText(self.installer_firstName)
+        self.ui.installer_lastName.setText(self.installer_lastName)
+        self.ui.installer_street.setText(self.installer_street)
+        self.ui.installer_streetNumber.setText(self.installer_streetNumber)
+        self.ui.installer_zip.setText(self.installer_zip)
+        self.ui.installer_city.setText(self.installer_city)
+        self.ui.installer_phone.setText(self.installer_phone)
+        self.ui.installer_email.setText(self.installer_email)
+
+        self.window.show()
         
     def configAccepted(self):
         self.projectRoot = self.ui.projectRoot.text()
         self.templatePath = self.ui.templatePath.text()
         self.nextQuoteNumber = int(self.ui.nextQuoteNumber.text())
         self.nextInvoiceNumber = int(self.ui.nextInvoiceNumber.text())
+
+        self.installer_company = self.ui.installer_company.text()
+        self.installer_firstName = self.ui.installer_firstName.text()
+        self.installer_lastName = self.ui.installer_lastName.text()
+        self.installer_street = self.ui.installer_street.text()
+        self.installer_streetNumber = self.ui.installer_streetNumber.text()
+        self.installer_zip = self.ui.installer_zip.text()
+        self.installer_city = self.ui.installer_city.text()
+        self.installer_phone = self.ui.installer_phone.text()
+        self.installer_email = self.ui.installer_email.text()
         
         del self.ui
         del self.window
 
         self.write()
-
 
     def getNextInvoiceName(self):
         today = date.today()
@@ -98,9 +125,6 @@ class Config():
                 self._copyOver(src.__dict__[key], dest[key])
             else:
                 src.__dict__[key] = dest[key]
-        
-        
-
 
     def looseDateToIso(date_in):
         month_names = {
@@ -180,7 +204,6 @@ class Config():
 
         # unkown date format
         return ""
-
 
     # convert the pdf to plain text
     def pdfToText(file_name):

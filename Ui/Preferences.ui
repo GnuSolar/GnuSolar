@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>441</height>
+    <width>628</width>
+    <height>485</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <x>10</x>
      <y>30</y>
      <width>581</width>
-     <height>289</height>
+     <height>161</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -77,8 +77,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>350</y>
+     <x>60</x>
+     <y>430</y>
      <width>549</width>
      <height>36</height>
     </rect>
@@ -90,7 +90,203 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>200</y>
+     <width>601</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Installer</string>
+   </property>
+   <widget class="QLineEdit" name="installer_company">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>30</y>
+      <width>414</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_5">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>30</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Company</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_6">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>60</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>First/Last-Name</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_firstName">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>60</y>
+      <width>201</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_lastName">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>60</y>
+      <width>201</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_8">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>90</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Street / Nr</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_street">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>90</y>
+      <width>271</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_9">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>120</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Zip / City</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_zip">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>120</y>
+      <width>121</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_city">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>120</y>
+      <width>281</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_11">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>150</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Phone</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_phone">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>150</y>
+      <width>414</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_streetNumber">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>90</y>
+      <width>131</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_12">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>180</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>E-Mail</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_email">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>180</y>
+      <width>414</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
  </widget>
+ <tabstops>
+  <tabstop>projectRoot</tabstop>
+  <tabstop>templatePath</tabstop>
+  <tabstop>nextQuoteNumber</tabstop>
+  <tabstop>nextInvoiceNumber</tabstop>
+  <tabstop>installer_company</tabstop>
+  <tabstop>installer_firstName</tabstop>
+  <tabstop>installer_lastName</tabstop>
+  <tabstop>installer_street</tabstop>
+  <tabstop>installer_streetNumber</tabstop>
+  <tabstop>installer_zip</tabstop>
+  <tabstop>installer_city</tabstop>
+  <tabstop>installer_phone</tabstop>
+  <tabstop>installer_email</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
