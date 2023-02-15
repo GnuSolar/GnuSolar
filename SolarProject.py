@@ -41,17 +41,18 @@ class SolarProject(QApplication):
         self.ui = Ui_PvProject()
         self.ui.setupUi(self.window)
 
-        self.ui.action_New.triggered.connect(self.action_New)
-        self.ui.action_Open.triggered.connect(self.action_Open)
-        self.ui.action_Save.triggered.connect(self.action_Save)
-        self.ui.action_Save_As.triggered.connect(self.action_Save_As)
-        self.ui.action_Quit.triggered.connect(self.action_Quit)
-        self.ui.action_Preferences.triggered.connect(self.action_Preferences)
+        self.ui.action_New.triggered.connect(self.action_new)
+        self.ui.action_Open.triggered.connect(self.action_open)
+        self.ui.action_Save.triggered.connect(self.action_save)
+        self.ui.action_Save_As.triggered.connect(self.action_saveAs)
+        self.ui.action_Quit.triggered.connect(self.action_quit)
+        self.ui.action_Preferences.triggered.connect(self.action_preferences)
 
-        self.ui.openProjectFolder.clicked.connect(self.action_OpenProjectFolder)
-        self.ui.copyClientAddressFromLocation.clicked.connect(self.action_CopyClientAddressFromLocation)
-        self.ui.updateFromAddress.clicked.connect(self.action_UpdateFromAddress)
+        self.ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
+        self.ui.copyClientAddressFromLocation.clicked.connect(self.action_copyClientAddressFromLocation)
+        self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
+        self.ui.createTag.clicked.connect(self.action_createTag)
 
         self.ui.pb_finalInvoiceSent.clicked.connect(self.action_finalInvoiceSent)
         self.ui.pb_orderRejected.clicked.connect(self.action_orderRejected)
@@ -70,7 +71,7 @@ class SolarProject(QApplication):
         for key, value in self.ui.__dict__.items():
             if not key.startswith("pvp_"):
                 continue
-            self.ui.__dict__[key].textChanged.connect(self.action_Changed)
+            self.ui.__dict__[key].textChanged.connect(self.action_changed)
 
         self.unsavedChanges = False
         self.updateWindowTitle()
@@ -78,20 +79,20 @@ class SolarProject(QApplication):
         self.window.show()
 
 
-    def action_New(self):
+    def action_new(self):
         QtWidgets.QMessageBox.information(None, 'Not implemented', 'Not implemented')
 
-    def action_Open(self):
+    def action_open(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(self.window, "QFileDialog.getOpenFileName()", "", "Photovoltaic Project (*.pvp)", options=options)
         
         self.openFile(fileName)
 
-    def action_Save(self):
+    def action_save(self):
         self.saveFile()
 
-    def action_Save_As(self):
+    def action_saveAs(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getSaveFileName(self.window, "QFileDialog.getSaveFileName()", "", "Photovoltaic Project (*.pvp)", options=options)
@@ -99,16 +100,16 @@ class SolarProject(QApplication):
         self.path = fileName
         self.saveFile()
 
-    def action_Quit(self):
+    def action_quit(self):
         exit()
 
-    def action_OpenProjectFolder(self):
+    def action_openProjectFolder(self):
         if self.path == "":
             return
         folder = os.path.dirname(self.path)
         openFolder(folder)
 
-    def action_CopyClientAddressFromLocation(self):
+    def action_copyClientAddressFromLocation(self):
         self.updateModel()
         self.model.owner.street       = self.model.plantLocation.street
         self.model.owner.streetNumber = self.model.plantLocation.streetNumber
@@ -116,7 +117,7 @@ class SolarProject(QApplication):
         self.model.owner.city         = self.model.plantLocation.city
         self.updateUi()
 
-    def action_UpdateFromAddress(self):
+    def action_updateFromAddress(self):
         self.updateModel()
         self.model.updateFromAddress()
         self.updateUi()
@@ -136,13 +137,13 @@ class SolarProject(QApplication):
         self.model.progress.archived = now.isoformat()
         self.updateUi()
 
-    def action_Changed(self):
+    def action_changed(self):
         if self.unsavedChanges:
             return
         self.unsavedChanges = True
         self.updateWindowTitle()
 
-    def action_Preferences(self):
+    def action_preferences(self):
         global config
         
         config.show()
@@ -173,6 +174,12 @@ class SolarProject(QApplication):
         config.write()
 
         openFolder(quotePath)
+
+    # Erzeuge Anschlussgesuch
+    
+    def action_createTag(self):
+        global config
+        print("TODO: createTag")
         
         
     # open a Project with a path

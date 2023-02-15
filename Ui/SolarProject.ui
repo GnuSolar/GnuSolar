@@ -30,7 +30,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabWidgetPage1">
        <attribute name="title">
@@ -1489,6 +1489,19 @@
           <bool>true</bool>
          </property>
         </widget>
+       </widget>
+       <widget class="QPushButton" name="createTag">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>280</y>
+          <width>241</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Anschlussgesuch erstellen</string>
+        </property>
        </widget>
       </widget>
      </widget>
