@@ -188,21 +188,30 @@ def batch_form_fill(template, data, out_file, double_sided=False, splice=-1):
     writer.trailer.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
     writer.write(out_file)
 
-data_dict = {
-   'undefined_2': True,
-   'Netzbetreiberin_VNB': 'Netzbetreiberin_VNB'
-}
 
-single_form_fill("test.pdf", data_dict, "test_filled.pdf")
+if __name__ == "__main__":
+    import sys
+    
+    if len(sys.argv) != 2:
+        print("No file name given")
+        exit()
 
-exit()
+    in_file = sys.argv[1]
+    import os
+    if not os.path.isfile(in_file):
+        print("File doesnt exists : '" + in_file + "'")
+        exit()
 
-template_pdf = pdfrw.PdfReader("test.pdf")
-template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
-
-print(pdf_form_info(template_pdf))
-
-
-template_pdf = fill_form(template_pdf, data_dict)
-
-pdfrw.PdfWriter().write("test_filled.pdf", template_pdf)
+    pdf = pdfrw.PdfReader(in_file)
+    info = pdf_form_info(pdf)
+    
+    # create a sample
+    print("fillpdf_data = {")
+    for ifo in info:
+        if ifo['type'] == 'checkbox':
+            print( "    '" + ifo['name'] + "' : True,")
+            continue
+        print( "    '" + ifo['name'] + "' : '" + ifo['name'] + "',")
+    
+    print("    '' : ''")
+    print("}")

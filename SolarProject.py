@@ -176,7 +176,6 @@ class SolarProject(QApplication):
         openFolder(quotePath)
 
     # Erzeuge Anschlussgesuch
-    
     def action_createTag(self):
         global config
         print("TODO: createTag")

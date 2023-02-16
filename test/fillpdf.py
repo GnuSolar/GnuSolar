@@ -188,12 +188,14 @@ def batch_form_fill(template, data, out_file, double_sided=False, splice=-1):
     writer.trailer.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
     writer.write(out_file)
 
-data_dict = {
-   'undefined_2': True,
-   'Netzbetreiberin_VNB': 'Netzbetreiberin_VNB'
-}
+f = open('../data/ch/tag/WV_TAG_V-2018-de.var')
+s = f.read()
+f.close()
 
-single_form_fill("test.pdf", data_dict, "test_filled.pdf")
+print(s)
+exec(s)
+
+single_form_fill("test.pdf", fillpdf_data, "test_filled.pdf")
 
 exit()
 
