@@ -35,6 +35,8 @@ else:   # Default Linux
 
 class SolarProject(QApplication):
     def __init__(self, *args):
+        global config
+        
         QApplication.__init__(self, *args)
         self.window = QMainWindow()
 
@@ -62,6 +64,7 @@ class SolarProject(QApplication):
         #   First argument: Path to the Pv-Project File
         self.path = ""          # path = "" means new project
         self.model = PvProject()       # the PvProject Model
+        self.model.config = config
         self.unsavedChanges = False
 
         if len(args[0]) >= 2:
@@ -178,8 +181,18 @@ class SolarProject(QApplication):
     # Erzeuge Anschlussgesuch
     def action_createTag(self):
         global config
-        print("TODO: createTag")
         
+        # assemble the path
+        today = date.today()
+        tagName = "%04d-%02d-%02d_tag_fill.pdf" % (today.year, today.month, today.day)
+
+        projectDir = os.path.dirname(self.path)
+        tagDir =  projectDir + os.sep + "evu"
+        tagPath = tagDir + os.sep + tagName
+        if not os.path.isdir(tagDir):
+            os.makedirs(tagDir)
+        
+        self.model.powerCompany.createTag(self.model, tagPath)
         
     # open a Project with a path
     def openFile(self, pvpPath):

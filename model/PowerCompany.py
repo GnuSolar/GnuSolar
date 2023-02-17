@@ -5,8 +5,13 @@
 
 import json
 import sqlite3
+import os
+
+import fillpdf
 
 from model.Contact import *
+
+from Config import Config
 
 class PowerCompany:
     
@@ -24,6 +29,8 @@ class PowerCompany:
         
         self.mainContact = Contact()        # Address of the Headquarters
         
+    def reloadFromDb(self):
+        self.fromId(self.id)
 
     def fromId(self, id):
         self.id = id
@@ -45,3 +52,38 @@ class PowerCompany:
             self.fkContactTag = db_row[7]
             self.fkFormTag = db_row[8]
             self.fkFormIa = db_row[9]
+
+    def createTag(self, model, tagPath):
+
+        # get the FormTag
+        if not self.fkFormTag:
+            return "No fkFormTag powerCompany.id=" + str(self.id)
+            
+        con = sqlite3.connect("data/masterdata.db")
+        cur = con.cursor()
+        sql = "SELECT * FROM form WHERE id=?"
+        res = cur.execute(sql, [self.fkFormTag])
+        db_row = res.fetchone()
+
+        if not db_row:
+            return "Form not found id=" + str(self.fkFormTag)
+        
+        form_type = db_row[1]
+        form_handler = db_row[2]
+        form_file = "data" + os.sep + db_row[3]
+        if not os.path.exists(form_file):
+            return "File not found: '" + form_file + "'"
+        
+        var_file = os.path.splitext(form_file)[0]+'.var'
+        if not os.path.exists(var_file):
+            return "File not found: '" + var_file + "'"
+
+        f = open(var_file)
+        s = f.read()
+        f.close()
+
+        exec(s)
+        
+        fillpdf.single_form_fill(form_file, self.fillpdf_data, tagPath)
+        
+        del self.fillpdf_data

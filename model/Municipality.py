@@ -20,6 +20,9 @@ class Municipality:
         self.fkPowerCompany = None
         self.fkFormBuilding = None
 
+    def reloadFromDb(self):
+        self.fromCode(self.code)
+        
     def fromCode(self, code):
         self.code = code
 

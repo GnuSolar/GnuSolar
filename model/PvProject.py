@@ -72,10 +72,13 @@ class PvProject:
         
         _savePath = self._savePath      # don't serialize this attribute
         del self._savePath
+        config = self.config      # don't serialize this attribute
+        del self.config
         
         ret = jsonpickle.encode(self)
         
         self._savePath = _savePath
+        self.config = config
         
         return ret
 
@@ -98,7 +101,11 @@ class PvProject:
         # makes sure if you open a file with an older model, the attributes 
         # default to default :)
         self._copyOver(self, ret)
-
+        
+        # Reload objects from masterdata.db
+        # no idea if thats a good idea
+        self.powerCompany.reloadFromDb()
+        self.municipality.reloadFromDb()
         
     def _copyOver(self, src, dest):
         for key, value in src.__dict__.items():
