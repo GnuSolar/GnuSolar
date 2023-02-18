@@ -89,7 +89,6 @@ class PvProject:
         # Migrate data from older models.
 
         # plantLocation was renamed to building
-        print(ret.plantLocation)
         try:
             ret.building = ret.plantLocation
         except Exception:
