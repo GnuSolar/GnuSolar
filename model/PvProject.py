@@ -9,7 +9,7 @@ import os
 import datetime
 
 from model.Contact import *
-from model.Location import *
+from model.Building import *
 from model.Contact import *
 from model.Progress import *
 from model.PowerCompany import *
@@ -19,7 +19,7 @@ class PvProject:
     def __init__(self, path=""):
         self._savePath = None
         self.owner = Contact()
-        self.plantLocation = Location()
+        self.building = Building()
         self.municipality = Municipality()
         self.powerCompany = PowerCompany()
         self.progress = Progress()
@@ -39,14 +39,14 @@ class PvProject:
             self.open(path)
 
     def initFromAddress(self, street, streetNumber, zipCode, city):
-        if not self.plantLocation.street:
-            self.plantLocation.street = street
-        if not self.plantLocation.streetNumber:
-            self.plantLocation.streetNumber = streetNumber
-        if not self.plantLocation.zip:
-            self.plantLocation.zip = zipCode
-        if not self.plantLocation.city:
-            self.plantLocation.city = city
+        if not self.building.street:
+            self.building.street = street
+        if not self.building.streetNumber:
+            self.building.streetNumber = streetNumber
+        if not self.building.zip:
+            self.building.zip = zipCode
+        if not self.building.city:
+            self.building.city = city
         
         # Anfrage erhalten gleich jetzt
         today = date.today()
@@ -56,11 +56,11 @@ class PvProject:
     # updates location, municipality and powerCompany from Address
     
     def updateFromAddress(self):
-        self.plantLocation.coordinatesFromAddress()
-        self.plantLocation.queryPlotNumber()
+        self.building.coordinatesFromAddress()
+        self.building.queryPlotNumber()
         
-        if self.plantLocation.municipalityCode:
-            self.municipality.fromCode(self.plantLocation.municipalityCode)
+        if self.building.municipalityCode:
+            self.municipality.fromCode(self.building.municipalityCode)
 
         if self.municipality.fkPowerCompany:
             self.powerCompany.fromId(self.municipality.fkPowerCompany)
@@ -87,6 +87,13 @@ class PvProject:
         ret = jsonpickle.decode(json_str)
 
         # Migrate data from older models.
+
+        # plantLocation was renamed to building
+        print(ret.plantLocation)
+        try:
+            ret.building = ret.plantLocation
+        except Exception:
+            pass
         
         # owner.address is no more
         try:
@@ -101,7 +108,7 @@ class PvProject:
         # makes sure if you open a file with an older model, the attributes 
         # default to default :)
         self._copyOver(self, ret)
-        
+
         # Reload objects from masterdata.db
         # no idea if thats a good idea
         self.powerCompany.reloadFromDb()

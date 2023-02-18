@@ -14,12 +14,12 @@ self.fillpdf_data = {
     'Ort' : model.owner.city,
     'Tel' : model.owner.phone,
     'EMail' : model.owner.email,
-    'Strasse2' : model.plantLocation.street,            # Standort
-    'Nr2' : model.plantLocation.streetNumber,
-    'PLZ_2' : model.plantLocation.zip,
-    'Ort_2' : model.plantLocation.city,
+    'Strasse2' : model.building.street,            # Standort
+    'Nr2' : model.building.streetNumber,
+    'PLZ_2' : model.building.zip,
+    'Ort_2' : model.building.city,
     'Gemeinde' : model.municipality.name,
-    'Parzellen Nr' : model.plantLocation.plotNumber,
+    'Parzellen Nr' : model.building.plotNumber,
     'Gebäudeart allg' : '',         # Gebäudeart
 #    'undefined_4' : True,           # neu
     'undefined_5' : True,           # bestehend

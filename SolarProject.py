@@ -51,7 +51,7 @@ class SolarProject(QApplication):
         self.ui.action_Preferences.triggered.connect(self.action_preferences)
 
         self.ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
-        self.ui.copyClientAddressFromLocation.clicked.connect(self.action_copyClientAddressFromLocation)
+        self.ui.copyClientAddressFromBuilding.clicked.connect(self.action_copyClientAddressFromBuilding)
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createTag.clicked.connect(self.action_createTag)
@@ -112,12 +112,12 @@ class SolarProject(QApplication):
         folder = os.path.dirname(self.path)
         openFolder(folder)
 
-    def action_copyClientAddressFromLocation(self):
+    def action_copyClientAddressFromBuilding(self):
         self.updateModel()
-        self.model.owner.street       = self.model.plantLocation.street
-        self.model.owner.streetNumber = self.model.plantLocation.streetNumber
-        self.model.owner.zip          = self.model.plantLocation.zip
-        self.model.owner.city         = self.model.plantLocation.city
+        self.model.owner.street       = self.model.building.street
+        self.model.owner.streetNumber = self.model.building.streetNumber
+        self.model.owner.zip          = self.model.building.zip
+        self.model.owner.city         = self.model.building.city
         self.updateUi()
 
     def action_updateFromAddress(self):

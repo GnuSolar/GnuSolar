@@ -48,7 +48,7 @@
         <property name="title">
          <string>Anlagestandort</string>
         </property>
-        <widget class="QLineEdit" name="pvp_plantLocation_street">
+        <widget class="QLineEdit" name="pvp_building_street">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -58,7 +58,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_streetNumber">
+        <widget class="QLineEdit" name="pvp_building_streetNumber">
          <property name="geometry">
           <rect>
            <x>440</x>
@@ -81,7 +81,7 @@
           <string>Strasse / Nummer</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_zip">
+        <widget class="QLineEdit" name="pvp_building_zip">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -91,7 +91,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_city">
+        <widget class="QLineEdit" name="pvp_building_city">
          <property name="geometry">
           <rect>
            <x>240</x>
@@ -127,7 +127,7 @@
           <string>Parzelle</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_plotNumber">
+        <widget class="QLineEdit" name="pvp_building_plotNumber">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -150,7 +150,7 @@
           <string>Koordinaten LV03</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_swissGridX">
+        <widget class="QLineEdit" name="pvp_building_swissGridX">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -160,7 +160,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_swissGridY">
+        <widget class="QLineEdit" name="pvp_building_swissGridY">
          <property name="geometry">
           <rect>
            <x>310</x>
@@ -470,7 +470,7 @@
          <string>Projektordner öffnen</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="copyClientAddressFromLocation">
+       <widget class="QPushButton" name="copyClientAddressFromBuilding">
         <property name="geometry">
          <rect>
           <x>590</x>
@@ -1270,7 +1270,7 @@
           <string>Gemeinde / Nummer</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_municipalityName">
+        <widget class="QLineEdit" name="pvp_building_municipalityName">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -1286,7 +1286,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_plantLocation_municipalityCode">
+        <widget class="QLineEdit" name="pvp_building_municipalityCode">
          <property name="geometry">
           <rect>
            <x>460</x>
@@ -1583,13 +1583,13 @@
   </action>
  </widget>
  <tabstops>
-  <tabstop>pvp_plantLocation_street</tabstop>
-  <tabstop>pvp_plantLocation_streetNumber</tabstop>
-  <tabstop>pvp_plantLocation_zip</tabstop>
-  <tabstop>pvp_plantLocation_city</tabstop>
-  <tabstop>pvp_plantLocation_plotNumber</tabstop>
-  <tabstop>pvp_plantLocation_swissGridX</tabstop>
-  <tabstop>pvp_plantLocation_swissGridY</tabstop>
+  <tabstop>pvp_building_street</tabstop>
+  <tabstop>pvp_building_streetNumber</tabstop>
+  <tabstop>pvp_building_zip</tabstop>
+  <tabstop>pvp_building_city</tabstop>
+  <tabstop>pvp_building_plotNumber</tabstop>
+  <tabstop>pvp_building_swissGridX</tabstop>
+  <tabstop>pvp_building_swissGridY</tabstop>
   <tabstop>pvp_owner_title</tabstop>
   <tabstop>pvp_owner_lastName</tabstop>
   <tabstop>pvp_owner_firstName</tabstop>
