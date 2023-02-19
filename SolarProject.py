@@ -192,7 +192,15 @@ class SolarProject(QApplication):
         if not os.path.isdir(tagDir):
             os.makedirs(tagDir)
         
-        self.model.powerCompany.createTag(self.model, tagPath)
+        ret = self.model.powerCompany.createTag(self.model, tagPath)
+        if isinstance(ret, str):
+            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
+            return
+            
+        openFolder(tagPath)
+        now = date.today()
+        self.model.progress.tagSent = now.isoformat()
+        self.updateUi()
         
     # open a Project with a path
     def openFile(self, pvpPath):
