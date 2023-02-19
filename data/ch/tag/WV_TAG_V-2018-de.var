@@ -42,7 +42,7 @@ self.fillpdf_data = {
     'Tel_2' : model.config.installer_phone,
     'EMail_2' : model.config.installer_email,
     'Sachbearbeiterin' : model.config.installer_firstName + " " + model.config.installer_lastName,
-    'Voraussichtliche Inbetriebnahme' : 'ToDo',
+    'Voraussichtliche Inbetriebnahme' : self.turnOnIso,
 #    'Elektrische Wärme  WP' : True,
     'EEA' : True,
     'Anlagen mit Netzrückwirkungen' : True,
@@ -88,47 +88,47 @@ self.fillpdf_data = {
 #    'Gesamtleistung kW' : 'Gesamtleistung kW',
 
 # EEA (Energieerzeugunsanlage
-    'undefined_13' : True,
-    'undefined_14' : True,
-    'EEA Geraeteart' : 'EEA Geraeteart',
-    'EEA Geraetehersteller' : 'EEA Geraetehersteller',
+    'undefined_13' : True,          # Neuanlage
+#    'undefined_14' : True,          # Erweiterung
+    'EEA Geraeteart' : 'Wechselrichter',
+    'EEA Geraetehersteller' : 'TODO',
     'Netzverbund' : True,
-    'Inselbetrieb' : True,
-    'Notstromanlage' : True,
-    'EEA Geraetetyp' : 'EEA Geraetetyp',
-    'Nein_2' : True,
-    'Ja_3' : True,
-    'einzel' : True,
-    'mehrere' : True,
-    'Nein_3' : True,
-    'Ja_4' : True,
-    'ZEV Zaehler' : 'ZEV Zaehler',
-    'undefined_15' : True,
-    'undefined_16' : True,
-    'undefined_17' : True,
-    'undefined_18' : True,
-    'undefined_19' : True,
-    'undefined_20' : True,
-    'EEA Anbieter' : 'EEA Anbieter',
+#    'Inselbetrieb' : True,
+#    'Notstromanlage' : True,
+    'EEA Geraetetyp' : 'TODO',
+#    'Nein_2' : True,        # Eigenverbrauch Nein
+    'Ja_3' : True,          # Eigenverbrauch Ja
+    'einzel' : True,        # einzel
+#    'mehrere' : True,       # mehrere
+    'Nein_3' : True,        # ZEV Nein
+#    'Ja_4' : True,          # ZEV Ja
+    'ZEV Zaehler' : '',      # Vorsicherung ZEV
+    'undefined_15' : True,      # Notstrom Nein
+#    'undefined_16' : True,      # Notstrom Ja
+    'undefined_17' : True,      # Umschaltung Nein
+#    'undefined_18' : True,      # Umschaltung Ja
+    'undefined_19' : True,      # Systemdienstleistung Nein
+#    'undefined_20' : True,      # Systemdienstleistung Ja
+    'EEA Anbieter' : '',
     '3x400V_2' : True,
-    'EEA Anzahl Gerate' : 'EEA Anzahl Gerate',
-    'EEA Nennleistung Geraet' : 'EEA Nennleistung Geraet',
-    'undefined_21' : True,
-    'EEA Nennleistung total' : 'EEA Nennleistung total',
-    'undefined_22' : True,
-    'Andere_2' : 'Andere_2',
-    'EEA max Leistungsabgabe' : 'EEA max Leistungsabgabe',
-    'Nein_4' : True,
-    'Ja_5' : True,
-    'cos im Betrieb' : 'cos im Betrieb',
-    'EEA Leistung kWp' : 'EEA Leistung kWp',
+    'EEA Anzahl Gerate' : '1',
+    'EEA Nennleistung Geraet' : '',
+#    'undefined_21' : True,      # 1x230V
+    'EEA Nennleistung total' : '',
+    'undefined_22' : True,       # Andere
+    'Andere_2' : '',
+    'EEA max Leistungsabgabe' : '',
+    'Nein_4' : True,        # Einspeisebegrenzung Nein
+#    'Ja_5' : True,          # Einspeisebegrenzung Ja
+    'cos im Betrieb' : '1.0',
+    'EEA Leistung kWp' : '',
     'Sonne PV' : True,
-    'Wasser' : True,
-    'Wind' : True,
-    'WWK AnlageBHKW' : True,
-    'Biogas' : True,
-    'Andere_3' : True,
-    'EEA Andere' : 'EEA Andere',
+#    'Wasser' : True,
+#    'Wind' : True,
+#    'WWK AnlageBHKW' : True,
+#    'Biogas' : True,
+#    'Andere_3' : True,
+#    'EEA Andere' : 'EEA Andere',
     
 # Header Seite 2
 #    'MeldungsNr_VNB_1_Kopie' : 'MeldungsNr_VNB_1_Kopie',
@@ -246,7 +246,7 @@ self.fillpdf_data = {
 #    'PLZ_2_Kopie' : 'PLZ_2_Kopie',
 #    'Ort_2_Kopie' : 'Ort_2_Kopie',
     'Bemerkungen des einreichenden Unternehmens' : '',
-    'Datum' : '',
+    'Datum' : self.todayIso,
     'Unterschrift' : model.config.installer_firstName + " " + model.config.installer_lastName,
 #    'Anlage bewilligt' : True,
 #    'Anlage bewilligt mit Massnahmen' : True,

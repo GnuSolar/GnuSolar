@@ -8,7 +8,9 @@ import sqlite3
 import os
 
 import fillpdf
+import datetime
 
+from datetime import date
 from model.Contact import *
 
 from Config import Config
@@ -54,7 +56,6 @@ class PowerCompany:
             self.fkFormIa = db_row[9]
 
     def createTag(self, model, tagPath):
-
         # get the FormTag
         if not self.fkFormTag:
             return "No fkFormTag powerCompany.id=" + str(self.id)
@@ -78,6 +79,11 @@ class PowerCompany:
         if not os.path.exists(var_file):
             return "File not found: '" + var_file + "'"
 
+        today = date.today()
+        self.todayIso = today.isoformat()
+        three_months = datetime.timedelta(3*365/12)
+        self.turnOnIso = (today + three_months).isoformat()
+
         f = open(var_file)
         s = f.read()
         f.close()
@@ -85,5 +91,8 @@ class PowerCompany:
         exec(s)
         
         fillpdf.single_form_fill(form_file, self.fillpdf_data, tagPath)
-        
+
+        # remove temporary attributes, so they dont get serialized
+        del self.turnOnIso
+        del self.todayIso
         del self.fillpdf_data

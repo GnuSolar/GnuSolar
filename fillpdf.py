@@ -133,6 +133,11 @@ def pdf_form_info(in_pdf):
 
 
 def fill_form(in_pdf, data, suffix=None):
+    # remove all values which are None
+    for k,v  in list(data.items()):
+       if v is None:
+          data.pop(k)
+
     fillers = {'checkbox': _checkbox,
                'list': _listbox,
                'text': _text_form,
