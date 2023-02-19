@@ -20,13 +20,13 @@ self.fillpdf_data = {
     'Ort_2' : model.building.city,
     'Gemeinde' : model.municipality.name,
     'Parzellen Nr' : model.building.plotNumber,
-    'Gebäudeart allg' : '',         # Gebäudeart
+    'Gebäudeart allg' : 'EFH',         # Gebäudeart
 #    'undefined_4' : True,           # neu
     'undefined_5' : True,           # bestehend
 #    'undefined_6' : True,           # anders
     'Gebäudeart neu bestehend' : '',
-    'ZählerNr' : 'ToDo',            # Zähler
-    'Netzanschluss' : 'ToDo',
+    'ZählerNr' : model.building.meterNumberOld,            # Zähler
+    'Netzanschluss' : model.building.mainFuseSize,
 #    'undefined_7' : True,           # neu
     'undefined_8' : True,           # bestehend
     'neu bestehend' : '',

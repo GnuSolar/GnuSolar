@@ -29,6 +29,10 @@ class Building:
         self.swissGridY = None
         self.municipalityCode = None  # Gemeinde Nummer, BFS-Nr. same as masterdata.municipality.code
         self.municipalityName = None  # Gemeinde Name
+        
+        self.meterNumberOld = None
+        self.meterNumberNew = None
+        self.mainFuseSize = None
 
     def coordinatesFromAddress(self):
         url = r"https://api3.geo.admin.ch/rest/services/api/MapServer/find"
