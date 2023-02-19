@@ -6,6 +6,7 @@
 import sqlite3
 
 from model.PowerCompany import *
+from selenium import webdriver
 
 class Municipality:
     
@@ -42,3 +43,55 @@ class Municipality:
             self.fkContactBuilding = db_row[6]
             self.fkPowerCompany = db_row[7]
             self.fkFormBuilding = db_row[8]
+
+    def createBuildingForm(self, model):
+        # get the FormTag
+        if not self.fkFormBuilding:
+            return "No fkFormBuilding municipality.id=" + str(self.id)
+            
+        con = sqlite3.connect("data/masterdata.db")
+        cur = con.cursor()
+        sql = "SELECT * FROM form WHERE id=?"
+        res = cur.execute(sql, [self.fkFormBuilding])
+        db_row = res.fetchone()
+
+        if not db_row:
+            return "Form not found id=" + str(self.fkFormTag)
+        
+        form_type = db_row[1]
+        form_handler = db_row[2]
+        var_file = "data" + os.sep + db_row[3]
+        if not os.path.exists(var_file):
+            return "File not found: '" + var_file + "'"
+        
+        today = date.today()
+        self.todayIso = today.isoformat()
+        three_months = datetime.timedelta(3*365/12)
+        self.turnOnIso = (today + three_months).isoformat()
+
+        f = open(var_file)
+        s = f.read()
+        f.close()
+
+        exec(s)
+
+        browser = webdriver.Firefox()
+        browser.get(self.fillform_url)
+        for k,v in self.fillform_data.items():
+            try:
+                element = browser.find_element("name", k)
+            except Exception:
+                print("Form element not found:" + k)
+                continue
+
+            if isinstance(v, str):
+                element.send_keys(v)
+
+            if isinstance(v, bool):
+                element.click()
+
+        # remove temporary attributes, so they dont get serialized
+        del self.todayIso
+        del self.fillform_url
+        del self.fillform_data
+        

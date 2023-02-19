@@ -1585,6 +1585,19 @@
          <string>Anschlussgesuch erstellen</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="createBuildingForm">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>40</y>
+          <width>241</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Solarmeldung erstellen</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>

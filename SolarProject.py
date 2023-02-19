@@ -55,6 +55,7 @@ class SolarProject(QApplication):
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createTag.clicked.connect(self.action_createTag)
+        self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
 
         self.ui.pb_finalInvoiceSent.clicked.connect(self.action_finalInvoiceSent)
         self.ui.pb_orderRejected.clicked.connect(self.action_orderRejected)
@@ -201,6 +202,14 @@ class SolarProject(QApplication):
         now = date.today()
         self.model.progress.tagSent = now.isoformat()
         self.updateUi()
+
+    # Erzeuge Solarmeldung
+    def action_createBuildingForm(self):
+        ret = self.model.municipality.createBuildingForm(self.model)
+        if isinstance(ret, str):
+            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
+            return
+
         
     # open a Project with a path
     def openFile(self, pvpPath):

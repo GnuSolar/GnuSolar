@@ -96,5 +96,3 @@ class PowerCompany:
         del self.turnOnIso
         del self.todayIso
         del self.fillpdf_data
-        
-        return True
