@@ -87,7 +87,7 @@ class Municipality:
             if isinstance(v, str):
                 element.send_keys(v)
 
-            if isinstance(v, bool):
+            if isinstance(v, bool) and v:
                 element.click()
 
         # remove temporary attributes, so they dont get serialized

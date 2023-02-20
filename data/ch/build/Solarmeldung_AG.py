@@ -10,15 +10,47 @@ self.fillform_data = {
     'Ort_B_19' : model.owner.city,
     'Telefon_B_20' : model.owner.phone,
     'E-Mail_B_21' : model.owner.email,
+
     # Eigentümer Liegenschaft
     'Standortidentisch_L_27' : True,
+    "Firma_L_28" : "",
+    "Name_L_29" : "",
+    "Vorname_L_30" : "",
+    "Strasse_L_31" : "",
+    "Nummer_L_32" : "",
+    "PLZ_L_33" : "",
+    "Ort_L_34" : "",
+    "Telefon_L_35" : "",
+    "E-Mail_L_36" : "",
     
     # Standort der Anlage
     'Standortidentisch_A_40' : True,
-    
+    "Strasse_A_41" : "",
+    "Nr_A_42" : "",
+    "PLZ_A_43" : "",
+    "Ort_A_44" : "",
     'Parzellennummer_45' : model.building.plotNumber,
     'Koords1_52' : model.building.swissGridX,
     'Koords2_55' : model.building.swissGridY,
-    
+    'Bauzone_J_N_57' : True,    # TODO: Radiobutton
+
+    "Solarthermieanlage_63" : False,
+    "Auswahl_Kollektor_64" : False,
+    "Gesamtflaeche_SW_67" : "",
+    "Heizung_69" : "",
+    "Warmwasser_70" : "",
+    "Photovoltanikanlage_72" : True,
+    "Gesamtflaeche_PV_73" : "",
+    "Gesamtleistung_PV_75" : "",
+    "Aufdachanlage_83" : True,
+    "Indachanlage_84" : False,
+    "Fassadenanlage_85" : False,
+    "Anlagekosten_90" : "",
+    "Nebenkosten_92" : "0",
+    "Auswahl_F1_99" : True,       # Radiobutton Denkmalschutz
+    "Optionsfeldliste_147" : True,      # Radiobutton Angaben vollständig
+    "Wohnort_150" : model.config.installer_city,
+    "DateField12_151" : self.todayIso,
+    "Unterschrift_152" : model.config.installer_firstName + " " + model.config.installer_lastName,
     '' : ''
 }
