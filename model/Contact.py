@@ -7,6 +7,7 @@ class Contact:
 
     def __init__(self):
         # class members
+        self.company = None
         self.title = None
         self.firstName = None
         self.lastName = None
