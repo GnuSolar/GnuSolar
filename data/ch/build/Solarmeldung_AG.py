@@ -1,7 +1,7 @@
 self.fillform_url = "https://www.ag.ch/app/aem/forms/getForm?formId=81d9b9ac-c457-46c2-9ff7-11fe25d19633&mode=prod"
 self.fillform_data = {
     # Bauherrschaft
-    'Firma_B_13' : '',
+    'Firma_B_13' : model.owner.company,
     'Name_B_14' : model.owner.lastName,
     'Vorname_B_15' : model.owner.firstName,
     'Strasse_B_16' : model.owner.street,
@@ -51,6 +51,5 @@ self.fillform_data = {
     "Optionsfeldliste_147" : True,      # Radiobutton Angaben vollständig
     "Wohnort_150" : model.config.installer_city,
     "DateField12_151" : self.todayIso,
-    "Unterschrift_152" : model.config.installer_firstName + " " + model.config.installer_lastName,
-    '' : ''
+    "Unterschrift_152" : model.config.installer_firstName + " " + model.config.installer_lastName
 }
