@@ -13,6 +13,7 @@ from model.Building import *
 from model.Contact import *
 from model.Progress import *
 from model.PowerCompany import *
+from model.Plant import *
 
 class PvProject:
     
@@ -23,6 +24,7 @@ class PvProject:
         self.municipality = Municipality()
         self.powerCompany = PowerCompany()
         self.progress = Progress()
+        self.plant = Plant()
         self.comment = None
         
         # project state:

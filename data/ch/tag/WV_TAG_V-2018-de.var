@@ -112,16 +112,16 @@ self.fillpdf_data = {
     'EEA Anbieter' : '',
     '3x400V_2' : True,
     'EEA Anzahl Gerate' : '1',
-    'EEA Nennleistung Geraet' : '',
+    'EEA Nennleistung Geraet' : model.plant.totalPowerAc,
 #    'undefined_21' : True,      # 1x230V
-    'EEA Nennleistung total' : '',
+    'EEA Nennleistung total' : model.plant.totalPowerAc,
     'undefined_22' : True,       # Andere
     'Andere_2' : '',
-    'EEA max Leistungsabgabe' : '',
+    'EEA max Leistungsabgabe' : model.plant.totalPowerAc,
     'Nein_4' : True,        # Einspeisebegrenzung Nein
 #    'Ja_5' : True,          # Einspeisebegrenzung Ja
     'cos im Betrieb' : '1.0',
-    'EEA Leistung kWp' : '',
+    'EEA Leistung kWp' : model.plant.totalPowerDc,
     'Sonne PV' : True,
 #    'Wasser' : True,
 #    'Wind' : True,
