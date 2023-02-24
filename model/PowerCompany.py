@@ -37,7 +37,7 @@ class PowerCompany:
     def fromId(self, id):
         self.id = id
 
-        con = sqlite3.connect("data/masterdata.db")
+        con = sqlite3.connect(Config.getMasterDbPath())
         cur = con.cursor()
         sql = "SELECT * FROM power_company WHERE id=?"
         res = cur.execute(sql, [id])
@@ -60,7 +60,7 @@ class PowerCompany:
         if not self.fkFormTag:
             return "No fkFormTag powerCompany.id=" + str(self.id)
             
-        con = sqlite3.connect("data/masterdata.db")
+        con = sqlite3.connect(Config.getMasterDbPath())
         cur = con.cursor()
         sql = "SELECT * FROM form WHERE id=?"
         res = cur.execute(sql, [self.fkFormTag])
@@ -71,7 +71,7 @@ class PowerCompany:
         
         form_type = db_row[1]
         form_handler = db_row[2]
-        form_file = "data" + os.sep + db_row[3]
+        form_file = Config.getDataPath() + os.sep + db_row[3]
         if not os.path.exists(form_file):
             return "File not found: '" + form_file + "'"
         

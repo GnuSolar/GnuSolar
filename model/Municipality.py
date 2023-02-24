@@ -8,6 +8,8 @@ import sqlite3
 from model.PowerCompany import *
 from selenium import webdriver
 
+from Config import Config
+
 class Municipality:
     
     def __init__(self):
@@ -27,7 +29,7 @@ class Municipality:
     def fromCode(self, code):
         self.code = code
 
-        con = sqlite3.connect("data/masterdata.db")
+        con = sqlite3.connect(Config.getMasterDbPath())
         cur = con.cursor()
         sql = "SELECT * FROM municipality WHERE code=?"
         res = cur.execute(sql, [code])
@@ -49,7 +51,7 @@ class Municipality:
         if not self.fkFormBuilding:
             return "No fkFormBuilding municipality.id=" + str(self.id)
             
-        con = sqlite3.connect("data/masterdata.db")
+        con = sqlite3.connect(Config.getMasterDbPath())
         cur = con.cursor()
         sql = "SELECT * FROM form WHERE id=?"
         res = cur.execute(sql, [self.fkFormBuilding])
@@ -60,7 +62,7 @@ class Municipality:
         
         form_type = db_row[1]
         form_handler = db_row[2]
-        var_file = "data" + os.sep + db_row[3]
+        var_file = Config.getDataPath() + os.sep + db_row[3]
         if not os.path.exists(var_file):
             return "File not found: '" + var_file + "'"
         

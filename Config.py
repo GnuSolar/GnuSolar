@@ -5,6 +5,7 @@ import os
 import subprocess
 import json 
 import re
+import pathlib
 
 from datetime import date
 
@@ -238,3 +239,12 @@ class Config():
         # convert the pdf to plain text
         cmd = "\"" + pdftotext + "\" \"" + file_name + "\" - -layout -nopgbrk"
         return subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT).decode(charset)
+
+    def getDataPath():
+        path = str(pathlib.Path(__file__).parent.absolute()) + os.sep + "data"
+        return path
+
+    def getMasterDbPath():
+        path = Config.getDataPath() + os.sep + "masterdata.db"
+        return path
+    
