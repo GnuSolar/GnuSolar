@@ -84,4 +84,3 @@ class Building:
             return
 
         self.plotNumber = results[0]["properties"]["number"]
-

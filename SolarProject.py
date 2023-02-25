@@ -82,7 +82,6 @@ class SolarProject(QApplication):
         
         self.window.show()
 
-
     def action_new(self):
         QtWidgets.QMessageBox.information(None, 'Not implemented', 'Not implemented')
 
@@ -123,8 +122,11 @@ class SolarProject(QApplication):
 
     def action_updateFromAddress(self):
         self.updateModel()
-        self.model.updateFromAddress()
+        ret = self.model.updateFromAddress()
         self.updateUi()
+        if isinstance(ret, str):
+            QtWidgets.QMessageBox.warning(None, 'UpdatefromAddress Error', 'Meldung = ' + ret)
+        
 
     def action_finalInvoiceSent(self):
         now = date.today()
@@ -210,7 +212,6 @@ class SolarProject(QApplication):
             QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
             return
 
-        
     # open a Project with a path
     def openFile(self, pvpPath):
         if not pvpPath:
@@ -246,7 +247,6 @@ class SolarProject(QApplication):
             title = "*" + title
         self.window.setWindowTitle(title)
 
-
     # Updates the User Interface from the Model
     # Iterates through all widgets and searches for pvp_* named Widgets
     def updateUi(self):
@@ -267,8 +267,6 @@ class SolarProject(QApplication):
             if isinstance(self.ui.__dict__[key], QPlainTextEdit):
                 self.ui.__dict__[key].setPlainText(el)
 
-
-        
     # Updates the Data Model from the User Interface
     # Iterates through all widgets and searches for pvp_* named Widgets
     def updateModel(self):
@@ -288,7 +286,6 @@ class SolarProject(QApplication):
                 el.__dict__[last] = self.ui.__dict__[key].text()
             if isinstance(self.ui.__dict__[key], QPlainTextEdit):
                 el.__dict__[last] = self.ui.__dict__[key].toPlainText()
-
 
 def checkEnv():
     PY2 = sys.version_info[0] == 2

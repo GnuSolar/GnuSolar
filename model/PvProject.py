@@ -56,17 +56,21 @@ class PvProject:
         return
 
     # updates location, municipality and powerCompany from Address
-    
     def updateFromAddress(self):
         self.building.coordinatesFromAddress()
         self.building.queryPlotNumber()
         
         if self.building.municipalityCode:
             self.municipality.fromCode(self.building.municipalityCode)
+        else:
+            return "no municipalityCode found for this Address"
 
         if self.municipality.fkPowerCompany:
             self.powerCompany.fromId(self.municipality.fkPowerCompany)
+        else:
+            return "no fkPowerCompany for municipality found. MunId=" + str(self.municipality.id)
         
+        return True
 
     def toJson(self):
         jsonpickle.set_preferred_backend('json')
@@ -83,7 +87,6 @@ class PvProject:
         self.config = config
         
         return ret
-
         
     def fromJson(self, json_str):
         ret = jsonpickle.decode(json_str)
@@ -139,7 +142,6 @@ class PvProject:
     def saveAs(self, path):
         self._savePath = path
         return self.save()
-    
     
     # save to disk
     def save(self):
