@@ -8,7 +8,7 @@ self.fillform_data = {
     'Nummer_B_17' : model.owner.streetNumber,
     'PLZ_B_18' : model.owner.zip,
     'Ort_B_19' : model.owner.city,
-    'Telefon_B_20' : model.owner.phone,
+    'Telefon_B_20' : model.owner.getAnyPhone(),
     'E-Mail_B_21' : model.owner.email,
 
     # Eigentümer Liegenschaft

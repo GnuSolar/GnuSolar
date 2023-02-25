@@ -23,3 +23,15 @@ class Contact:
         self.phone2 = None
         self.mobile = None
 
+    # get the first phone Number
+    def getAnyPhone(self):
+        if len(self.phone) > 0:
+            return self.phone
+        
+        if len(self.phone2) > 0:
+            return self.phone2
+        
+        if len(self.mobile) > 0:
+            return self.mobile
+
+        return "0800 800 800"       # default to swisscom main number
