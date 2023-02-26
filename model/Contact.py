@@ -34,4 +34,4 @@ class Contact:
         if len(self.mobile) > 0:
             return self.mobile
 
-        return "0800 800 800"       # default to swisscom main number
+        return "0800 800 800"       # default to swisscom main number :)

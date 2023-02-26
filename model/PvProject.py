@@ -65,10 +65,11 @@ class PvProject:
         else:
             return "no municipalityCode found for this Address"
 
-        if self.municipality.fkPowerCompany:
-            self.powerCompany.fromId(self.municipality.fkPowerCompany)
+        powId = self.building.getPowerCompanyId()
+        if powId:
+            self.powerCompany.fromId(powId)
         else:
-            return "no fkPowerCompany for municipality found. MunId=" + str(self.municipality.id)
+            return "no PowerCompany found for building. BuildingId=" + str(self.building.swissGridX) + "/" + str(self.building.swissGridY)
         
         return True
 

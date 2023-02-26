@@ -15,6 +15,8 @@ import requests
 from model.Municipality import *
 from model.PowerCompany import *
 
+from Config import Config
+
 class Building:
     
     def __init__(self):
@@ -84,3 +86,29 @@ class Building:
             return
 
         self.plotNumber = results[0]["properties"]["number"]
+
+    # Lookup the PowerCompany for this building.
+    def getPowerCompanyId(self):
+
+        # First check if in zip_code, city
+        con = sqlite3.connect(Config.getMasterDbPath())
+        cur = con.cursor()
+        sql = "SELECT * FROM zip_code WHERE zip_code=?"
+        res = cur.execute(sql, [self.zip])
+        db_row = res.fetchone()
+
+        if db_row:
+            fkPowerCompany = db_row[2]
+            if fkPowerCompany:
+                return fkPowerCompany
+        
+        # Next in the Municipality
+        sql = "SELECT * FROM municipality WHERE code=?"
+        res = cur.execute(sql, [self.municipalityCode])
+        db_row = res.fetchone()
+        if db_row:
+            fkPowerCompany = db_row[7]
+            if fkPowerCompany:
+                return fkPowerCompany
+        
+        return False
