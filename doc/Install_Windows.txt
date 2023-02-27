@@ -1,5 +1,0 @@
-How To Install Eigentool on Windows
-
-- Install Python3
-- Install pip packages : PyQt5, jsonpickle, requests
-  $ python -m pip install PyQt5

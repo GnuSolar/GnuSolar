@@ -1,0 +1,14 @@
+On Linux:
+
+run
+$ ./prerequisites.debian.sh
+Download geckodriver from https://github.com/mozilla/geckodriver/releases
+and unpack it to /usr/local/bin
+
+How To Install Eigentool on Windows
+
+- Install Python3
+- Install pip packages : PyQt5, jsonpickle, requests
+  $ python -m pip install PyQt5
+- Download geckodriver from https://github.com/mozilla/geckodriver/releases
+  and install it
