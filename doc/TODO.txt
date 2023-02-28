@@ -1,4 +1,9 @@
 2022-03-07
  Projekt erstellen: Felder löschen
  Solarprojekt: Bauherr nach Adresse von tel.search.ch
- 
+
+2023-02-28
+ - Unterscheiden Solarmeldung oder Baugesuch
+ - Suchfeld über Bauherr
+ - mehr Projektkontakte, Architekt, Elektroplanner, Elektriker AC, Elektriker DC, ...
+ - Umgang mit config verbessern. Global geht nicht model.config ist komisch.

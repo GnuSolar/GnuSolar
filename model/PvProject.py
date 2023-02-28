@@ -26,6 +26,7 @@ class PvProject:
         self.progress = Progress()
         self.plant = Plant()
         self.comment = None
+        self.config = None
         
         # project state:
         #  'Request'       Anfrage
