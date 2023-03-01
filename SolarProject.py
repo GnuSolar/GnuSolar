@@ -235,7 +235,7 @@ class SolarProject(QApplication):
         self.updateWindowTitle()
         
     def updateWindowTitle(self):
-        title = "Photovoltaic Project"
+        title = "Photovoltaic Project - " + Config.getAppVersion()
         if self.path != "":
             arr = os.path.split(self.path)
             file = arr[1]

@@ -37,6 +37,9 @@ class Eigentool(QApplication):
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
 
         self.ui.filterStatus.currentTextChanged.connect(self.filterStatusChanged)
+
+        title = "Eigentool - " + Config.getAppVersion()
+        self.window.setWindowTitle(title)
         
         self.window.show()
 

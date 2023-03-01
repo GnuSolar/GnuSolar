@@ -247,4 +247,6 @@ class Config():
     def getMasterDbPath():
         path = Config.getDataPath() + os.sep + "masterdata.db"
         return path
-    
+
+    def getAppVersion():
+        return "v1-2023-03-01"
