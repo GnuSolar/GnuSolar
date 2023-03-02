@@ -290,6 +290,12 @@ class Eigentool(QApplication):
         
         self.projectOpenPath(pvp_path)
 
+        # delete input fields
+        self.ui.newProject_street.setText("")
+        self.ui.newProject_streetNumber.setText("")
+        self.ui.newProject_zipCode.setText("")
+        self.ui.newProject_city.setText("")
+
         return
 
     def projectOpen(self, index):
