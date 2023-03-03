@@ -37,6 +37,7 @@ class Eigentool(QApplication):
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
 
         self.ui.filterStatus.currentTextChanged.connect(self.filterStatusChanged)
+        self.ui.filterFreeText.textChanged.connect(self.filterFreeTextChanged)
 
         title = "Eigentool - " + Config.getAppVersion()
         self.window.setWindowTitle(title)
@@ -227,7 +228,26 @@ class Eigentool(QApplication):
                 self.ui.tableWidgetProjects.showRow(i)
             else:
                 self.ui.tableWidgetProjects.hideRow(i)
+
+    def filterFreeTextChanged(self):
+        # Reset Filter Status
+        self.ui.filterStatus.setCurrentIndex(0)
         
+        searchText = self.ui.filterFreeText.text()
+        rowN = self.ui.tableWidgetProjects.rowCount()
+        colN = self.ui.tableWidgetProjects.columnCount()
+        for i in range(rowN):
+            # Build a string representation of the line
+            lineText = ""
+            for j in range(colN):
+                lineText = lineText + "/" + str(self.ui.tableWidgetProjects.item(i, j).text())
+
+            # Now search in it
+            if searchText in lineText:
+                self.ui.tableWidgetProjects.showRow(i)
+            else:
+                self.ui.tableWidgetProjects.hideRow(i)
+
     def addProjectEntry(self, pathProject, pathPvp, state=""):
         global config
 
