@@ -236,11 +236,13 @@ class Eigentool(QApplication):
         searchText = self.ui.filterFreeText.text()
         rowN = self.ui.tableWidgetProjects.rowCount()
         colN = self.ui.tableWidgetProjects.columnCount()
+        searchText = searchText.lower()
         for i in range(rowN):
             # Build a string representation of the line
             lineText = ""
             for j in range(colN):
                 lineText = lineText + "/" + str(self.ui.tableWidgetProjects.item(i, j).text())
+            lineText = lineText.lower()
 
             # Now search in it
             if searchText in lineText:
