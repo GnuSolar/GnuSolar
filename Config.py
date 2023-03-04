@@ -249,4 +249,4 @@ class Config():
         return path
 
     def getAppVersion():
-        return "v2-2023-03-03"
+        return "v3-2023-03-04"

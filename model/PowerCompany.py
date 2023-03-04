@@ -75,7 +75,7 @@ class PowerCompany:
         if not os.path.exists(form_file):
             return "File not found: '" + form_file + "'"
         
-        var_file = os.path.splitext(form_file)[0]+'.var'
+        var_file = os.path.splitext(form_file)[0]+'.py'
         if not os.path.exists(var_file):
             return "File not found: '" + var_file + "'"
 
