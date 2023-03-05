@@ -3,6 +3,10 @@
 
 # A Contact is a way to contact a person. Postal address is mostly needed for bureaucratic stuff.
 
+import sqlite3
+
+from Config import Config
+
 class Contact:
 
     def __init__(self):
@@ -23,6 +27,24 @@ class Contact:
         self.phone2 = None
         self.mobile = None
 
+    def fromId(self, contactId):
+        con = sqlite3.connect(Config.getMasterDbPath())
+        cur = con.cursor()
+        sql = "SELECT * FROM contact WHERE id=?"
+        res = cur.execute(sql, [contactId])
+        db_row = res.fetchone()
+
+        if db_row:
+            self.company = db_row[2]
+            self.firstName = db_row[3]
+            self.email = db_row[4]
+            self.email2 = db_row[5]
+            self.phone = db_row[6]
+            self.phone2 = db_row[7]
+            self.street = db_row[8]
+            self.zip = db_row[10]
+            self.city = db_row[11]
+        
     # get the first phone Number
     def getAnyPhone(self):
         if len(self.phone) > 0:

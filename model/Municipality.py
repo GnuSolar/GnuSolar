@@ -6,6 +6,7 @@
 import sqlite3
 
 from model.PowerCompany import *
+from model.Contact import *
 from selenium import webdriver
 
 from Config import Config
@@ -19,6 +20,7 @@ class Municipality:
         self.districtCode = None
         self.code = None
         self.name = None
+        self.buildingContact = Contact()
         self.fkContactBuilding = None
         self.fkPowerCompany = None
         self.fkFormBuilding = None
@@ -45,6 +47,15 @@ class Municipality:
             self.fkContactBuilding = db_row[6]
             self.fkPowerCompany = db_row[7]
             self.fkFormBuilding = db_row[8]
+            self.buildingContact.fromId(self.fkContactBuilding)
+
+    def getBuildingContact(self):
+        if not self.fkContactBuilding:
+            return "No Building Contact in Masterdata"
+        
+        contact = Contact()
+        contact.fromId(self.fkContactBuilding)
+        return contact
 
     def createBuildingForm(self, model):
         # get the FormTag

@@ -1556,7 +1556,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="evu_6">
+        <widget class="QLineEdit" name="pvp_municipality_buildingContact_email">
          <property name="geometry">
           <rect>
            <x>170</x>
