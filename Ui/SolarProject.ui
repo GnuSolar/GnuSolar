@@ -1691,9 +1691,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>10</y>
+          <y>90</y>
           <width>541</width>
-          <height>121</height>
+          <height>151</height>
          </rect>
         </property>
         <property name="title">
@@ -1703,7 +1703,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>30</y>
+           <y>60</y>
            <width>161</width>
            <height>17</height>
           </rect>
@@ -1716,7 +1716,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>30</y>
+           <y>60</y>
            <width>81</width>
            <height>25</height>
           </rect>
@@ -1732,7 +1732,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>60</y>
+           <y>90</y>
            <width>141</width>
            <height>17</height>
           </rect>
@@ -1745,7 +1745,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>90</y>
+           <y>120</y>
            <width>181</width>
            <height>17</height>
           </rect>
@@ -1758,7 +1758,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>60</y>
+           <y>90</y>
            <width>81</width>
            <height>25</height>
           </rect>
@@ -1774,7 +1774,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>90</y>
+           <y>120</y>
            <width>81</width>
            <height>25</height>
           </rect>
@@ -1790,7 +1790,7 @@
          <property name="geometry">
           <rect>
            <x>290</x>
-           <y>40</y>
+           <y>70</y>
            <width>41</width>
            <height>17</height>
           </rect>
@@ -1803,7 +1803,7 @@
          <property name="geometry">
           <rect>
            <x>290</x>
-           <y>60</y>
+           <y>90</y>
            <width>41</width>
            <height>17</height>
           </rect>
@@ -1812,12 +1812,55 @@
           <string>m2</string>
          </property>
         </widget>
+        <widget class="QLabel" name="label_36">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>161</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Bauart</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="pvp_plant_constructionType">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>30</y>
+           <width>151</width>
+           <height>27</height>
+          </rect>
+         </property>
+         <item>
+          <property name="text">
+           <string/>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>builton</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>integrated</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>facade</string>
+          </property>
+         </item>
+        </widget>
        </widget>
        <widget class="QGroupBox" name="groupBox_8">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>150</y>
+          <y>260</y>
           <width>541</width>
           <height>71</height>
          </rect>
@@ -1865,6 +1908,61 @@
          </property>
          <property name="text">
           <string>kW</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>541</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Allgemeines</string>
+        </property>
+        <widget class="QLabel" name="label_38">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>161</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Gesamtkosten</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_plant_totalCost">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>30</y>
+           <width>81</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_39">
+         <property name="geometry">
+          <rect>
+           <x>290</x>
+           <y>40</y>
+           <width>41</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>CHF</string>
          </property>
         </widget>
        </widget>
@@ -2029,7 +2127,4 @@
  </tabstops>
  <resources/>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
 </ui>

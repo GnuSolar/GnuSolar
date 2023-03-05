@@ -7,8 +7,13 @@ class Plant:
 
     def __init__(self):
         # class members
+        self.constructionType = None        # "", "builton", "integrated", "facade"
+
         self.totalPowerDc = None
         self.totalArea = None
         self.totalPanelCount = None
 
         self.totalPowerAc = None
+        
+        self.totalCost = None               # for solar note aargau
+
