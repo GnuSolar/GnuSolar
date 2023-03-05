@@ -20,6 +20,8 @@ from Config import Config
 class Building:
     
     def __init__(self):
+        self.buildingState = None       # "new" or "existing"
+        self.buildingId = None          # swiss building id
         self.street = None
         self.streetNumber = None
         self.zip = None
@@ -52,7 +54,8 @@ class Building:
         results = response.json()["results"]
         if len(results) != 1:
             return
-        
+
+        self.buildingId = str(results[0]["id"])
         self.swissGridX = str(results[0]["geometry"]["x"])
         self.swissGridY = str(results[0]["geometry"]["y"])
         self.municipalityCode = str(results[0]["attributes"]["com_fosnr"])

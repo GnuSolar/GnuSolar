@@ -8,7 +8,7 @@ import codecs
 import shutil
 
 from datetime import date
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Ui.SolarProject import *
@@ -75,7 +75,16 @@ class SolarProject(QApplication):
         for key, value in self.ui.__dict__.items():
             if not key.startswith("pvp_"):
                 continue
-            self.ui.__dict__[key].textChanged.connect(self.action_changed)
+            el = self.ui.__dict__[key]
+
+            if isinstance(el, QLineEdit):
+                el.textChanged.connect(self.action_changed)
+            elif isinstance(el, QPlainTextEdit):
+                el.textChanged.connect(self.action_changed)
+            elif isinstance(el, QComboBox):
+                el.currentIndexChanged.connect(self.action_changed)
+            else:
+                raise Exception(type(el) + " not implemented")
 
         self.unsavedChanges = False
         self.updateWindowTitle()
@@ -258,15 +267,20 @@ class SolarProject(QApplication):
             attrs = key.split("_")
             attrs.pop(0)
 
-            el = self.model
+            modelEl = self.model
             for attr in attrs:
-                el = el.__dict__[attr]
+                modelEl = modelEl.__dict__[attr]
+            uiEl = self.ui.__dict__[key]
             
-            if isinstance(self.ui.__dict__[key], QLineEdit):
-                self.ui.__dict__[key].setText(el)
-            if isinstance(self.ui.__dict__[key], QPlainTextEdit):
-                self.ui.__dict__[key].setPlainText(el)
-
+            if isinstance(uiEl, QLineEdit):
+                uiEl.setText(modelEl)
+            elif isinstance(uiEl, QPlainTextEdit):
+                uiEl.setPlainText(modelEl)
+            elif isinstance(uiEl, QComboBox):
+                uiEl.setCurrentText(modelEl)
+            else:
+                raise Exception(str(type(uiEl)) + " not implemented")
+            
     # Updates the Data Model from the User Interface
     # Iterates through all widgets and searches for pvp_* named Widgets
     def updateModel(self):
@@ -278,14 +292,19 @@ class SolarProject(QApplication):
             attrs.pop(0)
             last = attrs.pop()
             
-            el = self.model
+            modelEl = self.model
             for attr in attrs:
-                el = el.__dict__[attr]
-            
-            if isinstance(self.ui.__dict__[key], QLineEdit):
-                el.__dict__[last] = self.ui.__dict__[key].text()
-            if isinstance(self.ui.__dict__[key], QPlainTextEdit):
-                el.__dict__[last] = self.ui.__dict__[key].toPlainText()
+                modelEl = modelEl.__dict__[attr]
+            uiEl = self.ui.__dict__[key]
+
+            if isinstance(uiEl, QLineEdit):
+                modelEl.__dict__[last] = uiEl.text()
+            elif isinstance(uiEl, QPlainTextEdit):
+                modelEl.__dict__[last] = uiEl.toPlainText()
+            elif isinstance(uiEl, QComboBox):
+                modelEl.__dict__[last] = uiEl.currentText()
+            else:
+                raise Exception(str(type(uiEl)) + " not implemented")
 
 def checkEnv():
     PY2 = sys.version_info[0] == 2
