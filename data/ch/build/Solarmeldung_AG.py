@@ -42,10 +42,10 @@ self.fillform_data = {
     "Photovoltanikanlage_72" : True,
     "Gesamtflaeche_PV_73" : model.plant.totalArea,
     "Gesamtleistung_PV_75" : model.plant.totalPowerDc,
-    "Aufdachanlage_83" : True,
+    "Aufdachanlage_83" : False,
     "Indachanlage_84" : False,
     "Fassadenanlage_85" : False,
-    "Anlagekosten_90" : "",
+    "Anlagekosten_90" : model.plant.totalCost,
     "Nebenkosten_92" : "0",
     "Auswahl_F1_99" : True,       # Radiobutton Denkmalschutz
     "Optionsfeldliste_147" : True,      # Radiobutton Angaben vollständig
@@ -53,3 +53,14 @@ self.fillform_data = {
     "DateField12_151" : self.todayIso,
     "Unterschrift_152" : model.config.installer_firstName + " " + model.config.installer_lastName
 }
+
+# constructionType
+if model.plant.constructionType == "builton":
+    self.fillform_data["Aufdachanlage_83"] = True
+
+if model.plant.constructionType == "integrated":
+    self.fillform_data["Indachanlage_84"] = True
+    
+if model.plant.constructionType == "facade":
+    self.fillform_data["Fassadenanlage_85"] = True
+    
