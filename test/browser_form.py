@@ -14,3 +14,6 @@ element.click()
 
 element = browser.find_element("name", "Bauzone_J_N_57")
 element.click()
+
+element = browser.find_element("css selector", "input[name='Auswahl_Netzb_78'][aria-label='Nein']")
+element.click()

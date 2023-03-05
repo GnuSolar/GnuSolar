@@ -80,10 +80,13 @@ class Municipality:
         browser = webdriver.Firefox()
         browser.get(self.fillform_url)
         for k,v in self.fillform_data.items():
+            arr = k.split("::")
+            by = arr[0]
+            key = arr[1]
             try:
-                element = browser.find_element("name", k)
+                element = browser.find_element(by, key)
             except Exception:
-                print("Form element not found:" + k)
+                print("Form element not found: by:" + by + " key:" + key)
                 continue
 
             if isinstance(v, str):
