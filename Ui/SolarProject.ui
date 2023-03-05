@@ -30,7 +30,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabWidgetPage1">
        <attribute name="title">
@@ -1697,6 +1697,19 @@
         </property>
         <property name="text">
          <string>Solarmeldung erstellen</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="composeBuildingEmail">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>100</y>
+          <width>241</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Solarmeldung E-Mail</string>
         </property>
        </widget>
       </widget>

@@ -33,6 +33,17 @@ else:   # Default Linux
     def openFolder(path):
         os.system("xdg-open \"" + path + "\"")
 
+def composeEmail(to, subject, body, attachments=[]):
+    cmd = "thunderbird -compose \""
+    cmd += "to='" + to + "',"
+    cmd += "subject='" + subject + "',"
+    cmd += "body='" + body + "',"
+    for att in attachments:
+        cmd += "attachment='" + att + "',"
+    cmd += "\""
+    
+    os.system(cmd)
+
 class SolarProject(QApplication):
     def __init__(self, *args):
         global config
@@ -56,6 +67,7 @@ class SolarProject(QApplication):
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
+        self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
 
         self.ui.pb_finalInvoiceSent.clicked.connect(self.action_finalInvoiceSent)
         self.ui.pb_orderRejected.clicked.connect(self.action_orderRejected)
@@ -220,6 +232,18 @@ class SolarProject(QApplication):
         if isinstance(ret, str):
             QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
             return
+
+    # Sende Solarmeldung
+    def action_composeBuildingEmail(self):
+        global config
+        
+        to = self.model.municipality.buildingContact.email
+        b = self.model.building
+        subject = "Solarmeldung PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
+        body = "Guten Tag\n\nIm Anhang finden Sie die Solarmeldung für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
+        body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
+        att = [""]
+        composeEmail(to, subject, body, att)
 
     # open a Project with a path
     def openFile(self, pvpPath):
