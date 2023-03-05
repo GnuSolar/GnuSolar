@@ -1,4 +1,30 @@
 self.fillform_url = "https://www.ag.ch/app/aem/forms/getForm?formId=81d9b9ac-c457-46c2-9ff7-11fe25d19633&mode=prod"
+
+
+"""
+    Bauzone nach Bundesamt für Raumentwicklung(ARE):
+    11 - Wohnzonen
+    12 - Arbeitszonen
+    13 - Mischzonen
+    14 - Zentrumszonen
+    15 - Zonen für öffentliche Nutzungen
+    16 - eingeschränkte Bauzonen
+"""
+
+kernzone_ja = False
+kernzone_nein = False
+gewerbezone_ja = False
+gewerbezone_nein = False
+zoneCode = int(model.building.areZoneCode)
+if zoneCode == 14 or zoneCode == 15:
+    kernzone_ja = True
+if zoneCode == 11 or zoneCode == 12:
+    kernzone_nein = True
+if zoneCode == 12:
+    gewerbezone_ja = True
+else:
+    gewerbezone_nein = True
+
 self.fillform_data = {
     # Bauherrschaft
     'name::Firma_B_13' : model.owner.company,
@@ -50,10 +76,10 @@ self.fillform_data = {
     "name::Fassadenanlage_85" : False,
     "name::Anlagekosten_90" : model.plant.totalCost,
     "name::Nebenkosten_92" : "0",
-    "css selector::input[name='Auswahl_F1_99'][aria-label='Ja']" : False,       # Denkmal, Dorf, Kernzone?
-    "css selector::input[name='Auswahl_F1_99'][aria-label='Nein']" : True,
-    "css selector::input[name='Auswahl_F2_105'][aria-label='Ja']" : False,       # Industrie-, Arbeits- oder Gewerbezone
-    "css selector::input[name='Auswahl_F2_105'][aria-label='Nein']" : True,
+    "css selector::input[name='Auswahl_F1_99'][aria-label='Ja']" : kernzone_ja,       # Denkmal, Dorf, Kernzone?
+    "css selector::input[name='Auswahl_F1_99'][aria-label='Nein']" : kernzone_nein,
+    "css selector::input[name='Auswahl_F2_105'][aria-label='Ja']" : gewerbezone_ja,       # Industrie-, Arbeits- oder Gewerbezone
+    "css selector::input[name='Auswahl_F2_105'][aria-label='Nein']" : gewerbezone_nein,
     "css selector::input[name='Auswahl_F3_116'][aria-label='Ja']" : True,       # gestalterische Vorgaben
     "css selector::input[name='Auswahl_F3_116'][aria-label='Nein']" : False,
     "name::Optionsfeldliste_147" : True,      # Radiobutton Angaben vollständig
@@ -71,4 +97,3 @@ if model.plant.constructionType == "integrated":
     
 if model.plant.constructionType == "facade":
     self.fillform_data["name::Fassadenanlage_85"] = True
-    

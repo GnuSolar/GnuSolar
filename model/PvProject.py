@@ -60,6 +60,7 @@ class PvProject:
     def updateFromAddress(self):
         self.building.coordinatesFromAddress()
         self.building.queryPlotNumber()
+        self.building.queryZoneing()
         
         if self.building.municipalityCode:
             self.municipality.fromCode(self.building.municipalityCode)

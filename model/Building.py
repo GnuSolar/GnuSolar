@@ -38,6 +38,18 @@ class Building:
         self.meterNumberNew = None
         self.mainFuseSize = None
 
+        """
+        Bauzone nach Bundesamt für Raumentwicklung(ARE):
+        11 - Wohnzonen
+        12 - Arbeitszonen
+        13 - Mischzonen
+        14 - Zentrumszonen
+        15 - Zonen für öffentliche Nutzungen
+        16 - eingeschränkte Bauzonen
+"""        
+        self.areZoneName = None         # Bauzone nach Bundesamt für Raumentwicklung(ARE)
+        self.areZoneCode = None
+
     def coordinatesFromAddress(self):
         url = r"https://api3.geo.admin.ch/rest/services/api/MapServer/find"
         params = {
@@ -64,9 +76,6 @@ class Building:
         return
         
     def queryPlotNumber(self):
-        if self.plotNumber:
-            return
-        
         x = float("2" + self.swissGridX)
         y = float("1" + self.swissGridY)
         url = r"https://api3.geo.admin.ch/rest/services/all/MapServer/identify"
@@ -84,11 +93,35 @@ class Building:
 
         response = requests.get(url=url, params=params)
         results = response.json()["results"]
-
         if len(results) != 1:
             return
 
-        self.plotNumber = results[0]["properties"]["number"]
+        if not self.plotNumber:
+            self.plotNumber = results[0]["properties"]["number"]
+
+    def queryZoneing(self):
+        x = float("2" + self.swissGridX)
+        y = float("1" + self.swissGridY)
+        url = r"https://api3.geo.admin.ch/rest/services/all/MapServer/identify"
+        params = {
+            "geometry": str(x) + "," + str(y),
+            "geometryFormat": "geojson",
+            "geometryType": "esriGeometryPoint",
+            "imageDisplay": "1155,600,96",
+            "layers": "all:ch.are.bauzonen",
+            "limit": "10",
+            "mapExtent": str(x-30) + "," + str(y-30) + "," + str(x+30) + "," + str(y+30),
+            "sr": "2056",
+            "tolerance": "10"
+        }
+
+        response = requests.get(url=url, params=params)
+        results = response.json()["results"]
+        if len(results) != 1:
+            return
+
+        self.areZoneCode = results[0]["properties"]["ch_code_hn"]
+        self.areZoneName = results[0]["properties"]["ch_bez_d"]
 
     # Lookup the PowerCompany for this building.
     def getPowerCompanyId(self):
