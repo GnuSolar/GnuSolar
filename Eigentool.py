@@ -277,7 +277,8 @@ class Eigentool(QApplication):
         self.ui.tableWidgetProjects.setItem(rowN, 4, QTableWidgetItem(pv.progress.inquiryReceived))
         self.ui.tableWidgetProjects.setItem(rowN, 5, QTableWidgetItem(pv.progress.quote1Sent))
         self.ui.tableWidgetProjects.setItem(rowN, 6, QTableWidgetItem(pv.progress.orderReceived))
-        self.ui.tableWidgetProjects.setItem(rowN, 7, QTableWidgetItem(pv.progress.launch))
+        self.ui.tableWidgetProjects.setItem(rowN, 7, QTableWidgetItem(pv.progress.constructionStart))
+        self.ui.tableWidgetProjects.setItem(rowN, 8, QTableWidgetItem(pv.progress.launch))
 
     def createProject(self):
         global config
