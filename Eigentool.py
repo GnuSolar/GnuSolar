@@ -220,6 +220,11 @@ class Eigentool(QApplication):
         self.fillTableProjects("inactiv")
 
     def filterStatusChanged(self):
+        # Reset free text changed
+        self.ui.filterFreeText.textChanged.disconnect()
+        self.ui.filterFreeText.setText("")
+        self.ui.filterFreeText.textChanged.connect(self.filterFreeTextChanged)
+
         filterState = self.ui.filterStatus.currentText()
         rowN = self.ui.tableWidgetProjects.rowCount()
         for i in range(rowN):
