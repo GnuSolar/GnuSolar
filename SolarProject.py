@@ -68,6 +68,7 @@ class SolarProject(QApplication):
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
+        self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
 
         self.ui.pb_finalInvoiceSent.clicked.connect(self.action_finalInvoiceSent)
         self.ui.pb_orderRejected.clicked.connect(self.action_orderRejected)
@@ -241,6 +242,18 @@ class SolarProject(QApplication):
         b = self.model.building
         subject = "Solarmeldung PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
         body = "Guten Tag\n\nIm Anhang finden Sie die Solarmeldung für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
+        body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
+        att = [""]
+        composeEmail(to, subject, body, att)
+
+    # Sende Tag
+    def action_composeTagEmail(self):
+        global config
+        
+        to = self.model.powerCompany.tagContact.email
+        b = self.model.building
+        subject = "TAG PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
+        body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
         body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
         att = [""]
         composeEmail(to, subject, body, att)

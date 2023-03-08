@@ -1627,7 +1627,7 @@
           <string>Anschlussgesuch</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="evu_2">
+        <widget class="QLineEdit" name="pvp_powerCompany_tagContact_email">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -1710,6 +1710,19 @@
         </property>
         <property name="text">
          <string>Solarmeldung E-Mail</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="composeTagEmail">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>250</y>
+          <width>241</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TAG E-Mail</string>
         </property>
        </widget>
       </widget>

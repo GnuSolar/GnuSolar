@@ -25,6 +25,7 @@ class PowerCompany:
         self.address2 = None
         self.zipCode = None
         self.city = None
+        self.tagContact = Contact()
         self.fkContactTag = None
         self.fkFormTag = None
         self.fkFormIa = None
@@ -54,6 +55,15 @@ class PowerCompany:
             self.fkContactTag = db_row[7]
             self.fkFormTag = db_row[8]
             self.fkFormIa = db_row[9]
+            self.tagContact.fromId(self.fkContactTag)
+
+    def getTagContact(self):
+        if not self.fkContactTag:
+            return "No Tag Contact in Masterdata"
+        
+        contact = Contact()
+        contact.fromId(self.fkContactTag)
+        return contact
 
     def createTag(self, model, tagPath):
         # get the FormTag
