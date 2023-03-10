@@ -721,6 +721,19 @@
          <string>neue Offerte</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="composeEmailOwner">
+        <property name="geometry">
+         <rect>
+          <x>580</x>
+          <y>560</y>
+          <width>181</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>E-Mail</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tabWidgetPage3">
        <attribute name="title">
@@ -2020,7 +2033,7 @@
      <x>0</x>
      <y>0</y>
      <width>1136</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

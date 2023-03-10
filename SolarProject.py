@@ -69,6 +69,7 @@ class SolarProject(QApplication):
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
         self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
+        self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
 
         self.ui.pb_finalInvoiceSent.clicked.connect(self.action_finalInvoiceSent)
         self.ui.pb_orderRejected.clicked.connect(self.action_orderRejected)
@@ -257,6 +258,14 @@ class SolarProject(QApplication):
         body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
         att = [""]
         composeEmail(to, subject, body, att)
+
+    # Sende Tag
+    def action_composeEmailOwner(self):
+        global config
+        
+        to = self.model.owner.email
+        composeEmail(to, "", "")
+
 
     # open a Project with a path
     def openFile(self, pvpPath):
