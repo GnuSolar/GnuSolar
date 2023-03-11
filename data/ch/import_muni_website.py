@@ -45,7 +45,6 @@ with open('2023-01-01_Gemeinden_Wikipedia.txt', newline='') as csvfile:
         mun_id = db_row[0]
         website = db_row[9]
         if website:
-            print("skipped : " + mun_name)
             continue
 
         # fetch the url
