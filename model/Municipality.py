@@ -21,9 +21,10 @@ class Municipality:
         self.code = None
         self.name = None
         self.buildingContact = Contact()
-        self.fkContactBuilding = None
+        self.mainContact = Contact()
         self.fkPowerCompany = None
         self.fkFormBuilding = None
+        self.website = None
 
     def reloadFromDb(self):
         self.fromCode(self.code)
@@ -44,17 +45,15 @@ class Municipality:
             self.districtCode = db_row[3]
             self.code = db_row[4]
             self.name = db_row[5]
-            self.fkContactBuilding = db_row[6]
-            self.fkPowerCompany = db_row[7]
-            self.fkFormBuilding = db_row[8]
-            self.buildingContact.fromId(self.fkContactBuilding)
+            self.fkPowerCompany = db_row[6]
+            self.fkFormBuilding = db_row[7]
+            self.website = db_row[8]
+            self.buildingContact.fromMunicipalityType(self.id, "municipality_build")
+            self.mainContact.fromMunicipalityType(self.id, "municipality_main")
 
     def getBuildingContact(self):
-        if not self.fkContactBuilding:
-            return "No Building Contact in Masterdata"
-        
         contact = Contact()
-        contact.fromId(self.fkContactBuilding)
+        contact.fromMunicipalityType(self.id, "municipality_build")
         return contact
 
     def createBuildingForm(self, model):

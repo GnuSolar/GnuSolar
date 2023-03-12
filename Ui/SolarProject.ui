@@ -1476,7 +1476,7 @@
           <x>10</x>
           <y>10</y>
           <width>541</width>
-          <height>131</height>
+          <height>121</height>
          </rect>
         </property>
         <property name="title">
@@ -1531,7 +1531,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>60</y>
+           <y>90</y>
            <width>141</width>
            <height>17</height>
           </rect>
@@ -1540,20 +1540,23 @@
           <string>Meldeformular</string>
          </property>
         </widget>
-        <widget class="QLabel" name="label_19">
+        <widget class="QLineEdit" name="evu_5">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>170</x>
            <y>90</y>
-           <width>141</width>
-           <height>17</height>
+           <width>361</width>
+           <height>25</height>
           </rect>
          </property>
          <property name="text">
-          <string>Bauverwaltung</string>
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="evu_5">
+        <widget class="QLineEdit" name="pvp_municipality_website">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -1569,20 +1572,17 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_municipality_buildingContact_email">
+        <widget class="QLabel" name="label_46">
          <property name="geometry">
           <rect>
-           <x>170</x>
-           <y>90</y>
-           <width>361</width>
-           <height>25</height>
+           <x>10</x>
+           <y>60</y>
+           <width>141</width>
+           <height>17</height>
           </rect>
          </property>
          <property name="text">
-          <string/>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
+          <string>Webseite</string>
          </property>
         </widget>
        </widget>
@@ -1590,9 +1590,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>160</y>
+          <y>450</y>
           <width>541</width>
-          <height>131</height>
+          <height>121</height>
          </rect>
         </property>
         <property name="title">
@@ -1690,7 +1690,7 @@
         <property name="geometry">
          <rect>
           <x>570</x>
-          <y>190</y>
+          <y>480</y>
           <width>241</width>
           <height>29</height>
          </rect>
@@ -1703,7 +1703,7 @@
         <property name="geometry">
          <rect>
           <x>570</x>
-          <y>40</y>
+          <y>100</y>
           <width>241</width>
           <height>29</height>
          </rect>
@@ -1712,11 +1712,124 @@
          <string>Solarmeldung erstellen</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="composeTagEmail">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>540</y>
+          <width>241</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>TAG E-Mail</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_10">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>170</y>
+          <width>541</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Gemeindeverwaltung</string>
+        </property>
+        <widget class="QLabel" name="label_17">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Abteilung</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_municipality_mainContact_company">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>30</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_42">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Telefon</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_43">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>E-Mail</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_municipality_mainContact_phone">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>60</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_municipality_mainContact_email">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>90</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </widget>
        <widget class="QPushButton" name="composeBuildingEmail">
         <property name="geometry">
          <rect>
           <x>570</x>
-          <y>100</y>
+          <y>400</y>
           <width>241</width>
           <height>29</height>
          </rect>
@@ -1725,18 +1838,105 @@
          <string>Solarmeldung E-Mail</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="composeTagEmail">
+       <widget class="QGroupBox" name="groupBox_11">
         <property name="geometry">
          <rect>
-          <x>570</x>
-          <y>250</y>
-          <width>241</width>
-          <height>29</height>
+          <x>10</x>
+          <y>310</y>
+          <width>541</width>
+          <height>121</height>
          </rect>
         </property>
-        <property name="text">
-         <string>TAG E-Mail</string>
+        <property name="title">
+         <string>Bauverwaltung</string>
         </property>
+        <widget class="QLabel" name="label_19">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Abteilung</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_municipality_buildingContact_company">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>30</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_44">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Telefon</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_45">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>E-Mail</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_municipality_buildingContact_phone">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>60</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_municipality_buildingContact_email">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>90</y>
+           <width>361</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
