@@ -68,6 +68,7 @@ class PvProject:
             return "no municipalityCode found for this Address"
 
         powId = self.building.getPowerCompanyId()
+        print(powId)
         if powId:
             self.powerCompany.fromId(powId)
         else:

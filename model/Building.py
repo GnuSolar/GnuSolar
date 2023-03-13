@@ -143,7 +143,7 @@ class Building:
         res = cur.execute(sql, [self.municipalityCode])
         db_row = res.fetchone()
         if db_row:
-            fkPowerCompany = db_row[7]
+            fkPowerCompany = db_row[6]
             if fkPowerCompany:
                 return fkPowerCompany
         
