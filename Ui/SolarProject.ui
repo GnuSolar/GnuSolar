@@ -734,6 +734,19 @@
          <string>E-Mail</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="createPartialInvoice">
+        <property name="geometry">
+         <rect>
+          <x>770</x>
+          <y>500</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Akontorechnung</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tabWidgetPage3">
        <attribute name="title">

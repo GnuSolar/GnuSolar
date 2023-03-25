@@ -6,3 +6,4 @@ pip3 install jsonpickle
 pip3 install requests
 pip3 install pdfrw
 pip3 install selenium
+pip3 install relatorio

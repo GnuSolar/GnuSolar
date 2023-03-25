@@ -7,6 +7,8 @@ import json
 import codecs
 import shutil
 
+from relatorio.templates.opendocument import Template
+
 from datetime import date
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -44,6 +46,15 @@ def composeEmail(to, subject, body, attachments=[]):
     
     os.system(cmd)
 
+def templateCopyReplace(src, dest, model):
+    basic = Template(source='', filepath=src)
+    basic_generated = basic.generate(o=model).render()
+
+    f = open(dest, 'wb')
+    f.write(basic_generated.getvalue())
+    f.close()
+    
+    
 class SolarProject(QApplication):
     def __init__(self, *args):
         global config
@@ -65,6 +76,7 @@ class SolarProject(QApplication):
         self.ui.copyClientAddressFromBuilding.clicked.connect(self.action_copyClientAddressFromBuilding)
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
+        self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
@@ -203,6 +215,41 @@ class SolarProject(QApplication):
         config.write()
 
         openFolder(quotePath)
+
+    def action_createPartialInvoice(self):
+        global config
+        
+        invoiceTemplatePath = config.templatePath + os.sep + "fin" + os.sep + "template_partial_invoice.odt"
+        if not os.path.exists(invoiceTemplatePath):
+            QtWidgets.QMessageBox.warning(None, 'Akonto Vorlage nicht gefunden', 'Pfad = ' + invoiceTemplatePath)
+            return
+        
+        invoiceName = config.getNextInvoiceName()
+        invoiceFile = invoiceName + ".odt"
+        projectDir = os.path.dirname(self.path)
+        if not os.path.isdir(projectDir):
+            QtWidgets.QMessageBox.warning(None, 'Akonto erstellen', 'Pfad nicht gefunden\n' + self.path)
+            return
+
+        invoiceDir =  projectDir + os.sep + "fin"
+        invoicePath = invoiceDir + os.sep + invoiceFile
+        if not os.path.isdir(invoiceDir):
+            os.makedirs(invoiceDir)
+        
+        # copy the file and replace the variabels
+        self.model._invoiceName = invoiceName
+        today = date.today()
+        self.model._invoiceDate = today.isoformat()
+        templateCopyReplace(invoiceTemplatePath, invoicePath, self.model)
+        del self.model._invoiceName
+        del self.model._invoiceDate
+        
+        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
+        config.write()
+
+        self.model.progress.partialInvoiceSent = today.isoformat()
+
+        openFolder(invoicePath)
 
     # Erzeuge Anschlussgesuch
     def action_createTag(self):
