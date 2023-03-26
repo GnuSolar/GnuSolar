@@ -78,6 +78,7 @@ class SolarProject(QApplication):
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
         self.ui.createDocumentation.clicked.connect(self.action_createDocumentation)
+        self.ui.createMundpp.clicked.connect(self.action_createMundpp)
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
@@ -206,6 +207,11 @@ class SolarProject(QApplication):
                 "in_path"  : "doc" + os.sep + "documentation.odt",
                 "out_dir"  : "doc",
                 "out_file" : "Dokumentation.odt"
+            },
+            "mundpp" : {
+                "in_path"  : "evu" + os.sep + "MP_PV_Final_20190301_de.ods",
+                "out_dir"  : "evu",
+                "out_file" : "MP_PV.ods"
             }
         }
         template = templates[templateType]
@@ -260,6 +266,11 @@ class SolarProject(QApplication):
     # Create Documentation
     def action_createDocumentation(self):
         documentationPath = self.createFromTemplate("documentation")
+        openFolder(documentationPath)
+
+    # Create M+PP
+    def action_createMundpp(self):
+        documentationPath = self.createFromTemplate("mundpp")
         openFolder(documentationPath)
 
     # Erzeuge Anschlussgesuch
