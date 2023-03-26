@@ -77,6 +77,7 @@ class SolarProject(QApplication):
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
+        self.ui.createDocumentation.clicked.connect(self.action_createDocumentation)
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
@@ -255,6 +256,11 @@ class SolarProject(QApplication):
         config.write()
 
         openFolder(invoicePath)
+
+    # Create Documentation
+    def action_createDocumentation(self):
+        documentationPath = self.createFromTemplate("documentation")
+        openFolder(documentationPath)
 
     # Erzeuge Anschlussgesuch
     def action_createTag(self):
