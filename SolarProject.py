@@ -189,65 +189,70 @@ class SolarProject(QApplication):
         
         config.show()
 
+    def createFromTemplate(self, templateType):
+        templates = {
+            "partial_invoice" : {
+                "in_path"  : "fin" + os.sep + "partial_invoice.odt",
+                "out_dir"  : "fin",
+                "out_file" : config.getNextInvoiceName() + ".odt"
+            },
+            "quote" : {
+                "in_path"  : "off" + os.sep + "quote.odt",
+                "out_dir"  : "off",
+                "out_file" : config.getNextQuoteName() + ".odt"
+            },
+            "documentation" : {
+                "in_path"  : "doc" + os.sep + "documentation.odt",
+                "out_dir"  : "doc",
+                "out_file" : "Dokumentation.odt"
+            }
+        }
+        template = templates[templateType]
+        templatePath = config.getTemplateDir() + os.sep + template["in_path"]
+
+        if not os.path.exists(templatePath):
+            QtWidgets.QMessageBox.warning(None, templateType + ' Vorlage nicht gefunden', 'Pfad = ' + templatePath)
+            return
+
+        projectDir = os.path.dirname(self.path)
+        if not os.path.isdir(projectDir):
+            QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
+            return
+
+        outDir =  projectDir + os.sep + template["out_dir"]
+        outPath = outDir + os.sep + template["out_file"]
+        if not os.path.isdir(outDir):
+            os.makedirs(outDir)
+
+        self.model._invoiceName = config.getNextInvoiceName()
+        self.model._quoteName = config.getNextQuoteName()
+        today = date.today()
+        self.model._todayIso = today.isoformat()
+        templateCopyReplace(templatePath, outPath, self.model)
+        del self.model._invoiceName
+        del self.model._quoteName
+        del self.model._todayIso
+        
+        return outPath
+
     def action_createQuote(self):
         global config
         
-        quoteTemplatePath = config.templatePath + os.sep + "off" + os.sep + "template_quote.odt"
-        if not os.path.exists(quoteTemplatePath):
-            QtWidgets.QMessageBox.warning(None, 'Offerte Vorlage nicht gefunden', 'Pfad = ' + quoteTemplatePath)
-            return
-        
-        nextQuoteName = config.getNextQuoteName() + ".odt"
-        projectDir = os.path.dirname(self.path)
-        if not os.path.isdir(projectDir):
-            QtWidgets.QMessageBox.warning(None, 'Offerte erstellen', 'Pfad nicht gefunden\n' + self.path)
-            return
-
-        quoteDir =  projectDir + os.sep + "off"
-        quotePath = quoteDir + os.sep + nextQuoteName
-        if not os.path.isdir(quoteDir):
-            os.makedirs(quoteDir)
-            
-        # copy the file
-        shutil.copy(quoteTemplatePath, quotePath)
+        quotePath = self.createFromTemplate("quote")
         
         config.nextQuoteNumber = config.nextQuoteNumber + 1
         config.write()
 
         openFolder(quotePath)
 
+    # Create Partial Invoice
     def action_createPartialInvoice(self):
         global config
-        
-        invoiceTemplatePath = config.templatePath + os.sep + "fin" + os.sep + "template_partial_invoice.odt"
-        if not os.path.exists(invoiceTemplatePath):
-            QtWidgets.QMessageBox.warning(None, 'Akonto Vorlage nicht gefunden', 'Pfad = ' + invoiceTemplatePath)
-            return
-        
-        invoiceName = config.getNextInvoiceName()
-        invoiceFile = invoiceName + ".odt"
-        projectDir = os.path.dirname(self.path)
-        if not os.path.isdir(projectDir):
-            QtWidgets.QMessageBox.warning(None, 'Akonto erstellen', 'Pfad nicht gefunden\n' + self.path)
-            return
 
-        invoiceDir =  projectDir + os.sep + "fin"
-        invoicePath = invoiceDir + os.sep + invoiceFile
-        if not os.path.isdir(invoiceDir):
-            os.makedirs(invoiceDir)
-        
-        # copy the file and replace the variabels
-        self.model._invoiceName = invoiceName
-        today = date.today()
-        self.model._invoiceDate = today.isoformat()
-        templateCopyReplace(invoiceTemplatePath, invoicePath, self.model)
-        del self.model._invoiceName
-        del self.model._invoiceDate
+        invoicePath = self.createFromTemplate("partial_invoice")
         
         config.nextInvoiceNumber = config.nextInvoiceNumber + 1
         config.write()
-
-        self.model.progress.partialInvoiceSent = today.isoformat()
 
         openFolder(invoicePath)
 

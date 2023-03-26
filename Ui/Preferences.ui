@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>628</width>
-    <height>485</height>
+    <width>623</width>
+    <height>623</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,7 +78,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>430</y>
+     <y>560</y>
      <width>549</width>
      <height>36</height>
     </rect>
@@ -96,7 +96,7 @@
      <x>10</x>
      <y>200</y>
      <width>601</width>
-     <height>221</height>
+     <height>351</height>
     </rect>
    </property>
    <property name="title">
@@ -268,6 +268,108 @@
       <width>414</width>
       <height>27</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_bankName">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>250</y>
+      <width>414</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_13">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>250</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Bank Name</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_bankIban">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>280</y>
+      <width>414</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_14">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>280</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Bank IBAN</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_bankIid">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>310</y>
+      <width>201</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_15">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>310</y>
+      <width>161</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Bank IID/Swift-BIC</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_bankBic">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>310</y>
+      <width>201</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="installer_vat">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>220</y>
+      <width>414</width>
+      <height>27</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="projectDirectoryLabel_16">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>220</y>
+      <width>134</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MwSt. Nummer</string>
     </property>
    </widget>
   </widget>

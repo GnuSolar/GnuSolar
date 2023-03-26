@@ -34,6 +34,11 @@ class Config():
         self.installer_city = ""
         self.installer_phone = ""
         self.installer_email = ""
+        self.installer_vat = ""
+        self.installer_bankName = ""
+        self.installer_bankIban = ""
+        self.installer_bankIid = ""
+        self.installer_bankBic = ""
 
     def write(self):
         f = open(self.configPath, "w")
@@ -83,6 +88,12 @@ class Config():
         self.ui.installer_phone.setText(self.installer_phone)
         self.ui.installer_email.setText(self.installer_email)
 
+        self.ui.installer_vat.setText(self.installer_vat)
+        self.ui.installer_bankName.setText(self.installer_bankName)
+        self.ui.installer_bankIban.setText(self.installer_bankIban)
+        self.ui.installer_bankIid.setText(self.installer_bankIid)
+        self.ui.installer_bankBic.setText(self.installer_bankBic)
+
         self.window.show()
         
     def configAccepted(self):
@@ -100,6 +111,12 @@ class Config():
         self.installer_city = self.ui.installer_city.text()
         self.installer_phone = self.ui.installer_phone.text()
         self.installer_email = self.ui.installer_email.text()
+
+        self.installer_vat = self.ui.installer_vat.text()
+        self.installer_bankName = self.ui.installer_bankName.text()
+        self.installer_bankIban = self.ui.installer_bankIban.text()
+        self.installer_bankIid = self.ui.installer_bankIid.text()
+        self.installer_bankBic = self.ui.installer_bankBic.text()
         
         del self.ui
         del self.window
@@ -250,3 +267,10 @@ class Config():
 
     def getAppVersion():
         return "v4-2023-03-05"
+        
+    # returns the directory where all templates are stored
+    def getTemplateDir(self):
+        if os.path.isdir(self.templatePath):
+            return self.templatePath
+        ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
+        return ret
