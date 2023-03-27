@@ -100,10 +100,18 @@ class Municipality:
                 continue
 
             if isinstance(v, str):
-                element.send_keys(v)
+                try:
+                    element.send_keys(v)
+                except Exception:
+                    print("Form element not sendable: by:" + by + " key:" + key)
+                    continue
 
             if isinstance(v, bool) and v:
-                element.click()
+                try:
+                    element.click()
+                except Exception:
+                    print("Form element not clickable: by:" + by + " key:" + key)
+                    continue
 
         # remove temporary attributes, so they dont get serialized
         del self.todayIso

@@ -3,6 +3,6 @@
 
 2023-02-28
  - Unterscheiden Solarmeldung oder Baugesuch
- - Suchfeld über Bauherr
- - mehr Projektkontakte, Architekt, Elektroplanner, Elektriker AC, Elektriker DC, ...
- - Umgang mit config verbessern. Global geht nicht model.config ist komisch.
+ - mehr Projektkontakte, Architekt, Elektroplanner, Elektriker AC, Elektriker DC, unabhängiger Kontrolleur
+     => Addressdatenbank, 
+ - Umgang mit config verbessern. Global geht nicht, model.config ist komisch.
