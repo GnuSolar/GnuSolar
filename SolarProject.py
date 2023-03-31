@@ -35,6 +35,12 @@ else:   # Default Linux
     def openFolder(path):
         os.system("xdg-open \"" + path + "\"")
 
+def openFolderIfExists(path):
+    if not path or not os.path.exists(path):
+        return
+
+    openFolder(path)
+    
 def composeEmail(to, subject, body, attachments=[]):
     cmd = "thunderbird -compose \""
     cmd += "to='" + to + "',"
@@ -147,7 +153,7 @@ class SolarProject(QApplication):
         if self.path == "":
             return
         folder = os.path.dirname(self.path)
-        openFolder(folder)
+        openFolderIfExists(folder)
 
     def action_copyClientAddressFromBuilding(self):
         self.updateModel()
@@ -250,7 +256,7 @@ class SolarProject(QApplication):
         config.nextQuoteNumber = config.nextQuoteNumber + 1
         config.write()
 
-        openFolder(quotePath)
+        openFolderIfExists(quotePath)
 
     # Create Partial Invoice
     def action_createPartialInvoice(self):
@@ -261,17 +267,17 @@ class SolarProject(QApplication):
         config.nextInvoiceNumber = config.nextInvoiceNumber + 1
         config.write()
 
-        openFolder(invoicePath)
+        openFolderIfExists(invoicePath)
 
     # Create Documentation
     def action_createDocumentation(self):
         documentationPath = self.createFromTemplate("documentation")
-        openFolder(documentationPath)
+        openFolderIfExists(documentationPath)
 
     # Create M+PP
     def action_createMundpp(self):
         documentationPath = self.createFromTemplate("mundpp")
-        openFolder(documentationPath)
+        openFolderIfExists(documentationPath)
 
     # Erzeuge Anschlussgesuch
     def action_createTag(self):
@@ -292,7 +298,7 @@ class SolarProject(QApplication):
             QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
             return
             
-        openFolder(tagPath)
+        openFolderIfExists(tagPath)
         now = date.today()
         self.model.progress.tagSent = now.isoformat()
         self.updateUi()
