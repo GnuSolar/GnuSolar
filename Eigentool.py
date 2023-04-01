@@ -37,6 +37,7 @@ class Eigentool(QApplication):
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
 
         self.ui.filterStatus.currentTextChanged.connect(self.filterStatusChanged)
+        self.ui.projectView.currentTextChanged.connect(self.projectViewChanged)
         self.ui.filterFreeText.textChanged.connect(self.filterFreeTextChanged)
 
         title = "Eigentool - " + Config.getAppVersion()
@@ -233,6 +234,10 @@ class Eigentool(QApplication):
                 self.ui.tableWidgetProjects.showRow(i)
             else:
                 self.ui.tableWidgetProjects.hideRow(i)
+
+    def projectViewChanged(self):
+        projectView = self.ui.projectView.currentText()
+        print(projectView)
 
     def filterFreeTextChanged(self):
         # Reset Filter Status
