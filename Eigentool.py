@@ -3,6 +3,10 @@
 
 import sys
 import os
+
+sitepack = os.path.join(os.path.dirname(__file__), "site-packages")
+sys.path.insert(0, sitepack)
+
 import json 
 import codecs
 import io

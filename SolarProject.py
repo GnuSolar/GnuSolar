@@ -3,6 +3,10 @@
 
 import sys
 import os
+
+sitepack = os.path.join(os.path.dirname(__file__), "site-packages")
+sys.path.insert(0, sitepack)
+
 import json
 import codecs
 import shutil
@@ -23,7 +27,6 @@ from Config import Config
 # TODO: Where to put generally usefull functions?
 
 import subprocess
-import sys
 
 if sys.platform == 'darwin':
     def openFolder(path):
@@ -452,7 +455,7 @@ def main(args):
     global config
 
     checkEnv()
-        
+
     config = Config()
     config.load()
 
