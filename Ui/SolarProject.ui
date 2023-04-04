@@ -777,7 +777,7 @@
         <property name="title">
          <string>Projektfortschritt</string>
         </property>
-        <widget class="QPushButton" name="pb_finalInvoiceSent">
+        <widget class="QPushButton" name="pb_progress_finalInvoiceSent">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -800,7 +800,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_2">
+        <widget class="QPushButton" name="pb_progress_inquiryReceived">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -823,7 +823,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_3">
+        <widget class="QPushButton" name="pb_progress_roofMeasured">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -846,7 +846,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_4">
+        <widget class="QPushButton" name="pb_progress_quote1Sent">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -869,7 +869,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_5">
+        <widget class="QPushButton" name="pb_progress_quote2Sent">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -892,7 +892,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_6">
+        <widget class="QPushButton" name="pb_progress_quote3Sent">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -915,7 +915,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_7">
+        <widget class="QPushButton" name="pb_progress_quote4Sent">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -938,7 +938,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_8">
+        <widget class="QPushButton" name="pb_progress_orderReceived">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -961,7 +961,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_9">
+        <widget class="QPushButton" name="pb_progress_tagSent">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -984,7 +984,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_10">
+        <widget class="QPushButton" name="pb_progress_tagReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1007,7 +1007,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_11">
+        <widget class="QPushButton" name="pb_progress_iaSent">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1030,7 +1030,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_12">
+        <widget class="QPushButton" name="pb_progress_iaReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1053,7 +1053,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_13">
+        <widget class="QPushButton" name="pb_progress_bauSent">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1076,7 +1076,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_14">
+        <widget class="QPushButton" name="pb_progress_bauReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1099,7 +1099,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_15">
+        <widget class="QPushButton" name="pb_progress_partialInvoiceSent">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1122,7 +1122,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_16">
+        <widget class="QPushButton" name="pb_progress_partialInvoiceReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1145,7 +1145,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_17">
+        <widget class="QPushButton" name="pb_progress_materialOrdered">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1168,7 +1168,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_18">
+        <widget class="QPushButton" name="pb_progress_materialReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1191,7 +1191,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_19">
+        <widget class="QPushButton" name="pb_progress_constructionStart">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1214,7 +1214,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_20">
+        <widget class="QPushButton" name="pb_progress_launch">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1237,7 +1237,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_21">
+        <widget class="QPushButton" name="pb_progress_documentationCreated">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1260,7 +1260,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_22">
+        <widget class="QPushButton" name="pb_progress_documentationPlaced">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1283,7 +1283,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_23">
+        <widget class="QPushButton" name="pb_progress_finalInvoiceReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1306,7 +1306,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_24">
+        <widget class="QPushButton" name="pb_progress_siNaDcOrdered">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1329,7 +1329,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_25">
+        <widget class="QPushButton" name="pb_progress_siNaDcReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1352,7 +1352,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_26">
+        <widget class="QPushButton" name="pb_progress_siNaAcOrdered">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1375,7 +1375,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_27">
+        <widget class="QPushButton" name="pb_progress_siNaAcReceived">
          <property name="geometry">
           <rect>
            <x>430</x>
@@ -1398,7 +1398,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_28">
+        <widget class="QPushButton" name="pb_progress_eivComplete">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1421,7 +1421,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_finalInvoiceSent_29">
+        <widget class="QPushButton" name="pb_progress_eivPayed">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1444,7 +1444,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_orderRejected">
+        <widget class="QPushButton" name="pb_progress_orderRejected">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1467,7 +1467,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QPushButton" name="pb_archived">
+        <widget class="QPushButton" name="pb_progress_archived">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -2370,68 +2370,68 @@
   <tabstop>pvp_owner_city</tabstop>
   <tabstop>pvp_owner_email</tabstop>
   <tabstop>pvp_owner_phone</tabstop>
-  <tabstop>pb_finalInvoiceSent_2</tabstop>
+  <tabstop>pb_progress_inquiryReceived</tabstop>
   <tabstop>pvp_progress_inquiryReceived</tabstop>
   <tabstop>pvp_progress_archived</tabstop>
-  <tabstop>pb_finalInvoiceSent_3</tabstop>
+  <tabstop>pb_progress_roofMeasured</tabstop>
   <tabstop>pvp_progress_roofMeasured</tabstop>
-  <tabstop>pb_finalInvoiceSent_4</tabstop>
+  <tabstop>pb_progress_quote1Sent</tabstop>
   <tabstop>pvp_progress_quote1Sent</tabstop>
-  <tabstop>pb_finalInvoiceSent_5</tabstop>
+  <tabstop>pb_progress_quote2Sent</tabstop>
   <tabstop>pvp_progress_quote2Sent</tabstop>
-  <tabstop>pb_finalInvoiceSent_6</tabstop>
+  <tabstop>pb_progress_quote3Sent</tabstop>
   <tabstop>pvp_progress_quote3Sent</tabstop>
-  <tabstop>pb_finalInvoiceSent_7</tabstop>
+  <tabstop>pb_progress_quote4Sent</tabstop>
   <tabstop>pvp_progress_quote4Sent</tabstop>
-  <tabstop>pb_finalInvoiceSent_8</tabstop>
+  <tabstop>pb_progress_orderReceived</tabstop>
   <tabstop>pvp_progress_orderReceived</tabstop>
-  <tabstop>pb_orderRejected</tabstop>
+  <tabstop>pb_progress_orderRejected</tabstop>
   <tabstop>pvp_progress_orderRejected</tabstop>
-  <tabstop>pb_finalInvoiceSent_9</tabstop>
+  <tabstop>pb_progress_tagSent</tabstop>
   <tabstop>pvp_progress_tagSent</tabstop>
-  <tabstop>pb_finalInvoiceSent_10</tabstop>
+  <tabstop>pb_progress_tagReceived</tabstop>
   <tabstop>pvp_progress_tagReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_11</tabstop>
+  <tabstop>pb_progress_iaSent</tabstop>
   <tabstop>pvp_progress_iaSent</tabstop>
-  <tabstop>pb_finalInvoiceSent_12</tabstop>
+  <tabstop>pb_progress_iaReceived</tabstop>
   <tabstop>pvp_progress_iaReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_13</tabstop>
+  <tabstop>pb_progress_bauSent</tabstop>
   <tabstop>pvp_progress_bauSent</tabstop>
-  <tabstop>pb_finalInvoiceSent_14</tabstop>
+  <tabstop>pb_progress_bauReceived</tabstop>
   <tabstop>pvp_progress_bauReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_15</tabstop>
+  <tabstop>pb_progress_partialInvoiceSent</tabstop>
   <tabstop>pvp_progress_partialInvoiceSent</tabstop>
-  <tabstop>pb_finalInvoiceSent_16</tabstop>
+  <tabstop>pb_progress_partialInvoiceReceived</tabstop>
   <tabstop>pvp_progress_partialInvoiceReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_17</tabstop>
+  <tabstop>pb_progress_materialOrdered</tabstop>
   <tabstop>pvp_progress_materialOrdered</tabstop>
-  <tabstop>pb_finalInvoiceSent_18</tabstop>
+  <tabstop>pb_progress_materialReceived</tabstop>
   <tabstop>pvp_progress_materialReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_19</tabstop>
+  <tabstop>pb_progress_constructionStart</tabstop>
   <tabstop>pvp_progress_constructionStart</tabstop>
-  <tabstop>pb_finalInvoiceSent_20</tabstop>
+  <tabstop>pb_progress_launch</tabstop>
   <tabstop>pvp_progress_launch</tabstop>
-  <tabstop>pb_finalInvoiceSent_21</tabstop>
+  <tabstop>pb_progress_documentationCreated</tabstop>
   <tabstop>pvp_progress_documentationCreated</tabstop>
-  <tabstop>pb_finalInvoiceSent_22</tabstop>
+  <tabstop>pb_progress_documentationPlaced</tabstop>
   <tabstop>pvp_progress_documentationPlaced</tabstop>
-  <tabstop>pb_finalInvoiceSent</tabstop>
+  <tabstop>pb_progress_finalInvoiceSent</tabstop>
   <tabstop>pvp_progress_finalInvoiceSent</tabstop>
-  <tabstop>pb_finalInvoiceSent_23</tabstop>
+  <tabstop>pb_progress_finalInvoiceReceived</tabstop>
   <tabstop>pvp_progress_finalInvoiceReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_24</tabstop>
+  <tabstop>pb_progress_siNaDcOrdered</tabstop>
   <tabstop>pvp_progress_siNaDcOrdered</tabstop>
-  <tabstop>pb_finalInvoiceSent_25</tabstop>
+  <tabstop>pb_progress_siNaDcReceived</tabstop>
   <tabstop>pvp_progress_siNaDcReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_26</tabstop>
+  <tabstop>pb_progress_siNaAcOrdered</tabstop>
   <tabstop>pvp_progress_siNaAcOrdered</tabstop>
-  <tabstop>pb_finalInvoiceSent_27</tabstop>
+  <tabstop>pb_progress_siNaAcReceived</tabstop>
   <tabstop>pvp_progress_siNaAcReceived</tabstop>
-  <tabstop>pb_finalInvoiceSent_28</tabstop>
+  <tabstop>pb_progress_eivComplete</tabstop>
   <tabstop>pvp_progress_eivComplete</tabstop>
-  <tabstop>pb_finalInvoiceSent_29</tabstop>
+  <tabstop>pb_progress_eivPayed</tabstop>
   <tabstop>pvp_progress_eivPayed</tabstop>
-  <tabstop>pb_archived</tabstop>
+  <tabstop>pb_progress_archived</tabstop>
  </tabstops>
  <resources/>
  <connections/>

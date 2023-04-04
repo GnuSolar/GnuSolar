@@ -95,10 +95,6 @@ class SolarProject(QApplication):
         self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
         self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
 
-        self.ui.pb_finalInvoiceSent.clicked.connect(self.action_finalInvoiceSent)
-        self.ui.pb_orderRejected.clicked.connect(self.action_orderRejected)
-        self.ui.pb_archived.clicked.connect(self.action_archived)
-       
         # Arguments:
         #   First argument: Path to the Pv-Project File
         self.path = ""          # path = "" means new project
@@ -109,20 +105,26 @@ class SolarProject(QApplication):
         if len(args[0]) >= 2:
             self.openFile(args[0][1])
 
-        # connect all pvp_ fields with action_Change
         for key, value in self.ui.__dict__.items():
-            if not key.startswith("pvp_"):
-                continue
-            el = self.ui.__dict__[key]
+            if key.startswith("pvp_"):
+                # connect all pvp_ fields with action_changed
+                el = self.ui.__dict__[key]
 
-            if isinstance(el, QLineEdit):
-                el.textChanged.connect(self.action_changed)
-            elif isinstance(el, QPlainTextEdit):
-                el.textChanged.connect(self.action_changed)
-            elif isinstance(el, QComboBox):
-                el.currentIndexChanged.connect(self.action_changed)
-            else:
-                raise Exception(type(el) + " not implemented")
+                if isinstance(el, QLineEdit):
+                    el.textChanged.connect(self.action_changed)
+                elif isinstance(el, QPlainTextEdit):
+                    el.textChanged.connect(self.action_changed)
+                elif isinstance(el, QComboBox):
+                    el.currentIndexChanged.connect(self.action_changed)
+                else:
+                    raise Exception(type(el) + " not implemented")
+
+            if key.startswith("pb_progress_"):
+                # connect all pb_progress_* with action_progress
+                el = self.ui.__dict__[key]
+                name = key.replace("pb_progress_", "")
+                el.clicked.connect(self.action_progress)
+
 
         self.unsavedChanges = False
         self.updateWindowTitle()
@@ -173,22 +175,15 @@ class SolarProject(QApplication):
         self.updateUi()
         if isinstance(ret, str):
             QtWidgets.QMessageBox.warning(None, 'UpdatefromAddress Error', 'Meldung = ' + ret)
-        
 
-    def action_finalInvoiceSent(self):
-        now = date.today()
-        self.model.progress.finalInvoiceSent = now.isoformat()
-        self.updateUi()
+    def action_progress(self):
+        sendingButton = self.sender()
+        buttonName = sendingButton.objectName()
+        actionName = buttonName.replace("pb_progress_", "")
 
-    def action_orderRejected(self):
         now = date.today()
-        self.model.progress.orderRejected = now.isoformat()
-        self.updateUi()
-
-    def action_archived(self):
-        now = date.today()
-        self.model.progress.archived = now.isoformat()
-        self.updateUi()
+        attrName = "pvp_progress_" + actionName
+        self.ui.__dict__[attrName].setText(str(now))
 
     def action_changed(self):
         if self.unsavedChanges:
