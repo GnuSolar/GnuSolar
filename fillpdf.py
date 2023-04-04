@@ -122,7 +122,10 @@ def pdf_form_info(in_pdf):
                     value=values
                 else:
                     if value:
-                        value=value.to_unicode()
+                        try:
+                            value=value.to_unicode()
+                        except Exception as ex:
+                            a=1
                 out = dict(name=key, type=ft)
                 if value:
                     out['value']=value
@@ -155,7 +158,10 @@ def fill_form(in_pdf, data, suffix=None):
                 key = annotation['/T'].to_unicode()
                 if key in data:
                     ft = _field_type(annotation)
-                    fillers[ft](annotation, data[key])
+                    try:
+                        fillers[ft](annotation, data[key])
+                    except Exception as ex:
+                        a=1
                     if suffix:
                         new_T=pdfrw.objects.pdfstring.PdfString.encode(key+suffix)
                         annotation.update(pdfrw.PdfDict(T=new_T))

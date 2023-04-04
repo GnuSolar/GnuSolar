@@ -91,6 +91,7 @@ class SolarProject(QApplication):
         self.ui.createMundpp.clicked.connect(self.action_createMundpp)
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
+        self.ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
         self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
         self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
@@ -305,6 +306,44 @@ class SolarProject(QApplication):
     def action_createMundpp(self):
         documentationPath = self.createFromTemplate("mundpp")
         openFolderIfExists(documentationPath)
+
+    # Erzeuge Anschlussgesuch
+    def action_createGvzDocumentation(self):
+        global config
+
+        projectDir = os.path.dirname(self.path)
+        gvzDir =  projectDir + os.sep + "gov"
+        gvzPath = gvzDir + os.sep + "01_gvz_dokumentation.pdf"
+        if not os.path.isdir(gvzDir):
+            os.makedirs(gvzDir)
+
+        form_file = Config.getDataPath() + os.sep + "ch" + os.sep + "build" + os.sep + "gvz_documentation.pdf"
+        if not os.path.exists(form_file):
+            return "File not found: '" + form_file + "'"
+        
+        var_file = os.path.splitext(form_file)[0]+'.py'
+        if not os.path.exists(var_file):
+            return "File not found: '" + var_file + "'"
+
+        today = date.today()
+        self.todayIso = today.isoformat()
+        three_months = datetime.timedelta(3*365/12)
+        self.turnOnIso = (today + three_months).isoformat()
+
+        f = open(var_file)
+        s = f.read()
+        f.close()
+
+        exec(s)
+        
+        fillpdf.single_form_fill(form_file, self.fillpdf_data, gvzPath)
+
+        # remove temporary attributes, so they dont get serialized
+        del self.turnOnIso
+        del self.todayIso
+        del self.fillpdf_data
+
+        openFolderIfExists(gvzPath)
 
     # Erzeuge Anschlussgesuch
     def action_createTag(self):

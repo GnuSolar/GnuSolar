@@ -1990,6 +1990,19 @@
          <string>M+PP erstellen</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="createGvzDocumentation">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>600</y>
+          <width>241</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>GVZ Dokumentation</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
