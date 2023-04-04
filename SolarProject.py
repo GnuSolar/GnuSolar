@@ -223,13 +223,25 @@ class SolarProject(QApplication):
                 "out_file" : "MP_PV.ods"
             }
         }
+
+        ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
+
         template = templates[templateType]
-        templatePath = config.getTemplateDir() + os.sep + template["in_path"]
+        
+        templatePath = ""
+        defaultPath = Config.getDataPath() + os.sep + "ch" + os.sep + "templates" + os.sep + template["in_path"]
+        localPath = config.templatePath + os.sep + template["in_path"]
+        # first search template in  "local", config path
+        if os.path.exists(localPath):
+            templatePath = localPath
 
-        if not os.path.exists(templatePath):
-            QtWidgets.QMessageBox.warning(None, templateType + ' Vorlage nicht gefunden', 'Pfad = ' + templatePath)
+        # then default
+        elif os.path.exists(defaultPath):
+            templatePath = defaultPath
+        else:
+            QtWidgets.QMessageBox.warning(None, templateType + ' Vorlage nicht gefunden', 'def Pfad = ' + defaultPath)
             return
-
+        
         projectDir = os.path.dirname(self.path)
         if not os.path.isdir(projectDir):
             QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
