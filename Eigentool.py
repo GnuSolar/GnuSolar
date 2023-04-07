@@ -186,7 +186,7 @@ class Eigentool(QApplication):
         self.ui.nextQuoteName.setText(config.getNextQuoteName())
         self.ui.nextInvoiceName.setText(config.getNextInvoiceName())
     
-    def fillTableProjects(self, state=""):
+    def fillTableProjects(self):
         global config
         
         # recursive scan all folders
@@ -198,7 +198,7 @@ class Eigentool(QApplication):
             for filename in filenames:
                 if filename == "plant.pvp":
                     fn = os.path.join(dirname, filename)
-                    self.addProjectEntry(dirname, fn, state)
+                    self.addProjectEntry(dirname, fn)
 
             # Advanced usage:
             # editing the 'dirnames' list will stop os.walk() from recursing into there.
@@ -207,22 +207,6 @@ class Eigentool(QApplication):
                 dirnames.remove('.git')
         
         self.ui.tableWidgetProjects.resizeColumnsToContents()
-
-    def projectsShowAll(self):
-        self.ui.tableWidgetProjects.setRowCount(0)
-        self.fillTableProjects()
-
-    def projectsShowActiv(self):
-        self.ui.tableWidgetProjects.setRowCount(0)
-        self.fillTableProjects("activ")
-
-    def projectsShowArchived(self):
-        self.ui.tableWidgetProjects.setRowCount(0)
-        self.fillTableProjects("archived")
-
-    def projectsInactiv(self):
-        self.ui.tableWidgetProjects.setRowCount(0)
-        self.fillTableProjects("inactiv")
 
     def filterStatusChanged(self):
         # Reset free text changed
@@ -264,16 +248,13 @@ class Eigentool(QApplication):
             else:
                 self.ui.tableWidgetProjects.hideRow(i)
 
-    def addProjectEntry(self, pathProject, pathPvp, state=""):
+    def addProjectEntry(self, pathProject, pathPvp):
         global config
 
         try:
             pv = PvProject(pathPvp)
         except:
             print("Decode Error:" + pathPvp)
-            return
-
-        if state != "" and pv.progress.getState() != state:
             return
             
         rowN = self.ui.tableWidgetProjects.rowCount()
