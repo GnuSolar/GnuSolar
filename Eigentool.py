@@ -204,6 +204,7 @@ class Eigentool(QApplication):
     def projectViewChanged(self):
         projectView = self.ui.projectView.currentText()
         print(projectView)
+        self.updateProjectEntries(projectView)
 
     def filterFreeTextChanged(self):
         # Reset Filter Status
@@ -246,6 +247,8 @@ class Eigentool(QApplication):
                 # don't go into any .git directories.
                 dirnames.remove('.git')
         
+        self.updateProjectEntries("Default")
+        
         self.ui.tableWidgetProjects.resizeColumnsToContents()
 
     def addProjectEntry(self, pathProject, pathPvp):
@@ -258,27 +261,77 @@ class Eigentool(QApplication):
         projectName = projectName.replace(config.projectRoot + os.sep, "")
         
         self.ui.tableWidgetProjects.setItem(rowN, 0, QTableWidgetItem(projectName))
-        self.updateProjectEntry(pathPvp, rowN)
 
-    def updateProjectEntry(self, pathPvp, rowN):
+    def updateProjectEntries(self, view="Default"):
+        global config
+        views = {
+            "Default" : [
+                "Projekt",
+                "Status",
+                "Anfrage",
+                "offeriert",
+                "Zusage",
+                "Baustart",
+                "Inbetriebnahme",
+                "Bauherr"
+            ],
+            "Finance" : [
+                "Projekt",
+                "Status",
+                "Baustart",
+                "Akonto",
+                "Akonto bez",
+                "Inbetriebnahme",
+                "Schlussrechnung",
+                "Schlussrechnung bez",
+                "Bauherr"
+            ]
+            
+        }
+        # Set columns header
+        self.ui.tableWidgetProjects.setColumnCount(len(views[view]))
+        self.ui.tableWidgetProjects.setHorizontalHeaderLabels(views[view])
+
+        rowN = self.ui.tableWidgetProjects.rowCount()
+        for i in range(rowN):
+            projectName = self.ui.tableWidgetProjects.item(i, 0).text()
+            pathPvp = config.projectRoot + os.sep + projectName + os.sep + "plant.pvp"
+            self.updateProjectEntry(pathPvp, i, view)
+
+    def updateProjectEntry(self, pathPvp, rowN, view="Default"):
         try:
             pv = PvProject(pathPvp)
         except:
-            self.ui.tableWidgetProjects.setItem(rowN, 1, "Decode Error")
+            self.ui.tableWidgetProjects.setItem(rowN, 1, QTableWidgetItem("Decode Error"))
             return
             
         ownerName = str(pv.owner.firstName) + " " + str(pv.owner.lastName) + " " + str(pv.owner.city)
 
-        self.ui.tableWidgetProjects.setItem(rowN, 1, QTableWidgetItem(pv.progress.getState()))
-        self.ui.tableWidgetProjects.setItem(rowN, 2, QTableWidgetItem(pv.progress.getToDo()))
-        self.ui.tableWidgetProjects.setItem(rowN, 3, QTableWidgetItem(ownerName))
-        self.ui.tableWidgetProjects.setItem(rowN, 4, QTableWidgetItem(pv.progress.inquiryReceived))
-        self.ui.tableWidgetProjects.setItem(rowN, 5, QTableWidgetItem(pv.progress.quote1Sent))
-        self.ui.tableWidgetProjects.setItem(rowN, 6, QTableWidgetItem(pv.progress.orderReceived))
-        self.ui.tableWidgetProjects.setItem(rowN, 7, QTableWidgetItem(pv.progress.constructionStart))
-        self.ui.tableWidgetProjects.setItem(rowN, 8, QTableWidgetItem(pv.progress.launch))
+        views = {
+            "Default" : {
+                1 : pv.progress.getState(),
+                2 : pv.progress.inquiryReceived,
+                3 : pv.progress.quote1Sent,
+                4 : pv.progress.orderReceived,
+                5 : pv.progress.constructionStart,
+                6 : pv.progress.launch,
+                7 : ownerName
+            },
+            "Finance" : {
+                1 : pv.progress.getState(),
+                2 : pv.progress.constructionStart,
+                3 : pv.progress.partialInvoiceSent,
+                4 : pv.progress.partialInvoiceReceived,
+                5 : pv.progress.launch,
+                6 : pv.progress.finalInvoiceSent,
+                7 : pv.progress.finalInvoiceReceived,
+                8 : ownerName
+            }
         
-
+        }
+        for i, val in views[view].items():
+            self.ui.tableWidgetProjects.setItem(rowN, i, QTableWidgetItem(val))
+        
     def createProject(self):
         global config
         
