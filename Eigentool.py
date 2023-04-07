@@ -186,28 +186,6 @@ class Eigentool(QApplication):
         self.ui.nextQuoteName.setText(config.getNextQuoteName())
         self.ui.nextInvoiceName.setText(config.getNextInvoiceName())
     
-    def fillTableProjects(self):
-        global config
-        
-        # recursive scan all folders
-        if not os.path.exists(config.projectRoot):
-            print("path not found: " + config.projectRoot)
-            return
-
-        for dirname, dirnames, filenames in os.walk(config.projectRoot):
-            for filename in filenames:
-                if filename == "plant.pvp":
-                    fn = os.path.join(dirname, filename)
-                    self.addProjectEntry(dirname, fn)
-
-            # Advanced usage:
-            # editing the 'dirnames' list will stop os.walk() from recursing into there.
-            if '.git' in dirnames:
-                # don't go into any .git directories.
-                dirnames.remove('.git')
-        
-        self.ui.tableWidgetProjects.resizeColumnsToContents()
-
     def filterStatusChanged(self):
         # Reset free text changed
         self.ui.filterFreeText.textChanged.disconnect()
@@ -248,24 +226,49 @@ class Eigentool(QApplication):
             else:
                 self.ui.tableWidgetProjects.hideRow(i)
 
+    def fillTableProjects(self):
+        global config
+        
+        # recursive scan all folders
+        if not os.path.exists(config.projectRoot):
+            print("path not found: " + config.projectRoot)
+            return
+
+        for dirname, dirnames, filenames in os.walk(config.projectRoot):
+            for filename in filenames:
+                if filename == "plant.pvp":
+                    fn = os.path.join(dirname, filename)
+                    self.addProjectEntry(dirname, fn)
+
+            # Advanced usage:
+            # editing the 'dirnames' list will stop os.walk() from recursing into there.
+            if '.git' in dirnames:
+                # don't go into any .git directories.
+                dirnames.remove('.git')
+        
+        self.ui.tableWidgetProjects.resizeColumnsToContents()
+
     def addProjectEntry(self, pathProject, pathPvp):
         global config
 
-        try:
-            pv = PvProject(pathPvp)
-        except:
-            print("Decode Error:" + pathPvp)
-            return
-            
         rowN = self.ui.tableWidgetProjects.rowCount()
         self.ui.tableWidgetProjects.insertRow(rowN)
 
         projectName = pathProject
         projectName = projectName.replace(config.projectRoot + os.sep, "")
         
-        ownerName = str(pv.owner.firstName) + " " + str(pv.owner.lastName) + " " + str(pv.owner.city)
-        
         self.ui.tableWidgetProjects.setItem(rowN, 0, QTableWidgetItem(projectName))
+        self.updateProjectEntry(pathPvp, rowN)
+
+    def updateProjectEntry(self, pathPvp, rowN):
+        try:
+            pv = PvProject(pathPvp)
+        except:
+            self.ui.tableWidgetProjects.setItem(rowN, 1, "Decode Error")
+            return
+            
+        ownerName = str(pv.owner.firstName) + " " + str(pv.owner.lastName) + " " + str(pv.owner.city)
+
         self.ui.tableWidgetProjects.setItem(rowN, 1, QTableWidgetItem(pv.progress.getState()))
         self.ui.tableWidgetProjects.setItem(rowN, 2, QTableWidgetItem(pv.progress.getToDo()))
         self.ui.tableWidgetProjects.setItem(rowN, 3, QTableWidgetItem(ownerName))
@@ -274,6 +277,7 @@ class Eigentool(QApplication):
         self.ui.tableWidgetProjects.setItem(rowN, 6, QTableWidgetItem(pv.progress.orderReceived))
         self.ui.tableWidgetProjects.setItem(rowN, 7, QTableWidgetItem(pv.progress.constructionStart))
         self.ui.tableWidgetProjects.setItem(rowN, 8, QTableWidgetItem(pv.progress.launch))
+        
 
     def createProject(self):
         global config
