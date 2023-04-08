@@ -95,6 +95,7 @@ class SolarProject(QApplication):
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
         self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
         self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
+        self.ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
 
         # Arguments:
         #   First argument: Path to the Pv-Project File
@@ -407,6 +408,9 @@ class SolarProject(QApplication):
         to = self.model.owner.email
         composeEmail(to, "", "")
 
+    # Gemeinde Webseite öffnen
+    def action_openMunicipalityWebsite(self):
+        openFolder(self.model.municipality.website)
 
     # open a Project with a path
     def openFile(self, pvpPath):

@@ -2003,6 +2003,19 @@
          <string>GVZ Dokumentation</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="openMunicipalityWebsite">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>70</y>
+          <width>241</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Webseite öffnen</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -2298,7 +2311,7 @@
      <x>0</x>
      <y>0</y>
      <width>1136</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
