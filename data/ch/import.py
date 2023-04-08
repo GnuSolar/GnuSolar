@@ -7,6 +7,7 @@ import sqlite3
 import csv
 
 con = sqlite3.connect("../masterdata.db")
+con.row_factory = sqlite3.Row
 
 cur = con.cursor()
 
@@ -52,7 +53,7 @@ with open('2023-01-01_Ortschaften.csv', newline='') as csvfile:
             cur.execute(sql, ("CH", district_code, mun_code, mun_name))
             mun_id = cur.lastrowid
         else:
-            mun_id = db_row[0]
+            mun_id = db_row["id"]
         
         sql = "INSERT INTO zip_code (fk_municipality, zip_code, name) VALUES (?, ?, ?)"
         cur.execute(sql, (mun_id, zip_code, zip_name))
@@ -89,7 +90,7 @@ with open('2022-10-21_EVU_Gemeinde.csv', newline='') as csvfile:
             cur.execute(sql, (pc_name, pc_street, pc_zip_code, pc_city))
             pc_id = cur.lastrowid
         else:
-            pc_id = db_row[0]
+            pc_id = db_row["id"]
         
         # now search for municipality
         # first by Gemeinde-Nr
@@ -105,9 +106,9 @@ with open('2022-10-21_EVU_Gemeinde.csv', newline='') as csvfile:
                 print("Municipality not found code=%s name=%s" % (mun_nr, mun_name))
                 continue
             else:
-                mun_id = db_row[0]
+                mun_id = db_row["id"]
         else:
-            mun_id = db_row[0]
+            mun_id = db_row["id"]
         
         sql = "UPDATE municipality SET fk_power_company=? WHERE id=?"
         cur.execute(sql, (pc_id, mun_id))

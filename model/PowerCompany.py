@@ -39,22 +39,23 @@ class PowerCompany:
         self.id = id
 
         con = sqlite3.connect(Config.getMasterDbPath())
+        con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM power_company WHERE id=?"
         res = cur.execute(sql, [id])
         db_row = res.fetchone()
 
         if db_row:
-            self.id = db_row[0]
-            self.vseId = db_row[1]
-            self.name = db_row[2]
-            self.address1 = db_row[3]
-            self.address2 = db_row[4]
-            self.zipCode = db_row[5]
-            self.city = db_row[6]
-            self.fkContactTag = db_row[7]
-            self.fkFormTag = db_row[8]
-            self.fkFormIa = db_row[9]
+            self.id = db_row["id"]
+            self.vseId = db_row["vse_id"]
+            self.name = db_row["name"]
+            self.address1 = db_row["address1"]
+            self.address2 = db_row["address2"]
+            self.zipCode = db_row["zip_code"]
+            self.city = db_row["city"]
+            self.fkContactTag = db_row["fk_contact_tag"]
+            self.fkFormTag = db_row["fk_form_tag"]
+            self.fkFormIa = db_row["fk_form_ia"]
             self.tagContact.fromId(self.fkContactTag)
 
     def getTagContact(self):
@@ -71,6 +72,7 @@ class PowerCompany:
             return "No fkFormTag powerCompany.id=" + str(self.id)
             
         con = sqlite3.connect(Config.getMasterDbPath())
+        con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM form WHERE id=?"
         res = cur.execute(sql, [self.fkFormTag])
@@ -79,9 +81,9 @@ class PowerCompany:
         if not db_row:
             return "Form not found id=" + str(self.fkFormTag)
         
-        form_type = db_row[1]
-        form_handler = db_row[2]
-        form_file = Config.getDataPath() + os.sep + db_row[3]
+        form_type = db_row["type"]
+        form_handler = db_row["handler"]
+        form_file = Config.getDataPath() + os.sep + db_row["file"]
         if not os.path.exists(form_file):
             return "File not found: '" + form_file + "'"
         

@@ -9,6 +9,7 @@ import requests
 import re
 
 con = sqlite3.connect("../masterdata.db")
+con.row_factory = sqlite3.Row
 
 cur = con.cursor()
 
@@ -42,8 +43,8 @@ with open('2023-01-01_Gemeinden_Wikipedia.txt', newline='') as csvfile:
             print("Municipality not found, mun_code=" + mun_code)
             continue
 
-        mun_id = db_row[0]
-        website = db_row[9]
+        mun_id = db_row["id"]
+        website = db_row["website"]
         if website:
             continue
 

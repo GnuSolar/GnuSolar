@@ -128,13 +128,14 @@ class Building:
 
         # First check if in zip_code, city
         con = sqlite3.connect(Config.getMasterDbPath())
+        con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM zip_code WHERE zip_code=?"
         res = cur.execute(sql, [self.zip])
         db_row = res.fetchone()
 
         if db_row:
-            fkPowerCompany = db_row[2]
+            fkPowerCompany = db_row["fk_power_company"]
             if fkPowerCompany:
                 return fkPowerCompany
         
@@ -143,7 +144,7 @@ class Building:
         res = cur.execute(sql, [self.municipalityCode])
         db_row = res.fetchone()
         if db_row:
-            fkPowerCompany = db_row[6]
+            fkPowerCompany = db_row["fk_power_company"]
             if fkPowerCompany:
                 return fkPowerCompany
         

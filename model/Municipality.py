@@ -33,21 +33,22 @@ class Municipality:
         self.code = code
 
         con = sqlite3.connect(Config.getMasterDbPath())
+        con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM municipality WHERE code=?"
         res = cur.execute(sql, [code])
         db_row = res.fetchone()
 
         if db_row:
-            self.id = db_row[0]
-            self.countryCode = db_row[1]
-            self.stateCode = db_row[2]
-            self.districtCode = db_row[3]
-            self.code = db_row[4]
-            self.name = db_row[5]
-            self.fkPowerCompany = db_row[6]
-            self.fkFormBuilding = db_row[7]
-            self.website = db_row[8]
+            self.id = db_row["id"]
+            self.countryCode = db_row["country_code"]
+            self.stateCode = db_row["state_code"]
+            self.districtCode = db_row["district_code"]
+            self.code = db_row["code"]
+            self.name = db_row["name"]
+            self.fkPowerCompany = db_row["fk_power_company"]
+            self.fkFormBuilding = db_row["fk_form_building"]
+            self.website = db_row["website"]
             self.buildingContact.fromMunicipalityType(self.id, "municipality_build")
             self.mainContact.fromMunicipalityType(self.id, "municipality_main")
 
@@ -62,6 +63,7 @@ class Municipality:
             return "No fkFormBuilding municipality.id=" + str(self.id)
             
         con = sqlite3.connect(Config.getMasterDbPath())
+        con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM form WHERE id=?"
         res = cur.execute(sql, [self.fkFormBuilding])
@@ -70,9 +72,9 @@ class Municipality:
         if not db_row:
             return "Form not found id=" + str(self.fkFormTag)
         
-        form_type = db_row[1]
-        form_handler = db_row[2]
-        var_file = Config.getDataPath() + os.sep + db_row[3]
+        form_type = db_row["type"]
+        form_handler = db_row["handler"]
+        var_file = Config.getDataPath() + os.sep + db_row["file"]
         if not os.path.exists(var_file):
             return "File not found: '" + var_file + "'"
         

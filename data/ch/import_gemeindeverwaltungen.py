@@ -23,6 +23,7 @@ import json
 import chompjs
 
 con = sqlite3.connect("../masterdata.db")
+con.row_factory = sqlite3.Row
 cur = con.cursor()
 
 # import municipalities and zip_codes
