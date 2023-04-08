@@ -1,0 +1,2138 @@
+BFS-Nummer,Gemeindenamen,Website
+1,Aeugst am Albis,https://www.aeugst-albis.ch/
+2,Affoltern am Albis,https://www.stadtaffoltern.ch/
+3,Bonstetten,https://www.bonstetten.ch/
+4,Hausen am Albis,https://www.hausen.ch/
+5,Hedingen,https://www.hedingen.ch/
+6,Kappel am Albis,https://www.kappel-am-albis.ch/
+7,Knonau,https://www.knonau.ch/
+8,Maschwanden,https://www.maschwanden.ch/
+9,Mettmenstetten,https://www.mettmenstetten.ch/
+10,Obfelden,https://www.obfelden.ch/
+11,Ottenbach,https://www.ottenbach.ch/
+12,Rifferswil,https://www.rifferswil.ch/
+13,Stallikon,https://www.stallikon.ch/
+14,Wettswil am Albis,https://www.wettswil.ch/
+22,Benken (ZH),https://www.benken-zh.ch/
+23,Berg am Irchel,https://www.berg-am-irchel.ch/
+24,Buch am Irchel,https://www.buchamirchel.ch/
+25,Dachsen,https://www.dachsen.ch/
+26,Dorf,https://www.dorf.ch/
+27,Feuerthalen,https://www.feuerthalen.ch/
+28,Flaach,https://www.flaach.ch/
+29,Flurlingen,https://www.flurlingen.ch/
+31,Henggart,https://www.henggart.ch/
+33,Kleinandelfingen,https://www.kleinandelfingen.ch/
+34,Laufen-Uhwiesen,https://www.laufen-uhwiesen.ch/
+35,Marthalen,https://www.marthalen.ch/
+37,Ossingen,https://www.ossingen.ch/
+38,Rheinau,https://www.rheinau.ch/
+39,Thalheim an der Thur,https://www.thalheim.ch/
+40,Trüllikon,https://www.truellikon.ch/
+41,Truttikon,https://www.truttikon.ch/
+43,Volken,https://www.volken.ch/
+51,Bachenbülach,https://www.bachenbuelach.ch/
+52,Bassersdorf,https://www.bassersdorf.ch/
+53,Bülach,https://www.buelach.ch/
+54,Dietlikon,https://www.dietlikon.ch/
+55,Eglisau,https://www.eglisau.ch/
+56,Embrach,https://www.embrach.ch/
+57,Freienstein-Teufen,https://www.freienstein-teufen.ch/
+58,Glattfelden,https://www.glattfelden.ch/
+59,Hochfelden,https://www.hochfelden.ch/
+60,Höri,https://www.hoeri.ch/
+61,Hüntwangen,https://www.huentwangen.ch/
+62,Kloten,https://www.kloten.ch/
+63,Lufingen,https://www.lufingen.ch/
+64,Nürensdorf,https://www.nuerensdorf.ch/
+65,Oberembrach,https://www.oberembrach.ch/
+66,Opfikon,https://www.opfikon.ch/
+67,Rafz,https://www.rafz.ch/
+68,Rorbas,https://www.rorbas.ch/
+69,Wallisellen,https://www.wallisellen.ch/
+70,Wasterkingen,https://www.wasterkingen.ch/
+71,Wil (ZH),https://www.wil-zh.ch/
+72,Winkel,https://www.winkel.ch/
+81,Bachs,https://www.bachs.ch/
+82,Boppelsen,https://www.boppelsen.ch/
+83,Buchs (ZH),https://www.buchs-zh.ch/
+84,Dällikon,https://www.daellikon.ch/
+85,Dänikon,https://www.daenikon.ch/
+86,Dielsdorf,https://www.dielsdorf.ch/
+87,Hüttikon,https://www.huettikon.ch/
+88,Neerach,https://www.neerach.ch/
+89,Niederglatt,https://www.niederglatt.zh.ch/
+90,Niederhasli,https://www.niederhasli.ch/
+91,Niederweningen,https://www.niederweningen.ch/
+92,Oberglatt,https://www.oberglatt.ch/
+93,Oberweningen,https://www.oberweningen.ch/
+94,Otelfingen,https://www.otelfingen.ch/
+95,Regensberg,https://www.regensberg.ch/
+96,Regensdorf,https://www.regensdorf.ch/
+97,Rümlang,https://www.ruemlang.ch/
+98,Schleinikon,https://www.schleinikon.ch/
+99,Schöfflisdorf,https://www.schoefflisdorf.ch/
+100,Stadel,https://www.stadel.zh.ch/
+101,Steinmaur,https://www.steinmaur.ch/
+102,Weiach,https://www.weiach.ch/
+111,Bäretswil,https://www.baeretswil.ch/
+112,Bubikon,https://www.bubikon.ch/
+113,Dürnten,https://www.duernten.ch/
+114,Fischenthal,https://www.fischenthal.ch/
+115,Gossau (ZH),https://www.gossau-zh.ch/
+116,Grüningen,https://www.grueningen.ch/
+117,Hinwil,https://www.hinwil.ch/
+118,Rüti (ZH),https://www.rueti.ch/
+119,Seegräben,https://www.seegraeben.ch/
+120,Wald (ZH),https://www.wald-zh.ch/
+121,Wetzikon (ZH),https://www.wetzikon.ch/
+131,Adliswil,https://www.adliswil.ch/
+135,Kilchberg (ZH),https://www.kilchberg.ch/
+136,Langnau am Albis,https://www.langnauamalbis.ch/
+137,Oberrieden,https://www.oberrieden.ch/
+138,Richterswil,https://www.richterswil.ch/
+139,Rüschlikon,https://www.rueschlikon.ch/
+141,Thalwil,https://www.thalwil.ch/
+151,Erlenbach (ZH),https://www.erlenbach.ch/
+152,Herrliberg,https://www.herrliberg.ch/
+153,Hombrechtikon,https://www.hombrechtikon.ch/
+154,Küsnacht (ZH),https://www.kuesnacht.ch/
+155,Männedorf,https://www.maennedorf.ch/
+156,Meilen,https://www.meilen.ch/
+157,Oetwil am See,https://www.oetwil.ch/
+158,Stäfa,https://www.staefa.ch/
+159,Uetikon am See,https://www.uetikonamsee.ch/
+160,Zumikon,https://www.zumikon.ch/
+161,Zollikon,https://www.zollikon.ch/
+172,Fehraltorf,https://www.fehraltorf.ch/
+173,Hittnau,https://www.hittnau.ch/
+176,Lindau,https://www.lindau.ch/
+177,Pfäffikon,https://www.pfaeffikon.ch/
+178,Russikon,https://www.russikon.ch/
+180,Weisslingen,https://www.weisslingen.ch/
+181,Wila,https://www.wila.ch/
+182,Wildberg,https://www.wildberg.ch/
+191,Dübendorf,https://www.duebendorf.ch/
+192,Egg,https://www.egg.ch/
+193,Fällanden,https://www.faellanden.ch/
+194,Greifensee,https://www.greifensee.ch/
+195,Maur,https://www.maur.ch/
+196,Mönchaltorf,https://www.moenchaltorf.ch/
+197,Schwerzenbach,https://www.schwerzenbach.ch/
+198,Uster,https://www.uster.ch/
+199,Volketswil,https://www.volketswil.ch/
+200,Wangen-Brüttisellen,https://www.wangen-bruettisellen.ch/
+211,Altikon,https://www.altikon.ch/
+213,Brütten,https://www.bruetten.ch/
+214,Dägerlen,https://www.daegerlen.ch/
+215,Dättlikon,https://www.daettlikon.ch/
+216,Dinhard,https://www.dinhard.ch/
+218,Ellikon an der Thur,https://www.ellikonanderthur.ch/
+219,Elsau,https://www.elsau.ch/
+220,Hagenbuch,https://www.hagenbuch.zh.ch/
+221,Hettlingen,https://www.hettlingen.ch/
+223,Neftenbach,https://www.neftenbach.ch/
+224,Pfungen,https://www.pfungen.ch/
+225,Rickenbach (ZH),https://www.rickenbach-zh.ch/
+226,Schlatt (ZH),https://www.schlatt-zh.ch/
+227,Seuzach,https://www.seuzach.ch/
+228,Turbenthal,https://www.turbenthal.ch/
+230,Winterthur,https://stadt.winterthur.ch/
+231,Zell (ZH),https://www.zell.ch/
+241,Aesch (ZH),https://www.aesch-zh.ch/
+242,Birmensdorf (ZH),https://www.birmensdorf.ch/
+243,Dietikon,https://www.dietikon.ch/
+244,Geroldswil,https://www.geroldswil.ch/
+245,Oberengstringen,https://www.oberengstringen.ch/
+246,Oetwil an der Limmat,https://www.oetwiladl.ch/
+247,Schlieren,https://www.schlieren.ch/
+248,Uitikon,https://www.uitikon.ch/
+249,Unterengstringen,https://www.unterengstringen.ch/
+250,Urdorf,https://www.urdorf.ch/
+251,Weiningen (ZH),https://www.weiningen.ch/
+261,Zürich,https://www.stadt-zuerich.ch/
+291,Andelfingen,https://www.andelfingen.ch/
+292,Stammheim,https://www.stammheim.ch/
+293,Wädenswil,https://www.waedenswil.ch/
+294,Elgg,https://www.elgg.ch/
+295,Horgen,https://www.horgen.ch/
+296,Illnau-Effretikon,https://www.ilef.ch/
+297,Bauma,https://www.bauma.ch/de/
+298,Wiesendangen,https://www.wiesendangen.ch/
+301,Aarberg,https://www.aarberg.ch/
+302,Bargen (BE),https://www.bargen-be.ch/
+303,Grossaffoltern,https://www.grossaffoltern.ch/
+304,Kallnach,https://www.kallnach.ch/
+305,Kappelen,https://www.kappelen.ch/
+306,Lyss,https://www.lyss.ch/
+307,Meikirch,https://www.meikirch.ch/
+309,Radelfingen,https://www.radelfingen.ch/
+310,Rapperswil (BE),https://www.rapperswil-be.ch/
+311,Schüpfen,https://www.schuepfen.ch/
+312,Seedorf (BE),https://www.seedorf.ch/
+321,Aarwangen,https://www.aarwangen.ch/
+322,Auswil,https://www.auswil.ch/
+323,Bannwil,https://www.bannwil.ch/
+324,Bleienbach,https://www.bleienbach.ch/
+325,Busswil bei Melchnau,https://www.busswil-bm.ch/
+326,Gondiswil,https://www.gondiswil.ch/
+329,Langenthal,https://www.langenthal.ch/
+331,Lotzwil,https://www.lotzwil.ch/
+332,Madiswil,https://www.madiswil.ch/
+333,Melchnau,https://www.melchnau.ch/
+335,Oeschenbach,https://www.oeschenbach.ch/
+336,Reisiswil,https://www.reisiswil.ch/
+337,Roggwil (BE),https://www.roggwil.ch/
+338,Rohrbach,https://www.rohrbach-be.ch/
+339,Rohrbachgraben,https://www.rohrbachgraben.ch/
+340,Rütschelen,https://www.ruetschelen.ch/
+341,Schwarzhäusern,https://www.schwarzhaeusern.ch/
+342,Thunstetten,https://www.thunstetten.ch/
+344,Ursenbach,https://www.ursenbach.ch/
+345,Wynau,https://www.wynau.ch/
+351,Bern,https://www.bern.ch/
+352,Bolligen,https://www.bolligen.ch/
+353,Bremgarten bei Bern,https://www.bremgarten-be.ch/
+354,Kirchlindach,https://www.kirchlindach.ch/
+355,Köniz,https://www.koeniz.ch/
+356,Muri bei Bern,https://www.muri-guemligen.ch/
+357,Oberbalm,https://www.oberbalm.ch/
+358,Stettlen,https://www.stettlen.ch/
+359,Vechigen,https://www.vechigen.ch/
+360,Wohlen bei Bern,https://www.wohlen-be.ch/
+361,Zollikofen,https://www.zollikofen.ch/
+362,Ittigen,https://www.ittigen.ch/
+363,Ostermundigen,https://www.ostermundigen.ch/
+371,Biel/Bienne,https://www.biel-bienne.ch/
+372,Evilard,https://www.evilard.ch/
+381,Arch,https://www.arch-be.ch/
+382,Büetigen,https://www.bueetigen.ch/
+383,Büren an der Aare,https://www.bueren.ch/
+385,Diessbach bei Büren,https://www.diessbach.ch/
+386,Dotzigen,https://www.dotzigen.ch/
+387,Lengnau (BE),https://www.lengnau.ch/
+388,Leuzigen,https://www.leuzigen.ch/
+389,Meienried,https://www.meienried.ch/
+390,Meinisberg,https://www.meinisberg.ch/
+391,Oberwil bei Büren,https://www.oberwil-bueren.ch/
+392,Pieterlen,https://www.pieterlen.ch/
+393,Rüti bei Büren,https://www.ruetibeibueren.ch/
+394,Wengi,https://www.wengi-be.ch/
+401,Aefligen,https://www.aefligen.ch/
+402,Alchenstorf,https://www.alchenstorf.ch
+403,Bäriswil,https://www.baeriswil.ch/
+404,Burgdorf,https://www.burgdorf.ch/
+405,Ersigen,https://www.ersigen.ch/
+406,Hasle bei Burgdorf,https://www.hasle.ch/
+407,Heimiswil,https://www.heimiswil.ch/
+408,Hellsau,https://www.hellsau.ch/
+409,Hindelbank,https://www.hindelbank.ch/
+410,Höchstetten,https://www.hoechstetten.ch/
+411,Kernenried,https://www.kernenried.ch/
+412,Kirchberg (BE),https://www.kirchberg-be.ch/
+413,Koppigen,https://www.koppigen.ch/
+414,Krauchthal,https://www.krauchthal.ch/
+415,Lyssach,https://www.lyssach.ch/
+418,Oberburg,https://www.oberburg.ch/
+420,Rüdtligen-Alchenflüh,https://www.ruedtligen-alchenflueh.ch/
+421,Rumendingen,https://www.rumendingen.ch/
+422,Rüti bei Lyssach,https://ruetibeilyssach.jimdofree.com/
+423,Willadingen,https://www.willadingen.ch/
+424,Wynigen,https://www.wynigen.ch/
+431,Corgémont,https://www.corgemont.ch/
+432,Cormoret,https://www.cormoret.ch/
+433,Cortébert,https://www.cortebert.ch/
+434,Courtelary,https://www.courtelary.ch/
+435,La Ferrière,https://www.laferriere.ch/
+437,Mont-Tramelan,https://www.mont-tramelan.ch/
+438,Orvin,https://www.orvin.ch/
+441,Renan (BE),https://www.renan.ch/
+442,Romont (BE),https://www.romont-jb.ch/
+443,Saint-Imier,https://www.saint-imier.ch/
+444,Sonceboz-Sombeval,https://www.sonceboz.ch/
+445,Sonvilier,https://www.sonvilier.ch/
+446,Tramelan,https://www.tramelan.ch/
+448,Villeret,https://www.villeret.ch/
+449,Sauge,https://www.sauge-jb.ch/
+450,Péry-La Heutte,https://pery-laheutte.ch/
+491,Brüttelen,https://www.bruettelen.ch/
+492,Erlach,https://www.erlach.ch/
+493,Finsterhennen,https://www.finsterhennen.ch/
+494,Gals,https://www.gals.ch/
+495,Gampelen,https://www.gampelen.ch/
+496,Ins,https://www.ins.ch/
+497,Lüscherz,https://www.luescherz.ch/
+498,Müntschemier,https://www.muentschemier.ch/
+499,Siselen,https://www.siselen.ch/
+500,Treiten,https://www.treiten.ch/
+501,Tschugg,https://www.tschugg.ch/
+502,Vinelz,https://www.vinelz.ch/
+533,Bätterkinden,https://www.baetterkinden.ch/
+535,Deisswil bei Münchenbuchsee,https://www.deisswil.ch/
+538,Fraubrunnen,https://www.fraubrunnen.ch/
+540,Jegenstorf,https://www.jegenstorf.ch/
+541,Iffwil,https://www.iffwil.ch/
+543,Mattstetten,https://www.mattstetten.ch/
+544,Moosseedorf,https://www.moosseedorf.ch/
+546,Münchenbuchsee,https://www.muenchenbuchsee.ch/
+551,Urtenen-Schönbühl,https://www.urtenen-schoenbuehl.ch/
+552,Utzenstorf,https://www.utzenstorf.ch/
+553,Wiggiswil,https://wiggiswil.ch/
+554,Wiler bei Utzenstorf,https://www.wiler.ch/
+556,Zielebach,https://www.zielebach.ch/
+557,Zuzwil (BE),https://www.zuzwil-be.ch/
+561,Adelboden,https://www.3715.ch/
+562,Aeschi bei Spiez,https://www.aeschi.ch/
+563,Frutigen,https://www.frutigen.ch/
+564,Kandergrund,https://www.kandergrund.ch/
+565,Kandersteg,https://www.gemeindekandersteg.ch/
+566,Krattigen,https://www.krattigen.ch/
+567,Reichenbach im Kandertal,https://www.reichenbach.ch/
+571,Beatenberg,https://www.beatenberg.ch/
+572,Bönigen,https://www.boenigen.ch/
+573,Brienz (BE),https://www.brienz.ch/
+574,Brienzwiler,https://www.brienzwiler.ch/
+575,Därligen,https://www.daerligen.ch/
+576,Grindelwald,https://www.gemeinde-grindelwald.ch/
+577,Gsteigwiler,https://www.gsteigwiler.ch/
+578,Gündlischwand,https://www.guendlischwand.ch/
+579,Habkern,https://www.habkern.ch/
+580,Hofstetten bei Brienz,https://www.hofstetten-ballenberg.ch/
+581,Interlaken,https://www.interlaken-gemeinde.ch/
+582,Iseltwald,https://www.iseltwald.ch/
+584,Lauterbrunnen,https://www.lauterbrunnen.ch/
+585,Leissigen,https://www.leissigen.ch/
+586,Lütschental,https://www.luetschental.ch/
+587,Matten bei Interlaken,https://www.matten.ch/
+588,Niederried bei Interlaken,https://www.niederried-be.ch/
+589,Oberried am Brienzersee,https://www.oberried.ch/
+590,Ringgenberg (BE),https://www.ringgenberg.ch/
+591,Saxeten,https://www.saxeten.ch/
+592,Schwanden bei Brienz,https://www.schwandenbrienz.ch/
+593,Unterseen,https://www.unterseen.ch/
+594,Wilderswil,https://www.wilderswil.ch/
+602,Arni (BE),https://www.arnibe.ch/
+603,Biglen,https://www.biglen.ch/
+605,Bowil,https://www.bowil.ch/
+606,Brenzikofen,https://www.brenzikofen.ch/
+607,Freimettigen,https://www.freimettigen.ch/
+608,Grosshöchstetten,https://www.grosshoechstetten.ch/
+609,Häutligen,https://www.haeutligen.ch/
+610,Herbligen,https://www.herbligen.ch/
+611,Kiesen,https://www.kiesen.ch/
+612,Konolfingen,https://www.konolfingen.ch/
+613,Landiswil,https://www.landiswil.ch/
+614,Linden,https://www.linden.ch/
+615,Mirchel,https://www.mirchel.ch/
+616,Münsingen,https://www.muensingen.ch/
+617,Niederhünigen,https://www.niederhuenigen.ch/
+619,Oberdiessbach,https://www.oberdiessbach.ch/
+620,Oberthal,https://www.oberthal.ch/
+622,Oppligen,https://www.oppligen.ch/
+623,Rubigen,https://www.rubigen.swiss/
+626,Walkringen,https://www.walkringen.ch/
+627,Worb,https://www.worb.ch/
+628,Zäziwil,https://www.zaeziwil.ch/
+629,Oberhünigen,https://www.oberhuenigen.ch/
+630,Allmendingen,https://www.allmendingen.ch/
+632,Wichtrach,https://www.wichtrach.ch/
+662,Ferenbalm,https://www.ferenbalm.ch/
+663,Frauenkappelen,https://www.frauenkappelen.ch/
+665,Gurbrü,https://www.gurbrue.ch/
+666,Kriechenwil,https://www.kriechenwil.ch/
+667,Laupen,https://www.laupen.ch/
+668,Mühleberg,https://www.muehleberg.ch/
+669,Münchenwiler,https://www.muenchenwiler.ch/
+670,Neuenegg,https://www.neuenegg.ch/
+671,Wileroltigen,https://www.wileroltigen.ch/
+681,Belprahon,https://www.belprahon.ch/
+683,Champoz,https://www.champoz.ch/
+687,Corcelles (BE),https://www.corcelles-be.ch/
+690,Court,https://www.court.ch/
+691,Crémines,https://www.cremines.ch/
+692,Eschert,https://www.eschert.ch/
+694,Grandval,https://www.grandval.ch/
+696,Loveresse,https://www.loveresse.ch/
+700,Moutier,https://moutier.ch/
+701,Perrefitte,https://www.perrefitte.ch/
+703,Reconvilier,https://www.reconvilier.ch/
+704,Roches (BE),https://roches.ch/
+706,Saicourt,https://www.saicourt.ch/
+707,Saules (BE),https://www.saules-be.ch/
+708,Schelten,https://www.schelten.ch/
+709,Seehof,
+711,Sorvilier,https://www.sorvilier.ch/
+713,Tavannes,https://www.tavannes.ch/
+715,Rebévelier,
+716,Petit-Val,https://www.petit-val.ch/
+717,Valbirse,https://www.valbirse.ch/
+723,La Neuveville,https://www.neuveville.ch/
+724,Nods,https://www.nods.ch/
+726,Plateau de Diesse,https://www.leplateaudediesse.ch/
+731,Aegerten,https://www.aegerten.ch/
+732,Bellmund,https://www.bellmund.ch/
+733,Brügg,https://www.bruegg.ch/
+734,Bühl,https://www.buehl.ch/
+735,Epsach,https://www.epsach.ch/
+736,Hagneck,https://hagneck.ch/
+737,Hermrigen,https://www.hermrigen.ch/
+738,Jens,https://www.jens.ch/
+739,Ipsach,https://www.ipsach.ch/
+740,Ligerz,https://www.ligerz.ch/
+741,Merzligen,https://www.merzligen.ch/
+742,Mörigen,https://www.moerigen.ch/
+743,Nidau,https://www.nidau.ch/
+744,Orpund,https://www.orpund.ch/
+745,Port,https://www.port.ch/
+746,Safnern,https://www.safnern.ch/
+747,Scheuren,https://www.gemeinde-scheuren.ch/
+748,Schwadernau,https://www.schwadernau.ch/
+749,Studen (BE),https://www.studen.ch/
+750,Sutz-Lattrigen,https://www.sutz-lattrigen.ch/
+751,Täuffelen,https://www.taeuffelen.ch/
+754,Walperswil,https://www.walperswil.ch/
+755,Worben,https://www.worben.ch/
+756,Twann-Tüscherz,https://www.twann-tuescherz.ch/
+761,Därstetten,https://www.daerstetten.ch/
+762,Diemtigen,https://www.diemtigen.ch/
+763,Erlenbach im Simmental,https://www.erlenbach-be.ch
+766,Oberwil im Simmental,https://www.oberwil-im-simmental.ch/
+767,Reutigen,https://www.reutigen.ch/
+768,Spiez,https://www.spiez.ch/
+769,Wimmis,https://www.wimmis.ch/
+770,Stocken-Höfen,https://www.stocken-hoefen.ch/
+782,Guttannen,https://www.guttannen.ch/
+783,Hasliberg,https://www.hasliberg.ch/
+784,Innertkirchen,https://www.innertkirchen.ch/
+785,Meiringen,https://www.meiringen.ch/
+786,Schattenhalb,https://www.schattenhalb.ch/
+791,Boltigen,https://www.boltigen.ch/
+792,Lenk,https://www.lenkgemeinde.ch/
+793,St. Stephan,https://www.ststephan.ch/
+794,Zweisimmen,https://www.zweisimmen.ch/
+841,Gsteig,https://www.gsteig.ch/
+842,Lauenen,https://www.lauenen.ch/
+843,Saanen,https://www.saanen.ch/
+852,Guggisberg,https://www.guggisberg-be.ch/
+853,Rüschegg,https://www.rueschegg.ch/
+855,Schwarzenburg,https://www.schwarzenburg.ch/
+861,Belp,https://www.belp.ch/
+863,Burgistein,https://www.burgistein.ch/
+866,Gerzensee,https://www.gerzensee.ch/
+867,Gurzelen,https://www.gurzelen.ch/
+868,Jaberg,https://www.jaberg.ch/
+869,Kaufdorf,https://www.kaufdorf.ch/
+870,Kehrsatz,https://www.kehrsatz.ch/
+872,Kirchdorf (BE),https://www.kirchdorf-be.ch/
+877,Niedermuhlern,https://www.niedermuhlern.ch/
+879,Riggisberg,https://www.riggisberg.ch/
+880,Rüeggisberg,https://www.rueggisberg.ch/
+883,Seftigen,https://www.seftigen.ch/
+884,Toffen,https://www.toffen.ch/
+885,Uttigen,https://www.uttigen.ch/
+886,Wattenwil,https://www.wattenwil.ch/
+888,Wald (BE),https://www.wald-be.ch/
+889,Thurnen,https://www.thurnen.ch/
+901,Eggiwil,https://www.eggiwil.ch/
+902,Langnau im Emmental,https://www.langnau-ie.ch/
+903,Lauperswil,https://www.lauperswil.ch/
+904,Röthenbach im Emmental,https://www.roethenbach.ch/
+905,Rüderswil,https://www.ruederswil.ch/
+906,Schangnau,https://www.schangnau.ch/
+907,Signau,https://www.signau.ch/
+908,Trub,https://www.trub.ch/
+909,Trubschachen,https://www.trubschachen.ch/
+921,Amsoldingen,https://www.amsoldingen.ch/
+922,Blumenstein,https://www.blumenstein.ch/
+923,Buchholterberg,https://www.heimenschwand.ch/
+924,Eriz,https://www.eriz.ch/
+925,Fahrni,https://www.gemeinde-fahrni.ch/
+927,Heiligenschwendi,https://www.heiligenschwendi.ch/
+928,Heimberg,https://www.heimberg.ch/
+929,Hilterfingen,https://www.hilterfingen.ch/
+931,Homberg,https://www.homberg.ch/
+932,Horrenbach-Buchen,https://www.horrenbach-buchen.ch/
+934,Oberhofen am Thunersee,https://www.oberhofen.ch/
+935,Oberlangenegg,https://www.oberlangenegg.ch/
+936,Pohlern,https://www.pohlern.ch/
+938,Sigriswil,https://www.sigriswil.ch/
+939,Steffisburg,https://www.steffisburg.ch/
+940,Teuffenthal (BE),https://www.teuffenthal.ch/
+941,Thierachern,https://www.thierachern.ch/
+942,Thun,https://www.thun.ch/
+943,Uebeschi,https://www.uebeschi.ch/
+944,Uetendorf,https://www.uetendorf.ch/
+945,Unterlangenegg,https://www.unterlangenegg.ch/
+946,Wachseldorn,https://www.wachseldorn.ch/
+947,Zwieselberg,https://www.zwieselberg.ch/
+948,Forst-Längenbühl,https://www.forst-laengenbuehl.ch/
+951,Affoltern im Emmental,https://www.affolternimemmental.ch/
+952,Dürrenroth,https://www.duerrenroth.ch/
+953,Eriswil,https://www.eriswil.ch/
+954,Huttwil,https://www.huttwil.ch/
+955,Lützelflüh,https://www.luetzelflueh.ch/
+956,Rüegsau,https://www.ruegsau.ch/
+957,Sumiswald,https://www.sumiswald.ch/
+958,Trachselwald,https://www.trachselwald.ch/
+959,Walterswil (BE),https://www.walterswil-be.ch/
+960,Wyssachen,https://www.wyssachen.ch/
+971,Attiswil,https://www.attiswil.ch/
+972,Berken,https://www.berken.ch/
+973,Bettenhausen,https://www.bettenhausen.ch/
+975,Farnern,https://www.farnern.ch/
+976,Graben,https://www.graben.ch/
+977,Heimenhausen,https://www.heimenhausen.ch/
+979,Herzogenbuchsee,https://www.herzogenbuchsee.ch/
+980,Inkwil,https://www.inkwil.ch/
+981,Niederbipp,https://www.niederbipp.ch/
+982,Niederönz,https://www.niederoenz.ch/
+983,Oberbipp,https://www.oberbipp.ch/
+985,Ochlenberg,https://www.ochlenberg.ch/
+987,Rumisberg,https://www.rumisberg.ch/
+988,Seeberg,https://www.seeberg.ch/
+989,Thörigen,https://www.thoerigen.ch/
+990,Walliswil bei Niederbipp,https://www.walliswil-bipp.ch/
+991,Walliswil bei Wangen,https://www.walliswil.ch/
+992,Wangen an der Aare,https://www.wangen-a-a.ch/
+993,Wangenried,https://www.wangenried.ch/
+995,Wiedlisbach,https://www.wiedlisbach.ch/
+1001,Doppleschwand,https://www.doppleschwand.ch/
+1002,Entlebuch,https://www.entlebuch.ch/
+1004,Flühli,https://www.fluehli.ch/
+1005,Hasle (LU),https://www.hasle-lu.ch/
+1007,Romoos,https://www.romoos.ch/
+1008,Schüpfheim,https://www.schuepfheim.ch/
+1009,Werthenstein,https://www.werthenstein.ch/
+1010,Escholzmatt-Marbach,https://www.escholzmatt-marbach.ch/
+1021,Aesch (LU),https://www.aesch-lu.ch/
+1023,Ballwil,https://www.ballwil.ch/
+1024,Emmen,https://www.emmen.ch/
+1025,Ermensee,https://www.ermensee.ch/
+1026,Eschenbach (LU),https://www.eschenbach-luzern.ch/
+1030,Hitzkirch,https://www.hitzkirch.ch/
+1031,Hochdorf,https://www.hochdorf.ch/
+1032,Hohenrain,https://www.hohenrain.ch/
+1033,Inwil,https://www.inwil.ch/
+1037,Rain,https://www.rain.ch/
+1039,Römerswil,https://www.roemerswil.ch/
+1040,Rothenburg,https://www.rothenburg.ch/
+1041,Schongau,https://www.schongau.ch/
+1051,Adligenswil,https://www.adligenswil.ch/
+1052,Buchrain,https://www.buchrain.ch/
+1053,Dierikon,https://www.dierikon.ch/
+1054,Ebikon,https://www.ebikon.ch/
+1055,Gisikon,https://www.gisikon.ch/
+1056,Greppen,https://www.greppen.ch/
+1057,Honau,https://www.honau.ch/
+1058,Horw,https://www.horw.ch/
+1059,Kriens,https://www.stadt-kriens.ch/
+1061,Luzern,https://www.stadtluzern.ch/
+1062,Malters,https://www.malters.ch/
+1063,Meggen,https://www.meggen.ch/
+1064,Meierskappel,https://www.meierskappel.ch/
+1065,Root,https://www.gemeinde-root.ch/
+1066,Schwarzenberg,https://www.schwarzenberg.ch/
+1067,Udligenswil,https://www.udligenswil.ch/
+1068,Vitznau,https://www.vitznau.ch/
+1069,Weggis,https://www.weggis.ch/
+1081,Beromünster,https://www.beromuenster.ch/
+1082,Büron,https://www.bueron.ch/
+1083,Buttisholz,https://www.buttisholz.ch/
+1084,Eich,https://www.eich.ch/
+1085,Geuensee,https://www.geuensee.ch/
+1086,Grosswangen,https://www.grosswangen.ch/
+1088,Hildisrieden,https://www.hildisrieden.ch/
+1089,Knutwil,https://www.knutwil.ch/
+1091,Mauensee,https://www.mauensee.ch/
+1093,Neuenkirch,https://www.neuenkirch.ch/
+1094,Nottwil,https://www.nottwil.ch/
+1095,Oberkirch,https://www.oberkirch.ch/
+1097,Rickenbach (LU),https://www.rickenbach.ch/
+1098,Ruswil,https://www.ruswil.ch/
+1099,Schenkon,https://www.schenkon.ch/
+1100,Schlierbach,https://www.schlierbach.ch/
+1102,Sempach,https://www.sempach.ch/
+1103,Sursee,https://www.sursee.ch/
+1104,Triengen,https://www.triengen.ch/
+1107,Wolhusen,https://www.wolhusen.ch/
+1121,Alberswil,https://www.alberswil.ch/
+1122,Altbüron,https://www.altbueron.ch/
+1123,Altishofen,https://www.altishofen.ch/
+1125,Dagmersellen,https://www.dagmersellen.ch/
+1127,Egolzwil,https://www.egolzwil.ch/
+1128,Ettiswil,https://www.ettiswil.ch/
+1129,Fischbach,https://www.fischbach-lu.ch/
+1131,Grossdietwil,https://www.grossdietwil.ch/
+1132,Hergiswil bei Willisau,https://www.hergiswil-lu.ch/
+1135,Luthern,https://www.luthern.ch/
+1136,Menznau,https://www.menznau.ch/
+1137,Nebikon,https://www.nebikon.ch/
+1139,Pfaffnau,https://www.pfaffnau.ch/
+1140,Reiden,https://www.reiden.ch/
+1142,Roggliswil,https://www.roggliswil.ch/
+1143,Schötz,https://www.schoetz.ch/
+1145,Ufhusen,https://www.ufhusen.ch/
+1146,Wauwil,https://www.wauwil.ch/
+1147,Wikon,https://www.wikon.ch/
+1150,Zell (LU),https://www.zell-lu.ch/
+1151,Willisau,https://www.willisau.ch/
+1201,Altdorf (UR),https://www.altdorf.ch/
+1202,Andermatt,https://www.gemeinde-andermatt.ch/
+1203,Attinghausen,https://www.attinghausen.ch/
+1205,Bürglen (UR),https://www.buerglen.ch/
+1206,Erstfeld,https://www.erstfeld.ch/
+1207,Flüelen,https://www.flueelen.ch/
+1208,Göschenen,https://www.goeschenen.ch/
+1209,Gurtnellen,https://www.gurtnellen.ch/
+1210,Hospental,https://www.hospental.ch/
+1211,Isenthal,https://www.isenthal.ch/
+1212,Realp,https://www.realp.ch/
+1213,Schattdorf,https://www.schattdorf.ch/
+1214,Seedorf (UR),https://www.seedorf-uri.ch/
+1215,Seelisberg,https://www.seelisberg.ch/
+1216,Silenen,https://www.silenen.ch/
+1217,Sisikon,https://www.sisikon.ch/
+1218,Spiringen,https://www.spiringen.ch/
+1219,Unterschächen,https://www.unterschaechen.ch/
+1220,Wassen,https://www.wassen.ch/
+1301,Einsiedeln,https://www.einsiedeln.ch/
+1311,Gersau,https://www.gersau.ch/
+1321,Feusisberg,https://www.feusisberg.ch/
+1322,Freienbach,https://www.freienbach.ch/
+1323,Wollerau,https://www.wollerau.ch/
+1331,Küssnacht (SZ),https://www.kuessnacht.ch/
+1341,Altendorf,https://www.altendorf.ch/
+1342,Galgenen,https://www.galgenen.ch/
+1343,Innerthal,https://www.innerthal.ch/
+1344,Lachen,https://www.lachen.ch/
+1345,Reichenburg,https://www.reichenburg.ch/
+1346,Schübelbach,https://www.schübelbach.ch/
+1347,Tuggen,https://www.tuggen.ch/
+1348,Vorderthal,https://www.vorderthal.ch/
+1349,Wangen (SZ),https://www.wangensz.ch/
+1361,Alpthal,https://www.alpthal.ch/
+1362,Arth,https://www.arth.ch/
+1363,Illgau,https://www.illgau.ch/
+1364,Ingenbohl,https://www.ingenbohl.ch/
+1365,Lauerz,https://www.lauerz.ch/
+1366,Morschach,https://www.morschach.ch/
+1367,Muotathal,https://www.muotathal.ch/
+1368,Oberiberg,https://www.oberiberg.ch/
+1369,Riemenstalden,https://www.riemenstalden.ch/
+1370,Rothenthurm,https://www.rothenthurm.ch/
+1371,Sattel,https://www.sattel.ch/
+1372,Schwyz,https://www.gemeindeschwyz.ch/
+1373,Steinen,https://www.steinen.ch/
+1374,Steinerberg,https://www.steinerberg.ch/
+1375,Unteriberg,https://www.unteriberg.ch/
+1401,Alpnach,https://www.alpnach.ch/
+1402,Engelberg,https://www.gde-engelberg.ch/
+1403,Giswil,https://www.giswil.ch/
+1404,Kerns,https://www.kerns.ch/
+1405,Lungern,https://www.lungern.ch/
+1406,Sachseln,https://www.sachseln.ch/
+1407,Sarnen,https://www.sarnen.ch/
+1501,Beckenried,https://www.beckenried.ch/
+1502,Buochs,https://www.buochs.ch/
+1503,Dallenwil,https://www.dallenwil.ch/
+1504,Emmetten,https://www.emmetten.ch/
+1505,Ennetbürgen,https://www.ennetbuergen.ch/
+1506,Ennetmoos,https://www.ennetmoos.ch/
+1507,Hergiswil (NW),https://www.hergiswil.ch/
+1508,Oberdorf (NW),https://www.oberdorf-nw.ch/
+1509,Stans,https://www.stans.ch/
+1510,Stansstad,https://www.stansstad.ch/
+1511,Wolfenschiessen,https://www.wolfenschiessen.ch/
+1630,Glarus Nord,https://www.glarus-nord.ch/
+1631,Glarus Süd,https://www.glarus-sued.ch/
+1632,Glarus,https://www.glarus.ch/
+1701,Baar,https://www.baar.ch/
+1702,Cham,https://www.cham.ch/
+1703,Hünenberg,https://www.huenenberg.ch/
+1704,Menzingen,https://www.menzingen.ch/
+1705,Neuheim,https://www.neuheim.ch/
+1706,Oberägeri,https://www.oberaegeri.ch/
+1707,Risch,https://www.rischrotkreuz.ch/
+1708,Steinhausen,https://www.steinhausen.ch/
+1709,Unterägeri,https://www.unteraegeri.ch/
+1710,Walchwil,https://www.walchwil.ch/
+1711,Zug,https://www.stadtzug.ch/
+2008,Châtillon (FR),https://www.chatillon-broye.ch/
+2011,Cugy (FR),https://www.cugy-fr.ch/
+2016,Fétigny,https://www.fetigny.ch/
+2022,Gletterens,https://www.gletterens.ch/
+2025,Lully (FR),https://www.lully-fr.ch/
+2027,Ménières,https://www.menieres.ch/
+2029,Montagny (FR),https://www.montagny-fr.ch/
+2035,Nuvilly,https://www.nuvilly.ch/
+2038,Prévondavaux,https://www.prevondavaux.ch/
+2041,Saint-Aubin (FR),https://www.st-aubin.ch/
+2043,Sévaz,https://www.sevaz.ch/
+2044,Surpierre,https://www.surpierre-fr.ch/
+2045,Vallon,https://www.vallon.ch/
+2050,Les Montets,https://www.les-montets.ch/
+2051,Delley-Portalban,https://www.delley-portalban.ch/
+2053,Belmont-Broye,https://www.belmont-broye.ch/
+2054,Estavayer,https://www.estavayer.ch/
+2055,Cheyres-Châbles,https://www.cheyres-chables.ch/
+2061,Auboranges,https://www.auboranges.ch/
+2063,Billens-Hennens,https://www.billens-hennens.ch/
+2066,Chapelle (Glâne),https://www.chapelle.ch/
+2067,Le Châtelard,https://www.le-chatelard.ch/
+2068,Châtonnaye,https://www.chatonnaye.ch/
+2072,Ecublens (FR),https://www.ecublens-fr.ch/
+2079,Grangettes,https://www.grangettes-pres-romont.ch/
+2086,Massonnens,https://www.massonnens.ch/
+2087,Mézières (FR),https://www.mezieres-fr.ch/
+2089,Montet (Glâne),https://www.montet-glane.ch/
+2096,Romont (FR),https://www.romont.ch/
+2097,Rue,https://www.rue.ch/
+2099,Siviriez,https://www.siviriez.ch/
+2102,Ursy,https://www.ursy.ch/
+2113,Vuisternens-devant-Romont,https://www.vuisternens-devant-romont.ch/
+2114,Villorsonnens,https://www.villorsonnens.com/
+2115,Torny,https://www.torny.ch/
+2117,Villaz,https://www.communevillaz.ch/
+2121,Haut-Intyamon,https://www.haut-intyamon.ch/
+2122,Pont-en-Ogoz,https://www.pont-en-ogoz.ch/
+2123,Botterens,https://www.botterens.ch/
+2124,Broc,https://www.broc.ch/
+2125,Bulle,https://www.bulle.ch/
+2128,Châtel-sur-Montsalvens,https://www.chatel-montsalvens.ch/
+2129,Corbières,https://www.corbieres.ch/
+2130,Crésuz,https://www.cresuz.ch/
+2131,Echarlens,https://www.echarlens.ch/
+2134,Grandvillard,https://www.grandvillard.ch/
+2135,Gruyères,https://www.gruyeres.ch/
+2137,Hauteville,https://www.hauteville.ch/
+2138,Jaun,https://www.jaun.ch/
+2140,Marsens,https://www.marsens.ch/
+2143,Morlon,https://www.morlon.ch/
+2145,Le Pâquier (FR),https://www.lepaquier.ch/
+2147,Pont-la-Ville,https://www.pont-la-ville.ch/
+2148,Riaz,https://www.riaz.ch/
+2149,La Roche,https://www.la-roche.ch/
+2152,Sâles,https://www.sales.ch/
+2153,Sorens,https://www.sorens.ch/
+2155,Vaulruz,https://www.vaulruz.ch/
+2160,Vuadens,https://www.vuadens.ch/
+2162,Bas-Intyamon,https://www.bas-intyamon.ch/
+2163,Val-de-Charmey,https://www.val-de-charmey.ch/
+2173,Autigny,https://www.autigny.ch/
+2174,Avry,https://www.avry.ch/
+2175,Belfaux,https://www.belfaux.ch/
+2177,Chénens,https://www.chenens.ch/
+2183,Corminboeuf,https://www.corminboeuf.ch/
+2186,Cottens (FR),https://www.cottens-fr.ch/
+2194,Ferpicloz,https://www.ferpicloz.ch/
+2196,Fribourg,https://www.ville-fribourg.ch/
+2197,Givisiez,https://www.givisiez.ch/
+2198,Granges-Paccot,https://www.granges-paccot.ch/
+2200,Grolley,https://www.grolley.ch/
+2206,Marly,https://www.marly.ch/
+2208,Matran,https://www.matran.ch/
+2211,Neyruz (FR),https://www.neyruz.ch/
+2216,Pierrafortscha,https://www.pierrafortscha.ch/
+2217,Ponthaux,https://www.ponthaux.ch/
+2220,Le Mouret,https://www.le-mouret.ch/
+2226,Treyvaux,https://www.treyvaux.ch/
+2228,Villars-sur-Glâne,https://www.villars-sur-glane.ch/
+2230,Villarsel-sur-Marly,https://www.villarsel-sur-marly.ch/
+2233,Hauterive (FR),https://www.hauterivefr.ch/
+2234,La Brillaz,https://www.labrillaz.ch/
+2235,La Sonnaz,https://www.lasonnaz.ch/
+2236,Gibloux,https://commune-gibloux.ch/
+2237,Prez,https://prez.ch/
+2238,Bois-d'Amont,https://www.bois-damont.ch/
+2250,Courgevaux,https://www.courgevaux.ch/
+2254,Courtepin,https://www.courtepin.ch/
+2257,Cressier (FR),https://www.cressier.ch/
+2258,Fräschels,https://www.fraeschels.ch/
+2261,Greng,https://www.greng.ch/
+2262,Gurmels,https://www.gurmels.ch/
+2265,Kerzers,https://www.kerzers.ch/
+2266,Kleinbösingen,https://www.kleinboesingen.ch/
+2271,Meyriez,https://www.merlach.ch/
+2272,Misery-Courtion,https://www.misery-courtion.ch/
+2274,Muntelier,https://www.muntelier.ch/
+2275,Murten,https://www.murten-morat.ch/
+2276,Ried bei Kerzers,https://www.ried.ch/
+2278,Ulmiz,https://www.ulmiz.ch/
+2284,Mont-Vully,https://www.mont-vully.ch/
+2292,Brünisried,https://www.bruenisried.ch/
+2293,Düdingen,https://www.duedingen.ch/
+2294,Giffers,https://www.giffers.ch/
+2295,Bösingen,https://www.boesingen.ch/
+2296,Heitenried,https://www.heitenried.ch/
+2299,Plaffeien,https://www.plaffeien.ch/
+2300,Plasselb,https://www.plasselb.ch/
+2301,Rechthalten,https://www.rechthalten.ch/
+2303,St. Silvester,https://www.stsilvester.ch/
+2304,St. Ursen,https://www.stursen.ch/
+2305,Schmitten (FR),https://www.schmitten.ch/
+2306,Tafers,https://www.tafers.ch/
+2307,Tentlingen,https://www.tentlingen.ch/
+2308,Ueberstorf,https://www.ueberstorf.ch/
+2309,Wünnewil-Flamatt,https://www.wuennewil-flamatt.ch/
+2321,Attalens,https://www.attalens.ch/
+2323,Bossonnens,https://www.bossonnens.ch/
+2325,Châtel-Saint-Denis,https://www.chatel-st-denis.ch/
+2328,Granges (Veveyse),https://www.granges-veveyse.ch/
+2333,Remaufens,https://www.remaufens.ch/
+2335,Saint-Martin (FR),https://www.saint-martin-fr.ch/
+2336,Semsales,https://www.semsales.ch/
+2337,Le Flon,https://www.leflon.ch/
+2338,La Verrerie,https://www.laverrerie.ch/
+2401,Egerkingen,https://www.egerkingen.ch/
+2402,Härkingen,https://www.haerkingen.ch/
+2403,Kestenholz,https://www.kestenholz.ch/
+2404,Neuendorf,https://www.neuendorf.ch/
+2405,Niederbuchsiten,https://www.niederbuchsiten.ch/
+2406,Oberbuchsiten,https://www.oberbuchsiten.ch/
+2407,Oensingen,https://www.oensingen.ch/
+2408,Wolfwil,https://www.wolfwil.ch/
+2421,Aedermannsdorf,https://www.aedermannsdorf.ch/
+2422,Balsthal,https://www.balsthal.ch/
+2424,Herbetswil,https://www.herbetswil.ch/
+2425,Holderbank (SO),https://www.holderbank-so.ch/
+2426,Laupersdorf,https://www.laupersdorf.ch/
+2427,Matzendorf,https://www.matzendorf.ch/
+2428,Mümliswil-Ramiswil,https://www.muemliswil-ramiswil.ch/
+2430,Welschenrohr-Gänsbrunnen,https://www.welschenrohr.ch/
+2445,Biezwil,https://www.biezwil.ch/
+2455,Lüterkofen-Ichertswil,https://www.lueterkofen-ichertswil.ch/
+2456,Lüterswil-Gächliwil,https://www.lueterswil-gaechliwil.ch/
+2457,Messen,https://www.messen.ch/
+2461,Schnottwil,https://www.schnottwil.ch/
+2463,Unterramsern,https://www.unterramsern.ch/
+2464,Lüsslingen-Nennigkofen,https://www.luesslingen-nennigkofen.ch/
+2465,Buchegg,https://www.buchegg-so.ch/
+2471,Bättwil,https://www.baettwil.ch/
+2472,Büren (SO),https://www.bueren-so.ch/
+2473,Dornach,https://www.dornach.ch/
+2474,Gempen,https://www.gempen.ch/
+2475,Hochwald,https://www.hochwald.ch/
+2476,Hofstetten-Flüh,https://www.hofstettenflueh.ch/
+2477,Metzerlen-Mariastein,https://www.metzerlen.ch/
+2478,Nuglar-St. Pantaleon,https://www.nuglar.ch/
+2479,Rodersdorf,https://www.rodersdorf.ch/
+2480,Seewen,https://www.seewen.ch/
+2481,Witterswil,https://www.witterswil.ch/
+2491,Hauenstein-Ifenthal,https://www.hauenstein-ifenthal.ch/
+2492,Kienberg,https://www.kienberg.ch/
+2493,Lostorf,https://www.lostorf.ch/
+2495,Niedergösgen,https://www.niedergoesgen.ch/
+2497,Obergösgen,https://www.obergoesgen.ch/
+2499,Stüsslingen,https://www.stuesslingen.ch/
+2500,Trimbach,https://www.trimbach.ch/
+2501,Winznau,https://www.winznau.ch/
+2502,Wisen (SO),https://www.wisen.ch/
+2503,Erlinsbach (SO),https://www.erlinsbach-so.ch/
+2511,Aeschi (SO),https://www.aeschi-so.ch/
+2513,Biberist,https://www.biberist.ch/
+2514,Bolken,https://www.bolken.ch/
+2516,Deitingen,https://www.deitingen.ch/
+2517,Derendingen,https://www.derendingen.ch/
+2518,Etziken,https://etziken.ch/
+2519,Gerlafingen,https://www.gerlafingen.ch/
+2520,Halten,https://www.halten.ch/
+2523,Horriwil,https://www.horriwil.ch/
+2524,Hüniken,https://www.hueniken.ch/
+2525,Kriegstetten,https://www.kriegstetten.ch/
+2526,Lohn-Ammannsegg,https://www.lohn-ammannsegg.ch/
+2527,Luterbach,https://www.luterbach.ch/
+2528,Obergerlafingen,https://www.obergerlafingen.ch/
+2529,Oekingen,https://www.oekingen.ch/
+2530,Recherswil,https://www.recherswil.ch/
+2532,Subingen,https://www.subingen.ch/
+2534,Zuchwil,https://www.zuchwil.ch/
+2535,Drei Höfe,https://www.dreihoefe.ch/
+2541,Balm bei Günsberg,https://www.balm-balmberg.ch/
+2542,Bellach,https://www.bellach.ch/
+2543,Bettlach,https://www.bettlach.ch/
+2544,Feldbrunnen-St. Niklaus,https://www.feldbrunnen.ch/
+2545,Flumenthal,https://www.flumenthal.ch/
+2546,Grenchen,https://www.grenchen.ch/
+2547,Günsberg,https://www.guensberg.ch/
+2548,Hubersdorf,https://www.hubersdorf.ch/
+2549,Kammersrohr,
+2550,Langendorf,https://www.langendorf-so.ch/
+2551,Lommiswil,https://www.lommiswil.ch/
+2553,Oberdorf (SO),https://www.oberdorf.ch/
+2554,Riedholz,https://www.riedholz.ch/
+2555,Rüttenen,https://www.ruettenen.ch/
+2556,Selzach,https://www.selzach.ch/
+2571,Boningen,https://www.boningen.ch/
+2572,Däniken,https://www.daeniken.ch/
+2573,Dulliken,https://www.dulliken.ch/
+2574,Eppenberg-Wöschnau,https://www.eppenberg-woeschnau.ch/
+2575,Fulenbach,https://www.fulenbach.ch/
+2576,Gretzenbach,https://www.gretzenbach.ch/
+2578,Gunzgen,https://www.gunzgen.ch/
+2579,Hägendorf,https://www.haegendorf.ch/
+2580,Kappel (SO),https://www.kappel.ch/
+2581,Olten,https://www.olten.ch/
+2582,Rickenbach (SO),https://www.rickenbachso.ch/
+2583,Schönenwerd,https://www.schoenenwerd.ch/
+2584,Starrkirch-Wil,https://www.starrkirch-wil.ch/
+2585,Walterswil (SO),https://www.walterswil.ch/
+2586,Wangen bei Olten,https://www.wangenbo.ch/
+2601,Solothurn,https://www.stadt-solothurn.ch/
+2611,Bärschwil,https://www.baerschwil.ch/
+2612,Beinwil (SO),https://www.beinwil-so.ch/
+2613,Breitenbach,https://www.breitenbach.ch/
+2614,Büsserach,https://www.buesserach.ch/
+2615,Erschwil,https://www.erschwil.ch/
+2616,Fehren,https://www.fehren.ch/
+2617,Grindel,https://www.grindel.ch/
+2618,Himmelried,https://www.himmelried.ch/
+2619,Kleinlützel,https://www.kleinluetzel.ch/
+2620,Meltingen,https://www.meltingen.ch/
+2621,Nunningen,https://www.nunningen.ch/
+2622,Zullwil,https://www.zullwil.ch/
+2701,Basel,https://www.bs.ch/
+2702,Bettingen,https://www.bettingen.ch/
+2703,Riehen,https://www.riehen.ch/
+2761,Aesch (BL),https://www.aesch.bl.ch/
+2762,Allschwil,https://www.allschwil.ch/
+2763,Arlesheim,https://www.arlesheim.ch/
+2764,Biel-Benken,https://www.biel-benken.ch/
+2765,Binningen,https://www.binningen.ch/
+2766,Birsfelden,https://www.birsfelden.ch/
+2767,Bottmingen,https://www.bottmingen.ch/
+2768,Ettingen,https://www.ettingen.ch/
+2769,Münchenstein,https://www.muenchenstein.ch/
+2770,Muttenz,https://www.muttenz.ch/
+2771,Oberwil (BL),https://www.oberwil.ch/
+2772,Pfeffingen,https://www.pfeffingen.ch/
+2773,Reinach (BL),https://www.reinach-bl.ch/
+2774,Schönenbuch,https://www.schoenenbuch.ch/
+2775,Therwil,https://www.therwil.ch/
+2781,Blauen,https://www.blauen.ch/
+2782,Brislach,https://www.brislach.ch/
+2783,Burg im Leimental,https://www.burg-il.ch/
+2784,Dittingen,https://www.dittingen.ch/
+2785,Duggingen,https://www.duggingen.ch/
+2786,Grellingen,https://www.grellingen.ch/
+2787,Laufen,https://www.laufen-bl.ch/
+2788,Liesberg,https://www.liesberg.ch/
+2789,Nenzlingen,https://www.nenzlingen.ch/
+2790,Roggenburg,https://www.roggenburg.ch/
+2791,Röschenz,https://www.roeschenz.ch/
+2792,Wahlen,https://www.gemeinde-wahlen.ch/
+2793,Zwingen,https://www.zwingen.ch/
+2821,Arisdorf,https://www.arisdorf.ch/
+2822,Augst,https://www.augst.ch/
+2823,Bubendorf,https://www.bubendorf.swiss/
+2824,Frenkendorf,https://www.frenkendorf.ch/
+2825,Füllinsdorf,https://www.fuellinsdorf.ch/
+2826,Giebenach,https://www.giebenach.ch/
+2827,Hersberg,https://www.hersberg.ch/
+2828,Lausen,https://www.lausen.ch/
+2829,Liestal,https://www.liestal.ch/
+2830,Lupsingen,https://www.lupsingen.ch/
+2831,Pratteln,https://www.pratteln.ch/
+2832,Ramlinsburg,https://www.ramlinsburg.ch/
+2833,Seltisberg,https://seltisberg.ch/
+2834,Ziefen,https://www.ziefen.ch/
+2841,Anwil,https://www.anwil.ch/
+2842,Böckten,https://www.boeckten.ch/
+2843,Buckten,https://www.buckten.ch/
+2844,Buus,https://www.buus.ch/
+2845,Diepflingen,https://www.diepflingen.ch/
+2846,Gelterkinden,https://www.gelterkinden.ch/
+2847,Häfelfingen,https://www.haefelfingen.ch/
+2848,Hemmiken,https://www.hemmiken.ch/
+2849,Itingen,https://www.itingen.ch/
+2850,Känerkinden,https://www.kaenerkinden.ch/
+2851,Kilchberg (BL),https://www.kilchberg.bl.ch/
+2852,Läufelfingen,https://www.laeufelfingen.ch/
+2853,Maisprach,https://www.maisprach.ch/
+2854,Nusshof,https://www.nusshof.ch/
+2855,Oltingen,https://www.oltingen.ch/
+2856,Ormalingen,https://www.ormalingen.ch/
+2857,Rickenbach (BL),https://www.rickenbach-bl.ch/
+2858,Rothenfluh,https://www.rothenfluh.ch/
+2859,Rümlingen,https://www.ruemlingen.ch/
+2860,Rünenberg,https://www.ruenenberg.ch/
+2861,Sissach,https://www.sissach.ch/
+2862,Tecknau,https://www.tecknau.ch/
+2863,Tenniken,https://www.tenniken.ch/
+2864,Thürnen,https://www.thuernen.ch/
+2865,Wenslingen,https://www.wenslingen.ch/
+2866,Wintersingen,https://www.wintersingen.ch/
+2867,Wittinsburg,https://www.wittinsburg.ch/
+2868,Zeglingen,https://www.zeglingen.ch/
+2869,Zunzgen,https://www.zunzgen.ch/
+2881,Arboldswil,https://www.arboldswil.ch/
+2882,Bennwil,https://www.bennwil.ch/
+2883,Bretzwil,https://www.bretzwil.ch/
+2884,Diegten,https://www.diegten.ch/
+2885,Eptingen,https://www.eptingen.ch/
+2886,Hölstein,https://www.hoelstein.ch/
+2887,Lampenberg,https://www.lampenberg.ch/
+2888,Langenbruck,https://www.langenbruck.ch/
+2889,Lauwil,https://www.lauwil.ch/
+2890,Liedertswil,https://www.liedertswil.ch/
+2891,Niederdorf,https://www.niederdorf.ch/
+2892,Oberdorf (BL),https://www.oberdorf.bl.ch/
+2893,Reigoldswil,https://www.reigoldswil.ch/
+2894,Titterten,https://www.titterten.ch/
+2895,Waldenburg,https://www.waldenburg.ch/
+2901,Gächlingen,https://www.gaechlingen.ch/
+2903,Löhningen,https://www.loehningen.ch/
+2904,Neunkirch,https://www.neunkirch.ch/
+2914,Büttenhardt,https://www.buettenhardt.ch/
+2915,Dörflingen,https://www.doerflingen.ch/
+2917,Lohn (SH),https://www.lohn.ch/
+2919,Stetten (SH),https://www.stetten.ch/
+2920,Thayngen,https://www.thayngen.ch/
+2931,Bargen (SH),https://www.bargen.ch/
+2932,Beringen,https://www.beringen.ch/
+2933,Buchberg,https://www.buchberg.ch/
+2936,Merishausen,https://www.merishausen.ch/
+2937,Neuhausen am Rheinfall,https://www.neuhausen.ch/
+2938,Rüdlingen,https://www.ruedlingen.ch/
+2939,Schaffhausen,https://www.stadt-schaffhausen.ch/
+2951,Beggingen,https://www.beggingen.ch/
+2952,Schleitheim,https://www.schleitheim.ch/
+2953,Siblingen,https://www.siblingen.ch/
+2961,Buch (SH),https://www.buch-sh.ch/
+2962,Hemishofen,https://www.hemishofen.ch/
+2963,Ramsen,https://www.ramsen.ch/
+2964,Stein am Rhein,https://www.steinamrhein.ch/
+2971,Hallau,https://www.hallau.ch/
+2972,Oberhallau,https://www.oberhallau.ch/
+2973,Trasadingen,https://www.trasadingen.ch/
+2974,Wilchingen,https://www.wilchingen.ch/
+3001,Herisau,https://www.herisau.ch/
+3002,Hundwil,https://www.hundwil.ch/
+3003,Schönengrund,https://www.schoenengrund.ch/
+3004,Schwellbrunn,https://www.schwellbrunn.ch/
+3005,Stein (AR),https://www.stein-ar.ch/
+3006,Urnäsch,https://www.urnaesch.ch/
+3007,Waldstatt,https://www.waldstatt.ch/
+3021,Bühler,https://www.buehlerar.ch
+3022,Gais,https://www.gais.ch/
+3023,Speicher,https://www.speicher.ch/
+3024,Teufen (AR),https://www.teufen.ch/
+3025,Trogen,https://www.trogen.ch/
+3031,Grub (AR),https://www.grub.ch/
+3032,Heiden,https://www.heiden.ch/
+3033,Lutzenberg,https://www.lutzenberg.ch/
+3034,Rehetobel,https://www.rehetobel.ch/
+3035,Reute (AR),https://www.reute.ch/
+3036,Wald (AR),https://www.wald.ar.ch/
+3037,Walzenhausen,https://www.walzenhausen.ch/
+3038,Wolfhalden,https://www.wolfhalden.ch/
+3101,Appenzell,https://www.appenzell.org/
+3102,Gonten,https://www.gonten.ch/
+3104,Schlatt-Haslen,https://www.schlatt-haslen.ch/
+3111,Oberegg,https://www.oberegg.ch/
+3112,Schwende-Rüte,https://schwende-ruete.ch/
+3201,Häggenschwil,https://www.haeggenschwil.ch/
+3202,Muolen,https://www.muolen.ch/
+3203,St. Gallen,https://www.stadt.sg.ch/
+3204,Wittenbach,https://www.wittenbach.ch/
+3211,Berg (SG),https://www.bergsg.ch/
+3212,Eggersriet,https://www.eggersriet.ch/
+3213,Goldach,https://www.goldach.ch/
+3214,Mörschwil,https://www.moerschwil.ch/
+3215,Rorschach,https://www.rorschach.ch/
+3216,Rorschacherberg,https://www.rorschacherberg.ch/
+3217,Steinach,https://www.steinach.ch/
+3218,Tübach,https://www.tuebach.ch/
+3219,Untereggen,https://www.untereggen.ch/
+3231,Au (SG),https://www.au.ch/
+3232,Balgach,https://www.balgach.ch/
+3233,Berneck,https://www.berneck.ch/
+3234,Diepoldsau,https://www.diepoldsau.ch/
+3235,Rheineck,https://www.rheineck.ch/
+3236,St. Margrethen,https://www.stmargrethen.ch/
+3237,Thal,https://www.thal.ch/
+3238,Widnau,https://www.widnau.ch/
+3251,Altstätten,https://www.altstaetten.ch/
+3252,Eichberg,https://www.eichberg.ch/
+3253,Marbach (SG),https://www.marbach.ch/
+3254,Oberriet (SG),https://www.oberriet.ch/
+3255,Rebstein,https://www.rebstein.ch/
+3256,Rüthi (SG),https://www.ruethi.ch/
+3271,Buchs (SG),https://www.buchs-sg.ch/
+3272,Gams,https://www.gams.ch/
+3273,Grabs,https://www.grabs.ch/
+3274,Sennwald,https://www.sennwald.ch/
+3275,Sevelen,https://www.sevelen.ch/
+3276,Wartau,https://www.wartau.ch/
+3291,Bad Ragaz,https://www.badragaz.ch/
+3292,Flums,https://www.flums.ch/
+3293,Mels,https://www.mels.ch/
+3294,Pfäfers,https://www.pfaefers.ch/
+3295,Quarten,https://www.quarten.ch/
+3296,Sargans,https://www.sargans.ch/
+3297,Vilters-Wangs,https://www.vilters-wangs.ch/
+3298,Walenstadt,https://www.walenstadt.ch/
+3311,Amden,https://www.gemeinde-amden.ch/
+3312,Benken (SG),https://www.benken.ch/
+3313,Kaltbrunn,https://www.kaltbrunn.ch/
+3315,Schänis,https://www.schaenis.ch/
+3316,Weesen,https://www.weesen.ch/
+3338,Schmerikon,https://www.schmerikon.ch/
+3339,Uznach,https://www.uznach.ch/
+3340,Rapperswil-Jona,https://www.rapperswil-jona.ch/
+3341,Gommiswald,https://www.gommiswald.ch/
+3342,Eschenbach (SG),https://www.eschenbach.ch/
+3352,Ebnat-Kappel,https://www.ebnat-kappel.ch/
+3359,Wildhaus-Alt St. Johann,https://www.wildhaus-altstjohann.ch/
+3360,Nesslau,https://www.nesslau.ch/
+3374,Lichtensteig,https://www.lichtensteig.ch/
+3379,Wattwil,https://www.wattwil.ch/
+3392,Kirchberg (SG),https://www.kirchberg.ch/
+3393,Lütisburg,https://www.luetisburg.ch/
+3394,Mosnang,https://www.mosnang.ch/
+3395,Bütschwil-Ganterschwil,https://www.buetschwil-ganterschwil.ch
+3396,Neckertal,https://www.neckertal.ch/
+3401,Degersheim,https://www.degersheim.ch/
+3402,Flawil,https://www.flawil.ch/
+3405,Jonschwil,https://www.jonschwil.ch/
+3407,Oberuzwil,https://www.oberuzwil.ch/
+3408,Uzwil,https://www.uzwil.ch/
+3422,Niederbüren,https://www.niederbueren.ch/
+3423,Niederhelfenschwil,https://www.niederhelfenschwil.ch/
+3424,Oberbüren,https://www.oberbueren.ch/
+3426,Zuzwil (SG),https://www.zuzwil.ch/
+3427,Wil (SG),https://www.stadtwil.ch/
+3441,Andwil (SG),https://www.andwil.ch/
+3442,Gaiserwald,https://www.gaiserwald.ch/
+3443,Gossau (SG),https://www.stadtgossau.ch/
+3444,Waldkirch,https://www.waldkirch.ch/
+3506,Vaz/Obervaz,https://www.vazobervaz.ch/
+3513,Lantsch/Lenz,https://www.lantsch-lenz.ch/
+3514,Schmitten (GR),https://www.schmitten-gr.ch/
+3542,Albula/Alvra,https://www.albula-alvra.ch/
+3543,Surses,https://www.surses.ch/
+3544,Bergün Filisur,https://www.berguenfilisur.ch/
+3551,Brusio,https://www.brusio.ch/
+3561,Poschiavo,https://www.poschiavo.ch/
+3572,Falera,https://www.falera.net/
+3575,Laax,https://www.laax-gr.ch/
+3581,Sagogn,https://www.sagogn.ch/
+3582,Schluein,https://www.schluein.ch/
+3603,Vals,https://www.vals.ch/
+3618,Lumnezia,https://www.lumnezia.ch/
+3619,Ilanz/Glion,https://www.ilanz-glion.ch/
+3633,Fürstenau,https://fuerstenau.ch/
+3637,Rothenbrunnen,https://www.rothenbrunnen.ch/
+3638,Scharans,https://www.scharans.ch/
+3640,Sils im Domleschg,https://www.sils-id.ch/
+3661,Cazis,https://www.cazis.ch/
+3662,Flerden,https://www.flerden.ch/
+3663,Masein,https://www.masein.ch/
+3668,Thusis,https://www.thusis.ch/
+3669,Tschappina,https://www.tschappina.ch/
+3670,Urmein,https://www.urmein.ch/
+3672,Safiental,https://www.safiental.ch/gemeinde/
+3673,Domleschg,https://www.domleschg.ch/
+3681,Avers,https://www.gemeindeavers.ch/
+3695,Sufers,https://www.sufers.ch/
+3701,Andeer,https://www.andeer.ch/
+3711,Rongellen,https://www.rongellen.ch/
+3712,Zillis-Reischen,https://www.zillis-reischen.ch/
+3713,Ferrera,https://www.ferrera.ch/
+3714,Rheinwald,https://www.rheinwald.ch/
+3715,Muntogna da Schons,https://mdschons.ch/
+3721,Bonaduz,https://www.bonaduz.ch/
+3722,Domat/Ems,https://www.domat-ems.ch/
+3723,Rhäzüns,https://www.rhaezuens.ch/
+3731,Felsberg,https://www.felsberg.ch/
+3732,Flims,https://www.gemeindeflims.ch/
+3733,Tamins,https://www.tamins.ch/
+3734,Trin,https://www.trin.ch/
+3746,Zernez,https://www.zernez.ch/
+3752,Samnaun,https://www.gemeindesamnaun.ch/
+3762,Scuol,https://www.scuol.net/
+3764,Valsot,https://www.valsot.ch/
+3781,Bever,https://www.bever.ch/
+3782,Celerina/Schlarigna,https://www.gemeinde-celerina.ch/
+3783,Madulain,https://www.madulain.ch/
+3784,Pontresina,https://www.gemeinde-pontresina.ch/
+3785,La Punt Chamues-ch,https://www.lapunt.ch/
+3786,Samedan,https://www.samedan.ch/
+3787,St. Moritz,https://www.gemeinde-stmoritz.ch/
+3788,S-chanf,https://www.s-chanf.ch/
+3789,Sils im Engadin/Segl,https://www.sils-segl.ch/
+3790,Silvaplana,https://www.gemeinde-silvaplana.ch/
+3791,Zuoz,https://www.zuoz.ch/
+3792,Bregaglia,https://www.comunedibregaglia.ch/
+3804,Buseno,https://www.buseno.ch/
+3805,Castaneda,https://www.castaneda.ch/
+3808,Rossa,https://www.rossa.ch/
+3810,Santa Maria in Calanca,https://www.santamariaic.ch/
+3821,Lostallo,https://www.lostallo.ch/
+3822,Mesocco,https://www.mesocco.ch/
+3823,Soazza,https://www.soazza.ch/
+3831,Cama,https://www.cama-gr.ch/
+3832,Grono,https://www.grono.ch/
+3834,Roveredo (GR),https://www.roveredo.ch/
+3835,San Vittore,https://www.sanvittore.ch/
+3837,Calanca,https://www.comunedicalanca.ch/
+3847,Val Müstair,https://www.cdvm.ch/
+3851,Davos,https://www.gemeindedavos.ch/
+3861,Fideris,https://www.fideris.ch/
+3862,Furna,https://www.furna.ch/
+3863,Jenaz,https://www.jenaz.ch/
+3871,Klosters,https://www.gemeindeklosters.ch/
+3881,Conters im Prättigau,https://www.conters.ch/
+3882,Küblis,https://www.kueblis.ch/
+3891,Luzein,https://www.luzein.ch/
+3901,Chur,https://www.chur.ch/
+3911,Churwalden,https://www.churwalden.ch/
+3921,Arosa,https://www.gemeindearosa.ch/
+3932,Tschiertschen-Praden,https://www.tschiertschen-praden.ch/
+3945,Trimmis,https://www.trimmis.ch/
+3946,Untervaz,https://www.untervaz.ch/
+3947,Zizers,https://www.zizers.ch/
+3951,Fläsch,https://www.flaesch.ch/
+3952,Jenins,https://www.jenins.ch/
+3953,Maienfeld,https://www.maienfeld.ch/
+3954,Malans,https://www.malans.ch/
+3955,Landquart,https://www.landquart.ch/
+3961,Grüsch,https://www.gruesch.ch/
+3962,Schiers,https://www.schiers.ch/
+3972,Seewis im Prättigau,https://www.seewis.ch/
+3981,Breil/Brigels,https://www.breil.ch/
+3982,Disentis/Mustér,https://www.disentis.ch/
+3983,Medel (Lucmagn),https://www.medel.ch/
+3985,Sumvitg,https://www.sumvitg.ch/
+3986,Tujetsch,https://www.tujetsch.ch/
+3987,Trun,https://www.trun.ch/
+3988,Obersaxen Mundaun,https://www.obersaxenmundaun.swiss/
+4001,Aarau,https://www.aarau.ch/
+4002,Biberstein,https://www.biberstein.ch/
+4003,Buchs (AG),https://www.buchs-aargau.ch/
+4004,Densbüren,https://www.densbueren.ch/
+4005,Erlinsbach (AG),https://www.erlinsbach-ag.ch/
+4006,Gränichen,https://www.graenichen.ch/
+4007,Hirschthal,https://www.hirschthal.ch/
+4008,Küttigen,https://www.kuettigen.ch/
+4009,Muhen,https://www.muhen.ch/
+4010,Oberentfelden,https://www.oberentfelden.ch/
+4012,Suhr,https://www.suhr.ch/
+4013,Unterentfelden,https://www.unterentfelden.ch/
+4021,Baden,https://www.baden.ch/
+4022,Bellikon,https://www.bellikon.ch/
+4023,Bergdietikon,https://www.bergdietikon.ch/
+4024,Birmenstorf (AG),https://www.birmenstorf.ch/
+4026,Ennetbaden,https://www.ennetbaden.ch/
+4027,Fislisbach,https://www.fislisbach.ch/
+4028,Freienwil,https://www.freienwil.ch/
+4029,Gebenstorf,https://www.gebenstorf.ch/
+4030,Killwangen,https://www.killwangen.ch/
+4031,Künten,https://www.kuenten.ch/
+4032,Mägenwil,https://www.maegenwil.ch/
+4033,Mellingen,https://www.mellingen.ch/
+4034,Neuenhof,https://www.neuenhof.ch/
+4035,Niederrohrdorf,https://www.niederrohrdorf.ch/
+4037,Oberrohrdorf,https://www.oberrohrdorf.ch/
+4038,Obersiggenthal,https://www.obersiggenthal.ch/
+4039,Remetschwil,https://www.remetschwil.ch/
+4040,Spreitenbach,https://www.spreitenbach.ch/
+4041,Stetten (AG),https://www.stetten-ag.ch/
+4042,Turgi,https://www.turgi.ch/
+4044,Untersiggenthal,https://www.untersiggenthal.ch/
+4045,Wettingen,https://www.wettingen.ch/
+4046,Wohlenschwil,https://www.wohlenschwil.ch/
+4047,Würenlingen,https://www.wuerenlingen.ch/
+4048,Würenlos,https://www.wuerenlos.ch/
+4049,Ehrendingen,https://www.ehrendingen.ch/
+4061,Arni (AG),https://www.arni-ag.ch/
+4062,Berikon,https://www.berikon.ch/
+4063,Bremgarten (AG),https://www.bremgarten.ch/
+4064,Büttikon,https://www.buettikon.ch/
+4065,Dottikon,https://www.dottikon.ch/
+4066,Eggenwil,https://www.eggenwil.ch/
+4067,Fischbach-Göslikon,https://www.fischbach-goeslikon.ch/
+4068,Hägglingen,https://www.haegglingen.ch/
+4071,Jonen,https://www.jonen.ch/
+4072,Niederwil (AG),https://www.niederwil.ch/
+4073,Oberlunkhofen,https://www.oberlunkhofen.ch/
+4074,Oberwil-Lieli,https://www.oberwil-lieli.ch/
+4075,Rudolfstetten-Friedlisberg,https://www.rudolfstetten.ch/
+4076,Sarmenstorf,https://www.sarmenstorf.ch/
+4077,Tägerig,https://www.taegerig.ch/
+4078,Uezwil,https://www.uezwil.ch/
+4079,Unterlunkhofen,https://www.unterlunkhofen.ch/
+4080,Villmergen,https://www.villmergen.ch/
+4081,Widen,https://www.widen.ch/
+4082,Wohlen (AG),https://www.wohlen.ch/
+4083,Zufikon,https://www.zufikon.ch/
+4084,Islisberg,https://www.islisberg.ch/
+4091,Auenstein,https://www.auenstein.ch/
+4092,Birr,https://www.birr.ch/
+4093,Birrhard,https://www.birrhard.ch/
+4095,Brugg,https://www.stadt-brugg.ch/
+4099,Habsburg,https://www.habsburg.ch/
+4100,Hausen (AG),https://www.hausenag.ch/
+4104,Lupfig,https://www.lupfig.ch/
+4105,Mandach,https://www.mandach.ch/
+4106,Mönthal,https://www.moenthal.ch/
+4107,Mülligen,https://www.muelligen.ch/
+4110,Remigen,https://www.remigen.ch/
+4111,Riniken,https://www.riniken.ch/
+4112,Rüfenach,https://www.ruefenach.ch/
+4117,Thalheim (AG),https://www.gemeinde-thalheim.ch/
+4120,Veltheim (AG),https://www.veltheim.ch/
+4121,Villigen,https://www.villigen.ch/
+4122,Villnachern,https://www.villnachern.ch/
+4123,Windisch,https://www.windisch.ch/
+4124,Bözberg,https://www.boezberg.ch/
+4125,Schinznach,https://www.schinznach.ch/
+4131,Beinwil am See,https://www.beinwilamsee.ch/
+4132,Birrwil,https://www.birrwil.ch/
+4134,Dürrenäsch,https://www.duerrenaesch.ch/
+4135,Gontenschwil,https://www.gontenschwil.ch/
+4136,Holziken,https://www.holziken.ch/
+4137,Leimbach (AG),https://www.leimbach.swiss/
+4138,Leutwil,https://www.leutwil.ch/
+4139,Menziken,https://www.menziken.ch/
+4140,Oberkulm,https://www.oberkulm.ch/
+4141,Reinach (AG),https://www.reinach.ch/
+4142,Schlossrued,https://www.schlossrued.ch/
+4143,Schmiedrued,https://www.schmiedrued-walde.ch
+4144,Schöftland,https://www.schoeftland.ch/
+4145,Teufenthal (AG),https://www.teufenthal.ch/
+4146,Unterkulm,https://www.unterkulm.ch/
+4147,Zetzwil,https://www.zetzwil.ch/
+4161,Eiken,https://www.eiken.ch/
+4163,Frick,https://www.frick.ch/
+4164,Gansingen,https://www.gansingen.ch/
+4165,Gipf-Oberfrick,https://www.gipf-oberfrick.ch/
+4169,Kaisten,https://www.kaisten.ch/
+4170,Laufenburg,https://www.laufenburg.ch/
+4172,Münchwilen (AG),https://www.muenchwilen-ag.ch/
+4173,Oberhof,https://www.oberhof.ch/
+4175,Oeschgen,https://www.oeschgen.ch/
+4176,Schwaderloch,https://www.schwaderloch.ch/
+4177,Sisseln,https://www.sisseln.ch/
+4181,Wittnau,https://www.wittnau.ch/
+4182,Wölflinswil,https://www.woelflinswil.ch/
+4183,Zeihen,https://www.zeihen.ch/
+4184,Mettauertal,https://www.mettauertal.ch/
+4185,Böztal,https://www.boeztal.ch/
+4186,Herznach-Ueken,https://herznach-ueken.ch/
+4191,Ammerswil,https://www.ammerswil.ch/
+4192,Boniswil,https://www.boniswil.ch/
+4193,Brunegg,https://www.brunegg.ch/
+4194,Dintikon,https://www.dintikon.ch/
+4195,Egliswil,https://www.egliswil.ch/
+4196,Fahrwangen,https://www.fahrwangen.ch/
+4197,Hallwil,https://www.hallwil.ch/
+4198,Hendschiken,https://www.hendschiken.ch/
+4199,Holderbank (AG),https://www.holderbank.ch/
+4200,Hunzenschwil,https://www.hunzenschwil.ch/
+4201,Lenzburg,https://www.lenzburg.ch/
+4202,Meisterschwanden,https://www.meisterschwanden.ch/
+4203,Möriken-Wildegg,https://www.moeriken-wildegg.ch/
+4204,Niederlenz,https://www.niederlenz.ch/
+4205,Othmarsingen,https://www.othmarsingen.ch/
+4206,Rupperswil,https://www.rupperswil.ch/
+4207,Schafisheim,https://www.schafisheim.ch/
+4208,Seengen,https://www.seengen.ch/
+4209,Seon,https://www.seon.ch/
+4210,Staufen,https://www.staufen.ch/
+4221,Abtwil,https://www.abtwilag.ch/
+4222,Aristau,https://www.aristau.ch/
+4223,Auw,https://www.auw.ch/
+4224,Beinwil (Freiamt),https://www.beinwil.ch/
+4226,Besenbüren,https://www.besenbueren.ch/
+4227,Bettwil,https://www.bettwil.ch/
+4228,Boswil,https://www.boswil.ch/
+4229,Bünzen,https://www.buenzen.ch/
+4230,Buttwil,https://www.buttwil.ch/
+4231,Dietwil,https://www.dietwil.ch/
+4232,Geltwil,https://www.geltwil.ch/
+4233,Kallern,https://www.kallern.ch/
+4234,Merenschwand,https://www.merenschwand.ch/
+4235,Mühlau,https://www.muehlau.ch/
+4236,Muri (AG),https://www.muri.ch/
+4237,Oberrüti,https://www.oberrueti.ch/
+4238,Rottenschwil,https://www.rottenschwil.ch/
+4239,Sins,https://www.sins.ch/
+4240,Waltenschwil,https://www.waltenschwil.ch/
+4251,Hellikon,https://www.hellikon.ch/
+4252,Kaiseraugst,https://www.kaiseraugst.ch/
+4253,Magden,https://www.magden.ch/
+4254,Möhlin,https://www.moehlin.ch/
+4255,Mumpf,https://www.mumpf.ch/
+4256,Obermumpf,https://www.obermumpf.ch/
+4257,Olsberg,https://www.olsberg.ch/
+4258,Rheinfelden,https://www.rheinfelden.ch/
+4259,Schupfart,https://www.schupfart.ch/
+4260,Stein (AG),https://www.gemeinde-stein.ch/
+4261,Wallbach,https://www.wallbach.ch/
+4262,Wegenstetten,https://www.wegenstetten.ch/
+4263,Zeiningen,https://www.zeiningen.ch/
+4264,Zuzgen,https://www.zuzgen.ch/
+4271,Aarburg,https://www.aarburg.ch/
+4273,Bottenwil,https://www.bottenwil.ch/
+4274,Brittnau,https://www.brittnau.ch/
+4275,Kirchleerau,https://www.kirchleerau.ch/
+4276,Kölliken,https://www.koelliken.ch/
+4277,Moosleerau,https://www.moosleerau.ch/
+4279,Murgenthal,https://www.murgenthal.ch/
+4280,Oftringen,https://www.oftringen.ch/
+4281,Reitnau,https://www.reitnau.ch
+4282,Rothrist,https://www.rothrist.ch
+4283,Safenwil,https://www.safenwil.ch/
+4284,Staffelbach,https://www.staffelbach.ch/
+4285,Strengelbach,https://www.strengelbach.ch/
+4286,Uerkheim,https://www.uerkheim.ch/
+4287,Vordemwald,https://www.vordemwald.ch/
+4288,Wiliberg,https://www.wiliberg.ch/
+4289,Zofingen,https://www.zofingen.ch/
+4303,Böttstein,https://www.boettstein.ch/
+4304,Döttingen,https://www.doettingen.ch/
+4305,Endingen,https://www.endingen.ch/
+4306,Fisibach,https://www.fisibach.ch/
+4307,Full-Reuenthal,https://www.full-reuenthal.ch/
+4309,Klingnau,https://www.klingnau.ch/
+4310,Koblenz,https://www.koblenz.ch/
+4311,Leibstadt,https://www.leibstadt.ch/
+4312,Lengnau (AG),https://www.lengnau-ag.ch/
+4313,Leuggern,https://www.leuggern.ch/
+4314,Mellikon,https://www.mellikon.ch/
+4318,Schneisingen,https://www.schneisingen.ch/
+4319,Siglistorf,https://www.siglistorf.ch/
+4320,Tegerfelden,https://www.tegerfelden.ch/
+4324,Zurzach,https://www.zurzach.ch/gemeinde
+4401,Arbon,https://www.arbon.ch/
+4406,Dozwil,https://www.dozwil.ch/
+4411,Egnach,https://www.egnach.ch/
+4416,Hefenhofen,https://www.hefenhofen.ch/
+4421,Horn,https://www.horn.ch/
+4426,Kesswil,https://www.kesswil.ch/
+4431,Roggwil (TG),https://www.roggwil-tg.ch/
+4436,Romanshorn,https://www.romanshorn.ch/
+4441,Salmsach,https://www.salmsach.ch/
+4446,Sommeri,https://www.sommeri.ch/
+4451,Uttwil,https://www.uttwil.ch/
+4461,Amriswil,https://www.amriswil.ch/
+4471,Bischofszell,https://www.bischofszell.ch/
+4476,Erlen,https://www.erlen.ch/
+4486,Hauptwil-Gottshaus,https://www.hauptwil.ch/
+4495,Hohentannen,https://www.hohentannen.ch/
+4501,Kradolf-Schönenberg,https://www.kradolf-schoenenberg.ch/
+4506,Sulgen,https://www.sulgen.ch/
+4511,Zihlschlacht-Sitterdorf,https://www.zihlschlacht-sitterdorf.ch/
+4536,Basadingen-Schlattingen,https://www.basadingen-schlattingen.ch/
+4545,Diessenhofen,https://www.diessenhofen.ch/
+4546,Schlatt (TG),https://www.schlatt.ch/
+4551,Aadorf,https://www.aadorf.ch/
+4561,Felben-Wellhausen,https://www.felben-wellhausen.ch/
+4566,Frauenfeld,https://www.frauenfeld.ch/
+4571,Gachnang,https://www.gachnang.ch/
+4590,Hüttlingen,https://www.huettlingen.ch/
+4591,Matzingen,https://www.matzingen.ch/
+4601,Neunforn,https://www.neunforn.ch/
+4606,Stettfurt,https://www.stettfurt.ch/
+4611,Thundorf,https://www.thundorf.ch/
+4616,Uesslingen-Buch,https://www.uesslingen-buch.ch/
+4621,Warth-Weiningen,https://www.warth-weiningen.ch/
+4641,Altnau,https://www.altnau.ch/
+4643,Bottighofen,https://www.bottighofen.ch/
+4646,Ermatingen,https://www.ermatingen.ch/
+4651,Gottlieben,https://www.gottlieben.ch/
+4656,Güttingen,https://www.guettingen.ch/
+4666,Kemmental,https://www.kemmental.ch/
+4671,Kreuzlingen,https://www.kreuzlingen.ch/
+4681,Langrickenbach,https://www.langrickenbach.ch/
+4683,Lengwil,https://www.lengwil.ch/
+4691,Münsterlingen,https://www.muensterlingen.ch/
+4696,Tägerwilen,https://www.taegerwilen.ch/
+4701,Wäldi,https://www.waeldi.ch/
+4711,Affeltrangen,https://www.affeltrangen.ch/
+4716,Bettwiesen,https://www.bettwiesen.ch/
+4721,Bichelsee-Balterswil,https://www.bichelsee-balterswil.ch/
+4723,Braunau,https://www.braunau.ch/
+4724,Eschlikon,https://www.eschlikon.ch/
+4726,Fischingen,https://www.fischingen.ch/
+4741,Lommis,https://www.lommis.ch/
+4746,Münchwilen (TG),https://www.muenchwilen-tg.ch/
+4751,Rickenbach (TG),https://www.rickenbach-tg.ch/
+4756,Schönholzerswilen,https://www.schoenholzerswilen.ch/
+4761,Sirnach,https://www.sirnach.ch/
+4776,Tobel-Tägerschen,https://www.tobel-taegerschen.ch/
+4781,Wängi,https://www.waengi.ch/
+4786,Wilen (TG),https://www.wilen.ch/
+4791,Wuppenau,https://www.wuppenau.ch/
+4801,Berlingen,https://www.berlingen.ch/
+4806,Eschenz,https://www.eschenz.ch/
+4811,Herdern,https://www.herdern.ch/
+4816,Homburg,https://www.homburg.ch/
+4821,Hüttwilen,https://www.huettwilen.ch/
+4826,Mammern,https://www.mammern.ch/
+4831,Müllheim,https://www.muellheim.ch/
+4841,Pfyn,https://www.pfyn.ch/
+4846,Raperswilen,https://www.raperswilen.ch/
+4851,Salenstein,https://www.salenstein.ch/
+4864,Steckborn,https://www.steckborn.ch/
+4871,Wagenhausen,https://www.wagenhausen.ch/
+4881,Amlikon-Bissegg,https://www.amlikon-bissegg.ch/
+4891,Berg (TG),https://www.berg-tg.ch/
+4901,Birwinken,https://www.birwinken.ch/
+4911,Bürglen (TG),https://www.buerglen-tg.ch/
+4921,Bussnang,https://www.bussnang.ch/
+4941,Märstetten,https://www.maerstetten.ch/
+4946,Weinfelden,https://www.weinfelden.ch/
+4951,Wigoltingen,https://www.wigoltingen.ch/
+5001,Arbedo-Castione,https://www.arbedocastione.ch/
+5002,Bellinzona,https://www.bellinzona.ch/
+5003,Cadenazzo,https://www.cadenazzo.ch/
+5009,Isone,https://www.isone.ch/
+5010,Lumino,https://www.lumino.ch/
+5017,Sant'Antonino,https://www.santonino.ch/
+5048,Acquarossa,https://www.acquarossa.ch/
+5049,Blenio,https://www.comuneblenio.ch/
+5050,Serravalle,https://www.serravalle.ch/
+5061,Airolo,https://www.airolo.ch/
+5063,Bedretto,https://www.bedretto.ch/
+5064,Bodio,https://www.bodio.ch
+5071,Dalpe,https://www.dalpe.ch/
+5072,Faido,https://www.faido.ch/
+5073,Giornico,https://www.giornico.ch/
+5076,Personico,https://www.personico.ch/
+5077,Pollegio,https://www.pollegio.ch/
+5078,Prato (Leventina),https://www.pratoleventina.ch/
+5079,Quinto,https://www.tiquinto.ch/
+5091,Ascona,https://www.ascona.ch/
+5096,Brione sopra Minusio,https://www.brione.ch/
+5097,Brissago,https://www.brissago.ch/
+5108,Gordola,https://www.gordola.ch/
+5112,Lavertezzo,https://www.lavertezzo.ch/
+5113,Locarno,https://www.locarno.ch/
+5115,Losone,https://www.losone.ch/
+5117,Mergoscia,https://www.mergoscia.ch/
+5118,Minusio,https://www.minusio.ch/
+5120,Muralto,https://www.muralto.ch/
+5121,Orselina,https://www.orselina.ch/
+5125,Ronco sopra Ascona,https://www.ronco-s-ascona.ch/
+5131,Tenero-Contra,https://www.tenero-contra.ch/
+5136,Onsernone,https://www.onsernone.swiss/
+5138,Cugnasco-Gerra,https://www.cugnasco-gerra.ch/
+5141,Agno,https://www.agno.ch/
+5143,Aranno,https://www.aranno.ch/
+5144,Arogno,https://www.arogno.ch/
+5146,Astano,https://www.astano.ch/
+5148,Bedano,https://www.bedano.ch/
+5149,Bedigliora,https://www.bedigliora.ch/
+5151,Bioggio,https://www.bioggio.ch/
+5154,Bissone,https://bissone.ch/
+5160,Brusino Arsizio,https://www.brusinoarsizio.ch/
+5161,Cademario,https://www.cademario.ch/
+5162,Cadempino,https://www.cadempino.ch/
+5167,Canobbio,https://www.canobbio.ch/
+5171,Caslano,https://www.caslano.ch/
+5176,Comano,https://www.comano.ch/
+5180,Cureglia,https://www.cureglia.ch/
+5181,Curio,https://www.curio.ch/
+5186,Grancia,https://www.grancia.ch/
+5187,Gravesano,https://www.gravesano.ch/
+5189,Lamone,https://www.lamone.ch/
+5192,Lugano,https://www.lugano.ch/
+5193,Magliaso,https://www.magliaso.ch/
+5194,Manno,https://www.manno.ch/
+5196,Massagno,https://www.massagno.ch/
+5198,Melide,https://www.melide.ch/
+5199,Mezzovico-Vira,https://www.mezzovico-vira.ch/
+5200,Miglieglia,https://www.miglieglia.ch/
+5203,Morcote,https://www.morcote.ch/
+5205,Muzzano,https://www.muzzano.ch/
+5206,Neggio,https://www.neggio.ch/
+5207,Novaggio,https://www.novaggio.ch/
+5208,Origlio,https://www.origlio.ch/
+5210,Paradiso,https://paradiso.ch/
+5212,Ponte Capriasca,https://www.pontecapriasca.ch/
+5214,Porza,https://www.porza.ch/
+5216,Pura,https://www.pura.ch/
+5221,Savosa,https://www.savosa.ch/
+5225,Sorengo,https://www.sorengo.ch/
+5226,Capriasca,https://www.capriasca.ch/
+5227,Torricella-Taverne,https://www.torricella-taverne.ch/
+5230,Vernate,https://www.vernate.ch/
+5231,Vezia,https://www.vezia.ch/
+5233,Vico Morcote,https://www.vicomorcote.ch/
+5236,Collina d'Oro,https://www.collinadoro.com/
+5237,Alto Malcantone,https://www.altomalcantone.ch/
+5238,Monteceneri,https://www.monteceneri.ch/
+5239,Tresa,https://www.tresa.ch/
+5240,Val Mara,https://valmara.ch/
+5242,Balerna,https://www.balerna.ch/
+5249,Castel San Pietro,https://www.castelsanpietro.ch/
+5250,Chiasso,https://www.chiasso.ch/
+5251,Coldrerio,https://www.coldrerio.ch/
+5254,Mendrisio,https://www.mendrisio.ch/
+5257,Morbio Inferiore,https://www.morbioinf.ch/
+5260,Novazzano,https://www.novazzano.ch/
+5263,Riva San Vitale,https://www.rivasanvitale.ch/
+5266,Stabio,https://www.stabio.ch/
+5268,Vacallo,https://www.vacallo.ch/
+5269,Breggia,https://www.comunebreggia.ch/
+5281,Biasca,https://www.biasca.ch/
+5287,Riviera,https://www.comuneriviera.ch/
+5304,Bosco/Gurin,https://www.bosco-gurin.ch/
+5307,Campo (Vallemaggia),
+5309,Cerentino,https://www.cerentino.ch/
+5310,Cevio,https://www.cevio.ch/
+5315,Linescio,https://linescio.ch/
+5317,Maggia,https://www.maggia.ch/
+5323,Lavizzara,https://www.lavizzara.ch/
+5324,Avegno Gordevio,https://www.avegnogordevio.ch/
+5391,Comunanza Cadenazzo/Monteceneri,
+5396,Terre di Pedemonte,https://www.pedemonte.ch/
+5397,Centovalli,https://www.centovalli.swiss/
+5398,Gambarogno,https://www.gambarogno.ch/
+5399,Verzasca,https://www.verzasca.swiss/
+5401,Aigle,https://www.aigle.ch/
+5402,Bex,https://www.bex.ch/
+5403,Chessel,https://www.chessel.ch/
+5404,Corbeyrier,https://www.corbeyrier.ch/
+5405,Gryon,https://www.gryon.ch/
+5406,Lavey-Morcles,https://www.lavey.ch/
+5407,Leysin,https://www.leysin-commune.ch/
+5408,Noville,https://www.noville.ch/
+5409,Ollon,https://www.ollon.ch/
+5410,Ormont-Dessous,https://www.ormont-dessous.ch/
+5411,Ormont-Dessus,https://www.ormont-dessus.ch/
+5412,Rennaz,https://www.rennaz.ch/
+5413,Roche (VD),https://www.roche-vd.ch/
+5414,Villeneuve (VD),https://www.villeneuve.ch/
+5415,Yvorne,https://www.yvorne.ch/
+5422,Aubonne,https://www.aubonne.ch/
+5423,Ballens,https://www.ballens.ch/
+5424,Berolle,https://www.berolle.ch/
+5425,Bière,https://www.biere-vd.ch/
+5426,Bougy-Villars,https://www.bougy-villars.ch/
+5427,Féchy,https://www.fechy.ch/
+5428,Gimel,https://www.gimel.ch/
+5429,Longirod,https://www.longirod.ch/
+5430,Marchissy,https://www.marchissy.ch/
+5431,Mollens (VD),https://www.mollensvd.ch/
+5434,Saint-George,https://www.stgeorge.ch/
+5435,Saint-Livres,https://www.st-livres.ch/
+5436,Saint-Oyens,https://www.saint-oyens.ch/
+5437,Saubraz,https://www.saubraz.ch/
+5451,Avenches,https://www.commune-avenches.ch/
+5456,Cudrefin,https://www.cudrefin.ch/
+5458,Faoug,https://www.faoug.ch/
+5464,Vully-les-Lacs,https://www.vully-les-lacs.ch/
+5471,Bettens,https://www.commune-bettens.ch/
+5472,Bournens,https://www.bournens.ch/
+5473,Boussens,https://www.boussens.ch/
+5474,La Chaux (Cossonay),https://www.lachaux.ch/
+5475,Chavannes-le-Veyron,https://www.chavannes-le-veyron.ch/
+5476,Chevilly,https://www.chevilly.ch/
+5477,Cossonay,https://www.cossonay.ch/
+5479,Cuarnens,https://www.cuarnens.ch/
+5480,Daillens,https://www.daillens.ch/
+5481,Dizy,https://www.dizy.ch/
+5482,Eclépens,https://www.eclepens.ch/
+5483,Ferreyres,https://www.ferreyres.ch/
+5484,Gollion,https://www.gollion.ch/
+5485,Grancy,https://www.grancy.ch/
+5486,L'Isle,https://www.lisle.ch/
+5487,Lussery-Villars,https://www.lussery-villars.ch/
+5488,Mauraz,https://www.mauraz.ch/
+5489,Mex (VD),https://www.mex.ch/
+5490,Moiry,https://www.moiry.ch/
+5491,Mont-la-Ville,https://www.mont-la-ville.ch/
+5492,Montricher,https://www.montricher.ch/
+5493,Orny,https://www.orny.ch/
+5495,Penthalaz,https://www.penthalaz.ch/
+5496,Penthaz,https://www.penthaz.ch/
+5497,Pompaples,https://www.pompaples.ch/
+5498,La Sarraz,https://www.lasarraz.ch/
+5499,Senarclens,https://www.senarclens.ch/
+5501,Sullens,https://www.sullens.ch/
+5503,Vufflens-la-Ville,https://www.vufflens-la-ville.ch/
+5511,Assens,https://www.assens.ch/
+5512,Bercher,https://www.bercher-vd.ch/
+5514,Bottens,https://www.bottens.ch/
+5515,Bretigny-sur-Morrens,https://www.bretigny.ch/
+5516,Cugy (VD),https://www.cugy-vd.ch/
+5518,Echallens,https://www.echallens.ch/
+5520,Essertines-sur-Yverdon,https://www.essertines-sur-yverdon.ch/
+5521,Etagnières,https://www.etagnieres.ch/
+5522,Fey,https://www.fey-vd.ch/
+5523,Froideville,https://www.froideville.ch/
+5527,Morrens (VD),https://www.morrens.ch/
+5529,Oulens-sous-Echallens,https://www.oulens.ch/
+5530,Pailly,https://www.pailly.ch/
+5531,Penthéréaz,https://www.penthereaz.ch/
+5533,Poliez-Pittet,https://www.poliez-pittet.ch/
+5534,Rueyres,https://www.rueyres.ch/
+5535,Saint-Barthélemy (VD),https://www.st-barthelemy.ch/
+5537,Villars-le-Terroir,https://www.villars-le-terroir.ch/
+5539,Vuarrens,https://www.vuarrens.ch/
+5540,Montilliez,https://www.montilliez.ch/
+5541,Goumoëns,https://www.goumoens.ch/
+5551,Bonvillars,https://www.bonvillars.ch/
+5552,Bullet,https://www.bullet.ch/
+5553,Champagne,https://www.champagne.ch/
+5554,Concise,https://www.concise.ch/
+5555,Corcelles-près-Concise,https://www.corcelles-concise.ch/
+5556,Fiez,https://www.fiez.ch/
+5557,Fontaines-sur-Grandson,https://www.fontaines-sur-grandson.ch/
+5559,Giez,https://www.giez.ch/
+5560,Grandevent,https://www.grandevent.ch/
+5561,Grandson,https://www.grandson.ch/
+5562,Mauborget,https://www.mauborget.ch/
+5563,Mutrux,
+5564,Novalles,https://www.novalles.ch/
+5565,Onnens (VD),https://www.onnens.ch/
+5566,Provence,https://www.provence.ch/
+5568,Sainte-Croix,https://www.sainte-croix.ch/
+5571,Tévenon,https://www.tevenon.ch/
+5581,Belmont-sur-Lausanne,https://www.belmont.ch/
+5582,Cheseaux-sur-Lausanne,https://www.cheseaux.ch/
+5583,Crissier,https://www.crissier.ch/
+5584,Epalinges,https://www.epalinges.ch/
+5585,Jouxtens-Mézery,https://www.jouxtens-mezery.ch/
+5586,Lausanne,https://www.lausanne.ch/
+5587,Le Mont-sur-Lausanne,https://www.lemontsurlausanne.ch/
+5588,Paudex,https://www.paudex.ch/
+5589,Prilly,https://www.prilly.ch/
+5590,Pully,https://www.pully.ch/
+5591,Renens (VD),https://www.renens.ch/
+5592,Romanel-sur-Lausanne,https://www.romanel-sur-lausanne.ch/
+5601,Chexbres,https://www.chexbres.ch/
+5604,Forel (Lavaux),https://www.forel.ch/
+5606,Lutry,https://www.lutry.ch/
+5607,Puidoux,https://www.puidoux.ch/
+5609,Rivaz,https://www.rivaz.ch/
+5610,Saint-Saphorin (Lavaux),https://www.saint-saphorin.ch/
+5611,Savigny,https://www.savigny.ch/
+5613,Bourg-en-Lavaux,https://www.b-e-l.ch/
+5621,Aclens,https://www.aclens.ch/
+5622,Bremblens,https://www.bremblens.ch/
+5623,Buchillon,https://www.buchillon.ch/
+5624,Bussigny,https://www.bussigny.ch/
+5627,Chavannes-près-Renens,https://www.chavannes.ch/
+5628,Chigny,https://www.chigny.ch/
+5629,Clarmont,https://www.clarmont.ch/
+5631,Denens,https://www.denens.ch/
+5632,Denges,https://www.denges.ch/
+5633,Echandens,https://www.echandens.ch/
+5634,Echichens,https://www.echichens.ch/
+5635,Ecublens (VD),https://www.ecublens.ch/
+5636,Etoy,https://www.etoy.ch/
+5637,Lavigny,https://www.lavigny.ch/
+5638,Lonay,https://www.lonay.ch/
+5639,Lully (VD),https://www.lully.ch/
+5640,Lussy-sur-Morges,https://www.lussy-sur-morges.ch/
+5642,Morges,https://www.morges.ch/
+5643,Préverenges,https://www.preverenges.ch/
+5645,Romanel-sur-Morges,https://www.romanel-sur-morges.ch/
+5646,Saint-Prex,https://www.saint-prex.ch/
+5648,Saint-Sulpice (VD),https://www.st-sulpice.ch/
+5649,Tolochenaz,https://www.tolochenaz.ch/
+5650,Vaux-sur-Morges,https://www.vaux-sur-morges.ch/
+5651,Villars-Sainte-Croix,https://www.villars-sainte-croix.ch/
+5652,Villars-sous-Yens,https://www.villars-sous-yens.ch/
+5653,Vufflens-le-Château,https://www.vufflens-le-chateau.ch/
+5654,Vullierens,https://www.vullierens.ch/
+5655,Yens,https://www.yens.ch/
+5656,Hautemorges,https://www.hautemorges.ch/
+5661,Boulens,https://www.boulens.ch/
+5663,Bussy-sur-Moudon,https://bussy-sur-moudon.ch/
+5665,Chavannes-sur-Moudon,https://www.chavannes-sur-moudon.ch/
+5669,Curtilles,https://www.curtilles.ch/
+5671,Dompierre (VD),https://www.dompierre-vd.ch/
+5673,Hermenches,https://www.hermenches.ch/
+5674,Lovatens,https://www.lovatens.ch/
+5675,Lucens,https://www.lucens.ch/
+5678,Moudon,https://www.moudon.ch/
+5680,Ogens,https://www.ogens.ch/
+5683,Prévonloup,https://www.prevonloup.ch/
+5684,Rossenges,https://rossenges.ch/
+5688,Syens,https://www.syens.ch/
+5690,Villars-le-Comte,https://www.villars-le-comte.ch/
+5692,Vucherens,https://www.vucherens.ch/
+5693,Montanaire,https://www.montanaire.ch/
+5701,Arnex-sur-Nyon,https://www.arnex-sur-nyon.ch/
+5702,Arzier-Le Muids,https://www.arzier.ch/
+5703,Bassins,https://www.bassins.ch/
+5704,Begnins,https://www.begnins.ch/
+5705,Bogis-Bossey,https://www.bogis-bossey.ch/
+5706,Borex,https://www.borex.ch/
+5707,Chavannes-de-Bogis,https://www.chavannes-de-bogis.ch/
+5708,Chavannes-des-Bois,https://www.chavannes-des-bois.ch/
+5709,Chéserex,https://www.cheserex.ch/
+5710,Coinsins,https://www.coinsins.ch/
+5711,Commugny,https://www.commugny.ch/
+5712,Coppet,https://www.coppet.ch/
+5713,Crans (VD),https://www.crans-pres-celigny.ch/
+5714,Crassier,https://www.crassier.ch/
+5715,Duillier,https://www.duillier.ch/
+5716,Eysins,https://www.eysins.ch/
+5717,Founex,https://www.founex.ch/
+5718,Genolier,https://www.genolier.ch/
+5719,Gingins,https://www.gingins.ch/
+5720,Givrins,https://www.givrins.ch/
+5721,Gland,https://www.gland.ch/
+5722,Grens,https://www.grens.ch/
+5723,Mies,https://www.mies.ch/
+5724,Nyon,https://www.nyon.ch/
+5725,Prangins,https://www.prangins.ch/
+5726,La Rippe,https://www.larippe.ch/
+5727,Saint-Cergue,https://www.st-cergue.ch/
+5728,Signy-Avenex,https://www.signy-avenex.ch/
+5729,Tannay,https://www.tannay.ch/
+5730,Trélex,https://www.trelex.ch/
+5731,Le Vaud,https://www.levaud.ch/
+5732,Vich,https://www.vich.ch/
+5741,L'Abergement,https://www.labergement.ch/
+5742,Agiez,https://www.agiez.ch/
+5743,Arnex-sur-Orbe,https://www.arnex-sur-orbe.ch/
+5744,Ballaigues,https://www.ballaigues.ch/
+5745,Baulmes,https://www.baulmes.ch/
+5746,Bavois,https://www.bavois.ch/
+5747,Bofflens,https://www.bofflens.ch/
+5748,Bretonnières,https://www.bretonnieres.ch/
+5749,Chavornay,https://www.chavornay.ch/
+5750,Les Clées,https://www.lesclees.ch/
+5752,Croy,https://www.croy.ch/
+5754,Juriens,https://www.juriens.ch/
+5755,Lignerolle,
+5756,Montcherand,https://www.montcherand.ch/
+5757,Orbe,https://www.orbe.ch/
+5758,La Praz,https://www.lapraz.ch/
+5759,Premier,https://www.premier.ch/
+5760,Rances,https://www.rances.ch/
+5761,Romainmôtier-Envy,https://www.romainmotier.ch/
+5762,Sergey,https://www.sergey.ch/
+5763,Valeyres-sous-Rances,https://www.valeyres-sous-rances.ch/
+5764,Vallorbe,https://www.vallorbe.ch/
+5765,Vaulion,https://www.vaulion.ch/
+5766,Vuiteboeuf,https://www.vuiteboeuf.ch/
+5785,Corcelles-le-Jorat,https://www.corcelles-le-jorat.ch/
+5790,Maracon,https://www.maracon.ch/
+5792,Montpreveyres,https://www.montpreveyres.ch/
+5798,Ropraz,https://www.ropraz.ch/
+5799,Servion,https://www.servion.ch/
+5803,Vulliens,https://www.vulliens.ch/
+5804,Jorat-Menthue,https://www.jorat-menthue.ch/
+5805,Oron,https://www.oron.ch/
+5806,Jorat-Mézières,https://www.jorat-mezieres.ch/
+5812,Champtauroz,https://www.champtauroz.ch/
+5813,Chevroux,https://www.chevroux.ch/
+5816,Corcelles-près-Payerne,https://www.corcelles.ch/
+5817,Grandcour,https://www.grandcour.ch/
+5819,Henniez,https://www.commune-henniez.ch/
+5821,Missy,https://www.missy.ch/
+5822,Payerne,https://www.payerne.ch/
+5827,Trey,https://www.trey.ch/
+5828,Treytorrens (Payerne),https://www.treytorrens.ch/
+5830,Villarzel,https://www.villarzel.ch/
+5831,Valbroye,https://www.valbroye.ch/
+5841,Château-d'Oex,https://www.chateaudoex-admin.ch/
+5842,Rossinière,https://www.rossiniere.ch/
+5843,Rougemont,https://www.rougemont.ch/
+5851,Allaman,https://www.allaman.ch/
+5852,Bursinel,https://www.bursinel.ch/
+5853,Bursins,https://www.bursins.ch/
+5854,Burtigny,https://www.burtigny.ch/
+5855,Dully,https://www.dully.ch/
+5856,Essertines-sur-Rolle,https://www.essertines-sur-rolle.ch/
+5857,Gilly,https://www.gilly.ch/
+5858,Luins,https://www.luins.ch/
+5859,Mont-sur-Rolle,https://www.mont-sur-rolle.ch/
+5860,Perroy,https://www.perroy.ch/
+5861,Rolle,https://www.rolle.ch/
+5862,Tartegnin,https://www.tartegnin.ch/
+5863,Vinzel,https://www.vinzel.ch/
+5871,L'Abbaye,https://www.labbaye.ch/
+5872,Le Chenit,https://www.communeduchenit.ch/
+5873,Le Lieu,https://www.lelieu.ch/
+5882,Chardonne,https://www.chardonne.ch/
+5883,Corseaux,https://www.corseaux.ch/
+5884,Corsier-sur-Vevey,https://www.corsier-sur-vevey.ch/
+5885,Jongny,https://www.jongny.ch/
+5886,Montreux,https://www.montreux.ch/
+5889,La Tour-de-Peilz,https://www.la-tour-de-peilz.ch/
+5890,Vevey,https://www.vevey.ch/
+5891,Veytaux,https://www.veytaux.ch/
+5892,Blonay - Saint-Légier,https://traitdunion-fusion.ch/
+5902,Belmont-sur-Yverdon,https://www.belmont-sur-yverdon.ch/
+5903,Bioley-Magnoux,https://www.bioley-magnoux.ch/
+5904,Chamblon,https://www.chamblon.ch/
+5905,Champvent,https://www.champvent.ch/
+5907,Chavannes-le-Chêne,https://www.chavannes-le-chene.ch/
+5908,Chêne-Pâquier,https://www.chene-paquier.ch/
+5909,Cheseaux-Noréaz,https://www.cheseaux-noreaz.ch/
+5910,Cronay,https://www.cronay.ch/
+5911,Cuarny,https://www.cuarny.ch/
+5912,Démoret,https://www.demoret.ch/
+5913,Donneloye,https://www.donneloye.ch/
+5914,Ependes (VD),https://www.ependesvd.ch/
+5919,Mathod,https://www.mathod.ch/
+5921,Molondin,https://www.molondin.ch/
+5922,Montagny-près-Yverdon,https://www.montagny.ch/
+5923,Oppens,https://www.oppens.ch/
+5924,Orges,https://www.orges.ch/
+5925,Orzens,https://www.orzens.ch/
+5926,Pomy,https://www.pomy.ch/
+5928,Rovray,https://www.rovray.ch/
+5929,Suchy,https://www.suchy.ch/
+5930,Suscévaz,https://www.suscevaz.ch/
+5931,Treycovagnes,https://www.treycovagnes.ch/
+5932,Ursins,https://www.ursins.ch/
+5933,Valeyres-sous-Montagny,https://www.valeyres-sous-montagny.ch/
+5934,Valeyres-sous-Ursins,https://www.valeyres-sous-ursins.ch/
+5935,Villars-Epeney,https://www.villars-epeney.ch/
+5937,Vugelles-La Mothe,https://www.vugelleslamothe.ch/
+5938,Yverdon-les-Bains,https://www.yverdon.ch/
+5939,Yvonand,https://www.yvonand.ch/
+6002,Brig-Glis,https://www.brig-glis.ch/
+6004,Eggerberg,https://www.eggerberg.ch/
+6007,Naters,https://www.naters.ch/
+6008,Ried-Brig,https://www.ried-brig.ch/
+6009,Simplon,https://www.gemeinde-simplon.ch/
+6010,Termen,https://www.termen.ch/
+6011,Zwischbergen,https://www.gondo.ch/
+6021,Ardon,https://www.ardon.ch/
+6022,Chamoson,https://www.chamoson.net/
+6023,Conthey,https://www.conthey.ch/
+6024,Nendaz,https://www.nendaz.org/
+6025,Vétroz,https://www.vetroz.ch/
+6032,Bourg-Saint-Pierre,https://www.bourg-saint-pierre.ch/
+6033,Liddes,https://www.liddes.ch/
+6034,Orsières,https://www.orsieres.ch/
+6035,Sembrancher,https://www.sembrancher.ch/
+6037,Val de Bagnes,https://valdebagnes.ch/
+6052,Bellwald,https://www.bellwald.ch/
+6054,Binn,https://www.binn.ch/
+6056,Ernen,https://www.ernen.ch/
+6057,Fiesch,https://www.gemeinde-fiesch.ch/
+6058,Fieschertal,https://www.fieschertal.ch/
+6061,Lax,https://www.lax.ch/
+6076,Obergoms,https://gemeinde.obergoms.ch/
+6077,Goms,https://www.gemeinde-goms.ch/
+6082,Ayent,https://www.ayent.ch/
+6083,Evolène,https://www.commune-evolene.ch/
+6084,Hérémence,https://www.heremence.ch/
+6087,Saint-Martin (VS),https://www.saint-martin.ch/
+6089,Vex,https://www.vex.ch/
+6090,Mont-Noble,https://www.mont-noble.ch/
+6101,Agarn,https://www.agarn.ch/
+6102,Albinen,https://www.albinen.ch/
+6104,Ergisch,https://www.ergisch.ch/
+6109,Inden,https://www.inden.ch/
+6110,Leuk,https://www.leuk.ch/
+6111,Leukerbad,https://www.leukerbad.org/
+6112,Oberems,https://www.oberems.ch/
+6113,Salgesch,https://www.salgesch-gemeinde.ch/
+6116,Varen,https://www.varen.ch/
+6117,Guttet-Feschel,https://www.guttet-feschel.ch/
+6118,Gampel-Bratsch,https://www.gampel-bratsch.ch/
+6119,Turtmann-Unterems,https://www.turtmann-unterems.ch/
+6131,Bovernier,https://www.bovernier.ch/
+6133,Fully,https://www.fully.ch/
+6134,Isérables,https://www.iserables.ch/
+6135,Leytron,https://www.leytron.ch/
+6136,Martigny,https://www.martigny.ch/
+6137,Martigny-Combe,https://www.martigny-combe.ch/
+6139,Riddes,https://www.riddes.ch/
+6140,Saillon,https://www.saillon.ch/
+6141,Saxon,https://www.saxon.ch/
+6142,Trient,https://www.trient.ch/
+6151,Champéry,https://www.admin-champery.ch/
+6152,Collombey-Muraz,https://www.collombey-muraz.ch/
+6153,Monthey,https://www.monthey.ch/
+6154,Port-Valais,https://www.port-valais.ch/
+6155,Saint-Gingolph,https://www.st-gingolph.ch/
+6156,Troistorrents,https://www.troistorrents.ch/
+6157,Val-d'Illiez,https://www.illiez.ch/
+6158,Vionnaz,https://www.vionnaz.ch/
+6159,Vouvry,https://www.vouvry.ch/
+6172,Bister,
+6173,Bitsch,https://www.bitsch.ch/
+6177,Grengiols,https://www.grengiols.ch/
+6181,Riederalp,https://www.gemeinde-riederalp.ch/
+6191,Ausserberg,https://www.ausserberg.ch/
+6192,Blatten,https://www.blatten-vs.ch/
+6193,Bürchen,https://gemeinde.buerchen.ch/
+6194,Eischoll,https://www.eischoll.ch/
+6195,Ferden,https://www.ferden.ch/
+6197,Kippel,https://www.kippel.ch/
+6198,Niedergesteln,https://www.niedergesteln.ch/
+6199,Raron,https://www.raron.ch/
+6201,Unterbäch,https://www.unterbaech.ch/
+6202,Wiler (Lötschen),https://www.wilervs.ch/
+6203,Mörel-Filet,https://www.moerel-filet.ch/
+6204,Steg-Hohtenn,https://www.steg-hohtenn.ch/
+6205,Bettmeralp,https://gemeinde.bettmeralp.ch/
+6211,Collonges,https://www.collonges.ch/
+6212,Dorénaz,https://www.dorenaz.ch/
+6213,Evionnaz,https://www.evionnaz.ch/
+6214,Finhaut,https://www.finhaut.ch/
+6215,Massongex,https://www.massongex.ch/
+6217,Saint-Maurice,https://www.st-maurice.ch/
+6218,Salvan,https://www.salvan.ch/
+6219,Vernayaz,https://www.vernayaz.ch/
+6220,Vérossaz,https://www.verossaz.ch/
+6232,Chalais,https://www.chalais.ch/
+6235,Chippis,https://www.chippis.ch/
+6238,Grône,https://www.grone.ch/
+6239,Icogne,https://www.icogne.ch/
+6240,Lens,https://www.lens.ch/
+6246,Saint-Léonard,https://www.st-leonard.ch/
+6248,Sierre,https://www.sierre.ch/
+6252,Anniviers,https://www.anniviers.org/
+6253,Crans-Montana,https://www.commune-cransmontana.ch/
+6254,Noble-Contrée,https://www.noble-contree.ch/
+6261,Arbaz,https://www.arbaz.ch/
+6263,Grimisuat,https://www.grimisuat.ch/
+6265,Savièse,https://www.saviese.ch/
+6266,Sion,https://www.sion.ch/
+6267,Veysonnaz,https://www.veysonnaz.org/
+6281,Baltschieder,https://www.baltschieder.ch/
+6282,Eisten,https://www.eisten.ch/
+6283,Embd,https://www.embd.ch/
+6285,Grächen,https://www.gemeinde-graechen.ch/
+6286,Lalden,https://www.lalden.ch/
+6287,Randa,https://www.randa.ch/
+6288,Saas-Almagell,https://www.saas-almagell.org/
+6289,Saas-Balen,https://www.gemeinde-saas-balen.ch/
+6290,Saas-Fee,https://www.3906.ch/
+6291,Saas-Grund,https://www.3910.ch/
+6292,St. Niklaus,https://www.st-niklaus.ch/
+6293,Stalden (VS),https://www.stalden.ch/
+6294,Staldenried,https://www.staldenried.ch/
+6295,Täsch,https://www.gemeinde-taesch.ch/
+6296,Törbel,https://www.toerbel.ch/
+6297,Visp,https://www.visp.ch/
+6298,Visperterminen,https://www.heidadorf.ch/
+6299,Zeneggen,https://www.zeneggen.ch/
+6300,Zermatt,https://gemeinde.zermatt.ch/
+6404,Boudry,https://www.boudry.ch/
+6408,Cortaillod,https://www.cortaillod.ch/
+6413,Rochefort,https://www.rochefort.ch/
+6416,Milvignes,https://www.milvignes.ch/
+6417,La Grande Béroche,https://www.lagrandeberoche.ch/
+6421,La Chaux-de-Fonds,https://www.chaux-de-fonds.ch/
+6422,Les Planchettes,https://www.les-planchettes.ch/
+6423,La Sagne,https://www.lasagne.ch/
+6432,La Brévine,https://www.labrevine.ch/
+6433,Brot-Plamboz,https://www.brot-plamboz.ch/
+6434,Le Cerneux-Péquignot,https://www.cerneux-pequignot.ch/
+6435,La Chaux-du-Milieu,https://www.chaux-du-milieu.ch/
+6436,Le Locle,https://www.lelocle.ch/
+6437,Les Ponts-de-Martel,https://www.lesponts-de-martel.ch/
+6451,Cornaux,https://www.cornaux.ch/
+6452,Cressier (NE),https://www.cressier-ne.ch/
+6453,Enges,https://www.enges.ch/
+6454,Hauterive (NE),https://www.hauterive.ch/
+6455,Le Landeron,https://www.landeron.ch/
+6456,Lignières,https://www.lignieres.ch/
+6458,Neuchâtel,https://www.neuchatelville.ch/
+6459,Saint-Blaise,https://www.saint-blaise.ch/
+6461,La Tène,https://www.commune-la-tene.ch/
+6487,Val-de-Ruz,https://www.val-de-ruz.ch/
+6504,La Côte-aux-Fées,https://www.lacote-aux-fees.ch/
+6511,Les Verrières,https://www.lesverrieres.ch/
+6512,Val-de-Travers,https://www.val-de-travers.ch/
+6601,Aire-la-Ville,https://www.aire-la-ville.ch/
+6602,Anières,https://www.anieres.ch/
+6603,Avully,https://www.avully.ch/
+6604,Avusy,https://www.avusy.ch/
+6605,Bardonnex,https://www.bardonnex.ch/
+6606,Bellevue,https://www.mairie-bellevue.ch/
+6607,Bernex,https://www.bernex.ch/
+6608,Carouge (GE),https://www.carouge.ch/
+6609,Cartigny,https://www.cartigny.ch/
+6610,Céligny,https://www.celigny.ch/
+6611,Chancy,https://www.chancy.ch/
+6612,Chêne-Bougeries,https://www.chene-bougeries.ch/
+6613,Chêne-Bourg,https://www.chene-bourg.ch/
+6614,Choulex,https://www.choulex.ch/
+6615,Collex-Bossy,https://www.collex-bossy.ch/
+6616,Collonge-Bellerive,https://www.collonge-bellerive.ch/
+6617,Cologny,https://www.cologny.ch/
+6618,Confignon,https://www.confignon.ch/
+6619,Corsier (GE),https://www.corsier.ch/
+6620,Dardagny,https://www.dardagny.ch/
+6621,Genève,https://www.geneve.ch/
+6622,Genthod,https://www.genthod.ch/
+6623,Le Grand-Saconnex,https://www.grand-saconnex.ch/
+6624,Gy,https://www.mairie-gy.ch/
+6625,Hermance,https://www.hermance.ch/
+6626,Jussy,https://www.jussy.ch/
+6627,Laconnex,https://www.laconnex.ch/
+6628,Lancy,https://www.lancy.ch/
+6629,Meinier,https://www.meinier.ch/
+6630,Meyrin,https://www.meyrin.ch/
+6631,Onex,https://www.onex.ch/
+6632,Perly-Certoux,https://www.perly-certoux.ch/
+6633,Plan-les-Ouates,https://www.plan-les-ouates.ch/
+6634,Pregny-Chambésy,https://www.pregny-chambesy.ch/
+6635,Presinge,https://www.presinge.ch/
+6636,Puplinge,https://www.puplinge.ch/
+6637,Russin,https://www.russin.ch/
+6638,Satigny,https://www.satigny.ch/
+6639,Soral,https://www.soral.ch/
+6640,Thônex,https://www.thonex.ch/
+6641,Troinex,https://www.troinex.ch/
+6642,Vandoeuvres,https://www.vandoeuvres.ch/
+6643,Vernier,https://www.vernier.ch/
+6644,Versoix,https://www.versoix.ch/
+6645,Veyrier,https://www.veyrier.ch/
+6702,Boécourt,https://www.boecourt.ch/
+6703,Bourrignon,https://www.bourrignon.ch/
+6704,Châtillon (JU),https://www.chatillon.ch/
+6706,Courchapoix,https://www.courchapoix.ch/
+6708,Courrendlin,https://www.courrendlin.ch/
+6709,Courroux,https://www.courroux.ch/
+6710,Courtételle,https://www.courtetelle.ch/
+6711,Delémont,https://www.delemont.ch/
+6712,Develier,https://www.develier.ch/
+6713,Ederswiler,https://ederswiler.ch/
+6715,Mervelier,https://www.mervelier.ch/
+6716,Mettembert,
+6718,Movelier,https://www.movelier.ch/
+6719,Pleigne,https://www.pleigne.ch/
+6721,Rossemaison,https://www.rossemaison.ch/
+6722,Saulcy,https://www.saulcy.ch/
+6724,Soyhières,https://www.soyhieres.ch/
+6729,Haute-Sorne,https://www.haute-sorne.ch/
+6730,Val Terbi,https://www.val-terbi.ch/
+6741,Le Bémont (JU),https://lebemont.ch/
+6742,Les Bois,https://www.lesbois.ch/
+6743,Les Breuleux,https://www.breuleux.ch/
+6745,Les Enfers,https://lesenfers.ch/
+6748,Les Genevez (JU),https://www.lesgenevez.ch/
+6750,Lajoux (JU),https://www.lajoux.ch/
+6751,Montfaucon,https://www.montfaucon.ch/
+6753,Muriaux,https://www.muriaux.ch/
+6754,Le Noirmont,https://www.noirmont.ch/
+6757,Saignelégier,https://www.saignelegier.ch/
+6758,Saint-Brais,https://saint-brais.ch/
+6759,Soubey,https://www.soubey.ch/
+6771,Alle,https://www.alle.ch/
+6773,Beurnevésin,https://www.beurnevesin.ch/
+6774,Boncourt,https://www.boncourt.ch/
+6775,Bonfol,https://www.bonfol.ch/
+6778,Bure,https://www.bure.ch/
+6781,Coeuve,https://www.coeuve.ch/
+6782,Cornol,https://www.cornol.ch/
+6783,Courchavon,https://www.courchavon-mormont.ch
+6784,Courgenay,https://www.courgenay.ch/
+6785,Courtedoux,https://www.courtedoux.ch/
+6789,Fahy,https://www.fahy.ch/
+6790,Fontenais,https://www.fontenais.ch/
+6792,Grandfontaine,https://www.grandfontaine.ch/
+6800,Porrentruy,https://www.porrentruy.ch/
+6806,Vendlincourt,https://www.vendlincourt.ch/
+6807,Basse-Allaine,https://www.basse-allaine.ch/
+6808,Clos du Doubs,https://www.closdudoubs.ch/
+6809,Haute-Ajoie,https://www.hauteajoie.ch/
+6810,La Baroche,https://www.baroche.ch/
+6811,Damphreux-Lugnez,
