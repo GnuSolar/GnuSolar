@@ -1207,6 +1207,7 @@ BFS-Nummer,Gemeindenamen,Adresstyp,Abteilung,E-Mail,Telefon,Adresse,PLZ,Ort
 3987,Trun,municipality_main,Canzlia communala,canzlia@trun.ch,081 920 20 40,,7166,Trun
 3988,Obersaxen Mundaun,municipality_main,Gemeindeverwaltung,gemeinde@obersaxen.gr.ch,081 920 50 80,Meierhof 44A,7134,Obersaxen Mundaun
 4001,Aarau,municipality_main,Stadtverwaltung Aarau,info@aarau.ch,062 836 06 21,Rathausgasse 1,5000,Aarau
+4001,Aarau,municipality_build,Stadtbauamt,stadtbauamt@aarau.ch,062 836 05 24,Rathausgasse 1,5000,Aarau
 4002,Biberstein,municipality_main,Gemeindeverwaltung Bibernstein,gemeindeverwaltung@biberstein-ag.ch,062 839 00 50,Kirchbergstrasse 1,5023,Biberstein
 4003,Buchs (AG),municipality_main,Gemeindeverwaltung,gemeindeverwaltung@buchs-aargau.ch,062 834 74 74,Mitteldorfstr. 69,5033,Buchs (AG)
 4004,Densbüren,municipality_main,Gemeindeverwaltung,gemeindeverwaltung@densbueren.ch,062 867 87 67,Hauptstrasse 19,5026,Densbüren

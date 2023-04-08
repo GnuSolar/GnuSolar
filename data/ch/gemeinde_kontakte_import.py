@@ -46,7 +46,6 @@ with open('gemeinde_kontakte.csv', newline='') as csvfile:
         sql = "SELECT * FROM contact WHERE type=? AND fk_municipality=?"
         res = cur.execute(sql, [contact_type, mun_id])
         db_row = res.fetchone()
-        contact_id = db_row["id"]
 
         if db_row is None:
             # insert it
@@ -55,6 +54,7 @@ with open('gemeinde_kontakte.csv', newline='') as csvfile:
             inserted += 1
         else:
             # or update it
+            contact_id = db_row["id"]
             sql = "UPDATE contact SET fk_municipality=?, type=?, function=?, email=?, phone=?, address1=?, zip_code=?, city=? WHERE id=?"
             cur.execute(sql, (mun_id, contact_type, function, email, phone, address1, zip_code, city, contact_id))
             updated += 1
