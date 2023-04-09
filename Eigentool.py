@@ -38,6 +38,7 @@ class Eigentool(QApplication):
 
         self.ui.action_Preferences.triggered.connect(self.openConfig)
         self.ui.createProject.clicked.connect(self.createProject)
+        self.ui.reload.clicked.connect(self.projectViewChanged)         # TODO: reload from filesystem
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
 
         self.ui.filterStatus.currentTextChanged.connect(self.filterStatusChanged)
@@ -203,7 +204,6 @@ class Eigentool(QApplication):
 
     def projectViewChanged(self):
         projectView = self.ui.projectView.currentText()
-        print(projectView)
         self.updateProjectEntries(projectView)
 
     def filterFreeTextChanged(self):
@@ -285,6 +285,17 @@ class Eigentool(QApplication):
                 "Schlussrechnung",
                 "Schlussrechnung bez",
                 "Bauherr"
+            ],
+            "Construction" : [
+                "Projekt",
+                "Status",
+                "Baustart",
+                "Anz Module",
+                "AC-Leistung",
+                "Inbetriebnahme",
+                "Schlussrechnung",
+                "Schlussrechnung bez",
+                "Bauherr"
             ]
             
         }
@@ -322,6 +333,16 @@ class Eigentool(QApplication):
                 2 : pv.progress.constructionStart,
                 3 : pv.progress.partialInvoiceSent,
                 4 : pv.progress.partialInvoiceReceived,
+                5 : pv.progress.launch,
+                6 : pv.progress.finalInvoiceSent,
+                7 : pv.progress.finalInvoiceReceived,
+                8 : ownerName
+            },
+            "Construction" : {
+                1 : pv.progress.getState(),
+                2 : pv.progress.constructionStart,
+                3 : pv.plant.totalPanelCount,
+                4 : pv.plant.totalPowerAc,
                 5 : pv.progress.launch,
                 6 : pv.progress.finalInvoiceSent,
                 7 : pv.progress.finalInvoiceReceived,
