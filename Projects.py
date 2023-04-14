@@ -24,6 +24,15 @@ from model.PvProject import *
 
 from Config import Config
 
+if sys.platform == 'darwin':
+    def openFolder(path):
+        os.system("open \"" + path + "\"")
+elif sys.platform == 'win32':
+    def openFolder(path):
+        os.system("explorer \"" + path + "\"")
+else:   # Default Linux
+    def openFolder(path):
+        os.system("xdg-open \"" + path + "\"")
 
 class Projects(QApplication):
     def __init__(self, *args):
@@ -45,10 +54,36 @@ class Projects(QApplication):
         self.ui.projectView.currentTextChanged.connect(self.projectViewChanged)
         self.ui.filterFreeText.textChanged.connect(self.filterFreeTextChanged)
 
+        # Menu
+        self.ui.tableWidgetProjects.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.tableWidgetProjects.customContextMenuRequested.connect(self.rightMenu)
+
         title = "Pv Projects - " + Config.getAppVersion()
         self.window.setWindowTitle(title)
         
         self.window.show()
+
+    def rightMenu(self, pos):
+        if self.ui.tableWidgetProjects.selectionModel().selection().indexes():
+            for i in self.ui.tableWidgetProjects.selectionModel().selection().indexes():
+                row, column = i.row(), i.column()
+
+            menu = QMenu()
+
+            # Add menu options
+            open_folder_option = menu.addAction('Open Folder')
+
+            # Menu option events
+            action = menu.exec_(self.ui.tableWidgetProjects.mapToGlobal(pos))
+            if action == open_folder_option:
+                self.openFolderMenu(row)
+
+    def openFolderMenu(self, row):
+        global config
+
+        project_name = self.ui.tableWidgetProjects.item(row, 0).text()
+        pvp_folder = config.projectRoot + os.sep + project_name
+        openFolder(pvp_folder)
 
     # search some last file names in the project directory
     def fillLastNames(self):
