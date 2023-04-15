@@ -25,6 +25,19 @@ if zoneCode == 12:
 else:
     gewerbezone_nein = True
 
+standort_identisch = True
+standort_street = ""
+standort_streetNumber = ""
+standort_zip = ""
+standort_city = ""
+if not model.building.identicalAddress(model.owner):
+    standort_identisch = False
+    standort_street = model.building.street
+    standort_streetNumber = model.building.streetNumber
+    standort_zip = model.building.zip
+    standort_city = model.building.city
+    
+
 self.fillform_data = {
     # Bauherrschaft
     'name::Firma_B_13' : model.owner.company,
@@ -50,11 +63,11 @@ self.fillform_data = {
     "name::E-Mail_L_36" : "",
     
     # Standort der Anlage
-    'name::Standortidentisch_A_40' : True,
-    "name::Strasse_A_41" : "",
-    "name::Nr_A_42" : "",
-    "name::PLZ_A_43" : "",
-    "name::Ort_A_44" : "",
+    'name::Standortidentisch_A_40' : standort_identisch,
+    "name::Strasse_A_41" : standort_street,
+    "name::Nr_A_42" : standort_streetNumber,
+    "name::PLZ_A_43" : standort_zip,
+    "name::Ort_A_44" : standort_city,
     'name::Parzellennummer_45' : model.building.plotNumber,
     'name::Koords1_52' : model.building.swissGridX,
     'name::Koords2_55' : model.building.swissGridY,

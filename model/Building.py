@@ -149,3 +149,14 @@ class Building:
                 return fkPowerCompany
         
         return False
+
+    # Check wheter the address of the Building ist the same as the given
+    # Contact
+    def identicalAddress(self, contact):
+        if self.street != contact.street or \
+           self.streetNumber != contact.streetNumber or \
+           self.zip != contact.zip or \
+           self.city != contact.city:
+            return False
+
+        return True
