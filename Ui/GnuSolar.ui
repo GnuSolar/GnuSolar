@@ -781,7 +781,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>480</y>
+           <y>510</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -794,7 +794,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>480</y>
+           <y>510</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -826,7 +826,7 @@
         <widget class="QPushButton" name="pb_progress_roofMeasured">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>430</x>
            <y>80</y>
            <width>221</width>
            <height>25</height>
@@ -839,7 +839,7 @@
         <widget class="QLineEdit" name="pvp_progress_roofMeasured">
          <property name="geometry">
           <rect>
-           <x>240</x>
+           <x>660</x>
            <y>80</y>
            <width>151</width>
            <height>25</height>
@@ -1149,7 +1149,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>370</y>
+           <y>400</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1162,7 +1162,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>370</y>
+           <y>400</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1172,7 +1172,7 @@
          <property name="geometry">
           <rect>
            <x>430</x>
-           <y>370</y>
+           <y>400</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1185,7 +1185,7 @@
          <property name="geometry">
           <rect>
            <x>660</x>
-           <y>370</y>
+           <y>400</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1195,7 +1195,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>400</y>
+           <y>430</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1208,7 +1208,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>400</y>
+           <y>430</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1218,7 +1218,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>450</y>
+           <y>480</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1231,7 +1231,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>450</y>
+           <y>480</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1241,7 +1241,7 @@
          <property name="geometry">
           <rect>
            <x>430</x>
-           <y>570</y>
+           <y>600</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1254,7 +1254,7 @@
          <property name="geometry">
           <rect>
            <x>660</x>
-           <y>570</y>
+           <y>600</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1264,7 +1264,7 @@
          <property name="geometry">
           <rect>
            <x>430</x>
-           <y>400</y>
+           <y>430</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1277,7 +1277,7 @@
          <property name="geometry">
           <rect>
            <x>660</x>
-           <y>400</y>
+           <y>430</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1287,7 +1287,7 @@
          <property name="geometry">
           <rect>
            <x>430</x>
-           <y>480</y>
+           <y>510</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1300,7 +1300,7 @@
          <property name="geometry">
           <rect>
            <x>660</x>
-           <y>480</y>
+           <y>510</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1310,7 +1310,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>510</y>
+           <y>540</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1323,7 +1323,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>510</y>
+           <y>540</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1333,7 +1333,7 @@
          <property name="geometry">
           <rect>
            <x>430</x>
-           <y>510</y>
+           <y>540</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1346,7 +1346,7 @@
          <property name="geometry">
           <rect>
            <x>660</x>
-           <y>510</y>
+           <y>540</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1356,7 +1356,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>540</y>
+           <y>570</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1369,7 +1369,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>540</y>
+           <y>570</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1379,7 +1379,7 @@
          <property name="geometry">
           <rect>
            <x>430</x>
-           <y>540</y>
+           <y>570</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1392,7 +1392,7 @@
          <property name="geometry">
           <rect>
            <x>660</x>
-           <y>540</y>
+           <y>570</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1402,7 +1402,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>570</y>
+           <y>600</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1415,7 +1415,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>570</y>
+           <y>600</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1425,7 +1425,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>600</y>
+           <y>630</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1438,7 +1438,7 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>600</y>
+           <y>630</y>
            <width>151</width>
            <height>25</height>
           </rect>
@@ -1471,7 +1471,7 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>630</y>
+           <y>660</y>
            <width>221</width>
            <height>25</height>
           </rect>
@@ -1484,10 +1484,82 @@
          <property name="geometry">
           <rect>
            <x>240</x>
-           <y>630</y>
+           <y>660</y>
            <width>151</width>
            <height>25</height>
           </rect>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_progress_partialInvoice2Sent">
+         <property name="geometry">
+          <rect>
+           <x>240</x>
+           <y>370</y>
+           <width>151</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pb_progress_partialInvoice2Sent">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>370</y>
+           <width>221</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Akontorechnung 2 erstellt</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pb_progress_partialInvoice2Received">
+         <property name="geometry">
+          <rect>
+           <x>430</x>
+           <y>370</y>
+           <width>221</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Akontorechnung 2 bezahlt</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_progress_partialInvoice2Received">
+         <property name="geometry">
+          <rect>
+           <x>660</x>
+           <y>370</y>
+           <width>151</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_progress_roofMeasure">
+         <property name="geometry">
+          <rect>
+           <x>240</x>
+           <y>80</y>
+           <width>151</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="pb_progress_roofMeasure">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>221</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Dach anschauen</string>
          </property>
         </widget>
        </widget>

@@ -15,6 +15,7 @@ class Progress:
     def __init__(self):
         
         self.inquiryReceived = None         # Anfrage erhalten
+        self.roofMeasure = None
         self.roofMeasured = None
         self.quote1Sent = None
         self.quote2Sent = None
@@ -31,6 +32,8 @@ class Progress:
         
         self.partialInvoiceSent = None      # Akontorechnung
         self.partialInvoiceReceived = None
+        self.partialInvoice2Sent = None      # Akontorechnung 2
+        self.partialInvoice2Received = None
         self.materialOrdered = None
         self.materialReceived = None
         self.constructionStart = None
