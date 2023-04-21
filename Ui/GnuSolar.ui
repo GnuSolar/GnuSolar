@@ -32,7 +32,7 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tabWidgetPage1">
+      <widget class="QWidget" name="tab_1">
        <attribute name="title">
         <string>Stammdaten</string>
        </attribute>
@@ -373,11 +373,104 @@
          </property>
         </widget>
        </widget>
+       <widget class="QGroupBox" name="groupBox_6">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>360</y>
+          <width>761</width>
+          <height>731</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Bemerkungen</string>
+        </property>
+        <widget class="QPlainTextEdit" name="pvp_comment">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>741</width>
+           <height>691</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QPushButton" name="openProjectFolder">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>60</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Projektordner öffnen</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="updateFromAddress">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>130</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Update von Adresse</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Kontakte</string>
+       </attribute>
+       <widget class="QPushButton" name="createQuote">
+        <property name="geometry">
+         <rect>
+          <x>580</x>
+          <y>130</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>neue Offerte</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="createPartialInvoice">
+        <property name="geometry">
+         <rect>
+          <x>770</x>
+          <y>130</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Akontorechnung</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="copyClientAddressFromBuilding">
+        <property name="geometry">
+         <rect>
+          <x>580</x>
+          <y>40</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>von Anlagestandort</string>
+        </property>
+       </widget>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>380</y>
+          <y>10</y>
           <width>541</width>
           <height>341</height>
          </rect>
@@ -646,86 +739,11 @@
          </property>
         </widget>
        </widget>
-       <widget class="QGroupBox" name="groupBox_6">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>720</y>
-          <width>761</width>
-          <height>291</height>
-         </rect>
-        </property>
-        <property name="title">
-         <string>Bemerkungen</string>
-        </property>
-        <widget class="QPlainTextEdit" name="pvp_comment">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>741</width>
-           <height>251</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QPushButton" name="openProjectFolder">
-        <property name="geometry">
-         <rect>
-          <x>590</x>
-          <y>60</y>
-          <width>181</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Projektordner öffnen</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="copyClientAddressFromBuilding">
-        <property name="geometry">
-         <rect>
-          <x>580</x>
-          <y>410</y>
-          <width>181</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>von Anlagestandort</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="updateFromAddress">
-        <property name="geometry">
-         <rect>
-          <x>590</x>
-          <y>130</y>
-          <width>181</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Update von Adresse</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="createQuote">
-        <property name="geometry">
-         <rect>
-          <x>580</x>
-          <y>500</y>
-          <width>181</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>neue Offerte</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="composeEmailOwner">
         <property name="geometry">
          <rect>
           <x>580</x>
-          <y>560</y>
+          <y>190</y>
           <width>181</width>
           <height>29</height>
          </rect>
@@ -734,24 +752,11 @@
          <string>E-Mail</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="createPartialInvoice">
-        <property name="geometry">
-         <rect>
-          <x>770</x>
-          <y>500</y>
-          <width>181</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Akontorechnung</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="createFinalInvoice">
         <property name="geometry">
          <rect>
           <x>770</x>
-          <y>530</y>
+          <y>160</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -761,7 +766,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="tabWidgetPage3">
+      <widget class="QWidget" name="tab_3">
        <attribute name="title">
         <string>Fortschritt</string>
        </attribute>
@@ -1564,7 +1569,7 @@
         </widget>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="tab_4">
        <attribute name="title">
         <string>Administration</string>
        </attribute>
@@ -2089,7 +2094,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tab_5">
        <attribute name="title">
         <string>Anlage</string>
        </attribute>
@@ -2459,15 +2464,6 @@
   <tabstop>pvp_building_plotNumber</tabstop>
   <tabstop>pvp_building_swissGridX</tabstop>
   <tabstop>pvp_building_swissGridY</tabstop>
-  <tabstop>pvp_owner_title</tabstop>
-  <tabstop>pvp_owner_lastName</tabstop>
-  <tabstop>pvp_owner_firstName</tabstop>
-  <tabstop>pvp_owner_street</tabstop>
-  <tabstop>pvp_owner_streetNumber</tabstop>
-  <tabstop>pvp_owner_zip</tabstop>
-  <tabstop>pvp_owner_city</tabstop>
-  <tabstop>pvp_owner_email</tabstop>
-  <tabstop>pvp_owner_phone</tabstop>
   <tabstop>pb_progress_inquiryReceived</tabstop>
   <tabstop>pvp_progress_inquiryReceived</tabstop>
   <tabstop>pvp_progress_archived</tabstop>
