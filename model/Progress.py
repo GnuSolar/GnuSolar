@@ -37,6 +37,8 @@ class Progress:
         self.materialOrdered = None
         self.materialReceived = None
         self.constructionStart = None
+        self.constructionSort = None        # Fake date, for the construction order
+        self.constructionFixed = False      # The construction date can not be moved
         self.launch = None
         self.documentationCreated = None
         self.documentationPlaced = None

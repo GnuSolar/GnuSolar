@@ -14,7 +14,7 @@ import shutil
 from relatorio.templates.opendocument import Template
 
 from datetime import date
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox, QCheckBox
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Ui.GnuSolar import *
@@ -118,8 +118,10 @@ class GnuSolar(QApplication):
                     el.textChanged.connect(self.action_changed)
                 elif isinstance(el, QComboBox):
                     el.currentIndexChanged.connect(self.action_changed)
+                elif isinstance(el, QCheckBox):
+                    el.toggled.connect(self.action_changed)
                 else:
-                    raise Exception(type(el) + " not implemented")
+                    raise Exception(str(type(el)) + " not implemented")
 
             if key.startswith("pb_progress_"):
                 # connect all pb_progress_* with action_progress
@@ -469,6 +471,8 @@ class GnuSolar(QApplication):
                 uiEl.setPlainText(modelEl)
             elif isinstance(uiEl, QComboBox):
                 uiEl.setCurrentText(modelEl)
+            elif isinstance(uiEl, QCheckBox):
+                uiEl.setChecked(modelEl)
             else:
                 raise Exception(str(type(uiEl)) + " not implemented")
             
@@ -494,6 +498,8 @@ class GnuSolar(QApplication):
                 modelEl.__dict__[last] = uiEl.toPlainText()
             elif isinstance(uiEl, QComboBox):
                 modelEl.__dict__[last] = uiEl.currentText()
+            elif isinstance(uiEl, QCheckBox):
+                modelEl.__dict__[last] = uiEl.isChecked()
             else:
                 raise Exception(str(type(uiEl)) + " not implemented")
 
