@@ -48,6 +48,7 @@ class Projects(QApplication):
         self.ui.action_Preferences.triggered.connect(self.openConfig)
         self.ui.createProject.clicked.connect(self.createProject)
         self.ui.reload.clicked.connect(self.projectViewChanged)         # TODO: reload from filesystem
+        self.ui.constructionSort.clicked.connect(self.constructionSort)         # TODO: reload from filesystem
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
 
         self.ui.filterStatus.currentTextChanged.connect(self.filterStatusChanged)
@@ -428,6 +429,16 @@ class Projects(QApplication):
         self.ui.newProject_city.setText("")
 
         return
+
+    def constructionSort(self):
+        qm = QMessageBox
+        ret = qm.question(None, '', "Wirklich Bautermine neu vergeben?", qm.Yes | qm.No)
+
+        if ret == qm.No:
+            return
+
+        print("constructionSort")
+        # loop over all projects with state == building
 
     def projectOpen(self, index):
         global config
