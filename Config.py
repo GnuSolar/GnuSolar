@@ -266,7 +266,7 @@ class Config():
         return path
 
     def getAppVersion():
-        return "v4-2023-03-05"
+        return "git_2023-07-01"
         
     # returns the directory where all templates are stored
     def getTemplateDir(self):
