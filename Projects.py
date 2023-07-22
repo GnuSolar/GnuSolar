@@ -339,11 +339,18 @@ class Projects(QApplication):
         self.ui.tableWidgetProjects.setColumnCount(len(views[view]))
         self.ui.tableWidgetProjects.setHorizontalHeaderLabels(views[view])
 
+        # disable sorting while reloading, otherwise it will reorder the table
+        # according to the sorted column
+        self.ui.tableWidgetProjects.setSortingEnabled(False)
+
         rowN = self.ui.tableWidgetProjects.rowCount()
         for i in range(rowN):
             projectName = self.ui.tableWidgetProjects.item(i, 0).text()
             pathPvp = config.projectRoot + os.sep + projectName + os.sep + "plant.pvp"
             self.updateProjectEntry(pathPvp, i, view)
+        
+        self.ui.tableWidgetProjects.setSortingEnabled(True)
+
 
     def updateProjectEntry(self, pathPvp, rowN, view="Default"):
         try:
@@ -353,7 +360,6 @@ class Projects(QApplication):
             return
             
         ownerName = str(pv.owner.firstName) + " " + str(pv.owner.lastName) + " " + str(pv.owner.city)
-
         views = {
             "Default" : {
                 1 : pv.progress.getState(),
