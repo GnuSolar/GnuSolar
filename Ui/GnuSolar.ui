@@ -2424,7 +2424,7 @@
      <x>0</x>
      <y>0</y>
      <width>1136</width>
-     <height>24</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -2493,16 +2493,46 @@
   </action>
  </widget>
  <tabstops>
+  <tabstop>pvp_building_buildingState</tabstop>
   <tabstop>pvp_building_street</tabstop>
   <tabstop>pvp_building_streetNumber</tabstop>
   <tabstop>pvp_building_zip</tabstop>
   <tabstop>pvp_building_city</tabstop>
+  <tabstop>pvp_building_buildingId</tabstop>
+  <tabstop>pvp_building_areZoneName</tabstop>
+  <tabstop>pvp_building_areZoneCode</tabstop>
   <tabstop>pvp_building_plotNumber</tabstop>
   <tabstop>pvp_building_swissGridX</tabstop>
   <tabstop>pvp_building_swissGridY</tabstop>
+  <tabstop>pvp_building_meterNumberOld</tabstop>
+  <tabstop>pvp_building_meterNumberNew</tabstop>
+  <tabstop>pvp_building_mainFuseSize</tabstop>
+  <tabstop>pvp_comment</tabstop>
+  <tabstop>openProjectFolder</tabstop>
+  <tabstop>updateFromAddress</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>pvp_owner_company</tabstop>
+  <tabstop>pvp_owner_title</tabstop>
+  <tabstop>pvp_owner_lastName</tabstop>
+  <tabstop>pvp_owner_firstName</tabstop>
+  <tabstop>pvp_owner_street</tabstop>
+  <tabstop>pvp_owner_streetNumber</tabstop>
+  <tabstop>pvp_owner_zip</tabstop>
+  <tabstop>pvp_owner_city</tabstop>
+  <tabstop>pvp_owner_email</tabstop>
+  <tabstop>pvp_owner_email2</tabstop>
+  <tabstop>pvp_owner_phone</tabstop>
+  <tabstop>pvp_owner_phone2</tabstop>
+  <tabstop>pvp_owner_mobile</tabstop>
+  <tabstop>copyClientAddressFromBuilding</tabstop>
+  <tabstop>createQuote</tabstop>
+  <tabstop>createPartialInvoice</tabstop>
+  <tabstop>createFinalInvoice</tabstop>
+  <tabstop>composeEmailOwner</tabstop>
   <tabstop>pb_progress_inquiryReceived</tabstop>
   <tabstop>pvp_progress_inquiryReceived</tabstop>
-  <tabstop>pvp_progress_archived</tabstop>
+  <tabstop>pb_progress_roofMeasure</tabstop>
+  <tabstop>pvp_progress_roofMeasure</tabstop>
   <tabstop>pb_progress_roofMeasured</tabstop>
   <tabstop>pvp_progress_roofMeasured</tabstop>
   <tabstop>pb_progress_quote1Sent</tabstop>
@@ -2513,10 +2543,10 @@
   <tabstop>pvp_progress_quote3Sent</tabstop>
   <tabstop>pb_progress_quote4Sent</tabstop>
   <tabstop>pvp_progress_quote4Sent</tabstop>
-  <tabstop>pb_progress_orderReceived</tabstop>
-  <tabstop>pvp_progress_orderReceived</tabstop>
   <tabstop>pb_progress_orderRejected</tabstop>
   <tabstop>pvp_progress_orderRejected</tabstop>
+  <tabstop>pb_progress_orderReceived</tabstop>
+  <tabstop>pvp_progress_orderReceived</tabstop>
   <tabstop>pb_progress_tagSent</tabstop>
   <tabstop>pvp_progress_tagSent</tabstop>
   <tabstop>pb_progress_tagReceived</tabstop>
@@ -2533,16 +2563,21 @@
   <tabstop>pvp_progress_partialInvoiceSent</tabstop>
   <tabstop>pb_progress_partialInvoiceReceived</tabstop>
   <tabstop>pvp_progress_partialInvoiceReceived</tabstop>
+  <tabstop>pb_progress_partialInvoice2Sent</tabstop>
+  <tabstop>pvp_progress_partialInvoice2Sent</tabstop>
+  <tabstop>pb_progress_partialInvoice2Received</tabstop>
+  <tabstop>pvp_progress_partialInvoice2Received</tabstop>
   <tabstop>pb_progress_materialOrdered</tabstop>
   <tabstop>pvp_progress_materialOrdered</tabstop>
   <tabstop>pb_progress_materialReceived</tabstop>
   <tabstop>pvp_progress_materialReceived</tabstop>
   <tabstop>pb_progress_constructionStart</tabstop>
   <tabstop>pvp_progress_constructionStart</tabstop>
+  <tabstop>pvp_progress_constructionFixed</tabstop>
+  <tabstop>pb_progress_constructionStart_2</tabstop>
+  <tabstop>pvp_progress_constructionSort</tabstop>
   <tabstop>pb_progress_launch</tabstop>
   <tabstop>pvp_progress_launch</tabstop>
-  <tabstop>pb_progress_documentationCreated</tabstop>
-  <tabstop>pvp_progress_documentationCreated</tabstop>
   <tabstop>pb_progress_documentationPlaced</tabstop>
   <tabstop>pvp_progress_documentationPlaced</tabstop>
   <tabstop>pb_progress_finalInvoiceSent</tabstop>
@@ -2559,9 +2594,39 @@
   <tabstop>pvp_progress_siNaAcReceived</tabstop>
   <tabstop>pb_progress_eivComplete</tabstop>
   <tabstop>pvp_progress_eivComplete</tabstop>
+  <tabstop>pb_progress_documentationCreated</tabstop>
+  <tabstop>pvp_progress_documentationCreated</tabstop>
   <tabstop>pb_progress_eivPayed</tabstop>
   <tabstop>pvp_progress_eivPayed</tabstop>
   <tabstop>pb_progress_archived</tabstop>
+  <tabstop>pvp_progress_archived</tabstop>
+  <tabstop>pvp_building_municipalityName</tabstop>
+  <tabstop>pvp_building_municipalityCode</tabstop>
+  <tabstop>pvp_municipality_website</tabstop>
+  <tabstop>evu_5</tabstop>
+  <tabstop>pvp_municipality_mainContact_company</tabstop>
+  <tabstop>pvp_municipality_mainContact_phone</tabstop>
+  <tabstop>pvp_municipality_mainContact_email</tabstop>
+  <tabstop>pvp_municipality_buildingContact_company</tabstop>
+  <tabstop>pvp_municipality_buildingContact_phone</tabstop>
+  <tabstop>pvp_municipality_buildingContact_email</tabstop>
+  <tabstop>pvp_powerCompany_name</tabstop>
+  <tabstop>evu_3</tabstop>
+  <tabstop>pvp_powerCompany_tagContact_email</tabstop>
+  <tabstop>openMunicipalityWebsite</tabstop>
+  <tabstop>createBuildingForm</tabstop>
+  <tabstop>composeBuildingEmail</tabstop>
+  <tabstop>createTag</tabstop>
+  <tabstop>composeTagEmail</tabstop>
+  <tabstop>createDocumentation</tabstop>
+  <tabstop>createGvzDocumentation</tabstop>
+  <tabstop>createMundpp</tabstop>
+  <tabstop>pvp_plant_totalCost</tabstop>
+  <tabstop>pvp_plant_constructionType</tabstop>
+  <tabstop>pvp_plant_totalPowerDc</tabstop>
+  <tabstop>pvp_plant_totalArea</tabstop>
+  <tabstop>pvp_plant_totalPanelCount</tabstop>
+  <tabstop>pvp_plant_totalPowerAc</tabstop>
  </tabstops>
  <resources/>
  <connections/>
