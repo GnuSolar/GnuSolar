@@ -11,6 +11,7 @@ import json
 import codecs
 import io
 import traceback
+import datetime
 
 from datetime import date
 
@@ -358,6 +359,10 @@ class Projects(QApplication):
         except:
             self.ui.tableWidgetProjects.setItem(rowN, 1, QTableWidgetItem("Decode Error"))
             return
+        
+        cs = pv.progress.constructionStart
+        if pv.progress.constructionFixed:
+            cs += " fix"
             
         ownerName = str(pv.owner.firstName) + " " + str(pv.owner.lastName) + " " + str(pv.owner.city)
         views = {
@@ -366,7 +371,7 @@ class Projects(QApplication):
                 2 : pv.progress.inquiryReceived,
                 3 : pv.progress.quote1Sent,
                 4 : pv.progress.orderReceived,
-                5 : pv.progress.constructionStart,
+                5 : cs,
                 6 : pv.progress.launch,
                 7 : ownerName
             },
@@ -382,7 +387,7 @@ class Projects(QApplication):
             },
             "Construction" : {
                 1 : pv.progress.getState(),
-                2 : pv.progress.constructionStart,
+                2 : cs,
                 3 : pv.plant.totalPanelCount,
                 4 : pv.plant.totalPowerAc,
                 5 : pv.progress.launch,
@@ -393,6 +398,7 @@ class Projects(QApplication):
         
         }
         for i, val in views[view].items():
+            val = str(val)      # dont crash if no string
             self.ui.tableWidgetProjects.setItem(rowN, i, QTableWidgetItem(val))
         
     def createProject(self):
@@ -437,6 +443,8 @@ class Projects(QApplication):
         return
 
     def constructionSort(self):
+        global config
+        
         qm = QMessageBox
         ret = qm.question(None, '', "Wirklich Bautermine neu vergeben?", qm.Yes | qm.No)
 
@@ -445,6 +453,45 @@ class Projects(QApplication):
 
         print("constructionSort")
         # loop over all projects with state == building
+        
+        
+        projects = []
+        
+        rowN = self.ui.tableWidgetProjects.rowCount()
+        for i in range(rowN):
+            projectName = self.ui.tableWidgetProjects.item(i, 0).text()
+            pathPvp = config.projectRoot + os.sep + projectName + os.sep + "plant.pvp"
+            try:
+                pv = PvProject(pathPvp)
+            except:
+                print("Decode Error: " + pathPvp)
+                continue
+            if not pv.progress.getState().startswith("5 -"):
+                continue
+            constructionSort = pv.progress.getConstructionSort()
+            
+            projects.append({"sort":constructionSort, "pv":pv})
+
+        # sort the projects
+        srt = sorted(projects, key=lambda x:x['sort'])
+
+        # now loop over all sorted projects
+        # starting with now, all week one system
+        today = datetime.date.today()
+        coming_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
+        days = 0
+        for item in srt:
+            start = coming_monday + datetime.timedelta(days=days)
+            pv = item['pv']
+            if not pv.progress.constructionFixed:
+                pv.progress.constructionStart = str(start)
+                pv.save()
+#            print("sort:" + item['sort'] + " start:" + str(start))
+            days += 7
+        
+        # update the view
+        self.updateProjectEntries()
+            
 
     def projectOpen(self, index):
         global config

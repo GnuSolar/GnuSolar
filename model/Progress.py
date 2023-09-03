@@ -37,7 +37,7 @@ class Progress:
         self.materialOrdered = None
         self.materialReceived = None
         self.constructionStart = None
-        self.constructionSort = None        # Fake date, for the construction order
+        self.constructionSort = None        # Fake date, for the construction order, defaults to orderReceived
         self.constructionFixed = False      # The construction date can not be moved
         self.launch = None
         self.documentationCreated = None
@@ -145,6 +145,10 @@ class Progress:
             return "1 - wait customer"
         
         return "0 - I dunno"
-        
 
+    # constructionSort defaults to orderReceived
+    def getConstructionSort(self):
+        if not self.constructionSort:
+            self.constructionSort = self.orderReceived
+        return self.constructionSort
 
