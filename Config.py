@@ -266,7 +266,15 @@ class Config():
         return path
 
     def getAppVersion():
-        return "git_2023-07-01"
+        # if there is a .git directory get refs/heads/main as current git commit
+        path = str(pathlib.Path(__file__).parent.absolute()) + os.sep + ".git" + os.sep + "refs" + os.sep + "heads" + os.sep + "main"
+        if os.path.isfile(path):
+            f = open(path, "r")
+            cont = f.read()
+            f.close()
+            return "git..." + cont[-10:]
+        else:
+            return "0.0.1"
         
     # returns the directory where all templates are stored
     def getTemplateDir(self):
