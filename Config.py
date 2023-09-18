@@ -49,7 +49,7 @@ class Config():
     def load(self):
         from os.path import expanduser
         home = expanduser("~")
-        configDir = home + os.sep + ".eigentool"
+        configDir = home + os.sep + ".gnusolar"
         self.configPath = configDir + os.sep + "config.json"
         print("Config File: " + self.configPath)
 

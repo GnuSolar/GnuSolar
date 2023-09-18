@@ -515,7 +515,7 @@ def checkEnv():
         except Exception:
            fs_enc = 'ascii'
         if fs_enc == 'ascii':
-            raise RuntimeError('Eigentool will abort further execution '
+            raise RuntimeError('GnuSolar will abort further execution '
                                'because Python 3 was configured to use '
                                'ASCII as encoding for the environment. '
                                'Either switch to Python 2 or consult '
