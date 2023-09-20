@@ -44,8 +44,9 @@ def openFolderIfExists(path):
 
     openFolder(path)
     
-def composeEmail(to, subject, body, attachments=[]):
+def composeEmail(from_adr, to, subject, body, attachments=[]):
     cmd = "thunderbird -compose \""
+    cmd += "from='" + from_adr + "',"
     cmd += "to='" + to + "',"
     cmd += "subject='" + subject + "',"
     cmd += "body='" + body + "',"
@@ -389,7 +390,7 @@ class GnuSolar(QApplication):
         body = "Guten Tag\n\nIm Anhang finden Sie die Solarmeldung für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
         body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
         att = [""]
-        composeEmail(to, subject, body, att)
+        composeEmail(config.installer_email, to, subject, body, att)
 
     # Sende Tag
     def action_composeTagEmail(self):
@@ -401,14 +402,14 @@ class GnuSolar(QApplication):
         body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
         body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
         att = [""]
-        composeEmail(to, subject, body, att)
+        composeEmail(config.installer_email, to, subject, body, att)
 
     # Sende Tag
     def action_composeEmailOwner(self):
         global config
         
         to = self.model.owner.email
-        composeEmail(to, "", "")
+        composeEmail(config.installer_email, to, "", "")
 
     # Gemeinde Webseite öffnen
     def action_openMunicipalityWebsite(self):
