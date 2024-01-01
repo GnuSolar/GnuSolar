@@ -10,7 +10,6 @@ import datetime
 
 from model.Contact import *
 from model.Building import *
-from model.Contact import *
 from model.Progress import *
 from model.PowerCompany import *
 from model.Plant import *
