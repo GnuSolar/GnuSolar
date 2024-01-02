@@ -65,7 +65,6 @@ class Config():
         f.close()
         
         self._copyOver(self, ret)
-        #self.__dict__ = ret.copy()
 
     def show(self):
         self.window = QDialog()
@@ -140,9 +139,9 @@ class Config():
                 continue
                 
             if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
-                self._copyOver(src.__dict__[key], dest[key])
+                self._copyOver(getattr(src, key), dest[key])
             else:
-                src.__dict__[key] = dest[key]
+                setattr(src, key, dest[key])
 
     def looseDateToIso(date_in):
         month_names = {

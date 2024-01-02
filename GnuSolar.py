@@ -111,7 +111,7 @@ class GnuSolar(QApplication):
         for key, value in self.ui.__dict__.items():
             if key.startswith("pvp_"):
                 # connect all pvp_ fields with action_changed
-                el = self.ui.__dict__[key]
+                el = getattr(self.ui, key)
 
                 if isinstance(el, QLineEdit):
                     el.textChanged.connect(self.action_changed)
@@ -126,7 +126,7 @@ class GnuSolar(QApplication):
 
             if key.startswith("pb_progress_"):
                 # connect all pb_progress_* with action_progress
-                el = self.ui.__dict__[key]
+                el = getattr(self.ui, key)
                 name = key.replace("pb_progress_", "")
                 el.clicked.connect(self.action_progress)
 
@@ -188,7 +188,7 @@ class GnuSolar(QApplication):
 
         now = date.today()
         attrName = "pvp_progress_" + actionName
-        self.ui.__dict__[attrName].setText(str(now))
+        getattr(self.ui, attrName).setText(str(now))
 
     def action_changed(self):
         if self.unsavedChanges:
@@ -463,8 +463,8 @@ class GnuSolar(QApplication):
 
             modelEl = self.model
             for attr in attrs:
-                modelEl = modelEl.__dict__[attr]
-            uiEl = self.ui.__dict__[key]
+                modelEl = getattr(modelEl, attr)
+            uiEl = getattr(self.ui, key)
             
             if isinstance(uiEl, QLineEdit):
                 uiEl.setText(modelEl)
@@ -490,17 +490,17 @@ class GnuSolar(QApplication):
             
             modelEl = self.model
             for attr in attrs:
-                modelEl = modelEl.__dict__[attr]
-            uiEl = self.ui.__dict__[key]
+                modelEl = getattr(modelEl, attr)
+            uiEl = getattr(self.ui, key)
 
             if isinstance(uiEl, QLineEdit):
-                modelEl.__dict__[last] = uiEl.text()
+                setattr(modelEl, last, uiEl.text())
             elif isinstance(uiEl, QPlainTextEdit):
-                modelEl.__dict__[last] = uiEl.toPlainText()
+                setattr(modelEl, last, uiEl.toPlainText())
             elif isinstance(uiEl, QComboBox):
-                modelEl.__dict__[last] = uiEl.currentText()
+                setattr(modelEl, last, uiEl.currentText())
             elif isinstance(uiEl, QCheckBox):
-                modelEl.__dict__[last] = uiEl.isChecked()
+                setattr(modelEl, last, uiEl.isChecked())
             else:
                 raise Exception(str(type(uiEl)) + " not implemented")
 

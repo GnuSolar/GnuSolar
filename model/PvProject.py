@@ -123,9 +123,9 @@ class PvProject:
                 continue
                 
             if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
-                self._copyOver(src.__dict__[key], dest.__dict__[key])
+                self._copyOver(getattr(src, key), getattr(dest, key))
             else:
-                src.__dict__[key] = dest.__dict__[key]
+                setattr(src, key, getattr(dest, key))
     
     # open from disk
     def open(self, path):
