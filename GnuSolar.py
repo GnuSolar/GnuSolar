@@ -83,7 +83,6 @@ class GnuSolar(QApplication):
         self.ui.action_Preferences.triggered.connect(self.action_preferences)
 
         self.ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
-        self.ui.copyClientAddressFromBuilding.clicked.connect(self.action_copyClientAddressFromBuilding)
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
@@ -165,14 +164,6 @@ class GnuSolar(QApplication):
             return
         folder = os.path.dirname(self.path)
         openFolderIfExists(folder)
-
-    def action_copyClientAddressFromBuilding(self):
-        self.updateModel()
-        self.model.contacts.owner.street       = self.model.building.street
-        self.model.contacts.owner.streetNumber = self.model.building.streetNumber
-        self.model.contacts.owner.zip          = self.model.building.zip
-        self.model.contacts.owner.city         = self.model.building.city
-        self.updateUi()
 
     def action_updateFromAddress(self):
         self.updateModel()

@@ -422,16 +422,37 @@
          <string>Update von Adresse</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>Kontakte</string>
-       </attribute>
+       <widget class="QPushButton" name="createFinalInvoice">
+        <property name="geometry">
+         <rect>
+          <x>810</x>
+          <y>120</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Schlussrechnung</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="composeEmailOwner">
+        <property name="geometry">
+         <rect>
+          <x>810</x>
+          <y>150</y>
+          <width>181</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>E-Mail an Bauherr</string>
+        </property>
+       </widget>
        <widget class="QPushButton" name="createQuote">
         <property name="geometry">
          <rect>
-          <x>580</x>
-          <y>130</y>
+          <x>810</x>
+          <y>60</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -443,8 +464,8 @@
        <widget class="QPushButton" name="createPartialInvoice">
         <property name="geometry">
          <rect>
-          <x>770</x>
-          <y>130</y>
+          <x>810</x>
+          <y>90</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -453,19 +474,11 @@
          <string>Akontorechnung</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="copyClientAddressFromBuilding">
-        <property name="geometry">
-         <rect>
-          <x>580</x>
-          <y>40</y>
-          <width>181</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>von Anlagestandort</string>
-        </property>
-       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Kontakte</string>
+       </attribute>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
          <rect>
@@ -807,32 +820,6 @@
           </rect>
          </property>
         </widget>
-       </widget>
-       <widget class="QPushButton" name="composeEmailOwner">
-        <property name="geometry">
-         <rect>
-          <x>580</x>
-          <y>190</y>
-          <width>181</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>E-Mail</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="createFinalInvoice">
-        <property name="geometry">
-         <rect>
-          <x>770</x>
-          <y>160</y>
-          <width>181</width>
-          <height>25</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Schlussrechnung</string>
-        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_3">
@@ -2579,7 +2566,6 @@
   <tabstop>pvp_comment</tabstop>
   <tabstop>openProjectFolder</tabstop>
   <tabstop>updateFromAddress</tabstop>
-  <tabstop>tabWidget</tabstop>
   <tabstop>pvp_contacts_owner_company</tabstop>
   <tabstop>pvp_contacts_owner_title</tabstop>
   <tabstop>pvp_contacts_owner_lastName</tabstop>
@@ -2593,11 +2579,6 @@
   <tabstop>pvp_contacts_owner_phone</tabstop>
   <tabstop>pvp_contacts_owner_phone2</tabstop>
   <tabstop>pvp_contacts_owner_mobile</tabstop>
-  <tabstop>copyClientAddressFromBuilding</tabstop>
-  <tabstop>createQuote</tabstop>
-  <tabstop>createPartialInvoice</tabstop>
-  <tabstop>createFinalInvoice</tabstop>
-  <tabstop>composeEmailOwner</tabstop>
   <tabstop>pb_progress_inquiryReceived</tabstop>
   <tabstop>pvp_progress_inquiryReceived</tabstop>
   <tabstop>pb_progress_roofMeasure</tabstop>
