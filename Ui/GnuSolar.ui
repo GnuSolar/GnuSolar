@@ -478,7 +478,7 @@
         <property name="title">
          <string>Bauherr</string>
         </property>
-        <widget class="QLineEdit" name="pvp_owner_title">
+        <widget class="QLineEdit" name="pvp_contacts_owner_title">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -488,7 +488,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_lastName">
+        <widget class="QLineEdit" name="pvp_contacts_owner_lastName">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -511,7 +511,7 @@
           <string>Anrede</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_email">
+        <widget class="QLineEdit" name="pvp_contacts_owner_email">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -547,7 +547,7 @@
           <string>Name / Vorname</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_firstName">
+        <widget class="QLineEdit" name="pvp_contacts_owner_firstName">
          <property name="geometry">
           <rect>
            <x>360</x>
@@ -570,7 +570,7 @@
           <string>Strasse / Nummer</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_zip">
+        <widget class="QLineEdit" name="pvp_contacts_owner_zip">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -580,7 +580,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_street">
+        <widget class="QLineEdit" name="pvp_contacts_owner_street">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -590,7 +590,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_streetNumber">
+        <widget class="QLineEdit" name="pvp_contacts_owner_streetNumber">
          <property name="geometry">
           <rect>
            <x>450</x>
@@ -613,7 +613,7 @@
           <string>PLZ / Ort</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_city">
+        <widget class="QLineEdit" name="pvp_contacts_owner_city">
          <property name="geometry">
           <rect>
            <x>250</x>
@@ -636,7 +636,7 @@
           <string>Telefon</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_phone">
+        <widget class="QLineEdit" name="pvp_contacts_owner_phone">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -659,7 +659,7 @@
           <string>E-Mail 2</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_email2">
+        <widget class="QLineEdit" name="pvp_contacts_owner_email2">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -682,7 +682,7 @@
           <string>Telefon 2</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_phone2">
+        <widget class="QLineEdit" name="pvp_contacts_owner_phone2">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -705,7 +705,7 @@
           <string>Mobile</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_mobile">
+        <widget class="QLineEdit" name="pvp_contacts_owner_mobile">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -728,7 +728,7 @@
           <string>Firma</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_owner_company">
+        <widget class="QLineEdit" name="pvp_contacts_owner_company">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -2424,7 +2424,7 @@
      <x>0</x>
      <y>0</y>
      <width>1136</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -2511,19 +2511,19 @@
   <tabstop>openProjectFolder</tabstop>
   <tabstop>updateFromAddress</tabstop>
   <tabstop>tabWidget</tabstop>
-  <tabstop>pvp_owner_company</tabstop>
-  <tabstop>pvp_owner_title</tabstop>
-  <tabstop>pvp_owner_lastName</tabstop>
-  <tabstop>pvp_owner_firstName</tabstop>
-  <tabstop>pvp_owner_street</tabstop>
-  <tabstop>pvp_owner_streetNumber</tabstop>
-  <tabstop>pvp_owner_zip</tabstop>
-  <tabstop>pvp_owner_city</tabstop>
-  <tabstop>pvp_owner_email</tabstop>
-  <tabstop>pvp_owner_email2</tabstop>
-  <tabstop>pvp_owner_phone</tabstop>
-  <tabstop>pvp_owner_phone2</tabstop>
-  <tabstop>pvp_owner_mobile</tabstop>
+  <tabstop>pvp_contacts_owner_company</tabstop>
+  <tabstop>pvp_contacts_owner_title</tabstop>
+  <tabstop>pvp_contacts_owner_lastName</tabstop>
+  <tabstop>pvp_contacts_owner_firstName</tabstop>
+  <tabstop>pvp_contacts_owner_street</tabstop>
+  <tabstop>pvp_contacts_owner_streetNumber</tabstop>
+  <tabstop>pvp_contacts_owner_zip</tabstop>
+  <tabstop>pvp_contacts_owner_city</tabstop>
+  <tabstop>pvp_contacts_owner_email</tabstop>
+  <tabstop>pvp_contacts_owner_email2</tabstop>
+  <tabstop>pvp_contacts_owner_phone</tabstop>
+  <tabstop>pvp_contacts_owner_phone2</tabstop>
+  <tabstop>pvp_contacts_owner_mobile</tabstop>
   <tabstop>copyClientAddressFromBuilding</tabstop>
   <tabstop>createQuote</tabstop>
   <tabstop>createPartialInvoice</tabstop>

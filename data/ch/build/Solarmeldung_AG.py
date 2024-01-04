@@ -30,7 +30,7 @@ standort_street = ""
 standort_streetNumber = ""
 standort_zip = ""
 standort_city = ""
-if not model.building.identicalAddress(model.owner):
+if not model.building.identicalAddress(model.contacts.owner):
     standort_identisch = False
     standort_street = model.building.street
     standort_streetNumber = model.building.streetNumber
@@ -40,15 +40,15 @@ if not model.building.identicalAddress(model.owner):
 
 self.fillform_data = {
     # Bauherrschaft
-    'name::Firma_B_13' : model.owner.company,
-    'name::Name_B_14' : model.owner.lastName,
-    'name::Vorname_B_15' : model.owner.firstName,
-    'name::Strasse_B_16' : model.owner.street,
-    'name::Nummer_B_17' : model.owner.streetNumber,
-    'name::PLZ_B_18' : model.owner.zip,
-    'name::Ort_B_19' : model.owner.city,
-    'name::Telefon_B_20' : model.owner.getAnyPhone(),
-    'name::E-Mail_B_21' : model.owner.email,
+    'name::Firma_B_13' : model.contacts.owner.company,
+    'name::Name_B_14' : model.contacts.owner.lastName,
+    'name::Vorname_B_15' : model.contacts.owner.firstName,
+    'name::Strasse_B_16' : model.contacts.owner.street,
+    'name::Nummer_B_17' : model.contacts.owner.streetNumber,
+    'name::PLZ_B_18' : model.contacts.owner.zip,
+    'name::Ort_B_19' : model.contacts.owner.city,
+    'name::Telefon_B_20' : model.contacts.owner.getAnyPhone(),
+    'name::E-Mail_B_21' : model.contacts.owner.email,
 
     # Eigentümer Liegenschaft
     'name::Standortidentisch_L_27' : True,

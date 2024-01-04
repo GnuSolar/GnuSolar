@@ -3,14 +3,14 @@ self.fillpdf_data = {
 #    'Eingang Gesuch' : 'Eingang Gesuch',
 #    'SAP' : 'SAP',
 
-    'Name' : model.owner.lastName,          # Eigentümer
-    'Vorname' : model.owner.firstName,
-    'Strasse' : model.owner.street,
-    'Nr' : model.owner.streetNumber,
-    'PLZ' : model.owner.zip,
-    'Ort' : model.owner.city,
-    'Tel' : model.owner.phone,
-    'EMail' : model.owner.email,
+    'Name' : model.contacts.owner.lastName,          # Eigentümer
+    'Vorname' : model.contacts.owner.firstName,
+    'Strasse' : model.contacts.owner.street,
+    'Nr' : model.contacts.owner.streetNumber,
+    'PLZ' : model.contacts.owner.zip,
+    'Ort' : model.contacts.owner.city,
+    'Tel' : model.contacts.owner.phone,
+    'EMail' : model.contacts.owner.email,
     'Strasse2' : model.building.street,            # Standort
     'Nr2' : model.building.streetNumber,
     'PLZ_2' : model.building.zip,
@@ -18,14 +18,14 @@ self.fillpdf_data = {
 
 # Produzent, Betriebsinhaber
 #    'Firma 1' : 'Firma 1',
-    'Telefon Firma 1' : model.owner.phone,
-    'N/VN Firma 1' : model.owner.lastName + " " + model.owner.firstName,
+    'Telefon Firma 1' : model.contacts.owner.phone,
+    'N/VN Firma 1' : model.contacts.owner.lastName + " " + model.contacts.owner.firstName,
 #    'Mobile Firma 1' : 'Mobile Firma 1',
-    ' Firma 1' : model.owner.street + " " + model.owner.streetNumber,
+    ' Firma 1' : model.contacts.owner.street + " " + model.contacts.owner.streetNumber,
 #    'Postfach' : 'Postfach',
 #    'Fax Firma 1' : 'Fax Firma 1',
     'PLZ/Ort Firma 1' : model.building.zip + " " + model.building.city,
-    'Mail Firma 1' : model.owner.email,
+    'Mail Firma 1' : model.contacts.owner.email,
 
 # Auszahlung Förderung
 #    'Kontoinhaber' : 'Kontoinhaber',

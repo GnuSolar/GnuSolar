@@ -9,6 +9,7 @@ import os
 import datetime
 
 from model.Contact import *
+from model.Contacts import *
 from model.Building import *
 from model.Progress import *
 from model.PowerCompany import *
@@ -18,7 +19,7 @@ class PvProject:
     
     def __init__(self, path=""):
         self._savePath = None
-        self.owner = Contact()
+        self.contacts = Contacts()
         self.building = Building()
         self.municipality = Municipality()
         self.powerCompany = PowerCompany()
@@ -111,10 +112,17 @@ class PvProject:
         except Exception:
             pass
 
+        # owner moved to contacts._owner
+        if hasattr(ret, "owner"):
+            if not hasattr(ret, "contacts"):
+                ret.contacts = Contacts()
+            ret.contacts._owner = ret.owner
+
         # loop over all attributes from self and copy them over from ret
         # makes sure if you open a file with an older model, the attributes 
         # default to default :)
         self._copyOver(self, ret)
+
         
     def _copyOver(self, src, dest):
         for key, value in src.__dict__.items():

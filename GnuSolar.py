@@ -168,10 +168,10 @@ class GnuSolar(QApplication):
 
     def action_copyClientAddressFromBuilding(self):
         self.updateModel()
-        self.model.owner.street       = self.model.building.street
-        self.model.owner.streetNumber = self.model.building.streetNumber
-        self.model.owner.zip          = self.model.building.zip
-        self.model.owner.city         = self.model.building.city
+        self.model.contacts.owner.street       = self.model.building.street
+        self.model.contacts.owner.streetNumber = self.model.building.streetNumber
+        self.model.contacts.owner.zip          = self.model.building.zip
+        self.model.contacts.owner.city         = self.model.building.city
         self.updateUi()
 
     def action_updateFromAddress(self):
@@ -408,7 +408,7 @@ class GnuSolar(QApplication):
     def action_composeEmailOwner(self):
         global config
         
-        to = self.model.owner.email
+        to = self.model.contacts.owner.email
         composeEmail(config.installer_email, to, "", "")
 
     # Gemeinde Webseite öffnen

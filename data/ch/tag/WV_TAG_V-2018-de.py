@@ -6,14 +6,14 @@ self.fillpdf_data = {
     'undefined' : True,             # Sprache Eigentümer DE
 #    'undefined_2' : None,          # Sprache Eigentümer FR
 #    'undefined_3' : None,          # Sprache Eigentümer IT
-    'Name' : model.owner.lastName,          # Eigentümer
-    'Vorname' : model.owner.firstName,
-    'Strasse' : model.owner.street,
-    'Nr' : model.owner.streetNumber,
-    'PLZ' : model.owner.zip,
-    'Ort' : model.owner.city,
-    'Tel' : model.owner.phone,
-    'EMail' : model.owner.email,
+    'Name' : model.contacts.owner.lastName,          # Eigentümer
+    'Vorname' : model.contacts.owner.firstName,
+    'Strasse' : model.contacts.owner.street,
+    'Nr' : model.contacts.owner.streetNumber,
+    'PLZ' : model.contacts.owner.zip,
+    'Ort' : model.contacts.owner.city,
+    'Tel' : model.contacts.owner.phone,
+    'EMail' : model.contacts.owner.email,
     'Strasse2' : model.building.street,            # Standort
     'Nr2' : model.building.streetNumber,
     'PLZ_2' : model.building.zip,
