@@ -472,7 +472,7 @@
           <x>10</x>
           <y>10</y>
           <width>541</width>
-          <height>341</height>
+          <height>431</height>
          </rect>
         </property>
         <property name="title">
@@ -733,6 +733,75 @@
           <rect>
            <x>180</x>
            <y>30</y>
+           <width>341</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_47">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>330</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Kontoinhaber</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_contacts_owner_accountOwner">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>330</y>
+           <width>341</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_48">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>360</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Bankname</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_contacts_owner_accountBank">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>360</y>
+           <width>341</width>
+           <height>25</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_49">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>390</y>
+           <width>141</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>IBAN</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_contacts_owner_accountIban">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>390</y>
            <width>341</width>
            <height>25</height>
           </rect>

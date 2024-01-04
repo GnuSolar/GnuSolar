@@ -26,6 +26,13 @@ class Contact:
         self.phone = None
         self.phone2 = None
         self.mobile = None
+        
+        # Bank account information
+        self.accountOwner = None
+        self.accountBank = None
+        self.accountIban = None
+        self.accountIid = None      # Institution Identifier (Switzerland)
+        self.accountBic = None      # Business Identifier Code (Swift)
 
     def fromId(self, contactId):
         con = sqlite3.connect(Config.getMasterDbPath())
