@@ -30,7 +30,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
@@ -479,19 +479,22 @@
        <attribute name="title">
         <string>Kontakte</string>
        </attribute>
-       <widget class="QGroupBox" name="groupBox_2">
+       <widget class="QGroupBox" name="gb_contacts">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>560</x>
           <y>10</y>
           <width>541</width>
           <height>431</height>
          </rect>
         </property>
         <property name="title">
-         <string>Bauherr</string>
+         <string>Kontakt Detail</string>
         </property>
-        <widget class="QLineEdit" name="pvp_contacts_owner_title">
+        <widget class="QLineEdit" name="contacts_title">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -501,7 +504,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_lastName">
+        <widget class="QLineEdit" name="contacts_lastName">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -524,7 +527,7 @@
           <string>Anrede</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_email">
+        <widget class="QLineEdit" name="contacts_email">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -560,7 +563,7 @@
           <string>Name / Vorname</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_firstName">
+        <widget class="QLineEdit" name="contacts_firstName">
          <property name="geometry">
           <rect>
            <x>360</x>
@@ -583,7 +586,7 @@
           <string>Strasse / Nummer</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_zip">
+        <widget class="QLineEdit" name="contacts_zip">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -593,7 +596,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_street">
+        <widget class="QLineEdit" name="contacts_street">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -603,7 +606,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_streetNumber">
+        <widget class="QLineEdit" name="contacts_streetNumber">
          <property name="geometry">
           <rect>
            <x>450</x>
@@ -626,7 +629,7 @@
           <string>PLZ / Ort</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_city">
+        <widget class="QLineEdit" name="contacts_city">
          <property name="geometry">
           <rect>
            <x>250</x>
@@ -649,7 +652,7 @@
           <string>Telefon</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_phone">
+        <widget class="QLineEdit" name="contacts_phone">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -672,7 +675,7 @@
           <string>E-Mail 2</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_email2">
+        <widget class="QLineEdit" name="contacts_email2">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -695,7 +698,7 @@
           <string>Telefon 2</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_phone2">
+        <widget class="QLineEdit" name="contacts_phone2">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -718,7 +721,7 @@
           <string>Mobile</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_mobile">
+        <widget class="QLineEdit" name="contacts_mobile">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -741,7 +744,7 @@
           <string>Firma</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_company">
+        <widget class="QLineEdit" name="contacts_company">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -764,7 +767,7 @@
           <string>Kontoinhaber</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_accountOwner">
+        <widget class="QLineEdit" name="contacts_accountOwner">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -787,7 +790,7 @@
           <string>Bankname</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_accountBank">
+        <widget class="QLineEdit" name="contacts_accountBank">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -810,7 +813,7 @@
           <string>IBAN</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="pvp_contacts_owner_accountIban">
+        <widget class="QLineEdit" name="contacts_accountIban">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -818,6 +821,88 @@
            <width>341</width>
            <height>25</height>
           </rect>
+         </property>
+        </widget>
+        <widget class="QCommandLinkButton" name="closeContactsEdit">
+         <property name="geometry">
+          <rect>
+           <x>460</x>
+           <y>-10</y>
+           <width>81</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>close</string>
+         </property>
+         <property name="icon">
+          <iconset theme="window_close"/>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="gb_contacts_owner">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>531</width>
+          <height>51</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Bauherr</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <widget class="QLabel" name="lb_contacts_owner">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>511</width>
+           <height>19</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>contacts_owner</string>
+         </property>
+        </widget>
+        <widget class="QCommandLinkButton" name="clb_contacts_owner">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>-6</y>
+           <width>71</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>edit</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
          </property>
         </widget>
        </widget>
@@ -2566,19 +2651,19 @@
   <tabstop>pvp_comment</tabstop>
   <tabstop>openProjectFolder</tabstop>
   <tabstop>updateFromAddress</tabstop>
-  <tabstop>pvp_contacts_owner_company</tabstop>
-  <tabstop>pvp_contacts_owner_title</tabstop>
-  <tabstop>pvp_contacts_owner_lastName</tabstop>
-  <tabstop>pvp_contacts_owner_firstName</tabstop>
-  <tabstop>pvp_contacts_owner_street</tabstop>
-  <tabstop>pvp_contacts_owner_streetNumber</tabstop>
-  <tabstop>pvp_contacts_owner_zip</tabstop>
-  <tabstop>pvp_contacts_owner_city</tabstop>
-  <tabstop>pvp_contacts_owner_email</tabstop>
-  <tabstop>pvp_contacts_owner_email2</tabstop>
-  <tabstop>pvp_contacts_owner_phone</tabstop>
-  <tabstop>pvp_contacts_owner_phone2</tabstop>
-  <tabstop>pvp_contacts_owner_mobile</tabstop>
+  <tabstop>contacts_company</tabstop>
+  <tabstop>contacts_title</tabstop>
+  <tabstop>contacts_lastName</tabstop>
+  <tabstop>contacts_firstName</tabstop>
+  <tabstop>contacts_street</tabstop>
+  <tabstop>contacts_streetNumber</tabstop>
+  <tabstop>contacts_zip</tabstop>
+  <tabstop>contacts_city</tabstop>
+  <tabstop>contacts_email</tabstop>
+  <tabstop>contacts_email2</tabstop>
+  <tabstop>contacts_phone</tabstop>
+  <tabstop>contacts_phone2</tabstop>
+  <tabstop>contacts_mobile</tabstop>
   <tabstop>pb_progress_inquiryReceived</tabstop>
   <tabstop>pvp_progress_inquiryReceived</tabstop>
   <tabstop>pb_progress_roofMeasure</tabstop>

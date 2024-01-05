@@ -22,3 +22,9 @@ class Contacts:
     def owner(self, value):
         self._owner = value
 
+    def getRoleName(self, role):
+        roles = {
+            "owner": "Bauherr"
+        }
+
+        return roles[role]
