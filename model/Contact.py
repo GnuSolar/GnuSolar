@@ -86,4 +86,8 @@ class Contact:
         return "0800 800 800"       # default to swisscom main number :)
 
     def getNameCity(self):
-        return str(self.lastName) + " " + str(self.firstName) + " " + str(self.city)
+        ret = str(self.lastName) + " " + str(self.firstName) + " " + str(self.city)
+        if self.company:
+            ret = str(self.company) + " " + str(self.city) + " " + str(self.lastName) + " " + str(self.firstName)
+        return ret
+            
