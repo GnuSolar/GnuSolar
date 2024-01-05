@@ -364,7 +364,7 @@ class Projects(QApplication):
         if pv.progress.constructionFixed:
             cs += " fix"
            
-        ownerName = str(pv.contacts.owner.firstName) + " " + str(pv.contacts.owner.lastName) + " " + str(pv.contacts.owner.city)
+        ownerName = pv.contacts.owner.getNameCity()
         views = {
             "Default" : {
                 1 : pv.progress.getState(),
