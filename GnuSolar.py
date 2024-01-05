@@ -227,6 +227,7 @@ class GnuSolar(QApplication):
 
         gb_contacts = self.ui.gb_contacts   # disalbe the groub box
         gb_contacts.setEnabled(False)
+        gb_contacts.setTitle("Kontakt Detail")
 
         # clear all fields
         for key, value in self.ui.__dict__.items():
