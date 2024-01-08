@@ -399,6 +399,8 @@ class Projects(QApplication):
         }
         for i, val in views[view].items():
             val = str(val)      # dont crash if no string
+            if val=="None":
+                val = ""
             self.ui.tableWidgetProjects.setItem(rowN, i, QTableWidgetItem(val))
         
     def createProject(self):
