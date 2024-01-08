@@ -318,6 +318,11 @@ class GnuSolar(QApplication):
         if not os.path.isdir(outDir):
             os.makedirs(outDir)
 
+        # dot not overwrite existing files
+        if os.path.exists(outPath):
+            QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Datei existiert bereits:\n' + outPath)
+            return
+
         self.model._invoiceName = config.getNextInvoiceName()
         self.model._quoteName = config.getNextQuoteName()
         today = date.today()
