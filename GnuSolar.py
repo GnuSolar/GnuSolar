@@ -327,7 +327,9 @@ class GnuSolar(QApplication):
         self.model._quoteName = config.getNextQuoteName()
         today = date.today()
         self.model._todayIso = today.isoformat()
+        self.model.owner = self.model.contacts.owner		# backwards compatibility
         templateCopyReplace(templatePath, outPath, self.model)
+        del self.model.owner
         del self.model._invoiceName
         del self.model._quoteName
         del self.model._todayIso
