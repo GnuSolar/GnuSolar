@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>623</height>
+    <width>607</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,9 +20,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>30</y>
+     <y>10</y>
      <width>581</width>
-     <height>161</height>
+     <height>181</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -38,9 +38,6 @@
     </item>
     <item row="1" column="1">
      <widget class="QLineEdit" name="projectRoot"/>
-    </item>
-    <item row="5" column="1">
-     <widget class="QWidget" name="projectDirectoryWidget" native="true"/>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="projectDirectoryLabel_2">
@@ -59,6 +56,9 @@
       </property>
      </widget>
     </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="nextQuoteNumber"/>
+    </item>
     <item row="4" column="0">
      <widget class="QLabel" name="projectDirectoryLabel_4">
       <property name="text">
@@ -66,19 +66,29 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="nextQuoteNumber"/>
-    </item>
     <item row="4" column="1">
      <widget class="QLineEdit" name="nextInvoiceNumber"/>
+    </item>
+    <item row="6" column="1">
+     <widget class="QWidget" name="projectDirectoryWidget" native="true"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="sipServer"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="projectDirectoryLabel_7">
+      <property name="text">
+       <string>Sip-Server</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>560</y>
+     <x>50</x>
+     <y>590</y>
      <width>549</width>
      <height>36</height>
     </rect>
@@ -94,9 +104,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>200</y>
-     <width>601</width>
-     <height>351</height>
+     <y>210</y>
+     <width>589</width>
+     <height>367</height>
     </rect>
    </property>
    <property name="title">

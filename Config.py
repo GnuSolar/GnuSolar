@@ -23,6 +23,8 @@ class Config():
         
         self.nextQuoteNumber = 0
         self.nextInvoiceNumber = 0
+
+        self.sipServer = ""             # SIP Server for voip
         
         # Installer info
         self.installer_company = ""
@@ -76,6 +78,7 @@ class Config():
         self.ui.templatePath.setText(self.templatePath)
         self.ui.nextQuoteNumber.setText(str(self.nextQuoteNumber))
         self.ui.nextInvoiceNumber.setText(str(self.nextInvoiceNumber))
+        self.ui.sipServer.setText(self.sipServer)
 
         self.ui.installer_company.setText(self.installer_company)
         self.ui.installer_firstName.setText(self.installer_firstName)
@@ -100,6 +103,7 @@ class Config():
         self.templatePath = self.ui.templatePath.text()
         self.nextQuoteNumber = int(self.ui.nextQuoteNumber.text())
         self.nextInvoiceNumber = int(self.ui.nextInvoiceNumber.text())
+        self.sipServer = self.ui.sipServer.text()
 
         self.installer_company = self.ui.installer_company.text()
         self.installer_firstName = self.ui.installer_firstName.text()
