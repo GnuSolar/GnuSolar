@@ -1,0 +1,27 @@
+Howto configure debian to open sip: urls in MicroSIP
+
+MMy prefered sofphone for linux is currently MicroSIP
+It's GPL an for Window and runs fine in wine.
+https://www.microsip.org/
+
+- Install it with wine
+- make it launchable from Console
+cat /usr/local/bin/MicroSIP:
+#!/usr/bin/bash
+wine-stable C:\\users\\marams\\AppData\\Roaming\\Microsoft\\Windows\\Start\ Menu\\Programs\\MicroSIP\\MicroSIP.lnk $1
+
+- create desktop entry for mimetype?:
+cat ~/.local/share/applications/microsip.desktop:
+[Desktop Entry]
+Name=MicroSIP
+GenericName=SIP Phone
+Comment=A libre SIP client
+Type=Application
+Exec=MicroSIP %u
+Terminal=false
+Categories=Network;Telephony;
+MimeType=x-scheme-handler/sip;x-scheme-handler/sips;x-scheme-handler/tel;x-scheme-handler/callto;
+X-PulseAudio-Properties=media.role=phone
+
+- register it:
+xdg-mime default microsip.desktop x-scheme-handler/sip
