@@ -68,8 +68,13 @@ class Progress:
         if self.orderRejected:
             return "9 - rejected " + self.orderRejected
         
+        # manuell archiviert
         if self.archived:
-            return "8 - archived " + self.archived
+            return "8 - archived " + self.archived + " manu"
+
+        # EIV ausbezahlt und Schlussrechnung bezahlt => archiviert
+        if self.eivPayed and self.finalInvoiceReceived:
+            return "8 - archived " + self.eivPayed + " auto"
 
         # Auftrag abgeschlossen
         if self.eivPayed:
