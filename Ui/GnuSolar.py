@@ -827,7 +827,7 @@ class Ui_PvProject(object):
         self.menubar.addAction(self.menuSettings.menuAction())
 
         self.retranslateUi(PvProject)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(PvProject)
         PvProject.setTabOrder(self.pvp_building_buildingState, self.pvp_building_street)
         PvProject.setTabOrder(self.pvp_building_street, self.pvp_building_streetNumber)
