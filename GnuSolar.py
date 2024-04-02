@@ -84,6 +84,7 @@ class GnuSolar(QApplication):
 
         self.ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
+        self.ui.get3dModel.clicked.connect(self.action_get3dModel)
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
         self.ui.createFinalInvoice.clicked.connect(self.action_createFinalInvoice)
@@ -140,7 +141,6 @@ class GnuSolar(QApplication):
                 el = getattr(self.ui, key)
                 el.textChanged.connect(self.action_contactsChanged)
 
-
         self.unsavedChanges = False
         self.updateWindowTitle()
         
@@ -182,6 +182,34 @@ class GnuSolar(QApplication):
         self.updateUi()
         if isinstance(ret, str):
             QtWidgets.QMessageBox.warning(None, 'UpdatefromAddress Error', 'Meldung = ' + ret)
+
+    def action_get3dModel(self):
+        x = self.model.building.swissGridX
+        y = self.model.building.swissGridY
+        if not x or not y:
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'no coordiantes')
+            return
+
+        url = "http://amsler-solar.ch/swissbuildings3d-2-0/api.php?x=2" + str(x) + "&y=1" + str(y) + "&format=stl"
+        response = requests.get(url=url)
+        resp_txt = response.text
+        if not resp_txt.startswith("solid"):
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', resp_txt)
+            return
+        
+        cad_folder = os.path.dirname(self.path) + os.sep + "cad"
+        if not os.path.isdir(cad_folder):
+            os.mkdir(cad_folder)
+        
+        stl_file = cad_folder + os.sep + "house_geo.stl"
+        if os.path.isfile(stl_file):
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', "File exists: " + stl_file)
+            return
+        
+        with open(stl_file, "w") as f:
+            f.write(resp_txt)
+
+        openFolderIfExists(stl_file)
 
     def action_progress(self):
         sendingButton = self.sender()

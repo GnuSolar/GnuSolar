@@ -1,7 +1,7 @@
-Howto configure debian to open sip: urls in MicroSIP
+Howto configure debian to open sip: urls in MicroSIP.
 
-MMy prefered sofphone for linux is currently MicroSIP
-It's GPL an for Window and runs fine in wine.
+My prefered softphone for linux is currently MicroSIP.
+It's GPL and for Window and runs fine in wine.
 https://www.microsip.org/
 
 - Install it with wine

@@ -474,6 +474,19 @@
          <string>Akontorechnung</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="get3dModel">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>160</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Get 3D Model</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -2911,7 +2924,7 @@
      <x>0</x>
      <y>0</y>
      <width>1136</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
