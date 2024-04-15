@@ -57,6 +57,7 @@ def composeEmail(from_adr, to, subject, body, attachments=[]):
     os.system(cmd)
 
 def templateCopyReplace(src, dest, model):
+    # print("templateCopyReplace: src:" + src + " dest:" + dest)
     basic = Template(source='', filepath=src)
     basic_generated = basic.generate(o=model, c=model.contacts).render()
 

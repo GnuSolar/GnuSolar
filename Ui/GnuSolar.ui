@@ -435,19 +435,6 @@
          <string>Schlussrechnung</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="composeEmailOwner">
-        <property name="geometry">
-         <rect>
-          <x>810</x>
-          <y>150</y>
-          <width>181</width>
-          <height>29</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>E-Mail an Bauherr</string>
-        </property>
-       </widget>
        <widget class="QPushButton" name="createQuote">
         <property name="geometry">
          <rect>
@@ -1264,6 +1251,19 @@
           </rect>
          </property>
         </widget>
+       </widget>
+       <widget class="QPushButton" name="composeEmailOwner">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>190</y>
+          <width>181</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>E-Mail an Bauherr</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_3">
@@ -3121,6 +3121,33 @@
   <tabstop>pvp_plant_totalArea</tabstop>
   <tabstop>pvp_plant_totalPanelCount</tabstop>
   <tabstop>pvp_plant_totalPowerAc</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>createFinalInvoice</tabstop>
+  <tabstop>createQuote</tabstop>
+  <tabstop>createPartialInvoice</tabstop>
+  <tabstop>get3dModel</tabstop>
+  <tabstop>contacts_accountOwner</tabstop>
+  <tabstop>contacts_accountBank</tabstop>
+  <tabstop>contacts_accountIban</tabstop>
+  <tabstop>closeContactsEdit</tabstop>
+  <tabstop>clb_contacts_installer_ac</tabstop>
+  <tabstop>pvp_contacts_owner_company</tabstop>
+  <tabstop>pvp_contacts_owner_title</tabstop>
+  <tabstop>pvp_contacts_owner_lastName</tabstop>
+  <tabstop>pvp_contacts_owner_firstName</tabstop>
+  <tabstop>pvp_contacts_owner_street</tabstop>
+  <tabstop>pvp_contacts_owner_streetNumber</tabstop>
+  <tabstop>pvp_contacts_owner_zip</tabstop>
+  <tabstop>pvp_contacts_owner_city</tabstop>
+  <tabstop>pvp_contacts_owner_email</tabstop>
+  <tabstop>pvp_contacts_owner_email2</tabstop>
+  <tabstop>pvp_contacts_owner_phone</tabstop>
+  <tabstop>pvp_contacts_owner_phone2</tabstop>
+  <tabstop>pvp_contacts_owner_mobile</tabstop>
+  <tabstop>pvp_contacts_owner_accountOwner</tabstop>
+  <tabstop>pvp_contacts_owner_accountBank</tabstop>
+  <tabstop>pvp_contacts_owner_accountIban</tabstop>
+  <tabstop>composeEmailOwner</tabstop>
  </tabstops>
  <resources/>
  <connections/>
