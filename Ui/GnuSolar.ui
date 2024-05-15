@@ -1265,6 +1265,45 @@
          <string>E-Mail an Bauherr</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="callContactsOwnerPhone">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>250</y>
+          <width>91</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Anruf</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="callContactsOwnerPhone2">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>280</y>
+          <width>91</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Anruf</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="callContactsOwnerMobile">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>310</y>
+          <width>91</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Anruf</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -2629,6 +2668,32 @@
          <string>Webseite öffnen</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="callMunicipalityMainContactPhone">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>230</y>
+          <width>91</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Anruf</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="callMunicipalityBuildingContactPhone">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>370</y>
+          <width>91</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Anruf</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -2924,7 +2989,7 @@
      <x>0</x>
      <y>0</y>
      <width>1136</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -3121,7 +3186,6 @@
   <tabstop>pvp_plant_totalArea</tabstop>
   <tabstop>pvp_plant_totalPanelCount</tabstop>
   <tabstop>pvp_plant_totalPowerAc</tabstop>
-  <tabstop>tabWidget</tabstop>
   <tabstop>createFinalInvoice</tabstop>
   <tabstop>createQuote</tabstop>
   <tabstop>createPartialInvoice</tabstop>

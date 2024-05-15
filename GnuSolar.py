@@ -99,7 +99,12 @@ class GnuSolar(QApplication):
         self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
         self.ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
         self.ui.closeContactsEdit.clicked.connect(self.action_closeContactsEdit)
-
+        self.ui.callContactsOwnerPhone.clicked.connect(self.action_callContactsOwnerPhone)
+        self.ui.callContactsOwnerPhone2.clicked.connect(self.action_callContactsOwnerPhone2)
+        self.ui.callContactsOwnerMobile.clicked.connect(self.action_callContactsOwnerMobile)
+        self.ui.callMunicipalityMainContactPhone.clicked.connect(self.action_callMunicipalityMainContactPhone)
+        self.ui.callMunicipalityBuildingContactPhone.clicked.connect(self.action_callMunicipalityBuildingContactPhone)
+        
         # Arguments:
         #   First argument: Path to the Pv-Project File
         self.path = ""          # path = "" means new project
@@ -289,6 +294,35 @@ class GnuSolar(QApplication):
 
         # signal data changed
         self.action_changed()
+
+    def action_callContactsOwnerPhone(self):
+        self.call(self.model.contacts.owner.phone)
+
+    def action_callContactsOwnerPhone2(self):
+        self.call(self.model.contacts.owner.phone2)
+
+    def action_callContactsOwnerMobile(self):
+        self.call(self.model.contacts.owner.mobile)
+
+    def action_callMunicipalityMainContactPhone(self):
+        self.call(self.model.municipality.mainContact.phone)
+
+    def action_callMunicipalityBuildingContactPhone(self):
+        self.call(self.model.municipality.buildingContact.phone)
+
+    # Place a phone call over SIP
+    def call(self, number):
+        global config
+        # fixup number
+        number = number.replace(' ','')
+        if number == "":
+            print("empty number")
+            return
+        # build SIP URL
+        sip = "sip:" + number + "@" + config.sipServer
+        print("call: " + sip)
+        openFolder(sip)
+
 
     def createFromTemplate(self, templateType):
         templates = {
