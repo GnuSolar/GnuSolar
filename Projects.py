@@ -48,6 +48,7 @@ class Projects(QApplication):
 
         self.ui.action_Preferences.triggered.connect(self.openConfig)
         self.ui.createProject.clicked.connect(self.createProject)
+        self.ui.exportContacts.clicked.connect(self.exportContacts)
         self.ui.reload.clicked.connect(self.projectViewChanged)         # TODO: reload from filesystem
         self.ui.constructionSort.clicked.connect(self.constructionSort)         # TODO: reload from filesystem
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
@@ -441,6 +442,39 @@ class Projects(QApplication):
         self.ui.newProject_streetNumber.setText("")
         self.ui.newProject_zipCode.setText("")
         self.ui.newProject_city.setText("")
+
+        return
+
+    def exportContacts(self):
+        global config
+        
+        microsip_xml = "<?xml version=\"1.0\"?>\n<contacts>\n"
+        # loop over all Projects
+        if not os.path.exists(config.projectRoot):
+            print("path not found: " + config.projectRoot)
+            return
+
+        for dirname, dirnames, filenames in os.walk(config.projectRoot):
+            for filename in filenames:
+                if filename == "plant.pvp":
+                    fn = os.path.join(dirname, filename)
+                    pv = PvProject(fn)
+                    name = pv.contacts.owner.getNameCity()
+                    if name == "":
+                        continue
+
+                    phone = pv.contacts.owner.getPhoneClean()
+                    mobile = pv.contacts.owner.getMobileClean()
+
+                    number = phone
+                    if not number:
+                        number = mobile
+                                                                        
+                    microsip_xml += "<contact name=\""+name+"\" number=\""+number+"\" firstname=\"\" lastname=\"\" phone=\""+phone+"\" mobile=\""+mobile+"\" email=\"\" address=\"\" city=\"\" state=\"\" zip=\"\" comment=\"\" id=\"\" info=\"\" presence=\"0\" starred=\"0\" directory=\"0\"/>\n"
+
+        microsip_xml += "</contacts>"
+        with open(config.projectRoot + os.sep + "MicroSIP_Contacts.xml", "w") as text_file:
+            text_file.write(microsip_xml)
 
         return
 

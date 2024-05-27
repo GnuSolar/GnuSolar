@@ -266,6 +266,19 @@
          </property>
         </widget>
        </widget>
+       <widget class="QPushButton" name="exportContacts">
+        <property name="geometry">
+         <rect>
+          <x>780</x>
+          <y>280</y>
+          <width>221</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Kontakte exportieren</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_projects">
        <attribute name="title">
@@ -471,7 +484,7 @@
      <x>0</x>
      <y>0</y>
      <width>1590</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
