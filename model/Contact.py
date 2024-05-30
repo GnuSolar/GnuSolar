@@ -124,6 +124,7 @@ class Contact:
         ret += "VERSION:3.0\n"
         ret += "FN:"+self.getNameCity()+"\n"
         ret += "N:"+self.getNameCity()+";;;;\n"
+        ret += "ORG:Solar;Owner\n"
         if self.email:
             ret += "EMAIL:"+self.email+"\n"
         if self.email2:
