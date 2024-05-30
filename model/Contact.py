@@ -117,3 +117,23 @@ class Contact:
         number = number.replace("/", " ")        
         number = number.strip()
         return number
+    
+    def exportVCard(self):
+        ret = ""
+        ret += "BEGIN:VCARD\n"
+        ret += "VERSION:3.0\n"
+        ret += "FN:"+self.getNameCity()+"\n"
+        ret += "N:"+self.getNameCity()+";;;;\n"
+        if self.email:
+            ret += "EMAIL:"+self.email+"\n"
+        if self.email2:
+            ret += "EMAIL:"+self.email2+"\n"
+        if self.phone:
+            ret += "TEL;TYPE=voice:"+self.phone+"\n"
+        if self.phone2:
+            ret += "TEL;TYPE=voice:"+self.phone2+"\n"
+        if self.mobile:
+            ret += "TEL;TYPE=voice:"+self.mobile+"\n"
+        ret += "END:VCARD\n"
+ 
+        return ret

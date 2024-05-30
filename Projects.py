@@ -448,6 +448,7 @@ class Projects(QApplication):
     def exportContacts(self):
         global config
         
+        vCard = ""
         microsip_xml = "<?xml version=\"1.0\"?>\n<contacts>\n"
         # loop over all Projects
         if not os.path.exists(config.projectRoot):
@@ -471,10 +472,15 @@ class Projects(QApplication):
                         number = mobile
                                                                         
                     microsip_xml += "<contact name=\""+name+"\" number=\""+number+"\" firstname=\"\" lastname=\"\" phone=\""+phone+"\" mobile=\""+mobile+"\" email=\"\" address=\"\" city=\"\" state=\"\" zip=\"\" comment=\"\" id=\"\" info=\"\" presence=\"0\" starred=\"0\" directory=\"0\"/>\n"
-
+                    vCard += pv.contacts.owner.exportVCard()
+                    
         microsip_xml += "</contacts>"
-        with open(config.projectRoot + os.sep + "MicroSIP_Contacts.xml", "w") as text_file:
+
+        with open(config.projectRoot + os.sep + "Contacts_MicroSIP.xml", "w") as text_file:
             text_file.write(microsip_xml)
+
+        with open(config.projectRoot + os.sep + "Contacts.vcf", "w") as text_file:
+            text_file.write(vCard)
 
         return
 
