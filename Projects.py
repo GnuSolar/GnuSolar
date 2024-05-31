@@ -35,6 +35,15 @@ else:   # Default Linux
     def openFolder(path):
         os.system("xdg-open \"" + path + "\"")
 
+def is_float(s):
+    if s == None:
+        return False
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
 class Projects(QApplication):
     def __init__(self, *args):
         QApplication.__init__(self, *args)
@@ -315,14 +324,14 @@ class Projects(QApplication):
             ],
             "Finance" : [
                 "Projekt",
-                "Status",
-                "Baustart",
-                "Akonto",
-                "Akonto bez",
+                "Bauherr",
                 "Inbetriebnahme",
                 "Schlussrechnung",
                 "Schlussrechnung bez",
-                "Bauherr"
+                "Preis",
+                "DC-Leistung",
+                "CHF/kWp",
+                "CHF/m2"
             ],
             "Construction" : [
                 "Projekt",
@@ -366,6 +375,13 @@ class Projects(QApplication):
             cs += " fix"
            
         ownerName = pv.contacts.owner.getNameCity()
+        kWp = 0
+        if is_float(pv.plant.totalCost) and is_float(pv.plant.totalPowerDc):
+            kWp = int(float(pv.plant.totalCost)/float(pv.plant.totalPowerDc))
+        m2 = 0
+        if is_float(pv.plant.totalCost) and is_float(pv.plant.totalArea):
+            m2 = int(float(pv.plant.totalCost)/float(pv.plant.totalArea))
+
         views = {
             "Default" : {
                 1 : pv.progress.getState(),
@@ -377,14 +393,14 @@ class Projects(QApplication):
                 7 : ownerName
             },
             "Finance" : {
-                1 : pv.progress.getState(),
-                2 : pv.progress.constructionStart,
-                3 : pv.progress.partialInvoiceSent,
-                4 : pv.progress.partialInvoiceReceived,
-                5 : pv.progress.launch,
-                6 : pv.progress.finalInvoiceSent,
-                7 : pv.progress.finalInvoiceReceived,
-                8 : ownerName
+                1 : ownerName,
+                2 : pv.progress.launch,
+                3 : pv.progress.finalInvoiceSent,
+                4 : pv.progress.finalInvoiceReceived,
+                5 : pv.plant.totalCost,
+                6 : pv.plant.totalPowerDc,
+                7 : kWp,
+                8 : m2,
             },
             "Construction" : {
                 1 : pv.progress.getState(),
