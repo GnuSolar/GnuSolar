@@ -481,13 +481,15 @@ class Projects(QApplication):
                         continue
 
                     phone = pv.contacts.owner.getPhoneClean()
+                    phone2 = pv.contacts.owner.getPhone2Clean()
                     mobile = pv.contacts.owner.getMobileClean()
-
-                    number = phone
-                    if not number:
-                        number = mobile
+                    if phone:
+                        microsip_xml += "<contact name=\""+name+"\" number=\""+phone+"\" firstname=\"\" lastname=\"\" phone=\"\" mobile=\"\" email=\"\" address=\"\" city=\"\" state=\"\" zip=\"\" comment=\"\" id=\"\" info=\"\" presence=\"0\" starred=\"0\" directory=\"0\"/>\n"
+                    if phone2:
+                        microsip_xml += "<contact name=\""+name+"\" number=\""+phone2+"\" firstname=\"\" lastname=\"\" phone=\"\" mobile=\"\" email=\"\" address=\"\" city=\"\" state=\"\" zip=\"\" comment=\"\" id=\"\" info=\"\" presence=\"0\" starred=\"0\" directory=\"0\"/>\n"
+                    if mobile:
+                        microsip_xml += "<contact name=\""+name+"\" number=\""+mobile+"\" firstname=\"\" lastname=\"\" phone=\"\" mobile=\"\" email=\"\" address=\"\" city=\"\" state=\"\" zip=\"\" comment=\"\" id=\"\" info=\"\" presence=\"0\" starred=\"0\" directory=\"0\"/>\n"
                                                                         
-                    microsip_xml += "<contact name=\""+name+"\" number=\""+number+"\" firstname=\"\" lastname=\"\" phone=\""+phone+"\" mobile=\""+mobile+"\" email=\"\" address=\"\" city=\"\" state=\"\" zip=\"\" comment=\"\" id=\"\" info=\"\" presence=\"0\" starred=\"0\" directory=\"0\"/>\n"
                     vCard += pv.contacts.owner.exportVCard()
                     
         microsip_xml += "</contacts>"

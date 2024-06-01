@@ -114,7 +114,9 @@ class Contact:
     def cleanPhoneNumber(self, number):
         if not number:
             return ""
-        number = number.replace("/", " ")        
+        number = number.replace("/", "")
+        number = number.replace(" ", "")
+        number = number.replace("+41", "0")
         number = number.strip()
         return number
     
