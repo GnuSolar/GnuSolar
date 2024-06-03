@@ -12,8 +12,10 @@ class Plant:
         self.totalPowerDc = None
         self.totalArea = None
         self.totalPanelCount = None
+        self.panelDesc = None
 
         self.totalPowerAc = None
+        self.inverterDesc = None
         
         self.totalCost = None               # for solar note aargau
 

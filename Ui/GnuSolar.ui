@@ -2705,7 +2705,7 @@
           <x>10</x>
           <y>90</y>
           <width>541</width>
-          <height>151</height>
+          <height>181</height>
          </rect>
         </property>
         <property name="title">
@@ -2867,14 +2867,43 @@
           </property>
          </item>
         </widget>
+        <widget class="QLabel" name="label_62">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>150</y>
+           <width>181</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Modulbezeichung</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_plant_panelDesc">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>150</y>
+           <width>331</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
        </widget>
        <widget class="QGroupBox" name="groupBox_8">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>260</y>
+          <y>310</y>
           <width>541</width>
-          <height>71</height>
+          <height>91</height>
          </rect>
         </property>
         <property name="title">
@@ -2922,6 +2951,35 @@
           <string>kW</string>
          </property>
         </widget>
+        <widget class="QLabel" name="label_63">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>181</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Bezeichnung</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="pvp_plant_inverterDesc">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>60</y>
+           <width>331</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
        </widget>
        <widget class="QGroupBox" name="groupBox_9">
         <property name="geometry">
@@ -2933,7 +2991,7 @@
          </rect>
         </property>
         <property name="title">
-         <string>Allgemeines</string>
+         <string>Finanzen</string>
         </property>
         <widget class="QLabel" name="label_38">
          <property name="geometry">
@@ -2989,7 +3047,7 @@
      <x>0</x>
      <y>0</y>
      <width>1136</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
