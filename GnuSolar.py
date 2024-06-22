@@ -89,6 +89,7 @@ class GnuSolar(QApplication):
         self.ui.createQuote.clicked.connect(self.action_createQuote)
         self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
         self.ui.createFinalInvoice.clicked.connect(self.action_createFinalInvoice)
+        self.ui.createSmallInvoice.clicked.connect(self.action_createSmallInvoice)
         self.ui.createDocumentation.clicked.connect(self.action_createDocumentation)
         self.ui.createMundpp.clicked.connect(self.action_createMundpp)
         self.ui.createTag.clicked.connect(self.action_createTag)
@@ -336,6 +337,11 @@ class GnuSolar(QApplication):
                 "out_dir"  : "fin",
                 "out_file" : config.getNextInvoiceName() + ".odt"
             },
+            "small_invoice" : {
+                "in_path"  : "fin" + os.sep + "small_invoice.odt",
+                "out_dir"  : "fin",
+                "out_file" : config.getNextInvoiceName() + ".odt"
+            },
             "quote" : {
                 "in_path"  : "off" + os.sep + "quote.odt",
                 "out_dir"  : "off",
@@ -425,6 +431,17 @@ class GnuSolar(QApplication):
         global config
 
         invoicePath = self.createFromTemplate("final_invoice")
+        
+        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
+        config.write()
+
+        openFolderIfExists(invoicePath)
+
+    # Create Small Invoice
+    def action_createSmallInvoice(self):
+        global config
+
+        invoicePath = self.createFromTemplate("small_invoice")
         
         config.nextInvoiceNumber = config.nextInvoiceNumber + 1
         config.write()
