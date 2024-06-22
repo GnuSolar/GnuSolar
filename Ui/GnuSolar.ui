@@ -400,7 +400,7 @@
         <property name="geometry">
          <rect>
           <x>590</x>
-          <y>70</y>
+          <y>30</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -413,7 +413,7 @@
         <property name="geometry">
          <rect>
           <x>590</x>
-          <y>130</y>
+          <y>90</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -426,7 +426,7 @@
         <property name="geometry">
          <rect>
           <x>810</x>
-          <y>130</y>
+          <y>90</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -439,7 +439,7 @@
         <property name="geometry">
          <rect>
           <x>810</x>
-          <y>70</y>
+          <y>30</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -452,7 +452,7 @@
         <property name="geometry">
          <rect>
           <x>810</x>
-          <y>100</y>
+          <y>60</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -465,7 +465,7 @@
         <property name="geometry">
          <rect>
           <x>590</x>
-          <y>160</y>
+          <y>120</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -478,7 +478,7 @@
         <property name="geometry">
          <rect>
           <x>810</x>
-          <y>160</y>
+          <y>120</y>
           <width>181</width>
           <height>25</height>
          </rect>
@@ -486,6 +486,84 @@
         <property name="text">
          <string>Kleinrechnung</string>
         </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>210</y>
+          <width>471</width>
+          <height>131</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>QR Bill</string>
+        </property>
+        <widget class="QLineEdit" name="qrbill_amount">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>40</y>
+           <width>341</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_64">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>40</y>
+           <width>71</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Betrag</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_65">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>70</y>
+           <width>71</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Info</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="qrbill_info">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>70</y>
+           <width>341</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="createQrBill">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>100</y>
+           <width>181</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>QR Bill erstellen</string>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_2">

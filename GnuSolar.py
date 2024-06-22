@@ -13,6 +13,11 @@ import shutil
 
 from relatorio.templates.opendocument import Template
 
+import tempfile
+from qrbill import QRBill
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPDF
+
 from datetime import date
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox, QCheckBox
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -90,6 +95,7 @@ class GnuSolar(QApplication):
         self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
         self.ui.createFinalInvoice.clicked.connect(self.action_createFinalInvoice)
         self.ui.createSmallInvoice.clicked.connect(self.action_createSmallInvoice)
+        self.ui.createQrBill.clicked.connect(self.action_createQrBill)
         self.ui.createDocumentation.clicked.connect(self.action_createDocumentation)
         self.ui.createMundpp.clicked.connect(self.action_createMundpp)
         self.ui.createTag.clicked.connect(self.action_createTag)
@@ -447,6 +453,60 @@ class GnuSolar(QApplication):
         config.write()
 
         openFolderIfExists(invoicePath)
+
+
+    # Create swiss QR Bill
+    def action_createQrBill(self):
+        global config
+
+        qrAmount = self.ui.qrbill_amount.text()
+        qrInfo = self.ui.qrbill_info.text()
+        
+        projectDir = os.path.dirname(self.path)
+        if not os.path.isdir(projectDir):
+            QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
+            return
+
+        today = date.today()
+        fileName = "QR" + today.isoformat() + ".pdf"
+        outDir =  projectDir + os.sep + "fin"
+        qrPath = outDir + os.sep + fileName
+        if not os.path.isdir(outDir):
+            os.makedirs(outDir)
+
+        debtor = self.model.contacts.owner
+        my_bill = QRBill(
+                account=config.installer_bankIban,
+                language='de',
+                creditor={
+                    'name': config.installer_company, 
+                    'street': config.installer_street,
+                    'house_num': config.installer_streetNumber,
+                    'pcode': config.installer_zip,
+                    'city': config.installer_city, 
+                },
+                debtor={
+                    'name': debtor.lastName + " " + debtor.firstName, 
+                    'street': debtor.street,
+                    'house_num': debtor.streetNumber,
+                    'pcode': debtor.zip,
+                    'city': debtor.city, 
+                },
+                amount=qrAmount,
+                additional_information=(
+                    qrInfo
+                )                
+            )
+        with tempfile.TemporaryFile(encoding='utf-8', mode='r+') as temp:
+            my_bill.as_svg(temp, full_page=True)
+            temp.seek(0)
+            drawing = svg2rlg(temp)
+        renderPDF.drawToFile(drawing, qrPath)
+
+        self.ui.qrbill_amount.setText("")
+        self.ui.qrbill_info.setText("")
+
+        openFolderIfExists(qrPath)
 
     # Create Documentation
     def action_createDocumentation(self):
