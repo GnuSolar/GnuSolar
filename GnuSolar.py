@@ -20,6 +20,7 @@ from reportlab.graphics import renderPDF
 
 from datetime import date
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox, QCheckBox
+from PyQt5.QtWidgets import QTreeWidgetItem
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Ui.GnuSolar import *
@@ -88,6 +89,7 @@ class GnuSolar(QApplication):
         self.ui.action_Quit.triggered.connect(self.action_quit)
         self.ui.action_Preferences.triggered.connect(self.action_preferences)
 
+        self.ui.tree.currentItemChanged.connect(self.action_treeClicked)
         self.ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.get3dModel.clicked.connect(self.action_get3dModel)
@@ -105,7 +107,6 @@ class GnuSolar(QApplication):
         self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
         self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
         self.ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
-        self.ui.closeContactsEdit.clicked.connect(self.action_closeContactsEdit)
         self.ui.callContactsOwnerPhone.clicked.connect(self.action_callContactsOwnerPhone)
         self.ui.callContactsOwnerPhone2.clicked.connect(self.action_callContactsOwnerPhone2)
         self.ui.callContactsOwnerMobile.clicked.connect(self.action_callContactsOwnerMobile)
@@ -156,6 +157,7 @@ class GnuSolar(QApplication):
 
         self.unsavedChanges = False
         self.updateWindowTitle()
+        self.updateTree()
         
         self.window.show()
 
@@ -622,6 +624,23 @@ class GnuSolar(QApplication):
     def action_openMunicipalityWebsite(self):
         openFolder(self.model.municipality.website)
 
+    def action_treeClicked(self, item):
+        item_text = item.text(0)
+        if item_text == "PV-Anlage":
+            item_text = "root"
+        
+        if not hasattr(self.ui, "sw_" + item_text):
+            item_text = "none"
+            
+        att = getattr(self.ui, "sw_" + item_text)
+        
+        # hideAll
+        sw = self.ui.stackedWidget
+        for i in range(0, sw.count()):
+            sw.widget(i).hide()
+        
+        att.show()
+        
     # open a Project with a path
     def openFile(self, pvpPath):
         if not pvpPath:
@@ -663,6 +682,28 @@ class GnuSolar(QApplication):
             title = "*" + title
         self.window.setWindowTitle(title)
 
+
+    # Populates the UI Tree View from the data model
+    def updateTree(self):
+        tree = self.ui.tree
+        tree.setColumnCount(1)
+        # Iterate trhough the model and populate the treeview
+        top = QTreeWidgetItem(None, ["PV-Anlage"])
+        self.addTreeItems(self.model, top)
+        items = [top]
+        tree.addTopLevelItems(items)
+        tree.expandAll()
+    
+    def addTreeItems(self, modelObj, parent):
+        for key, value in modelObj.__dict__.items():
+            if key == "config":
+                continue
+            if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
+                item = QTreeWidgetItem(None, [str(key)])
+                parent.addChild(item)
+                self.addTreeItems(getattr(modelObj, key), item)
+
+
     # Updates the User Interface from the Model
     # Iterates through all widgets and searches for pvp_* named Widgets
     def updateUi(self):
@@ -693,7 +734,8 @@ class GnuSolar(QApplication):
             if key.startswith("lb_contacts_"):
                 role = key.replace("lb_contacts_", "")
                 self.updateContactsEdit(role)
-            
+
+
     # Updates the Data Model from the User Interface
     # Iterates through all widgets and searches for pvp_* named Widgets
     def updateModel(self):
