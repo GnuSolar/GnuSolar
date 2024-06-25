@@ -520,7 +520,7 @@ class GnuSolar(QApplication):
         documentationPath = self.createFromTemplate("mundpp")
         openFolderIfExists(documentationPath)
 
-    # Erzeuge Anschlussgesuch
+    # Erzeuge Gebäudeversicherung Zürich Formular
     def action_createGvzDocumentation(self):
         global config
 
