@@ -411,7 +411,7 @@ class Ui_PvProject(object):
         self.pvp_plant_panelDesc.setObjectName("pvp_plant_panelDesc")
         self.stackedWidget.addWidget(self.sw_plant)
         self.sw_progress = QtWidgets.QWidget()
-        self.sw_progress.setMinimumSize(QtCore.QSize(748, 0))
+        self.sw_progress.setMinimumSize(QtCore.QSize(748, 801))
         self.sw_progress.setObjectName("sw_progress")
         self.pvp_progress_constructionFixed = QtWidgets.QCheckBox(self.sw_progress)
         self.pvp_progress_constructionFixed.setGeometry(QtCore.QRect(370, 390, 140, 25))

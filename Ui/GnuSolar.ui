@@ -1403,7 +1403,7 @@
        <property name="minimumSize">
         <size>
          <width>748</width>
-         <height>0</height>
+         <height>801</height>
         </size>
        </property>
        <widget class="QCheckBox" name="pvp_progress_constructionFixed">
