@@ -466,6 +466,7 @@ class Projects(QApplication):
         
         vCard = ""
         microsip_xml = "<?xml version=\"1.0\"?>\n<contacts>\n"
+        projects_csv = "Plant,launch,totalPowerDc,totalArea,totalPanelCount,panelDesc,totalPowerAc,inverterDesc,totalCost\n"
         # loop over all Projects
         if not os.path.exists(config.projectRoot):
             print("path not found: " + config.projectRoot)
@@ -491,6 +492,16 @@ class Projects(QApplication):
                         microsip_xml += "<contact name=\""+name+"\" number=\""+mobile+"\" firstname=\"\" lastname=\"\" phone=\"\" mobile=\"\" email=\"\" address=\"\" city=\"\" state=\"\" zip=\"\" comment=\"\" id=\"\" info=\"\" presence=\"0\" starred=\"0\" directory=\"0\"/>\n"
                                                                         
                     vCard += pv.contacts.owner.exportVCard()
+
+                    projects_csv += name + ","
+                    projects_csv += str(pv.progress.launch) + ","
+                    projects_csv += str(pv.plant.totalPowerDc) + ","
+                    projects_csv += str(pv.plant.totalArea) + ","
+                    projects_csv += str(pv.plant.totalPanelCount) + ","
+                    projects_csv += str(pv.plant.panelDesc) + ","
+                    projects_csv += str(pv.plant.totalPowerAc) + ","
+                    projects_csv += str(pv.plant.inverterDesc) + ","
+                    projects_csv += str(pv.plant.totalCost) + "\n"
                     
         microsip_xml += "</contacts>"
 
@@ -499,6 +510,9 @@ class Projects(QApplication):
 
         with open(config.projectRoot + os.sep + "Contacts.vcf", "w") as text_file:
             text_file.write(vCard)
+
+        with open(config.projectRoot + os.sep + "projects.csv", "w") as text_file:
+            text_file.write(projects_csv)
 
         return
 
