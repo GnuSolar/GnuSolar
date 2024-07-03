@@ -62,7 +62,7 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="sw_none">
+      <widget class="QWidget" name="sw_None">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -70,7 +70,7 @@
         </sizepolicy>
        </property>
       </widget>
-      <widget class="QWidget" name="sw_building">
+      <widget class="QWidget" name="sw_Building">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -447,7 +447,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="sw__owner">
+      <widget class="QWidget" name="sw_Contact">
        <property name="minimumSize">
         <size>
          <width>748</width>
@@ -861,7 +861,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="sw_root">
+      <widget class="QWidget" name="sw_PvProject">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -1054,7 +1054,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="sw_plant">
+      <widget class="QWidget" name="sw_Plant">
        <property name="minimumSize">
         <size>
          <width>748</width>
@@ -1399,7 +1399,7 @@
         </widget>
        </widget>
       </widget>
-      <widget class="QWidget" name="sw_progress">
+      <widget class="QWidget" name="sw_Progress">
        <property name="minimumSize">
         <size>
          <width>748</width>
@@ -2228,7 +2228,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="sw_municipality">
+      <widget class="QWidget" name="sw_Municipality">
        <property name="minimumSize">
         <size>
          <width>748</width>
@@ -2630,7 +2630,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="sw_powerCompany">
+      <widget class="QWidget" name="sw_PowerCompany">
        <property name="minimumSize">
         <size>
          <width>748</width>
@@ -2787,7 +2787,7 @@
      <x>0</x>
      <y>0</y>
      <width>1036</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

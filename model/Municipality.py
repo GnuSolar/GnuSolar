@@ -119,4 +119,7 @@ class Municipality:
         del self.todayIso
         del self.fillform_url
         del self.fillform_data
-        
+    
+    def getTreeCaption(self):
+        return "Gemeinde"
+

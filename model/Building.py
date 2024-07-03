@@ -160,3 +160,6 @@ class Building:
             return False
 
         return True
+
+    def getTreeCaption(self):
+        return "Gebäude"

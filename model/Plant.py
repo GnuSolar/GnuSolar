@@ -19,3 +19,5 @@ class Plant:
         
         self.totalCost = None               # for solar note aargau
 
+    def getTreeCaption(self):
+        return "Anlage"

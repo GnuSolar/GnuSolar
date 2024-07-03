@@ -38,3 +38,6 @@ class Contacts:
         }
 
         return roles[role]
+        
+    def getTreeCaption(self):
+        return "Kontakte"

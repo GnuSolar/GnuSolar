@@ -625,14 +625,15 @@ class GnuSolar(QApplication):
         openFolder(self.model.municipality.website)
 
     def action_treeClicked(self, item):
-        item_text = item.text(0)
-        if item_text == "PV-Anlage":
-            item_text = "root"
+        obj = item.pvpObj
+        class_name = type(obj).__name__
         
-        if not hasattr(self.ui, "sw_" + item_text):
-            item_text = "none"
+        sw_name = "sw_" + class_name
+        
+        if not hasattr(self.ui, sw_name):
+            sw_name = "sw_None"
             
-        att = getattr(self.ui, "sw_" + item_text)
+        att = getattr(self.ui, sw_name)
         
         # hideAll
         sw = self.ui.stackedWidget
@@ -689,6 +690,7 @@ class GnuSolar(QApplication):
         tree.setColumnCount(1)
         # Iterate trhough the model and populate the treeview
         top = QTreeWidgetItem(None, ["PV-Anlage"])
+        top.pvpObj = self.model
         self.addTreeItems(self.model, top)
         items = [top]
         tree.addTopLevelItems(items)
@@ -699,9 +701,14 @@ class GnuSolar(QApplication):
             if key == "config":
                 continue
             if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
-                item = QTreeWidgetItem(None, [str(key)])
+                el = getattr(modelObj, key)
+                caption = str(key)
+                if hasattr(el, "getTreeCaption") and callable(getattr(el, "getTreeCaption")):
+                    caption = el.getTreeCaption()
+                item = QTreeWidgetItem(None, [caption])
+                item.pvpObj = el
                 parent.addChild(item)
-                self.addTreeItems(getattr(modelObj, key), item)
+                self.addTreeItems(el, item)
 
 
     # Updates the User Interface from the Model

@@ -157,3 +157,6 @@ class Progress:
             self.constructionSort = self.orderReceived
         return self.constructionSort
 
+    def getTreeCaption(self):
+        return "Fortschritt"
+
