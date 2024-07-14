@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>632</height>
+    <width>528</width>
+    <height>604</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,373 +16,414 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QWidget" name="formLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>581</width>
-     <height>181</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-    </property>
-    <item row="1" column="0">
-     <widget class="QLabel" name="projectDirectoryLabel">
-      <property name="text">
-       <string>Project Directory</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="projectRoot"/>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="projectDirectoryLabel_2">
-      <property name="text">
-       <string>Template Directory</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="templatePath"/>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="projectDirectoryLabel_3">
-      <property name="text">
-       <string>nextQuoteNumber</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="nextQuoteNumber"/>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="projectDirectoryLabel_4">
-      <property name="text">
-       <string>nextInvoiceNumber</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="nextInvoiceNumber"/>
-    </item>
-    <item row="6" column="1">
-     <widget class="QWidget" name="projectDirectoryWidget" native="true"/>
-    </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="sipServer"/>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="projectDirectoryLabel_7">
-      <property name="text">
-       <string>Sip-Server</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>50</x>
-     <y>590</y>
-     <width>549</width>
-     <height>36</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>210</y>
-     <width>589</width>
-     <height>367</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Installer</string>
-   </property>
-   <widget class="QLineEdit" name="installer_company">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>30</y>
-      <width>414</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_5">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>30</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Company</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_6">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>60</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>First/Last-Name</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_firstName">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>60</y>
-      <width>201</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_lastName">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>60</y>
-      <width>201</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_8">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>90</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Street / Nr</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_street">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>90</y>
-      <width>271</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_9">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>120</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Zip / City</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_zip">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>120</y>
-      <width>121</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_city">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>120</y>
-      <width>281</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_11">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>150</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Phone</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_phone">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>150</y>
-      <width>414</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_streetNumber">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>90</y>
-      <width>131</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_12">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>180</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>E-Mail</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_email">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>180</y>
-      <width>414</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_bankName">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>250</y>
-      <width>414</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_13">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>250</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Bank Name</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_bankIban">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>280</y>
-      <width>414</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_14">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>280</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Bank IBAN</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_bankIid">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>310</y>
-      <width>201</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_15">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>310</y>
-      <width>161</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Bank IID/Swift-BIC</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_bankBic">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>310</y>
-      <width>201</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="installer_vat">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>220</y>
-      <width>414</width>
-      <height>27</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="projectDirectoryLabel_16">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>220</y>
-      <width>134</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>MwSt. Nummer</string>
-    </property>
-   </widget>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Grundeinstellung</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="text">
+         <string>Project Directory</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="projectRoot">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>340</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Template Directory</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="templatePath">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>nextQuoteNumber</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="nextQuoteNumber">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_4">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>nextInvoiceNumber</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="nextInvoiceNumber">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="text">
+         <string>Sip-Server</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="sipServer">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Installer</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_5">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Company</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="installer_company"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_6">
+        <property name="text">
+         <string>First/Last-Name</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLineEdit" name="installer_firstName"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="installer_lastName"/>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_8">
+        <property name="text">
+         <string>Street / Nr</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="installer_street">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>3</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="installer_streetNumber">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_9">
+        <property name="text">
+         <string>Zip / City</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLineEdit" name="installer_zip">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>1</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="installer_city">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>3</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_11">
+        <property name="text">
+         <string>Phone</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_12">
+        <property name="text">
+         <string>E-Mail</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="installer_email"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_16">
+        <property name="text">
+         <string>MwSt. Nummer</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="installer_vat"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_13">
+        <property name="text">
+         <string>Bank Name</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="installer_bankName"/>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_14">
+        <property name="text">
+         <string>Bank IBAN</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="installer_bankIban"/>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="projectDirectoryLabel_15">
+        <property name="text">
+         <string>Bank IID/Swift-BIC</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLineEdit" name="installer_bankIid"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="installer_bankBic"/>
+        </item>
+       </layout>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="installer_phone"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <tabstops>
   <tabstop>projectRoot</tabstop>
@@ -396,7 +437,6 @@
   <tabstop>installer_streetNumber</tabstop>
   <tabstop>installer_zip</tabstop>
   <tabstop>installer_city</tabstop>
-  <tabstop>installer_phone</tabstop>
   <tabstop>installer_email</tabstop>
  </tabstops>
  <resources/>
