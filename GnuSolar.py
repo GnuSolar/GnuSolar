@@ -640,6 +640,7 @@ class GnuSolar(QApplication):
         for i in range(0, sw.count()):
             sw.widget(i).hide()
         
+        att.adjustSize()
         att.show()
         
     # open a Project with a path
