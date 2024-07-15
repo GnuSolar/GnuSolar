@@ -60,7 +60,7 @@
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>5</number>
       </property>
       <widget class="QWidget" name="sw_None">
        <property name="sizePolicy">
@@ -1185,7 +1185,7 @@
          <widget class="QLineEdit" name="pvp_progress_quote3Sent"/>
         </item>
         <item row="13" column="0">
-         <widget class="QPushButton" name="pb_progress_constructionStart_2">
+         <widget class="QPushButton" name="pb_progress_constructionSort">
           <property name="text">
            <string>Sortierung Baubeginn</string>
           </property>
@@ -2002,7 +2002,7 @@
   <tabstop>pb_progress_constructionStart</tabstop>
   <tabstop>pvp_progress_constructionStart</tabstop>
   <tabstop>pvp_progress_constructionFixed</tabstop>
-  <tabstop>pb_progress_constructionStart_2</tabstop>
+  <tabstop>pb_progress_constructionSort</tabstop>
   <tabstop>pvp_progress_constructionSort</tabstop>
   <tabstop>pb_progress_launch</tabstop>
   <tabstop>pvp_progress_launch</tabstop>
