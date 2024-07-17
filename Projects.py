@@ -142,8 +142,8 @@ class Projects(QApplication):
                     except Exception:
                         print("malformed quote filename: " + dirname + "/" + filename)
                                 
-                    # quotes over 1000 are for temporary workers
-                    if quoteNumber > 1000:
+                    # quotes over 1999 are for temporary workers
+                    if quoteNumber > 1999:
                         continue
                         
                     if highestQuoteNumber > quoteNumber:
