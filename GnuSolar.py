@@ -71,7 +71,6 @@ def templateCopyReplace(src, dest, model):
     f.write(basic_generated.getvalue())
     f.close()
     
-    
 class GnuSolar(QApplication):
     def __init__(self, *args):
         global config
@@ -632,16 +631,10 @@ class GnuSolar(QApplication):
         
         if not hasattr(self.ui, sw_name):
             sw_name = "sw_None"
-            
+        
+        # show the page
         att = getattr(self.ui, sw_name)
-        
-        # hideAll
-        sw = self.ui.stackedWidget
-        for i in range(0, sw.count()):
-            sw.widget(i).hide()
-        
-        att.adjustSize()
-        att.show()
+        self.ui.stackedWidget.setCurrentWidget(att)
         
     # open a Project with a path
     def openFile(self, pvpPath):
