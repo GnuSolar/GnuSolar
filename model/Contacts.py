@@ -10,7 +10,9 @@ class Contacts:
     def __init__(self):
         # role => contact dict
         self._owner = Contact()             # owner of the photovoltaic system, is mandatory
+        self._owner.role = "owner"
         self._installer_ac = Contact()      # mandatory
+        self._installer_ac.role = "installer_ac"
 
     # getter / setter for owner
     # owner is always set

@@ -118,7 +118,6 @@ class GnuSolar(QApplication):
         self.model = PvProject()       # the PvProject Model
         self.model.config = config
         self.unsavedChanges = False
-        self.contactsEditRole = ""      # which contact is currently edited
 
         if len(args[0]) >= 2:
             self.openFile(args[0][1])
@@ -144,19 +143,10 @@ class GnuSolar(QApplication):
                 el = getattr(self.ui, key)
                 el.clicked.connect(self.action_progress)
 
-            # Connect all contacts edit buttons
-            if key.startswith("clb_contacts_"):
-                el = getattr(self.ui, key)
-                el.clicked.connect(self.action_contactsEdit)
-
-            # Connect contacts changed
-            if key.startswith("contacts_"):
-                el = getattr(self.ui, key)
-                el.textChanged.connect(self.action_contactsChanged)
-
         self.unsavedChanges = False
         self.updateWindowTitle()
         self.updateTree()
+        self.updateUi()
         
         self.window.show()
 
@@ -240,68 +230,10 @@ class GnuSolar(QApplication):
         self.unsavedChanges = True
         self.updateWindowTitle()
 
-    def action_contactsEdit(self):
-        sendingButton = self.sender()
-        buttonName = sendingButton.objectName()
-        role = buttonName.replace("clb_contacts_", "")
-
-        self.contactsEditRole = role
-
-        # Enable groubbox, show which contact to edit
-        gb_contacts = self.ui.gb_contacts
-        gb_contacts.setEnabled(True)
-        roleName = self.model.contacts.getRoleName(role)
-        gb_contacts.setTitle("Kontakt Detail: " + roleName + " (" + role + ")")
-
-        # Fill the ui fields from the model
-        contact = getattr(self.model.contacts, role)
-        for key, value in contact.__dict__.items():
-            if not hasattr(self.ui, "contacts_" + key):
-                continue
-            uiEl = getattr(self.ui, "contacts_" + key)
-            elVal = getattr(contact, key)
-            uiEl.blockSignals(True)         # disable Signals, otherwise contactsChanged gets triggered
-            uiEl.setText(elVal)
-            uiEl.blockSignals(False)        # enable them again
-
-    def action_closeContactsEdit(self):
-        self.contactsEditRole = ""          # no role currently edited
-
-        gb_contacts = self.ui.gb_contacts   # disalbe the groub box
-        gb_contacts.setEnabled(False)
-        gb_contacts.setTitle("Kontakt Detail")
-
-        # clear all fields
-        for key, value in self.ui.__dict__.items():
-            # normal model<=>ui element?
-            if not key.startswith("contacts_"):
-                continue
-
-            uiEl = getattr(self.ui, key)
-            uiEl.blockSignals(True)         # disable Signals, otherwise contactsChanged gets triggered
-            uiEl.setText("")
-            uiEl.blockSignals(False)        # enable them again
-
     def action_preferences(self):
         global config
         
         config.show()
-
-    def action_contactsChanged(self):
-        # get which field was changed
-        objName = self.sender().objectName()
-        fieldName = objName.replace("contacts_", "")
-        fieldValue = self.sender().text()
-
-        # update the model
-        contact = getattr(self.model.contacts, self.contactsEditRole)
-        setattr(contact, fieldName, fieldValue)
-
-        # update contact edit element
-        self.updateContactsEdit(self.contactsEditRole)
-
-        # signal data changed
-        self.action_changed()
 
     def action_callContactsOwnerPhone(self):
         self.call(self.model.contacts.owner.phone)
@@ -658,12 +590,6 @@ class GnuSolar(QApplication):
         self.unsavedChanges = False
         self.updateWindowTitle()
 
-    def updateContactsEdit(self, role):
-        uiEl = getattr(self.ui, "lb_contacts_" + role)
-        el = getattr(self.model.contacts, role)
-        name = el.getNameCity()
-        uiEl.setText(name)
-        
     def updateWindowTitle(self):
         title = "Photovoltaic Project - " + Config.getAppVersion()
         if self.path != "":
@@ -730,11 +656,6 @@ class GnuSolar(QApplication):
                     uiEl.setChecked(modelEl)
                 else:
                     raise Exception(str(type(uiEl)) + " not implemented")
-
-            # contact edit element
-            if key.startswith("lb_contacts_"):
-                role = key.replace("lb_contacts_", "")
-                self.updateContactsEdit(role)
 
 
     # Updates the Data Model from the User Interface

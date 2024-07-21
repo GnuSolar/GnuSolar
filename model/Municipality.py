@@ -20,8 +20,10 @@ class Municipality:
         self.districtCode = None
         self.code = None
         self.name = None
-        self.buildingContact = Contact()
         self.mainContact = Contact()
+        self.mainContact.role = "mun_main"
+        self.buildingContact = Contact()
+        self.buildingContact.role = "mun_building"
         self.fkPowerCompany = None
         self.fkFormBuilding = None
         self.website = None

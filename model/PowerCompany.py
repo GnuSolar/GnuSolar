@@ -25,12 +25,17 @@ class PowerCompany:
         self.address2 = None
         self.zipCode = None
         self.city = None
+
+        self.mainContact = Contact()        # Address of the Headquarters
+        self.mainContact.role = "pow_main"
+
         self.tagContact = Contact()
+        self.tagContact.role = "pow_tag"
+
         self.fkContactTag = None
         self.fkFormTag = None
         self.fkFormIa = None
         
-        self.mainContact = Contact()        # Address of the Headquarters
         
     def reloadFromDb(self):
         self.fromId(self.id)

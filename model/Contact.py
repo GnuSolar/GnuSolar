@@ -10,7 +10,9 @@ from Config import Config
 class Contact:
 
     def __init__(self):
+        
         # class members
+        self.role = None
         self.company = None
         self.title = None
         self.firstName = None
@@ -139,4 +141,21 @@ class Contact:
             ret += "TEL;TYPE=voice:"+self.mobile+"\n"
         ret += "END:VCARD\n"
  
+        return ret
+
+    def getRoleName(self):
+        roles = {
+            None: "None",
+            "owner": "Bauherr",
+            "installer_ac": "Elektriker AC",
+            "mun_building": "Baubehörde",
+            "mun_main": "Haupt",
+            "pow_main": "Haupt",
+            "pow_tag": "TAG's",
+        }
+        return roles[self.role]
+
+
+    def getTreeCaption(self):
+        ret = "Kontakt (" + self.getRoleName() + ")"
         return ret
