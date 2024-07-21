@@ -33,13 +33,5 @@ class Contacts:
     def installer_ac(self, value):
         self._installer_ac = value
 
-    def getRoleName(self, role):
-        roles = {
-            "owner": "Bauherr",
-            "installer_ac": "Elektriker AC",
-        }
-
-        return roles[role]
-        
     def getTreeCaption(self):
         return "Kontakte"
