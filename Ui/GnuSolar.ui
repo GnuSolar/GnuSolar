@@ -60,7 +60,7 @@
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="sw_None">
        <property name="sizePolicy">
@@ -1833,7 +1833,7 @@
      <x>0</x>
      <y>0</y>
      <width>1336</width>
-     <height>22</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1925,8 +1925,8 @@
   <tabstop>pvp_contacts_owner_firstName</tabstop>
   <tabstop>pvp_contacts_owner_street</tabstop>
   <tabstop>pvp_contacts_owner_streetNumber</tabstop>
-  <tabstop>pvp_contacts_owner_city</tabstop>
   <tabstop>pvp_contacts_owner_zip</tabstop>
+  <tabstop>pvp_contacts_owner_city</tabstop>
   <tabstop>pvp_contacts_owner_email</tabstop>
   <tabstop>composeEmailOwner</tabstop>
   <tabstop>pvp_contacts_owner_email2</tabstop>
