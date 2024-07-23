@@ -60,7 +60,7 @@
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="sw_None">
        <property name="sizePolicy">
@@ -71,6 +71,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2"/>
       </widget>
+      <widget class="QWidget" name="loadinto"/>
       <widget class="QWidget" name="sw_Building">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -1833,7 +1834,7 @@
      <x>0</x>
      <y>0</y>
      <width>1336</width>
-     <height>28</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

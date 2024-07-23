@@ -25,6 +25,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Ui.GnuSolar import *
 from Ui.Preferences import *
+from Ui.Contact import *
 
 from model.PvProject import *
 
@@ -559,14 +560,30 @@ class GnuSolar(QApplication):
         obj = item.pvpObj
         class_name = type(obj).__name__
         
-        sw_name = "sw_" + class_name
+        print(class_name)
         
-        if not hasattr(self.ui, sw_name):
-            sw_name = "sw_None"
         
-        # show the page
-        att = getattr(self.ui, sw_name)
-        self.ui.stackedWidget.setCurrentWidget(att)
+        try:
+            obj.action_treeClicked()
+
+             # load the ui into the detail window
+            klass = globals()["Ui_" + class_name]
+            ui = klass()
+            print(ui)
+            ui.setupUi(self.ui.loadinto)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.loadinto)
+           
+            # fill it with the attributes of the object
+        
+
+        except AttributeError:
+            sw_name = "sw_" + class_name
+            if not hasattr(self.ui, sw_name):
+                sw_name = "sw_None"
+            
+            # show the page
+            att = getattr(self.ui, sw_name)
+            self.ui.stackedWidget.setCurrentWidget(att)
         
     # open a Project with a path
     def openFile(self, pvpPath):
@@ -634,7 +651,6 @@ class GnuSolar(QApplication):
     # Updates the User Interface from the Model
     # Iterates through all widgets and searches for pvp_* named Widgets
     def updateUi(self):
-
         for key, value in self.ui.__dict__.items():
             # normal model<=>ui element?
             if key.startswith("pvp_"):

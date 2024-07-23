@@ -155,7 +155,10 @@ class Contact:
         }
         return roles[self.role]
 
-
     def getTreeCaption(self):
         ret = "Kontakt (" + self.getRoleName() + ")"
         return ret
+
+    def action_treeClicked(self):
+        print(self.role)
+        
