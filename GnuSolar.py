@@ -21,6 +21,7 @@ from reportlab.graphics import renderPDF
 from datetime import date
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox, QCheckBox
 from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QWidget
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Ui.GnuSolar import *
@@ -105,11 +106,7 @@ class GnuSolar(QApplication):
         self.ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)
         self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
         self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
-        self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
         self.ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
-        self.ui.callContactsOwnerPhone.clicked.connect(self.action_callContactsOwnerPhone)
-        self.ui.callContactsOwnerPhone2.clicked.connect(self.action_callContactsOwnerPhone2)
-        self.ui.callContactsOwnerMobile.clicked.connect(self.action_callContactsOwnerMobile)
         self.ui.callMunicipalityMainContactPhone.clicked.connect(self.action_callMunicipalityMainContactPhone)
         self.ui.callMunicipalityBuildingContactPhone.clicked.connect(self.action_callMunicipalityBuildingContactPhone)
         
@@ -147,7 +144,7 @@ class GnuSolar(QApplication):
         self.unsavedChanges = False
         self.updateWindowTitle()
         self.updateTree()
-        self.updateUi()
+        self.updateUi(self.ui, self.model, "pvp")
         
         self.window.show()
 
@@ -182,9 +179,9 @@ class GnuSolar(QApplication):
         openFolderIfExists(folder)
 
     def action_updateFromAddress(self):
-        self.updateModel()
+        self.updateModel(self.ui, self.model, "pvp")
         ret = self.model.updateFromAddress()
-        self.updateUi()
+        self.updateUi(self.ui, self.model, "pvp")
         if isinstance(ret, str):
             QtWidgets.QMessageBox.warning(None, 'UpdatefromAddress Error', 'Meldung = ' + ret)
 
@@ -512,7 +509,7 @@ class GnuSolar(QApplication):
         openFolderIfExists(tagPath)
         now = date.today()
         self.model.progress.tagSent = now.isoformat()
-        self.updateUi()
+        self.updateUi(self.ui, self.model, "pvp")
 
     # Erzeuge Solarmeldung
     def action_createBuildingForm(self):
@@ -556,34 +553,68 @@ class GnuSolar(QApplication):
     def action_openMunicipalityWebsite(self):
         openFolder(self.model.municipality.website)
 
+    # Update the attribute of the model
+    def action_attributeChanged(self, val):
+        el = self.sender()
+        obj = self.currentObj
+
+        att_name = el.objectName()
+        att_name = att_name.strip("obj_")
+        obj.__dict__[att_name] = val
+        
+        # signal something changed
+        self.action_changed()
+        
+
     def action_treeClicked(self, item):
         obj = item.pvpObj
         class_name = type(obj).__name__
         
         print(class_name)
         
-        
-        try:
-            obj.action_treeClicked()
-
-             # load the ui into the detail window
+        if class_name == "Contact":
+            # load the ui into the detail window
+            widget = QWidget()
             klass = globals()["Ui_" + class_name]
             ui = klass()
-            print(ui)
-            ui.setupUi(self.ui.loadinto)
-            self.ui.stackedWidget.setCurrentWidget(self.ui.loadinto)
+            ui.setupUi(widget)
+            self.currentObj = obj
+            self.ui.stackedWidget.addWidget(widget)
+            self.ui.stackedWidget.setCurrentWidget(widget)
+
+            # Set the label
+            label = obj.getTreeCaption()
+            ui.groupBox.setTitle(label)
            
             # fill it with the attributes of the object
-        
-
-        except AttributeError:
-            sw_name = "sw_" + class_name
-            if not hasattr(self.ui, sw_name):
-                sw_name = "sw_None"
+            self.updateUi(ui, obj, "obj")
             
-            # show the page
-            att = getattr(self.ui, sw_name)
-            self.ui.stackedWidget.setCurrentWidget(att)
+            # connect all obj_ fields with attributeChanged
+            # updates the model on the fly
+            for key, value in ui.__dict__.items():
+                if key.startswith("obj_"):
+                    el = getattr(ui, key)
+
+                    if isinstance(el, QLineEdit):
+                        el.textChanged.connect(self.action_attributeChanged)
+                    elif isinstance(el, QPlainTextEdit):
+                        el.textChanged.connect(self.action_attributeChanged)
+                    elif isinstance(el, QComboBox):
+                        el.currentIndexChanged.connect(self.action_attributeChanged)
+                    elif isinstance(el, QCheckBox):
+                        el.toggled.connect(self.action_attributeChanged)
+                    else:
+                        raise Exception(str(type(el)) + " not implemented")
+        
+            return
+
+        sw_name = "sw_" + class_name
+        if not hasattr(self.ui, sw_name):
+            sw_name = "sw_None"
+        
+        # show the page
+        att = getattr(self.ui, sw_name)
+        self.ui.stackedWidget.setCurrentWidget(att)
         
     # open a Project with a path
     def openFile(self, pvpPath):
@@ -598,11 +629,11 @@ class GnuSolar(QApplication):
         # valid pvp Project?
         self.path = pvpPath
         self.model.open(pvpPath)
-        self.updateUi();    
+        self.updateUi(self.ui, self.model, "pvp")
         self.updateWindowTitle()
     
     def saveFile(self):
-        self.updateModel()
+        self.updateModel(self.ui, self.model, "pvp")
         self.model.saveAs(self.path)
         self.unsavedChanges = False
         self.updateWindowTitle()
@@ -619,7 +650,6 @@ class GnuSolar(QApplication):
         if self.unsavedChanges:
             title = "*" + title
         self.window.setWindowTitle(title)
-
 
     # Populates the UI Tree View from the data model
     def updateTree(self):
@@ -650,17 +680,17 @@ class GnuSolar(QApplication):
 
     # Updates the User Interface from the Model
     # Iterates through all widgets and searches for pvp_* named Widgets
-    def updateUi(self):
-        for key, value in self.ui.__dict__.items():
+    def updateUi(self, ui, obj, prefix):
+        for key, value in ui.__dict__.items():
             # normal model<=>ui element?
-            if key.startswith("pvp_"):
+            if key.startswith(prefix + "_"):
                 attrs = key.split("_")
                 attrs.pop(0)
 
-                modelEl = self.model
+                modelEl = obj
                 for attr in attrs:
                     modelEl = getattr(modelEl, attr)
-                uiEl = getattr(self.ui, key)
+                uiEl = getattr(ui, key)
 
                 if isinstance(uiEl, QLineEdit):
                     uiEl.setText(modelEl)
@@ -676,19 +706,19 @@ class GnuSolar(QApplication):
 
     # Updates the Data Model from the User Interface
     # Iterates through all widgets and searches for pvp_* named Widgets
-    def updateModel(self):
-        for key, value in self.ui.__dict__.items():
-            if not key.startswith("pvp_"):
+    def updateModel(self, ui, obj, prefix):
+        for key, value in ui.__dict__.items():
+            if not key.startswith(prefix + "_"):
                 continue
             
             attrs = key.split("_")
             attrs.pop(0)
             last = attrs.pop()
             
-            modelEl = self.model
+            modelEl = obj
             for attr in attrs:
                 modelEl = getattr(modelEl, attr)
-            uiEl = getattr(self.ui, key)
+            uiEl = getattr(ui, key)
 
             if isinstance(uiEl, QLineEdit):
                 setattr(modelEl, last, uiEl.text())

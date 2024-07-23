@@ -60,7 +60,7 @@
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="sw_None">
        <property name="sizePolicy">
@@ -327,251 +327,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="sw_Contact">
-       <property name="minimumSize">
-        <size>
-         <width>748</width>
-         <height>0</height>
-        </size>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QGroupBox" name="gb_contacts_2">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="title">
-           <string>Bauherr</string>
-          </property>
-          <layout class="QFormLayout" name="formLayout_2">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_58">
-             <property name="text">
-              <string>Firma</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="pvp_contacts_owner_company"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Anrede</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="pvp_contacts_owner_title"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_51">
-             <property name="text">
-              <string>Name / Vorname</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_lastName"/>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_firstName"/>
-             </item>
-            </layout>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_52">
-             <property name="text">
-              <string>Strasse / Nummer</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_street">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_streetNumber"/>
-             </item>
-            </layout>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_53">
-             <property name="text">
-              <string>PLZ / Ort</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_zip">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_city"/>
-             </item>
-            </layout>
-           </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_50">
-             <property name="text">
-              <string>E-Mail</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_email">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="composeEmailOwner">
-               <property name="text">
-                <string>E-Mail an Bauherr</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_55">
-             <property name="text">
-              <string>E-Mail 2</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QLineEdit" name="pvp_contacts_owner_email2"/>
-           </item>
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_54">
-             <property name="text">
-              <string>Telefon</string>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_12">
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_phone"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="callContactsOwnerPhone">
-               <property name="text">
-                <string>Anruf</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_56">
-             <property name="text">
-              <string>Telefon 2</string>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_13">
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_phone2"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="callContactsOwnerPhone2">
-               <property name="text">
-                <string>Anruf</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="9" column="0">
-            <widget class="QLabel" name="label_57">
-             <property name="text">
-              <string>Mobile</string>
-             </property>
-            </widget>
-           </item>
-           <item row="9" column="1">
-            <layout class="QHBoxLayout" name="horizontalLayout_14">
-             <item>
-              <widget class="QLineEdit" name="pvp_contacts_owner_mobile"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="callContactsOwnerMobile">
-               <property name="text">
-                <string>Anruf</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="10" column="0">
-            <widget class="QLabel" name="label_59">
-             <property name="text">
-              <string>Kontoinhaber</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="1">
-            <widget class="QLineEdit" name="pvp_contacts_owner_accountOwner"/>
-           </item>
-           <item row="11" column="0">
-            <widget class="QLabel" name="label_60">
-             <property name="text">
-              <string>Bankname</string>
-             </property>
-            </widget>
-           </item>
-           <item row="11" column="1">
-            <widget class="QLineEdit" name="pvp_contacts_owner_accountBank"/>
-           </item>
-           <item row="12" column="0">
-            <widget class="QLabel" name="label_61">
-             <property name="text">
-              <string>IBAN</string>
-             </property>
-            </widget>
-           </item>
-           <item row="12" column="1">
-            <widget class="QLineEdit" name="pvp_contacts_owner_accountIban"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QFrame" name="frame_4">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -1834,7 +1589,7 @@
      <x>0</x>
      <y>0</y>
      <width>1336</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1920,26 +1675,6 @@
   <tabstop>pvp_building_meterNumberOld</tabstop>
   <tabstop>pvp_building_meterNumberNew</tabstop>
   <tabstop>pvp_building_mainFuseSize</tabstop>
-  <tabstop>pvp_contacts_owner_company</tabstop>
-  <tabstop>pvp_contacts_owner_title</tabstop>
-  <tabstop>pvp_contacts_owner_lastName</tabstop>
-  <tabstop>pvp_contacts_owner_firstName</tabstop>
-  <tabstop>pvp_contacts_owner_street</tabstop>
-  <tabstop>pvp_contacts_owner_streetNumber</tabstop>
-  <tabstop>pvp_contacts_owner_zip</tabstop>
-  <tabstop>pvp_contacts_owner_city</tabstop>
-  <tabstop>pvp_contacts_owner_email</tabstop>
-  <tabstop>composeEmailOwner</tabstop>
-  <tabstop>pvp_contacts_owner_email2</tabstop>
-  <tabstop>pvp_contacts_owner_phone</tabstop>
-  <tabstop>callContactsOwnerPhone</tabstop>
-  <tabstop>pvp_contacts_owner_phone2</tabstop>
-  <tabstop>callContactsOwnerPhone2</tabstop>
-  <tabstop>pvp_contacts_owner_mobile</tabstop>
-  <tabstop>callContactsOwnerMobile</tabstop>
-  <tabstop>pvp_contacts_owner_accountOwner</tabstop>
-  <tabstop>pvp_contacts_owner_accountBank</tabstop>
-  <tabstop>pvp_contacts_owner_accountIban</tabstop>
   <tabstop>openProjectFolder</tabstop>
   <tabstop>createQuote</tabstop>
   <tabstop>createDocumentation</tabstop>

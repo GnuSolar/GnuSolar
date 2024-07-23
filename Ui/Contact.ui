@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="gb_contacts_2">
+    <widget class="QGroupBox" name="groupBox">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -37,7 +37,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="company"/>
+       <widget class="QLineEdit" name="obj_company"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_10">
@@ -47,7 +47,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="title"/>
+       <widget class="QLineEdit" name="obj_title"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_51">
@@ -59,10 +59,10 @@
       <item row="2" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QLineEdit" name="lastName"/>
+         <widget class="QLineEdit" name="obj_lastName"/>
         </item>
         <item>
-         <widget class="QLineEdit" name="firstName"/>
+         <widget class="QLineEdit" name="obj_firstName"/>
         </item>
        </layout>
       </item>
@@ -76,14 +76,14 @@
       <item row="3" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
-         <widget class="QLineEdit" name="street">
+         <widget class="QLineEdit" name="obj_street">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="streetNumber"/>
+         <widget class="QLineEdit" name="obj_streetNumber"/>
         </item>
        </layout>
       </item>
@@ -97,14 +97,14 @@
       <item row="4" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
-         <widget class="QLineEdit" name="zip">
+         <widget class="QLineEdit" name="obj_zip">
           <property name="text">
            <string/>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="city"/>
+         <widget class="QLineEdit" name="obj_city"/>
         </item>
        </layout>
       </item>
@@ -118,7 +118,7 @@
       <item row="5" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
-         <widget class="QLineEdit" name="email">
+         <widget class="QLineEdit" name="obj_email">
           <property name="text">
            <string/>
           </property>
@@ -141,7 +141,7 @@
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QLineEdit" name="email2"/>
+       <widget class="QLineEdit" name="obj_email2"/>
       </item>
       <item row="7" column="0">
        <widget class="QLabel" name="label_54">
@@ -153,7 +153,7 @@
       <item row="7" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
-         <widget class="QLineEdit" name="phone"/>
+         <widget class="QLineEdit" name="obj_phone"/>
         </item>
         <item>
          <widget class="QPushButton" name="callPhone">
@@ -174,7 +174,7 @@
       <item row="8" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
-         <widget class="QLineEdit" name="phone2"/>
+         <widget class="QLineEdit" name="obj_phone2"/>
         </item>
         <item>
          <widget class="QPushButton" name="callPhone2">
@@ -195,7 +195,7 @@
       <item row="9" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
-         <widget class="QLineEdit" name="mobile"/>
+         <widget class="QLineEdit" name="obj_mobile"/>
         </item>
         <item>
          <widget class="QPushButton" name="callMobile">
@@ -214,7 +214,7 @@
        </widget>
       </item>
       <item row="10" column="1">
-       <widget class="QLineEdit" name="accountOwner"/>
+       <widget class="QLineEdit" name="obj_accountOwner"/>
       </item>
       <item row="11" column="0">
        <widget class="QLabel" name="label_60">
@@ -224,7 +224,7 @@
        </widget>
       </item>
       <item row="11" column="1">
-       <widget class="QLineEdit" name="accountBank"/>
+       <widget class="QLineEdit" name="obj_accountBank"/>
       </item>
       <item row="12" column="0">
        <widget class="QLabel" name="label_61">
@@ -234,7 +234,7 @@
        </widget>
       </item>
       <item row="12" column="1">
-       <widget class="QLineEdit" name="accountIban"/>
+       <widget class="QLineEdit" name="obj_accountIban"/>
       </item>
      </layout>
     </widget>

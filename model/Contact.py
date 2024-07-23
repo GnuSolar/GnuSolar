@@ -3,6 +3,13 @@
 
 # A Contact is a way to contact a person. Postal address is mostly needed for bureaucratic stuff.
 
+""" to implement:
+        self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
+        self.ui.callContactsOwnerPhone.clicked.connect(self.action_callContactsOwnerPhone)
+        self.ui.callContactsOwnerPhone2.clicked.connect(self.action_callContactsOwnerPhone2)
+        self.ui.callContactsOwnerMobile.clicked.connect(self.action_callContactsOwnerMobile)
+"""
+
 import sqlite3
 
 from Config import Config
@@ -158,7 +165,4 @@ class Contact:
     def getTreeCaption(self):
         ret = "Kontakt (" + self.getRoleName() + ")"
         return ret
-
-    def action_treeClicked(self):
-        print(self.role)
         
