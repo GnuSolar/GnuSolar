@@ -91,6 +91,10 @@ class GnuSolar(QApplication):
         self.ui.action_Preferences.triggered.connect(self.action_preferences)
 
         self.ui.tree.currentItemChanged.connect(self.action_treeClicked)
+        # Right click on tree
+        self.ui.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.ui.tree.customContextMenuRequested.connect(self.action_treeContext)
+
         self.ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.get3dModel.clicked.connect(self.action_get3dModel)
@@ -590,7 +594,7 @@ class GnuSolar(QApplication):
             self.updateUi(ui, obj, "obj")
             
             # connect all obj_ fields with attributeChanged
-            # updates the model on the fly
+            # updates the model on the fly from the ui
             for key, value in ui.__dict__.items():
                 if key.startswith("obj_"):
                     el = getattr(ui, key)
@@ -615,6 +619,19 @@ class GnuSolar(QApplication):
         # show the page
         att = getattr(self.ui, sw_name)
         self.ui.stackedWidget.setCurrentWidget(att)
+
+    # display Context Menu of the Tree
+    def action_treeContext(self, event):
+        print("action_treeContext")
+        item = self.ui.tree.currentItem()
+        obj = item.pvpObj
+
+        menu = QtWidgets.QMenu(self.ui.tree)
+        actionDelete = menu.addAction("Löschen")
+        action2 = menu.exec_(self.ui.tree.mapToGlobal(event))
+        if action2 is not None:
+            if action2 == actionDelete:
+                print("ajoutFileAtt")
         
     # open a Project with a path
     def openFile(self, pvpPath):
