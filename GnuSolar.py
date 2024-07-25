@@ -32,6 +32,9 @@ from model.PvProject import *
 
 from Config import Config
 
+# global Variables
+config = Config()
+
 # TODO: Where to put generally usefull functions?
 
 import subprocess
@@ -53,6 +56,15 @@ def openFolderIfExists(path):
     openFolder(path)
     
 def composeEmail(from_adr, to, subject, body, attachments=[]):
+    if not from_adr:
+        from_adr = ""
+    if not to:
+        to = ""
+    if not subject:
+        subject = ""
+    if not body:
+        body = ""
+
     cmd = "thunderbird -compose \""
     cmd += "from='" + from_adr + "',"
     cmd += "to='" + to + "',"
@@ -63,6 +75,19 @@ def composeEmail(from_adr, to, subject, body, attachments=[]):
     cmd += "\""
     
     os.system(cmd)
+
+# Place a phone call over SIP
+def callSip(number):
+    global config
+    if not number:
+        print("empty number")
+        return
+    # fixup number
+    number = number.replace(' ','')
+    # build SIP URL
+    sip = "sip:" + number + "@" + config.sipServer
+    print("call: " + sip)
+    openFolder(sip)
 
 def templateCopyReplace(src, dest, model):
     # print("templateCopyReplace: src:" + src + " dest:" + dest)
@@ -237,33 +262,12 @@ class GnuSolar(QApplication):
         
         config.show()
 
-    def action_callContactsOwnerPhone(self):
-        self.call(self.model.contacts.owner.phone)
-
-    def action_callContactsOwnerPhone2(self):
-        self.call(self.model.contacts.owner.phone2)
-
-    def action_callContactsOwnerMobile(self):
-        self.call(self.model.contacts.owner.mobile)
-
     def action_callMunicipalityMainContactPhone(self):
         self.call(self.model.municipality.mainContact.phone)
 
     def action_callMunicipalityBuildingContactPhone(self):
         self.call(self.model.municipality.buildingContact.phone)
 
-    # Place a phone call over SIP
-    def call(self, number):
-        global config
-        # fixup number
-        number = number.replace(' ','')
-        if number == "":
-            print("empty number")
-            return
-        # build SIP URL
-        sip = "sip:" + number + "@" + config.sipServer
-        print("call: " + sip)
-        openFolder(sip)
 
 
     def createFromTemplate(self, templateType):
@@ -546,13 +550,6 @@ class GnuSolar(QApplication):
         att = [""]
         composeEmail(config.installer_email, to, subject, body, att)
 
-    # Sende Tag
-    def action_composeEmailOwner(self):
-        global config
-        
-        to = self.model.contacts.owner.email
-        composeEmail(config.installer_email, to, "", "")
-
     # Gemeinde Webseite öffnen
     def action_openMunicipalityWebsite(self):
         openFolder(self.model.municipality.website)
@@ -592,6 +589,9 @@ class GnuSolar(QApplication):
            
             # fill it with the attributes of the object
             self.updateUi(ui, obj, "obj")
+            
+            # hook for ui initializiation
+            obj.initUi(ui)
             
             # connect all obj_ fields with attributeChanged
             # updates the model on the fly from the ui
@@ -782,7 +782,6 @@ def main(args):
 
     checkEnv()
 
-    config = Config()
     config.load()
 
     gnusolar = GnuSolar(args)

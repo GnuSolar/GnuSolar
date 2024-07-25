@@ -3,21 +3,15 @@
 
 # A Contact is a way to contact a person. Postal address is mostly needed for bureaucratic stuff.
 
-""" to implement:
-        self.ui.composeEmailOwner.clicked.connect(self.action_composeEmailOwner)
-        self.ui.callContactsOwnerPhone.clicked.connect(self.action_callContactsOwnerPhone)
-        self.ui.callContactsOwnerPhone2.clicked.connect(self.action_callContactsOwnerPhone2)
-        self.ui.callContactsOwnerMobile.clicked.connect(self.action_callContactsOwnerMobile)
-"""
 
 import sqlite3
 
 from Config import Config
+import GnuSolar
 
 class Contact:
 
     def __init__(self):
-        
         # class members
         self.role = None
         self.company = None
@@ -149,6 +143,25 @@ class Contact:
         ret += "END:VCARD\n"
  
         return ret
+
+    def initUi(self, ui):
+        print("initUi")
+        ui.composeEmail.clicked.connect(self.action_composeEmail)
+        ui.callPhone.clicked.connect(self.action_callPhone)
+        ui.callPhone2.clicked.connect(self.action_callPhone2)
+        ui.callMobile.clicked.connect(self.action_callMobile)
+
+    def action_callPhone(self):
+        GnuSolar.callSip(self.phone)
+
+    def action_callPhone2(self):
+        GnuSolar.callSip(self.phone2)
+
+    def action_callMobile(self):
+        GnuSolar.callSip(self.mobile)
+
+    def action_composeEmail(self):
+        GnuSolar.composeEmail(GnuSolar.config.installer_email, self.email , "", "")
 
     def getRoleName(self):
         roles = {
