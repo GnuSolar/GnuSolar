@@ -33,5 +33,16 @@ class Contacts:
     def installer_ac(self, value):
         self._installer_ac = value
 
+    # tree hooks
     def getTreeCaption(self):
         return "Kontakte"
+
+    def getTreeContextMenu(self):
+        ret = {
+            "add": "Kontakt hinzufügen",
+        }
+        return ret
+    
+    def treeAction(self, action):
+        actionKey = action.actionKey
+        print(actionKey)

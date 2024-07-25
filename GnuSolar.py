@@ -621,17 +621,25 @@ class GnuSolar(QApplication):
         self.ui.stackedWidget.setCurrentWidget(att)
 
     # display Context Menu of the Tree
+    # gets them from the getTreeContextMenu
+    # calls the treeAction
     def action_treeContext(self, event):
-        print("action_treeContext")
         item = self.ui.tree.currentItem()
         obj = item.pvpObj
 
         menu = QtWidgets.QMenu(self.ui.tree)
-        actionDelete = menu.addAction("Löschen")
-        action2 = menu.exec_(self.ui.tree.mapToGlobal(event))
-        if action2 is not None:
-            if action2 == actionDelete:
-                print("ajoutFileAtt")
+        try:
+            contextMenu = obj.getTreeContextMenu()
+        except AttributeError:
+            return
+            
+        for key, value in contextMenu.items():
+            actn = menu.addAction(value)
+            actn.actionKey = key
+        
+        action = menu.exec_(self.ui.tree.mapToGlobal(event))
+        if action is not None:
+            obj.treeAction(action)
         
     # open a Project with a path
     def openFile(self, pvpPath):
