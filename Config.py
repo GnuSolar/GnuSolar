@@ -285,3 +285,5 @@ class Config():
             return self.templatePath
         ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
         return ret
+
+config = Config()

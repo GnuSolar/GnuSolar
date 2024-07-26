@@ -26,14 +26,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from Ui.GnuSolar import *
 from Ui.Preferences import *
+
 from Ui.Contact import *
+from Ui.PvProject import *
 
 from model.PvProject import *
 
-from Config import Config
+from Config import *
 
-# global Variables
-config = Config()
 
 # TODO: Where to put generally usefull functions?
 
@@ -89,6 +89,7 @@ def callSip(number):
     print("call: " + sip)
     openFolder(sip)
 
+
 def templateCopyReplace(src, dest, model):
     # print("templateCopyReplace: src:" + src + " dest:" + dest)
     basic = Template(source='', filepath=src)
@@ -97,6 +98,90 @@ def templateCopyReplace(src, dest, model):
     f = open(dest, 'wb')
     f.write(basic_generated.getvalue())
     f.close()
+
+def createFromTemplate(templateType, savePath, model):
+    global config
+    templates = {
+        "partial_invoice" : {
+            "in_path"  : "fin" + os.sep + "partial_invoice.odt",
+            "out_dir"  : "fin",
+            "out_file" : config.getNextInvoiceName() + ".odt"
+        },
+        "final_invoice" : {
+            "in_path"  : "fin" + os.sep + "final_invoice.odt",
+            "out_dir"  : "fin",
+            "out_file" : config.getNextInvoiceName() + ".odt"
+        },
+        "small_invoice" : {
+            "in_path"  : "fin" + os.sep + "small_invoice.odt",
+            "out_dir"  : "fin",
+            "out_file" : config.getNextInvoiceName() + ".odt"
+        },
+        "quote" : {
+            "in_path"  : "off" + os.sep + "quote.odt",
+            "out_dir"  : "off",
+            "out_file" : config.getNextQuoteName() + ".odt"
+        },
+        "documentation" : {
+            "in_path"  : "doc" + os.sep + "documentation.odt",
+            "out_dir"  : "doc",
+            "out_file" : "Dokumentation.odt"
+        },
+        "mundpp" : {
+            "in_path"  : "evu" + os.sep + "MP_PV_Final_20190301_de.ods",
+            "out_dir"  : "evu",
+            "out_file" : "MP_PV.ods"
+        }
+    }
+
+    ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
+
+    template = templates[templateType]
+    
+    templatePath = ""
+    defaultPath = Config.getDataPath() + os.sep + "ch" + os.sep + "templates" + os.sep + template["in_path"]
+    localPath = config.templatePath + os.sep + template["in_path"]
+    # first search template in  "local", config path
+    if os.path.exists(localPath):
+        templatePath = localPath
+
+    # then default
+    elif os.path.exists(defaultPath):
+        templatePath = defaultPath
+    else:
+        QtWidgets.QMessageBox.warning(None, templateType + ' Vorlage nicht gefunden', 'def Pfad = ' + defaultPath)
+        return
+    
+    projectDir = os.path.dirname(savePath)
+    if not os.path.isdir(projectDir):
+        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
+        return
+
+    outDir =  projectDir + os.sep + template["out_dir"]
+    outPath = outDir + os.sep + template["out_file"]
+    if not os.path.isdir(outDir):
+        os.makedirs(outDir)
+
+    # dot not overwrite existing files
+    if os.path.exists(outPath):
+        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Datei existiert bereits:\n' + outPath)
+        return
+
+    model._invoiceName = config.getNextInvoiceName()
+    model._quoteName = config.getNextQuoteName()
+    today = date.today()
+    model._todayIso = today.isoformat()
+    model.owner = model.contacts.owner		# backwards compatibility
+    model.config = config
+    templateCopyReplace(templatePath, outPath, model)
+    del model.config
+    del model.owner
+    del model._invoiceName
+    del model._quoteName
+    del model._todayIso
+    
+    return outPath
+
     
 class GnuSolar(QApplication):
     def __init__(self, *args):
@@ -105,7 +190,7 @@ class GnuSolar(QApplication):
         QApplication.__init__(self, *args)
         self.window = QMainWindow()
 
-        self.ui = Ui_PvProject()
+        self.ui = Ui_GnuSolar()
         self.ui.setupUi(self.window)
 
         self.ui.action_New.triggered.connect(self.action_new)
@@ -120,15 +205,8 @@ class GnuSolar(QApplication):
         self.ui.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tree.customContextMenuRequested.connect(self.action_treeContext)
 
-        self.ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
         self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         self.ui.get3dModel.clicked.connect(self.action_get3dModel)
-        self.ui.createQuote.clicked.connect(self.action_createQuote)
-        self.ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
-        self.ui.createFinalInvoice.clicked.connect(self.action_createFinalInvoice)
-        self.ui.createSmallInvoice.clicked.connect(self.action_createSmallInvoice)
-        self.ui.createQrBill.clicked.connect(self.action_createQrBill)
-        self.ui.createDocumentation.clicked.connect(self.action_createDocumentation)
         self.ui.createMundpp.clicked.connect(self.action_createMundpp)
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
@@ -143,7 +221,6 @@ class GnuSolar(QApplication):
         #   First argument: Path to the Pv-Project File
         self.path = ""          # path = "" means new project
         self.model = PvProject()       # the PvProject Model
-        self.model.config = config
         self.unsavedChanges = False
 
         if len(args[0]) >= 2:
@@ -200,12 +277,6 @@ class GnuSolar(QApplication):
 
     def action_quit(self):
         exit()
-
-    def action_openProjectFolder(self):
-        if self.path == "":
-            return
-        folder = os.path.dirname(self.path)
-        openFolderIfExists(folder)
 
     def action_updateFromAddress(self):
         self.updateModel(self.ui, self.model, "pvp")
@@ -268,193 +339,9 @@ class GnuSolar(QApplication):
     def action_callMunicipalityBuildingContactPhone(self):
         self.call(self.model.municipality.buildingContact.phone)
 
-
-
-    def createFromTemplate(self, templateType):
-        templates = {
-            "partial_invoice" : {
-                "in_path"  : "fin" + os.sep + "partial_invoice.odt",
-                "out_dir"  : "fin",
-                "out_file" : config.getNextInvoiceName() + ".odt"
-            },
-            "final_invoice" : {
-                "in_path"  : "fin" + os.sep + "final_invoice.odt",
-                "out_dir"  : "fin",
-                "out_file" : config.getNextInvoiceName() + ".odt"
-            },
-            "small_invoice" : {
-                "in_path"  : "fin" + os.sep + "small_invoice.odt",
-                "out_dir"  : "fin",
-                "out_file" : config.getNextInvoiceName() + ".odt"
-            },
-            "quote" : {
-                "in_path"  : "off" + os.sep + "quote.odt",
-                "out_dir"  : "off",
-                "out_file" : config.getNextQuoteName() + ".odt"
-            },
-            "documentation" : {
-                "in_path"  : "doc" + os.sep + "documentation.odt",
-                "out_dir"  : "doc",
-                "out_file" : "Dokumentation.odt"
-            },
-            "mundpp" : {
-                "in_path"  : "evu" + os.sep + "MP_PV_Final_20190301_de.ods",
-                "out_dir"  : "evu",
-                "out_file" : "MP_PV.ods"
-            }
-        }
-
-        ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
-
-        template = templates[templateType]
-        
-        templatePath = ""
-        defaultPath = Config.getDataPath() + os.sep + "ch" + os.sep + "templates" + os.sep + template["in_path"]
-        localPath = config.templatePath + os.sep + template["in_path"]
-        # first search template in  "local", config path
-        if os.path.exists(localPath):
-            templatePath = localPath
-
-        # then default
-        elif os.path.exists(defaultPath):
-            templatePath = defaultPath
-        else:
-            QtWidgets.QMessageBox.warning(None, templateType + ' Vorlage nicht gefunden', 'def Pfad = ' + defaultPath)
-            return
-        
-        projectDir = os.path.dirname(self.path)
-        if not os.path.isdir(projectDir):
-            QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
-            return
-
-        outDir =  projectDir + os.sep + template["out_dir"]
-        outPath = outDir + os.sep + template["out_file"]
-        if not os.path.isdir(outDir):
-            os.makedirs(outDir)
-
-        # dot not overwrite existing files
-        if os.path.exists(outPath):
-            QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Datei existiert bereits:\n' + outPath)
-            return
-
-        self.model._invoiceName = config.getNextInvoiceName()
-        self.model._quoteName = config.getNextQuoteName()
-        today = date.today()
-        self.model._todayIso = today.isoformat()
-        self.model.owner = self.model.contacts.owner		# backwards compatibility
-        templateCopyReplace(templatePath, outPath, self.model)
-        del self.model.owner
-        del self.model._invoiceName
-        del self.model._quoteName
-        del self.model._todayIso
-        
-        return outPath
-
-    def action_createQuote(self):
-        global config
-        
-        quotePath = self.createFromTemplate("quote")
-        
-        config.nextQuoteNumber = config.nextQuoteNumber + 1
-        config.write()
-
-        openFolderIfExists(quotePath)
-
-    # Create Partial Invoice
-    def action_createPartialInvoice(self):
-        global config
-
-        invoicePath = self.createFromTemplate("partial_invoice")
-        
-        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
-        config.write()
-
-        openFolderIfExists(invoicePath)
-
-    # Create Final Invoice
-    def action_createFinalInvoice(self):
-        global config
-
-        invoicePath = self.createFromTemplate("final_invoice")
-        
-        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
-        config.write()
-
-        openFolderIfExists(invoicePath)
-
-    # Create Small Invoice
-    def action_createSmallInvoice(self):
-        global config
-
-        invoicePath = self.createFromTemplate("small_invoice")
-        
-        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
-        config.write()
-
-        openFolderIfExists(invoicePath)
-
-
-    # Create swiss QR Bill
-    def action_createQrBill(self):
-        global config
-
-        qrAmount = self.ui.qrbill_amount.text()
-        qrInfo = self.ui.qrbill_info.text()
-        
-        projectDir = os.path.dirname(self.path)
-        if not os.path.isdir(projectDir):
-            QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
-            return
-
-        today = date.today()
-        fileName = "QR" + today.isoformat() + ".pdf"
-        outDir =  projectDir + os.sep + "fin"
-        qrPath = outDir + os.sep + fileName
-        if not os.path.isdir(outDir):
-            os.makedirs(outDir)
-
-        debtor = self.model.contacts.owner
-        my_bill = QRBill(
-                account=config.installer_bankIban,
-                language='de',
-                creditor={
-                    'name': config.installer_company, 
-                    'street': config.installer_street,
-                    'house_num': config.installer_streetNumber,
-                    'pcode': config.installer_zip,
-                    'city': config.installer_city, 
-                },
-                debtor={
-                    'name': debtor.lastName + " " + debtor.firstName, 
-                    'street': debtor.street,
-                    'house_num': debtor.streetNumber,
-                    'pcode': debtor.zip,
-                    'city': debtor.city, 
-                },
-                amount=qrAmount,
-                additional_information=(
-                    qrInfo
-                )                
-            )
-        with tempfile.TemporaryFile(encoding='utf-8', mode='r+') as temp:
-            my_bill.as_svg(temp, full_page=True)
-            temp.seek(0)
-            drawing = svg2rlg(temp)
-        renderPDF.drawToFile(drawing, qrPath)
-
-        self.ui.qrbill_amount.setText("")
-        self.ui.qrbill_info.setText("")
-
-        openFolderIfExists(qrPath)
-
-    # Create Documentation
-    def action_createDocumentation(self):
-        documentationPath = self.createFromTemplate("documentation")
-        openFolderIfExists(documentationPath)
-
     # Create M+PP
     def action_createMundpp(self):
-        documentationPath = self.createFromTemplate("mundpp")
+        documentationPath = createFromTemplate("mundpp", self.path, self.model)
         openFolderIfExists(documentationPath)
 
     # Erzeuge Gebäudeversicherung Zürich Formular
@@ -555,9 +442,20 @@ class GnuSolar(QApplication):
         openFolder(self.model.municipality.website)
 
     # Update the attribute of the model
-    def action_attributeChanged(self, val):
+    def action_attributeChanged(self):
         el = self.sender()
         obj = self.currentObj
+
+        if isinstance(el, QLineEdit):
+            val = el.text()
+        elif isinstance(el, QPlainTextEdit):
+            val = el.toPlainText()
+        elif isinstance(el, QComboBox):
+            val = el.currentText()
+        elif isinstance(el, QCheckBox):
+            val = el.isChecked()
+        else:
+            raise Exception(str(type(el)) + " not implemented")
 
         att_name = el.objectName()
         att_name = att_name.strip("obj_")
@@ -571,9 +469,7 @@ class GnuSolar(QApplication):
         obj = item.pvpObj
         class_name = type(obj).__name__
         
-        print(class_name)
-        
-        if class_name == "Contact":
+        if class_name == "Contact" or class_name == "PvProject":
             # load the ui into the detail window
             widget = QWidget()
             klass = globals()["Ui_" + class_name]
@@ -584,8 +480,11 @@ class GnuSolar(QApplication):
             self.ui.stackedWidget.setCurrentWidget(widget)
 
             # Set the label
-            label = obj.getTreeCaption()
-            ui.groupBox.setTitle(label)
+            try:
+                label = obj.getTreeCaption()
+                ui.groupBox.setTitle(label)
+            except AttributeError:
+                pass
            
             # fill it with the attributes of the object
             self.updateUi(ui, obj, "obj")
@@ -695,8 +594,10 @@ class GnuSolar(QApplication):
             if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
                 el = getattr(modelObj, key)
                 caption = str(key)
-                if hasattr(el, "getTreeCaption") and callable(getattr(el, "getTreeCaption")):
+                try:
                     caption = el.getTreeCaption()
+                except AttributeError:
+                    pass
                 item = QTreeWidgetItem(None, [caption])
                 item.pvpObj = el
                 parent.addChild(item)
@@ -775,17 +676,20 @@ def checkEnv():
                                'http://bugs.python.org/issue13643 '
                                'for mitigation steps.')
 
+# global Variables
+
+app = None
 
 def main(args):
-    global gnusolar
+    global app
     global config
 
     checkEnv()
 
     config.load()
 
-    gnusolar = GnuSolar(args)
-    gnusolar.exec_()
+    app = GnuSolar(args)
+    app.exec_()
 
 if __name__ == "__main__":
     main(sys.argv)
