@@ -200,26 +200,12 @@ class PvProject:
         documentationPath = self.createFromTemplate("documentation")
         openFolderIfExists(documentationPath)
 
-
-
-
-
-
     # Serializing stuff
-
     def toJson(self):
         jsonpickle.set_preferred_backend('json')
         jsonpickle.set_encoder_options('json', sort_keys=True, indent=4)
         
-        _savePath = self._savePath      # don't serialize this attribute
-        del self._savePath
-        _ui = self._ui
-        del self._ui
-        
         ret = jsonpickle.encode(self)
-        
-        self._savePath = _savePath
-        self._ui = _ui
         
         return ret
         
@@ -268,6 +254,7 @@ class PvProject:
     
     # open from disk
     def open(self, path):
+        config.pvpPath = path
         self._savePath = path
         f = open(path)
         json_str = f.read()
@@ -277,6 +264,7 @@ class PvProject:
     
     # save to disk as json under specified path
     def saveAs(self, path):
+        config.pvpPath = path
         self._savePath = path
         return self.save()
     
@@ -287,3 +275,14 @@ class PvProject:
         f = open(self._savePath, 'w')
         f.write(json)
         f.close()
+
+    # for jsonpickle to ignore
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_savePath']
+        del state['_ui']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+

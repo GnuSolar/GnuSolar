@@ -15,11 +15,13 @@ import requests
 from model.Municipality import *
 from model.PowerCompany import *
 
-from Config import Config
+from Config import *
+from GnuSolar import *
 
 class Building:
     
     def __init__(self):
+        self._ui = None
         self.buildingState = None       # "new" or "existing"
         self.buildingId = None          # swiss building id
         self.street = None
@@ -163,3 +165,52 @@ class Building:
 
     def getTreeCaption(self):
         return "Gebäude"
+
+    def initUi(self, ui):
+        self._ui = ui
+        ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
+        ui.get3dModel.clicked.connect(self.action_get3dModel)
+
+    def action_updateFromAddress(self):
+        self.coordinatesFromAddress()
+        self.queryPlotNumber()
+        self.queryZoneing()
+
+        GnuSolar.updateUi(self._ui, self, "obj")
+
+    def action_get3dModel(self):
+        x = self.swissGridX
+        y = self.swissGridY
+        if not x or not y:
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'no coordiantes')
+            return
+
+        url = "http://amsler-solar.ch/swissbuildings3d-2-0/api.php?x=2" + str(x) + "&y=1" + str(y) + "&format=stl"
+        response = requests.get(url=url)
+        resp_txt = response.text
+        if not resp_txt.startswith("solid"):
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', resp_txt)
+            return
+        
+        cad_folder = os.path.dirname(config.pvpPath) + os.sep + "cad"
+        if not os.path.isdir(cad_folder):
+            os.mkdir(cad_folder)
+        
+        stl_file = cad_folder + os.sep + "house_geo.stl"
+        if os.path.isfile(stl_file):
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', "File exists: " + stl_file)
+            return
+        
+        with open(stl_file, "w") as f:
+            f.write(resp_txt)
+
+        openFolderIfExists(stl_file)
+
+    # for jsonpickle to ignore
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_ui']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)

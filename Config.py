@@ -20,6 +20,7 @@ class Config():
         self.configPath = ""            # the Path of this file
         self.projectRoot = ""
         self.templatePath = ""          # Vorlage Verzeichnis
+        self.pvpPath = ""               # save Path of the project
         
         self.nextQuoteNumber = 0
         self.nextInvoiceNumber = 0

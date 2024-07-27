@@ -6,8 +6,8 @@
 
 import sqlite3
 
-from Config import Config
-import GnuSolar
+from Config import *
+from GnuSolar import *
 
 class Contact:
 
@@ -38,7 +38,7 @@ class Contact:
         self.accountBic = None      # Business Identifier Code (Swift)
 
     def fromId(self, contactId):
-        con = sqlite3.connect(Config.getMasterDbPath())
+        con = sqlite3.connect(config.getMasterDbPath())
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM contact WHERE id=?"
@@ -57,7 +57,7 @@ class Contact:
             self.city = db_row["city"]
 
     def fromMunicipalityType(self, munId, contactType):
-        con = sqlite3.connect(Config.getMasterDbPath())
+        con = sqlite3.connect(config.getMasterDbPath())
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM contact WHERE fk_municipality=? AND type=?"
@@ -145,23 +145,22 @@ class Contact:
         return ret
 
     def initUi(self, ui):
-        print("initUi")
         ui.composeEmail.clicked.connect(self.action_composeEmail)
         ui.callPhone.clicked.connect(self.action_callPhone)
         ui.callPhone2.clicked.connect(self.action_callPhone2)
         ui.callMobile.clicked.connect(self.action_callMobile)
 
     def action_callPhone(self):
-        GnuSolar.callSip(self.phone)
+        callSip(self.phone)
 
     def action_callPhone2(self):
-        GnuSolar.callSip(self.phone2)
+        callSip(self.phone2)
 
     def action_callMobile(self):
-        GnuSolar.callSip(self.mobile)
+        callSip(self.mobile)
 
     def action_composeEmail(self):
-        GnuSolar.composeEmail(GnuSolar.config.installer_email, self.email , "", "")
+        composeEmail(config.installer_email, self.email , "", "")
 
     def getRoleName(self):
         roles = {

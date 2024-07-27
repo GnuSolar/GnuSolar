@@ -29,6 +29,7 @@ from Ui.Preferences import *
 
 from Ui.Contact import *
 from Ui.PvProject import *
+from Ui.Building import *
 
 from model.PvProject import *
 
@@ -205,8 +206,6 @@ class GnuSolar(QApplication):
         self.ui.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tree.customContextMenuRequested.connect(self.action_treeContext)
 
-        self.ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
-        self.ui.get3dModel.clicked.connect(self.action_get3dModel)
         self.ui.createMundpp.clicked.connect(self.action_createMundpp)
         self.ui.createTag.clicked.connect(self.action_createTag)
         self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
@@ -250,7 +249,7 @@ class GnuSolar(QApplication):
         self.unsavedChanges = False
         self.updateWindowTitle()
         self.updateTree()
-        self.updateUi(self.ui, self.model, "pvp")
+        GnuSolar.updateUi(self.ui, self.model, "pvp")
         
         self.window.show()
 
@@ -277,41 +276,6 @@ class GnuSolar(QApplication):
 
     def action_quit(self):
         exit()
-
-    def action_updateFromAddress(self):
-        self.updateModel(self.ui, self.model, "pvp")
-        ret = self.model.updateFromAddress()
-        self.updateUi(self.ui, self.model, "pvp")
-        if isinstance(ret, str):
-            QtWidgets.QMessageBox.warning(None, 'UpdatefromAddress Error', 'Meldung = ' + ret)
-
-    def action_get3dModel(self):
-        x = self.model.building.swissGridX
-        y = self.model.building.swissGridY
-        if not x or not y:
-            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'no coordiantes')
-            return
-
-        url = "http://amsler-solar.ch/swissbuildings3d-2-0/api.php?x=2" + str(x) + "&y=1" + str(y) + "&format=stl"
-        response = requests.get(url=url)
-        resp_txt = response.text
-        if not resp_txt.startswith("solid"):
-            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', resp_txt)
-            return
-        
-        cad_folder = os.path.dirname(self.path) + os.sep + "cad"
-        if not os.path.isdir(cad_folder):
-            os.mkdir(cad_folder)
-        
-        stl_file = cad_folder + os.sep + "house_geo.stl"
-        if os.path.isfile(stl_file):
-            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', "File exists: " + stl_file)
-            return
-        
-        with open(stl_file, "w") as f:
-            f.write(resp_txt)
-
-        openFolderIfExists(stl_file)
 
     def action_progress(self):
         sendingButton = self.sender()
@@ -404,7 +368,7 @@ class GnuSolar(QApplication):
         openFolderIfExists(tagPath)
         now = date.today()
         self.model.progress.tagSent = now.isoformat()
-        self.updateUi(self.ui, self.model, "pvp")
+        GnuSolar.updateUi(self.ui, self.model, "pvp")
 
     # Erzeuge Solarmeldung
     def action_createBuildingForm(self):
@@ -469,7 +433,7 @@ class GnuSolar(QApplication):
         obj = item.pvpObj
         class_name = type(obj).__name__
         
-        if class_name == "Contact" or class_name == "PvProject":
+        if class_name == "Contact" or class_name == "PvProject" or class_name=="Building":
             # load the ui into the detail window
             widget = QWidget()
             klass = globals()["Ui_" + class_name]
@@ -487,7 +451,7 @@ class GnuSolar(QApplication):
                 pass
            
             # fill it with the attributes of the object
-            self.updateUi(ui, obj, "obj")
+            GnuSolar.updateUi(ui, obj, "obj")
             
             # hook for ui initializiation
             obj.initUi(ui)
@@ -553,7 +517,7 @@ class GnuSolar(QApplication):
         # valid pvp Project?
         self.path = pvpPath
         self.model.open(pvpPath)
-        self.updateUi(self.ui, self.model, "pvp")
+        GnuSolar.updateUi(self.ui, self.model, "pvp")
         self.updateWindowTitle()
     
     def saveFile(self):
@@ -606,7 +570,8 @@ class GnuSolar(QApplication):
 
     # Updates the User Interface from the Model
     # Iterates through all widgets and searches for pvp_* named Widgets
-    def updateUi(self, ui, obj, prefix):
+    @staticmethod
+    def updateUi(ui, obj, prefix):
         for key, value in ui.__dict__.items():
             # normal model<=>ui element?
             if key.startswith(prefix + "_"):
