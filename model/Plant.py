@@ -21,3 +21,7 @@ class Plant:
 
     def getTreeCaption(self):
         return "Anlage"
+
+    def initUi(self, ui):
+        pass
+
