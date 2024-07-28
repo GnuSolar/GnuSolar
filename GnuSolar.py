@@ -135,6 +135,10 @@ def createFromTemplate(templateType, savePath, model):
         }
     }
 
+    if not savePath:
+        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Kein Pfad')
+        return
+
     ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
 
     template = templates[templateType]
@@ -155,7 +159,7 @@ def createFromTemplate(templateType, savePath, model):
     
     projectDir = os.path.dirname(savePath)
     if not os.path.isdir(projectDir):
-        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
+        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + savePath)
         return
 
     outDir =  projectDir + os.sep + template["out_dir"]

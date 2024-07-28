@@ -142,16 +142,24 @@ class PvProject:
 
         openFolderIfExists(invoicePath)
 
+    # Create Documentation
+    def action_createDocumentation(self):
+        documentationPath = createFromTemplate("documentation", self._savePath, self)
+        openFolderIfExists(documentationPath)
+
     # Create swiss QR Bill
     def action_createQrBill(self):
         global config
+        if not self._savePath:
+            QtWidgets.QMessageBox.warning(None, 'QR Bill', 'TODO: ohne Pfad')
+            return
 
         qrAmount = self._ui.qrbill_amount.text()
         qrInfo = self._ui.qrbill_info.text()
         
         projectDir = os.path.dirname(self._savePath)
         if not os.path.isdir(projectDir):
-            QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + self.path)
+            QtWidgets.QMessageBox.warning(None, 'QR Bill', 'Pfad nicht gefunden\n' + self._savePath)
             return
 
         today = date.today()
@@ -194,11 +202,6 @@ class PvProject:
         self._ui.qrbill_info.setText("")
 
         openFolderIfExists(qrPath)
-
-    # Create Documentation
-    def action_createDocumentation(self):
-        documentationPath = self.createFromTemplate("documentation")
-        openFolderIfExists(documentationPath)
 
     # Serializing stuff
     def toJson(self):
