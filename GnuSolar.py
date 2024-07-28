@@ -31,6 +31,7 @@ from Ui.Contact import *
 from Ui.PvProject import *
 from Ui.Building import *
 from Ui.Plant import *
+from Ui.Progress import *
 
 from model.PvProject import *
 
@@ -246,11 +247,6 @@ class GnuSolar(QApplication):
                 else:
                     raise Exception(str(type(el)) + " not implemented")
 
-            # connect all pb_progress_* with action_progress
-            if key.startswith("pb_progress_"):
-                el = getattr(self.ui, key)
-                el.clicked.connect(self.action_progress)
-
         self.unsavedChanges = False
         self.updateWindowTitle()
         self.updateTree()
@@ -281,15 +277,6 @@ class GnuSolar(QApplication):
 
     def action_quit(self):
         exit()
-
-    def action_progress(self):
-        sendingButton = self.sender()
-        buttonName = sendingButton.objectName()
-        actionName = buttonName.replace("pb_progress_", "")
-
-        now = date.today()
-        attrName = "pvp_progress_" + actionName
-        getattr(self.ui, attrName).setText(str(now))
 
     def action_changed(self):
         if self.unsavedChanges:
@@ -438,7 +425,7 @@ class GnuSolar(QApplication):
         obj = item.pvpObj
         class_name = type(obj).__name__
         
-        if class_name == "Contact" or class_name == "PvProject" or class_name=="Building" or class_name=="Plant":
+        if class_name == "Contact" or class_name == "PvProject" or class_name=="Building" or class_name=="Plant" or class_name=="Progress":
             # load the ui into the detail window
             widget = QWidget()
             klass = globals()["Ui_" + class_name]

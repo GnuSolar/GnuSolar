@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Progress</class>
+ <widget class="QWidget" name="Progress">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1034</width>
+    <height>773</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QPushButton" name="pb_inquiryReceived">
+     <property name="text">
+      <string>Anfrage erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="obj_inquiryReceived"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="pb_roofMeasure">
+     <property name="text">
+      <string>Dach anschauen</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="obj_roofMeasure">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="pb_roofMeasured">
+     <property name="text">
+      <string>Dach angeschaut</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QLineEdit" name="obj_roofMeasured"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="pb_quote1Sent">
+     <property name="text">
+      <string>Offerte erstellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="obj_quote1Sent"/>
+   </item>
+   <item row="2" column="2">
+    <widget class="QPushButton" name="pb_quote2Sent">
+     <property name="text">
+      <string>Offerte 2 erstellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QLineEdit" name="obj_quote2Sent"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="pb_quote3Sent">
+     <property name="text">
+      <string>Offerte 3 erstellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="obj_quote3Sent"/>
+   </item>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="pb_quote4Sent">
+     <property name="text">
+      <string>Offerte 4 erstellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QLineEdit" name="obj_quote4Sent"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="pb_orderRejected">
+     <property name="text">
+      <string>Auftrag nicht erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLineEdit" name="obj_orderRejected"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="pb_orderReceived">
+     <property name="text">
+      <string>Auftrag erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLineEdit" name="obj_orderReceived"/>
+   </item>
+   <item row="6" column="0">
+    <widget class="QPushButton" name="pb_tagSent">
+     <property name="text">
+      <string>Anschlussgesuch verschickt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLineEdit" name="obj_tagSent"/>
+   </item>
+   <item row="6" column="2">
+    <widget class="QPushButton" name="pb_tagReceived">
+     <property name="text">
+      <string>Anschlussgesuch erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="3">
+    <widget class="QLineEdit" name="obj_tagReceived"/>
+   </item>
+   <item row="7" column="0">
+    <widget class="QPushButton" name="pb_iaSent">
+     <property name="text">
+      <string>Installationsanzeige verschickt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QLineEdit" name="obj_iaSent"/>
+   </item>
+   <item row="7" column="2">
+    <widget class="QPushButton" name="pb_iaReceived">
+     <property name="text">
+      <string>Installationsanzeige erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="3">
+    <widget class="QLineEdit" name="obj_iaReceived"/>
+   </item>
+   <item row="8" column="0">
+    <widget class="QPushButton" name="pb_bauSent">
+     <property name="text">
+      <string>Solarmeldung verschickt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QLineEdit" name="obj_bauSent"/>
+   </item>
+   <item row="8" column="2">
+    <widget class="QPushButton" name="pb_bauReceived">
+     <property name="text">
+      <string>Solarmeldung erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="3">
+    <widget class="QLineEdit" name="obj_bauReceived"/>
+   </item>
+   <item row="9" column="0">
+    <widget class="QPushButton" name="pb_partialInvoiceSent">
+     <property name="text">
+      <string>Akontorechnung erstellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="1">
+    <widget class="QLineEdit" name="obj_partialInvoiceSent"/>
+   </item>
+   <item row="9" column="2">
+    <widget class="QPushButton" name="pb_partialInvoiceReceived">
+     <property name="text">
+      <string>Akontorechnung bezahlt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="3">
+    <widget class="QLineEdit" name="obj_partialInvoiceReceived"/>
+   </item>
+   <item row="10" column="0">
+    <widget class="QPushButton" name="pb_partialInvoice2Sent">
+     <property name="text">
+      <string>Akontorechnung 2 erstellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <widget class="QLineEdit" name="obj_partialInvoice2Sent"/>
+   </item>
+   <item row="10" column="2">
+    <widget class="QPushButton" name="pb_partialInvoice2Received">
+     <property name="text">
+      <string>Akontorechnung 2 bezahlt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="3">
+    <widget class="QLineEdit" name="obj_partialInvoice2Received"/>
+   </item>
+   <item row="11" column="0">
+    <widget class="QPushButton" name="pb_materialOrdered">
+     <property name="text">
+      <string>Material bestellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QLineEdit" name="obj_materialOrdered"/>
+   </item>
+   <item row="11" column="2">
+    <widget class="QPushButton" name="pb_materialReceived">
+     <property name="text">
+      <string>Material erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="3">
+    <widget class="QLineEdit" name="obj_materialReceived"/>
+   </item>
+   <item row="12" column="0">
+    <widget class="QPushButton" name="pb_constructionStart">
+     <property name="text">
+      <string>Baubeginn</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="1">
+    <widget class="QLineEdit" name="obj_constructionStart"/>
+   </item>
+   <item row="12" column="2">
+    <widget class="QCheckBox" name="obj_constructionFixed">
+     <property name="text">
+      <string>Baubeginn fix</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QPushButton" name="pb_constructionSort">
+     <property name="text">
+      <string>Sortierung Baubeginn</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="1">
+    <widget class="QLineEdit" name="obj_constructionSort"/>
+   </item>
+   <item row="14" column="0">
+    <widget class="QPushButton" name="pb_launch">
+     <property name="text">
+      <string>Inbetriebnahme</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="1">
+    <widget class="QLineEdit" name="obj_launch"/>
+   </item>
+   <item row="14" column="2">
+    <widget class="QPushButton" name="pb_documentationPlaced">
+     <property name="text">
+      <string>Anlagedoku vor Ort</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="3">
+    <widget class="QLineEdit" name="obj_documentationPlaced"/>
+   </item>
+   <item row="15" column="0">
+    <widget class="QPushButton" name="pb_finalInvoiceSent">
+     <property name="text">
+      <string>Schlussrechnung verschickt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="1">
+    <widget class="QLineEdit" name="obj_finalInvoiceSent"/>
+   </item>
+   <item row="15" column="2">
+    <widget class="QPushButton" name="pb_finalInvoiceReceived">
+     <property name="text">
+      <string>Schlussrechnung bezahlt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="3">
+    <widget class="QLineEdit" name="obj_finalInvoiceReceived"/>
+   </item>
+   <item row="16" column="0">
+    <widget class="QPushButton" name="pb_siNaDcOrdered">
+     <property name="text">
+      <string>M+PP bestellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="1">
+    <widget class="QLineEdit" name="obj_siNaDcOrdered"/>
+   </item>
+   <item row="16" column="2">
+    <widget class="QPushButton" name="pb_siNaDcReceived">
+     <property name="text">
+      <string>M+PP erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="3">
+    <widget class="QLineEdit" name="obj_siNaDcReceived"/>
+   </item>
+   <item row="17" column="0">
+    <widget class="QPushButton" name="pb_siNaAcOrdered">
+     <property name="text">
+      <string>SiNa AC bestellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="17" column="1">
+    <widget class="QLineEdit" name="obj_siNaAcOrdered"/>
+   </item>
+   <item row="17" column="2">
+    <widget class="QPushButton" name="pb_siNaAcReceived">
+     <property name="text">
+      <string>SiNa AC erhalten</string>
+     </property>
+    </widget>
+   </item>
+   <item row="17" column="3">
+    <widget class="QLineEdit" name="obj_siNaAcReceived"/>
+   </item>
+   <item row="18" column="0">
+    <widget class="QPushButton" name="pb_eivComplete">
+     <property name="text">
+      <string>EIV vollständig</string>
+     </property>
+    </widget>
+   </item>
+   <item row="18" column="1">
+    <widget class="QLineEdit" name="obj_eivComplete"/>
+   </item>
+   <item row="18" column="2">
+    <widget class="QPushButton" name="pb_documentationCreated">
+     <property name="text">
+      <string>Anlagedoku erstellt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="18" column="3">
+    <widget class="QLineEdit" name="obj_documentationCreated"/>
+   </item>
+   <item row="19" column="0">
+    <widget class="QPushButton" name="pb_eivPayed">
+     <property name="text">
+      <string>EIV ausbezahlt</string>
+     </property>
+    </widget>
+   </item>
+   <item row="19" column="1">
+    <widget class="QLineEdit" name="obj_eivPayed"/>
+   </item>
+   <item row="20" column="0">
+    <widget class="QPushButton" name="pb_archived">
+     <property name="text">
+      <string>Projekt archiviert</string>
+     </property>
+    </widget>
+   </item>
+   <item row="20" column="1">
+    <widget class="QLineEdit" name="obj_archived"/>
+   </item>
+   <item row="21" column="0">
+    <widget class="QFrame" name="frame_8">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

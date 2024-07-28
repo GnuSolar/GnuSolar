@@ -8,3 +8,4 @@ pyuic5 Ui/Contact.ui -o Ui/Contact.py
 pyuic5 Ui/PvProject.ui -o Ui/PvProject.py
 pyuic5 Ui/Building.ui -o Ui/Building.py
 pyuic5 Ui/Plant.ui -o Ui/Plant.py
+pyuic5 Ui/Progress.ui -o Ui/Progress.py
