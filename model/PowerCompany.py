@@ -13,7 +13,8 @@ import datetime
 from datetime import date
 from model.Contact import *
 
-from Config import Config
+from Config import *
+from GnuSolar import *
 
 class PowerCompany:
     
@@ -35,7 +36,6 @@ class PowerCompany:
         self.fkContactTag = None
         self.fkFormTag = None
         self.fkFormIa = None
-        
         
     def reloadFromDb(self):
         self.fromId(self.id)
@@ -114,5 +114,52 @@ class PowerCompany:
         del self.todayIso
         del self.fillpdf_data
 
+    # Erzeuge Anschlussgesuch
+    def action_createTag(self):
+        global config
+        
+        # assemble the path
+        today = date.today()
+        tagName = "%04d-%02d-%02d_tag_fill.pdf" % (today.year, today.month, today.day)
+
+        projectDir = os.path.dirname(self.path)
+        tagDir =  projectDir + os.sep + "evu"
+        tagPath = tagDir + os.sep + tagName
+        if not os.path.isdir(tagDir):
+            os.makedirs(tagDir)
+        
+        ret = self.model.powerCompany.createTag(self.model, tagPath)
+        if isinstance(ret, str):
+            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
+            return
+            
+        openFolderIfExists(tagPath)
+        now = date.today()
+        self.model.progress.tagSent = now.isoformat()
+        GnuSolar.updateUi(self.ui, self.model, "pvp")
+
+    # Sende Tag
+    def action_composeTagEmail(self):
+        global config
+        
+        to = self.model.powerCompany.tagContact.email
+        b = self.model.building
+        subject = "TAG PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
+        body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
+        body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
+        att = [""]
+        composeEmail(config.installer_email, to, subject, body, att)
+
     def getTreeCaption(self):
         return "Stromversorger"
+
+    # Create M+PP
+    def action_createMundpp(self):
+        documentationPath = createFromTemplate("mundpp", self.path, self.model)
+        openFolderIfExists(documentationPath)
+
+    def initUi(self, ui):
+        ui.createMundpp.clicked.connect(self.action_createMundpp)
+        ui.createTag.clicked.connect(self.action_createTag)
+        ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
+

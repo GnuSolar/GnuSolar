@@ -32,11 +32,13 @@ from Ui.PvProject import *
 from Ui.Building import *
 from Ui.Plant import *
 from Ui.Progress import *
+from Ui.PowerCompany import *
+from Ui.Municipality import *
+from Ui.Contacts import *
 
 from model.PvProject import *
 
 from Config import *
-
 
 # TODO: Where to put generally usefull functions?
 
@@ -193,6 +195,7 @@ def createFromTemplate(templateType, savePath, model):
 class GnuSolar(QApplication):
     def __init__(self, *args):
         global config
+        global model
         
         QApplication.__init__(self, *args)
         self.window = QMainWindow()
@@ -212,45 +215,20 @@ class GnuSolar(QApplication):
         self.ui.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tree.customContextMenuRequested.connect(self.action_treeContext)
 
-        self.ui.createMundpp.clicked.connect(self.action_createMundpp)
-        self.ui.createTag.clicked.connect(self.action_createTag)
-        self.ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
-        self.ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)
-        self.ui.composeBuildingEmail.clicked.connect(self.action_composeBuildingEmail)
-        self.ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
-        self.ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
-        self.ui.callMunicipalityMainContactPhone.clicked.connect(self.action_callMunicipalityMainContactPhone)
-        self.ui.callMunicipalityBuildingContactPhone.clicked.connect(self.action_callMunicipalityBuildingContactPhone)
         
         # Arguments:
         #   First argument: Path to the Pv-Project File
         self.path = ""          # path = "" means new project
-        self.model = PvProject()       # the PvProject Model
+#        self.model = PvProject()       # the PvProject Model
         self.unsavedChanges = False
 
         if len(args[0]) >= 2:
             self.openFile(args[0][1])
 
-        for key, value in self.ui.__dict__.items():
-            # connect all pvp_ fields with action_changed
-            if key.startswith("pvp_"):
-                el = getattr(self.ui, key)
-
-                if isinstance(el, QLineEdit):
-                    el.textChanged.connect(self.action_changed)
-                elif isinstance(el, QPlainTextEdit):
-                    el.textChanged.connect(self.action_changed)
-                elif isinstance(el, QComboBox):
-                    el.currentIndexChanged.connect(self.action_changed)
-                elif isinstance(el, QCheckBox):
-                    el.toggled.connect(self.action_changed)
-                else:
-                    raise Exception(str(type(el)) + " not implemented")
-
         self.unsavedChanges = False
         self.updateWindowTitle()
         self.updateTree()
-        GnuSolar.updateUi(self.ui, self.model, "pvp")
+        GnuSolar.updateUi(self.ui, model, "pvp")
         
         self.window.show()
 
@@ -289,114 +267,6 @@ class GnuSolar(QApplication):
         
         config.show()
 
-    def action_callMunicipalityMainContactPhone(self):
-        self.call(self.model.municipality.mainContact.phone)
-
-    def action_callMunicipalityBuildingContactPhone(self):
-        self.call(self.model.municipality.buildingContact.phone)
-
-    # Create M+PP
-    def action_createMundpp(self):
-        documentationPath = createFromTemplate("mundpp", self.path, self.model)
-        openFolderIfExists(documentationPath)
-
-    # Erzeuge Gebäudeversicherung Zürich Formular
-    def action_createGvzDocumentation(self):
-        global config
-
-        projectDir = os.path.dirname(self.path)
-        gvzDir =  projectDir + os.sep + "gov"
-        gvzPath = gvzDir + os.sep + "01_gvz_dokumentation.pdf"
-        if not os.path.isdir(gvzDir):
-            os.makedirs(gvzDir)
-
-        form_file = Config.getDataPath() + os.sep + "ch" + os.sep + "build" + os.sep + "gvz_documentation.pdf"
-        if not os.path.exists(form_file):
-            return "File not found: '" + form_file + "'"
-        
-        var_file = os.path.splitext(form_file)[0]+'.py'
-        if not os.path.exists(var_file):
-            return "File not found: '" + var_file + "'"
-
-        today = date.today()
-        self.todayIso = today.isoformat()
-        three_months = datetime.timedelta(3*365/12)
-        self.turnOnIso = (today + three_months).isoformat()
-
-        f = open(var_file)
-        s = f.read()
-        f.close()
-
-        exec(s)
-        
-        fillpdf.single_form_fill(form_file, self.fillpdf_data, gvzPath)
-
-        # remove temporary attributes, so they dont get serialized
-        del self.turnOnIso
-        del self.todayIso
-        del self.fillpdf_data
-
-        openFolderIfExists(gvzPath)
-
-    # Erzeuge Anschlussgesuch
-    def action_createTag(self):
-        global config
-        
-        # assemble the path
-        today = date.today()
-        tagName = "%04d-%02d-%02d_tag_fill.pdf" % (today.year, today.month, today.day)
-
-        projectDir = os.path.dirname(self.path)
-        tagDir =  projectDir + os.sep + "evu"
-        tagPath = tagDir + os.sep + tagName
-        if not os.path.isdir(tagDir):
-            os.makedirs(tagDir)
-        
-        ret = self.model.powerCompany.createTag(self.model, tagPath)
-        if isinstance(ret, str):
-            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
-            return
-            
-        openFolderIfExists(tagPath)
-        now = date.today()
-        self.model.progress.tagSent = now.isoformat()
-        GnuSolar.updateUi(self.ui, self.model, "pvp")
-
-    # Erzeuge Solarmeldung
-    def action_createBuildingForm(self):
-        ret = self.model.municipality.createBuildingForm(self.model)
-        if isinstance(ret, str):
-            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
-            return
-
-    # Sende Solarmeldung
-    def action_composeBuildingEmail(self):
-        global config
-        
-        to = self.model.municipality.buildingContact.email
-        b = self.model.building
-        subject = "Solarmeldung PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
-        body = "Guten Tag\n\nIm Anhang finden Sie die Solarmeldung für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
-        body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
-        att = [""]
-        composeEmail(config.installer_email, to, subject, body, att)
-
-    # Sende Tag
-    def action_composeTagEmail(self):
-        global config
-        
-        to = self.model.powerCompany.tagContact.email
-        b = self.model.building
-        subject = "TAG PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
-        body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
-        body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
-        att = [""]
-        composeEmail(config.installer_email, to, subject, body, att)
-
-    # Gemeinde Webseite öffnen
-    def action_openMunicipalityWebsite(self):
-        openFolder(self.model.municipality.website)
-
     # Update the attribute of the model
     def action_attributeChanged(self):
         el = self.sender()
@@ -420,60 +290,48 @@ class GnuSolar(QApplication):
         # signal something changed
         self.action_changed()
         
-
     def action_treeClicked(self, item):
         obj = item.pvpObj
         class_name = type(obj).__name__
         
-        if class_name == "Contact" or class_name == "PvProject" or class_name=="Building" or class_name=="Plant" or class_name=="Progress":
-            # load the ui into the detail window
-            widget = QWidget()
-            klass = globals()["Ui_" + class_name]
-            ui = klass()
-            ui.setupUi(widget)
-            self.currentObj = obj
-            self.ui.stackedWidget.addWidget(widget)
-            self.ui.stackedWidget.setCurrentWidget(widget)
+        # load the ui into the detail window
+        widget = QWidget()
+        klass = globals()["Ui_" + class_name]
+        ui = klass()
+        ui.setupUi(widget)
+        self.currentObj = obj
+        self.ui.stackedWidget.addWidget(widget)
+        self.ui.stackedWidget.setCurrentWidget(widget)
 
-            # Set the label
-            try:
-                label = obj.getTreeCaption()
-                ui.groupBox.setTitle(label)
-            except AttributeError:
-                pass
-           
-            # fill it with the attributes of the object
-            GnuSolar.updateUi(ui, obj, "obj")
-            
-            # hook for ui initializiation
-            obj.initUi(ui)
-            
-            # connect all obj_ fields with attributeChanged
-            # updates the model on the fly from the ui
-            for key, value in ui.__dict__.items():
-                if key.startswith("obj_"):
-                    el = getattr(ui, key)
-
-                    if isinstance(el, QLineEdit):
-                        el.textChanged.connect(self.action_attributeChanged)
-                    elif isinstance(el, QPlainTextEdit):
-                        el.textChanged.connect(self.action_attributeChanged)
-                    elif isinstance(el, QComboBox):
-                        el.currentIndexChanged.connect(self.action_attributeChanged)
-                    elif isinstance(el, QCheckBox):
-                        el.toggled.connect(self.action_attributeChanged)
-                    else:
-                        raise Exception(str(type(el)) + " not implemented")
+        # Set the label
+        try:
+            label = obj.getTreeCaption()
+            ui.groupBox.setTitle(label)
+        except AttributeError:
+            pass
+       
+        # fill it with the attributes of the object
+        GnuSolar.updateUi(ui, obj, "obj")
         
-            return
-
-        sw_name = "sw_" + class_name
-        if not hasattr(self.ui, sw_name):
-            sw_name = "sw_None"
+        # hook for ui initializiation
+        obj.initUi(ui)
         
-        # show the page
-        att = getattr(self.ui, sw_name)
-        self.ui.stackedWidget.setCurrentWidget(att)
+        # connect all obj_ fields with attributeChanged
+        # updates the model on the fly from the ui
+        for key, value in ui.__dict__.items():
+            if key.startswith("obj_"):
+                el = getattr(ui, key)
+
+                if isinstance(el, QLineEdit):
+                    el.textChanged.connect(self.action_attributeChanged)
+                elif isinstance(el, QPlainTextEdit):
+                    el.textChanged.connect(self.action_attributeChanged)
+                elif isinstance(el, QComboBox):
+                    el.currentIndexChanged.connect(self.action_attributeChanged)
+                elif isinstance(el, QCheckBox):
+                    el.toggled.connect(self.action_attributeChanged)
+                else:
+                    raise Exception(str(type(el)) + " not implemented")
 
     # display Context Menu of the Tree
     # gets them from the getTreeContextMenu
@@ -498,6 +356,7 @@ class GnuSolar(QApplication):
         
     # open a Project with a path
     def openFile(self, pvpPath):
+        global model
         if not pvpPath:
             return
             
@@ -508,13 +367,14 @@ class GnuSolar(QApplication):
         
         # valid pvp Project?
         self.path = pvpPath
-        self.model.open(pvpPath)
-        GnuSolar.updateUi(self.ui, self.model, "pvp")
+        model.open(pvpPath)
+        GnuSolar.updateUi(self.ui, model, "pvp")
         self.updateWindowTitle()
     
     def saveFile(self):
-        self.updateModel(self.ui, self.model, "pvp")
-        self.model.saveAs(self.path)
+        global model
+        self.updateModel(self.ui, model, "pvp")
+        model.saveAs(self.path)
         self.unsavedChanges = False
         self.updateWindowTitle()
 
@@ -533,12 +393,13 @@ class GnuSolar(QApplication):
 
     # Populates the UI Tree View from the data model
     def updateTree(self):
+        global model
         tree = self.ui.tree
         tree.setColumnCount(1)
         # Iterate trhough the model and populate the treeview
         top = QTreeWidgetItem(None, ["PV-Anlage"])
-        top.pvpObj = self.model
-        self.addTreeItems(self.model, top)
+        top.pvpObj = model
+        self.addTreeItems(model, top)
         items = [top]
         tree.addTopLevelItems(items)
         tree.expandAll()
@@ -586,7 +447,6 @@ class GnuSolar(QApplication):
                 else:
                     raise Exception(str(type(uiEl)) + " not implemented")
 
-
     # Updates the Data Model from the User Interface
     # Iterates through all widgets and searches for pvp_* named Widgets
     def updateModel(self, ui, obj, prefix):
@@ -633,21 +493,9 @@ def checkEnv():
                                'http://bugs.python.org/issue13643 '
                                'for mitigation steps.')
 
-# global Variables
-
-app = None
-
-def main(args):
-    global app
-    global config
-
-    checkEnv()
-
-    config.load()
-
-    app = GnuSolar(args)
-    app.exec_()
-
 if __name__ == "__main__":
-    main(sys.argv)
+    checkEnv()
+    config.load()
+    app = GnuSolar(sys.argv)
+    app.exec_()
     

@@ -9,3 +9,6 @@ pyuic5 Ui/PvProject.ui -o Ui/PvProject.py
 pyuic5 Ui/Building.ui -o Ui/Building.py
 pyuic5 Ui/Plant.ui -o Ui/Plant.py
 pyuic5 Ui/Progress.ui -o Ui/Progress.py
+pyuic5 Ui/PowerCompany.ui -o Ui/PowerCompany.py
+pyuic5 Ui/Municipality.ui -o Ui/Municipality.py
+pyuic5 Ui/Contacts.ui -o Ui/Contacts.py

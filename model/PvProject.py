@@ -289,3 +289,4 @@ class PvProject:
     def __setstate__(self, state):
         self.__dict__.update(state)
 
+model = PvProject()

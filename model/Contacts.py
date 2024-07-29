@@ -46,3 +46,6 @@ class Contacts:
     def treeAction(self, action):
         actionKey = action.actionKey
         print(actionKey)
+
+    def initUi(self, ui):
+        pass

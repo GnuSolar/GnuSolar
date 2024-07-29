@@ -13,7 +13,7 @@ from Config import Config
 class Progress:
     
     def __init__(self):
-        
+        self._ui = None
         self.inquiryReceived = None         # Anfrage erhalten
         self.roofMeasure = None
         self.roofMeasured = None

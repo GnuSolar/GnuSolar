@@ -4,12 +4,14 @@
 # Municipality, (politsche) Gemeinde
 
 import sqlite3
-
-from model.PowerCompany import *
-from model.Contact import *
 from selenium import webdriver
 
-from Config import Config
+from model.PvProject import *
+from model.PowerCompany import *
+from model.Contact import *
+
+from Config import *
+from GnuSolar import *
 
 class Municipality:
     
@@ -59,7 +61,9 @@ class Municipality:
         contact.fromMunicipalityType(self.id, "municipality_build")
         return contact
 
-    def createBuildingForm(self, model):
+    def createBuildingForm(self):
+        global model
+        
         # get the FormTag
         if not self.fkFormBuilding:
             return "No fkFormBuilding municipality.id=" + str(self.id)
@@ -125,3 +129,58 @@ class Municipality:
     def getTreeCaption(self):
         return "Gemeinde"
 
+    # Erzeuge Gebäudeversicherung Zürich Formular
+    def action_createGvzDocumentation(self):
+        global config
+
+        projectDir = os.path.dirname(config.savePath)
+        gvzDir =  projectDir + os.sep + "gov"
+        gvzPath = gvzDir + os.sep + "01_gvz_dokumentation.pdf"
+        if not os.path.isdir(gvzDir):
+            os.makedirs(gvzDir)
+
+        form_file = Config.getDataPath() + os.sep + "ch" + os.sep + "build" + os.sep + "gvz_documentation.pdf"
+        if not os.path.exists(form_file):
+            return "File not found: '" + form_file + "'"
+        
+        var_file = os.path.splitext(form_file)[0]+'.py'
+        if not os.path.exists(var_file):
+            return "File not found: '" + var_file + "'"
+
+        today = date.today()
+        self.todayIso = today.isoformat()
+        three_months = datetime.timedelta(3*365/12)
+        self.turnOnIso = (today + three_months).isoformat()
+
+        f = open(var_file)
+        s = f.read()
+        f.close()
+
+        exec(s)
+        
+        fillpdf.single_form_fill(form_file, self.fillpdf_data, gvzPath)
+
+        # remove temporary attributes, so they dont get serialized
+        del self.turnOnIso
+        del self.todayIso
+        del self.fillpdf_data
+
+        openFolderIfExists(gvzPath)
+
+    # Erzeuge Solarmeldung
+    def action_createBuildingForm(self):
+        ret = self.createBuildingForm()
+        if isinstance(ret, str):
+            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
+            return
+
+    # Gemeinde Webseite öffnen
+    def action_openMunicipalityWebsite(self):
+        if not self.website:
+            return
+        openFolder(self.website)
+
+    def initUi(self, ui):
+        ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
+        ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
+        ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)

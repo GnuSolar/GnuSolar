@@ -287,4 +287,5 @@ class Config():
         ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
         return ret
 
+# the global config instance
 config = Config()

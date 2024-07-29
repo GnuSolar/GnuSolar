@@ -12,6 +12,7 @@
 import json
 import requests
 
+from model.PvProject import *
 from model.Municipality import *
 from model.PowerCompany import *
 
@@ -172,9 +173,13 @@ class Building:
         ui.get3dModel.clicked.connect(self.action_get3dModel)
 
     def action_updateFromAddress(self):
+        global model
+        print(model)
         self.coordinatesFromAddress()
         self.queryPlotNumber()
         self.queryZoneing()
+
+        model.municipality.fromCode(self.municipalityCode)
 
         GnuSolar.updateUi(self._ui, self, "obj")
 
