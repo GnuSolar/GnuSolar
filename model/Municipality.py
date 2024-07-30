@@ -15,16 +15,17 @@ from GnuSolar import *
 
 class Municipality:
     
-    def __init__(self):
+    def __init__(self, top):
+        self._top = top
         self.id = None
         self.countryCode = None
         self.stateCode = None
         self.districtCode = None
         self.code = None
         self.name = None
-        self.mainContact = Contact()
+        self.mainContact = Contact(top)
         self.mainContact.role = "mun_main"
-        self.buildingContact = Contact()
+        self.buildingContact = Contact(top)
         self.buildingContact.role = "mun_building"
         self.fkPowerCompany = None
         self.fkFormBuilding = None
@@ -62,7 +63,7 @@ class Municipality:
         return contact
 
     def createBuildingForm(self):
-        global model
+        model = self._top
         
         # get the FormTag
         if not self.fkFormBuilding:
@@ -131,9 +132,9 @@ class Municipality:
 
     # Erzeuge Gebäudeversicherung Zürich Formular
     def action_createGvzDocumentation(self):
-        global config
-
-        projectDir = os.path.dirname(config.savePath)
+        model = self._top
+        
+        projectDir = os.path.dirname(config.pvpPath)
         gvzDir =  projectDir + os.sep + "gov"
         gvzPath = gvzDir + os.sep + "01_gvz_dokumentation.pdf"
         if not os.path.isdir(gvzDir):
@@ -184,3 +185,13 @@ class Municipality:
         ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
         ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
         ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)
+
+    # for jsonpickle to ignore
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_top']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+

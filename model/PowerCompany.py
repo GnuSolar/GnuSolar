@@ -18,7 +18,8 @@ from GnuSolar import *
 
 class PowerCompany:
     
-    def __init__(self):
+    def __init__(self, top):
+        self._top = top
         self.id = None
         self.vseId = None
         self.name = None
@@ -27,10 +28,10 @@ class PowerCompany:
         self.zipCode = None
         self.city = None
 
-        self.mainContact = Contact()        # Address of the Headquarters
+        self.mainContact = Contact(top)        # Address of the Headquarters
         self.mainContact.role = "pow_main"
 
-        self.tagContact = Contact()
+        self.tagContact = Contact(top)
         self.tagContact.role = "pow_tag"
 
         self.fkContactTag = None
@@ -72,6 +73,8 @@ class PowerCompany:
         return contact
 
     def createTag(self, model, tagPath):
+        global config
+        
         # get the FormTag
         if not self.fkFormTag:
             return "No fkFormTag powerCompany.id=" + str(self.id)
@@ -117,33 +120,34 @@ class PowerCompany:
     # Erzeuge Anschlussgesuch
     def action_createTag(self):
         global config
+
         
         # assemble the path
         today = date.today()
         tagName = "%04d-%02d-%02d_tag_fill.pdf" % (today.year, today.month, today.day)
 
-        projectDir = os.path.dirname(self.path)
+        projectDir = os.path.dirname(config.pvpPath)
         tagDir =  projectDir + os.sep + "evu"
         tagPath = tagDir + os.sep + tagName
         if not os.path.isdir(tagDir):
             os.makedirs(tagDir)
         
-        ret = self.model.powerCompany.createTag(self.model, tagPath)
+        ret = self.createTag(self._top, tagPath)
         if isinstance(ret, str):
             QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
             return
             
         openFolderIfExists(tagPath)
         now = date.today()
-        self.model.progress.tagSent = now.isoformat()
-        GnuSolar.updateUi(self.ui, self.model, "pvp")
+        self._top.progress.tagSent = now.isoformat()
 
     # Sende Tag
     def action_composeTagEmail(self):
         global config
+        model = self._top
         
-        to = self.model.powerCompany.tagContact.email
-        b = self.model.building
+        to = model.powerCompany.tagContact.email
+        b = model.building
         subject = "TAG PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
         body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
         body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
@@ -155,7 +159,9 @@ class PowerCompany:
 
     # Create M+PP
     def action_createMundpp(self):
-        documentationPath = createFromTemplate("mundpp", self.path, self.model)
+        model = self._top
+        path = config.pvpPath
+        documentationPath = createFromTemplate("mundpp", path, model)
         openFolderIfExists(documentationPath)
 
     def initUi(self, ui):
@@ -163,3 +169,11 @@ class PowerCompany:
         ui.createTag.clicked.connect(self.action_createTag)
         ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
 
+    # for jsonpickle to ignore
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_top']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)

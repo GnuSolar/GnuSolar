@@ -27,14 +27,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Ui.GnuSolar import *
 from Ui.Preferences import *
 
-from Ui.Contact import *
 from Ui.PvProject import *
+from Ui.Contacts import *
+from Ui.Contact import *
 from Ui.Building import *
 from Ui.Plant import *
 from Ui.Progress import *
 from Ui.PowerCompany import *
 from Ui.Municipality import *
-from Ui.Contacts import *
 
 from model.PvProject import *
 
@@ -365,6 +365,9 @@ class GnuSolar(QApplication):
             print("File not found: '" + pvpPath + "'")
             return
         
+        # expand the path
+        pvpPath = os.path.abspath(pvpPath)
+
         # valid pvp Project?
         self.path = pvpPath
         model.open(pvpPath)
@@ -406,7 +409,7 @@ class GnuSolar(QApplication):
     
     def addTreeItems(self, modelObj, parent):
         for key, value in modelObj.__dict__.items():
-            if key == "config":
+            if key == "config" or key=="_top":
                 continue
             if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
                 el = getattr(modelObj, key)

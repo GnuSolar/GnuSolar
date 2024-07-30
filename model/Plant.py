@@ -5,8 +5,9 @@
 
 class Plant:
 
-    def __init__(self):
+    def __init__(self, top):
         # class members
+        self._top = top
         self.constructionType = None        # "", "builton", "integrated", "facade"
 
         self.totalPowerDc = None
@@ -25,3 +26,11 @@ class Plant:
     def initUi(self, ui):
         pass
 
+    # for jsonpickle to ignore
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_top']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)

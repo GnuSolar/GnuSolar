@@ -11,8 +11,9 @@ from GnuSolar import *
 
 class Contact:
 
-    def __init__(self):
+    def __init__(self, top):
         # class members
+        self._top = top
         self.role = None
         self.company = None
         self.title = None
@@ -38,7 +39,7 @@ class Contact:
         self.accountBic = None      # Business Identifier Code (Swift)
 
     def fromId(self, contactId):
-        con = sqlite3.connect(config.getMasterDbPath())
+        con = sqlite3.connect(Config.getMasterDbPath())
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM contact WHERE id=?"
@@ -57,7 +58,7 @@ class Contact:
             self.city = db_row["city"]
 
     def fromMunicipalityType(self, munId, contactType):
-        con = sqlite3.connect(config.getMasterDbPath())
+        con = sqlite3.connect(Config.getMasterDbPath())
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         sql = "SELECT * FROM contact WHERE fk_municipality=? AND type=?"
@@ -77,13 +78,13 @@ class Contact:
         
     # get the first phone Number
     def getAnyPhone(self):
-        if len(self.phone) > 0:
+        if self.phone and len(self.phone) > 0:
             return self.phone
         
-        if len(self.phone2) > 0:
+        if self.phone2 and len(self.phone2) > 0:
             return self.phone2
         
-        if len(self.mobile) > 0:
+        if self.mobile and len(self.mobile) > 0:
             return self.mobile
 
         return "0800 800 800"       # default to swisscom main number :)
@@ -178,3 +179,12 @@ class Contact:
         ret = "Kontakt (" + self.getRoleName() + ")"
         return ret
         
+    # for jsonpickle to ignore
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_top']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+

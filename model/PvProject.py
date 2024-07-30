@@ -21,14 +21,15 @@ from Config import *
 class PvProject:
     
     def __init__(self, path=""):
+        self.config = config
         self._savePath = None
         self._ui = None
-        self.contacts = Contacts()
-        self.building = Building()
-        self.municipality = Municipality()
-        self.powerCompany = PowerCompany()
-        self.progress = Progress()
-        self.plant = Plant()
+        self.contacts = Contacts(self)
+        self.building = Building(self)
+        self.municipality = Municipality(self)
+        self.powerCompany = PowerCompany(self)
+        self.progress = Progress(self)
+        self.plant = Plant(self)
         self.comment = None
         
         # project state:
@@ -181,7 +182,7 @@ class PvProject:
                     'city': config.installer_city, 
                 },
                 debtor={
-                    'name': debtor.lastName + " " + debtor.firstName, 
+                    'name': str(debtor.lastName) + " " + str(debtor.firstName), 
                     'street': debtor.street,
                     'house_num': debtor.streetNumber,
                     'pcode': debtor.zip,
@@ -282,8 +283,12 @@ class PvProject:
     # for jsonpickle to ignore
     def __getstate__(self):
         state = self.__dict__.copy()
-        del state['_savePath']
-        del state['_ui']
+        try:
+            del state['_savePath']
+            del state['_ui']
+            del state['config']
+        except AttributeError:
+            pass
         return state
 
     def __setstate__(self, state):

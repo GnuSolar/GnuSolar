@@ -21,7 +21,8 @@ from GnuSolar import *
 
 class Building:
     
-    def __init__(self):
+    def __init__(self, top):
+        self._top = top
         self._ui = None
         self.buildingState = None       # "new" or "existing"
         self.buildingId = None          # swiss building id
@@ -173,13 +174,13 @@ class Building:
         ui.get3dModel.clicked.connect(self.action_get3dModel)
 
     def action_updateFromAddress(self):
-        global model
-        print(model)
         self.coordinatesFromAddress()
         self.queryPlotNumber()
         self.queryZoneing()
-
-        model.municipality.fromCode(self.municipalityCode)
+        
+        muni = self._top.municipality
+        muni.fromCode(self.municipalityCode)
+        self._top.powerCompany.fromId(muni.fkPowerCompany)
 
         GnuSolar.updateUi(self._ui, self, "obj")
 
@@ -215,6 +216,7 @@ class Building:
     def __getstate__(self):
         state = self.__dict__.copy()
         del state['_ui']
+        del state['_top']
         return state
 
     def __setstate__(self, state):

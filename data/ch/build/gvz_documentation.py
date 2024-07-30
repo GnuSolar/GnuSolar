@@ -1,4 +1,3 @@
-model = self.model
 owner = model.contacts.owner
 building = model.building
 
@@ -10,14 +9,14 @@ self.fillpdf_data = {
     '4' : model.plant.totalArea,
     
     # Kunde
-    'pa.gvz.5' : owner.lastName + " " + owner.firstName,
-    'pa.gvz.6' : owner.street + " " + owner.streetNumber,
-    'pa.gvz.7' : owner.zip + " " + owner.city,
-    'pa.gvz.8' : owner.phone,
+    'pa.gvz.5' : str(owner.lastName) + " " + str(owner.firstName),
+    'pa.gvz.6' : str(owner.street) + " " + str(owner.streetNumber),
+    'pa.gvz.7' : str(owner.zip) + " " + str(owner.city),
+    'pa.gvz.8' : str(owner.phone),
     
     # Aufstellort der PV-Anlage
-    'pa.gvz.9' : building.street + " " + building.streetNumber,
-    'pa.gvz.10' : building.zip + " " + building.city,
+    'pa.gvz.9' : str(building.street) + " " + str(building.streetNumber),
+    'pa.gvz.10' : str(building.zip) + " " + str(building.city),
     
     # Erstellt durch
     'pa.gvz.11' : config.installer_company,

@@ -12,7 +12,8 @@ from Config import Config
 
 class Progress:
     
-    def __init__(self):
+    def __init__(self, top):
+        self._top = top
         self._ui = None
         self.inquiryReceived = None         # Anfrage erhalten
         self.roofMeasure = None
@@ -180,6 +181,7 @@ class Progress:
     def __getstate__(self):
         state = self.__dict__.copy()
         del state['_ui']
+        del state['_top']
         return state
 
     def __setstate__(self, state):

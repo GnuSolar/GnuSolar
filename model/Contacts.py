@@ -3,15 +3,18 @@
 
 # A collection of Contacts with a role
 
+from model.PvProject import *
 from model.Contact import *
+from Config import *
 
 class Contacts:
 
-    def __init__(self):
+    def __init__(self, top):
         # role => contact dict
-        self._owner = Contact()             # owner of the photovoltaic system, is mandatory
+        self._top = top
+        self._owner = Contact(top)             # owner of the photovoltaic system, is mandatory
         self._owner.role = "owner"
-        self._installer_ac = Contact()      # mandatory
+        self._installer_ac = Contact(top)      # mandatory
         self._installer_ac.role = "installer_ac"
 
     # getter / setter for owner
@@ -49,3 +52,12 @@ class Contacts:
 
     def initUi(self, ui):
         pass
+
+    # for jsonpickle to ignore
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        del state['_top']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
