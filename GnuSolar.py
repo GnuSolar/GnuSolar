@@ -243,6 +243,9 @@ class GnuSolar(QApplication):
         self.openFile(fileName)
 
     def action_save(self):
+        if not self.path:
+            self.action_saveAs()
+            return
         self.saveFile()
 
     def action_saveAs(self):
