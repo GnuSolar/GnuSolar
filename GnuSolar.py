@@ -287,7 +287,7 @@ class GnuSolar(QApplication):
             raise Exception(str(type(el)) + " not implemented")
 
         att_name = el.objectName()
-        att_name = att_name.strip("obj_")
+        att_name = att_name[4:]         # remove obj_ from the start
         obj.__dict__[att_name] = val
         
         # signal something changed
