@@ -132,6 +132,9 @@ class Municipality:
 
     # Erzeuge Gebäudeversicherung Zürich Formular
     def action_createGvzDocumentation(self):
+        if not config.pvpPath:
+            return
+            
         model = self._top
         
         projectDir = os.path.dirname(config.pvpPath)

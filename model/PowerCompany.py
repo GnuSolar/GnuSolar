@@ -121,6 +121,8 @@ class PowerCompany:
     def action_createTag(self):
         global config
 
+        if not config.pvpPath:
+            return
         
         # assemble the path
         today = date.today()
@@ -148,9 +150,9 @@ class PowerCompany:
         
         to = model.powerCompany.tagContact.email
         b = model.building
-        subject = "TAG PV-Anlage " + b.street + " " + b.streetNumber + " in " + b.city
-        body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + b.city + " sowie die zusätzlich benötigten Unterlagen.\n"
-        body += "\nmit freundlichen Grüssen\n\n" + config.installer_firstName + " " + config.installer_lastName
+        subject = "TAG PV-Anlage " + str(b.street) + " " + str(b.streetNumber) + " in " + str(b.city)
+        body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + str(b.city) + " sowie die zusätzlich benötigten Unterlagen.\n"
+        body += "\nmit freundlichen Grüssen\n\n" + str(config.installer_firstName) + " " + str(config.installer_lastName)
         att = [""]
         composeEmail(config.installer_email, to, subject, body, att)
 
