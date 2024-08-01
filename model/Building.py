@@ -65,9 +65,12 @@ class Building:
                     "ch.swisstopo.amtliches-gebaeudeadressverzeichnis":"adr_number ilike '"+str(self.streetNumber)+"' and stn_label ilike '"+str(self.street)+"'"
                 })
         }
-        response = requests.get(url=url, params=params)
-
-        results = response.json()["results"]
+        try:
+            response = requests.get(url=url, params=params)
+            results = response.json()["results"]
+        except Exception:
+            return
+        
         if len(results) != 1:
             return
 
@@ -80,6 +83,8 @@ class Building:
         return
         
     def queryPlotNumber(self):
+        if not self.swissGridX or not self.swissGridY:
+            return
         x = float("2" + self.swissGridX)
         y = float("1" + self.swissGridY)
         url = r"https://api3.geo.admin.ch/rest/services/all/MapServer/identify"
@@ -104,6 +109,8 @@ class Building:
             self.plotNumber = results[0]["properties"]["number"]
 
     def queryZoneing(self):
+        if not self.swissGridX or not self.swissGridY:
+            return
         x = float("2" + self.swissGridX)
         y = float("1" + self.swissGridY)
         url = r"https://api3.geo.admin.ch/rest/services/all/MapServer/identify"
