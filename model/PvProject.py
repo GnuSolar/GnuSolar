@@ -236,7 +236,7 @@ class PvProject:
         # owner moved to contacts._owner
         if hasattr(ret, "owner"):
             if not hasattr(ret, "contacts"):
-                ret.contacts = Contacts()
+                ret.contacts = Contacts(self)
             ret.contacts._owner = ret.owner
 
         # loop over all attributes from self and copy them over from ret
@@ -247,7 +247,9 @@ class PvProject:
         
     def _copyOver(self, src, dest):
         for key, value in src.__dict__.items():
-
+            if key=="_top" and value==self:
+                setattr(src, key, self)
+                continue
             if not hasattr(dest, key):
                 continue
                 
