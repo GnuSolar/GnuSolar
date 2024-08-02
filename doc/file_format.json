@@ -1,0 +1,60 @@
+{
+    "fileFormat": "pvp_1",
+    "contacts": [
+        {
+            "id": "123",
+            "role": "owner",
+            "organization": "Amsler Solar GmbH",
+            "title": "Herr",
+            "firstName": "Markus",
+            "lastName": "Amsler",
+            "street": "",
+            "streetNumber": "",
+            "zip": "",
+            "city": "",
+            "country": "",
+            "email": "",
+            "email2": "",
+            "phone": "",
+            "phone2": "",
+            "mobile": "",
+            "bankAccounts": [
+                {
+                    "owner" : "",
+                    "iban" : "",
+                }
+            
+            ]
+        }
+    
+    ]
+    "buildings": [
+        {
+            "id": "543"
+            "roofs": [
+                {
+                    "id": "123",
+                    
+                }
+            
+            ]
+        
+        }
+    ],
+    "panelTypes": [
+        {
+            "id": "234",
+            "manufacturer": "JA Solar",
+            ...
+        }
+    
+    ],
+    "inverterTypes": [
+        {
+            "id": "4858"
+            "manufacturer": "Huawei",
+            ...
+        }
+    
+    ]
+}
