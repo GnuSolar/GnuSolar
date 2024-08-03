@@ -1,8 +1,25 @@
+# abstraction of a photovoltaic system
+# units: millimeter(mm), kilogram(kg), second(s), volt(V), ampere(A) 
+# coordinate system:
+#   the system is anchored to the planet
+#   each has its own coordinate system, achored to the system
+#   each roof hast its own coordinate system, anchored to the building
+#   
 {
     "fileFormat": "pvp_1",
+    
+    # base of the coordinate system, gps coordinates
+    # more or less location of the photovoltaic system
+    "latitude": 47.460815,      
+    "longitude": 7.997237,
+    "elevation": 435,           # in meters 
+    
+    # reference point of the coordinate system
     "contacts": [
-        {
-            "id": "123",
+        {   # one contact
+            "id": 123,
+            "from": 1722668058,
+            "to": 1722668058,
             "role": "owner",
             "organization": "Amsler Solar GmbH",
             "title": "Herr",
@@ -27,13 +44,23 @@
             ]
         }
     
-    ]
+    ],
+
     "buildings": [
-        {
-            "id": "543"
+        {   # one building
+            "id": 543
+            "from": 1722668058,
+            "to": 1722668058,
+            "x": 1234,      # placement of the building in mm
+            "y": 2215,
+            "z": 0,
             "roofs": [
-                {
-                    "id": "123",
+                {   # one roof, anything a panel can be mounted on.
+                    # can also be facade or erth plot
+                    "id": 123,
+                    "azimuth": 358,     # 0-359° from north
+                    "inclination": 33,
+                    
                     
                 }
             
@@ -41,20 +68,100 @@
         
         }
     ],
-    "panelTypes": [
-        {
-            "id": "234",
-            "manufacturer": "JA Solar",
-            ...
+    
+    "inverters": [
+        {   # one specific inverter, an instance
+            "id": 1243,
+            "typeId": 1722668058,
+            "from": 1722668058,
+            "to": 1722668058,
+            "label": "Inverter 1 North",
+            "serialNumber": "12345AZ678",
+            "inputs": [
+                {}
+            ]
         }
     
     ],
-    "inverterTypes": [
-        {
-            "id": "4858"
-            "manufacturer": "Huawei",
-            ...
+    
+    # everything that converts light into dc
+    "panelTypes": [
+        {   # one panel type
+            "id": 234,
+            "manufacturer": "JA Solar",
+            
+            # physical
+            "width": 1134,      # in mm 
+            "height": 1733,     # in mm
+            "depth": 30,        # in mm
+            "weight": 19.4,     # in kg
+            
+            # electrical
+            "stcPower": 435,
         }
     
+    ],
+    
+    # everything that converts dc into ac
+    "inverterTypes": [
+        {   # one inverter type
+            "id": 4858
+            "manufacturer": "Huawei",
+            # input
+            "trackers": [ 
+                {
+                    "id": 124,
+                    "inputs": [
+                        {
+                            "id": 235,      # unique for this inverter type
+                        }
+                    ]
+                }
+            ]
+
+            # output
+            "phaseCount": 3,        # number of phases (1,2,3)
+            "powerRated": 29.9      # normalized maximal power
+            
+            # general
+            "width": 750,           # in mm
+            "height": 800,
+            "depth": 234,
+            "weight": 23,           # in kg
+        }
+    
+    ],
+    
+    # Can be a DC-combiner box, dc switch, dc fuse
+    # ac switch, ac fuse, dc arc detection
+    # DC Y-combiner, DC inline fuse, ...
+    # Ethernet switch, smart meter
+    # basically stuff that does nothing to the frequency, voltage or amperage
+    # how to name it? electrical component
+    "electricalDeviceTypes": [
+        {   # one type
+            "id": 234,
+            "manufacturer": "Stäubli",
+            
+            "width": 654,       # in mm
+            "height": 198,
+            "depth": 552,
+            "weight": 0.1,      # in kg
+            "inputs": [
+            
+            ],
+            "outputs": [
+            
+            ]
+        }
+    ],
+    
+    # How to mount a panel to the roof
+    "substructureTypes":[
+        "id": 587,
+        "manufacturer": "Novotegra",
+    
     ]
+    
+    
 }
