@@ -6,10 +6,11 @@
 #   each roof hast its own coordinate system, anchored to the building
 #   
 {
-    "fileFormat": "pvp_1",
+    "fileFormat": "pvs",
+    "formatVersion": 1,
     
     # base of the coordinate system, gps coordinates
-    # more or less location of the photovoltaic system
+    # ocation of the photovoltaic system
     "latitude": 47.460815,      
     "longitude": 7.997237,
     "elevation": 435,           # in meters 
@@ -47,10 +48,9 @@
     ],
 
     "buildings": [
-        {   # one building
+        {   # one building, a physical structure to mount stuff to
             "id": 543
-            "from": 1722668058,
-            "to": 1722668058,
+            "label": "Barn",
             "x": 1234,      # placement of the building in mm
             "y": 2215,
             "z": 0,
@@ -72,7 +72,7 @@
     "inverters": [
         {   # one specific inverter, an instance
             "id": 1243,
-            "typeId": 1722668058,
+            "typeId": 123
             "from": 1722668058,
             "to": 1722668058,
             "label": "Inverter 1 North",
@@ -84,7 +84,7 @@
     
     ],
     
-    # everything that converts light into dc
+    # everything that converts light into current
     "panelTypes": [
         {   # one panel type
             "id": 234,
@@ -107,6 +107,9 @@
         {   # one inverter type
             "id": 4858
             "manufacturer": "Huawei",
+            "productName": "SUN2000-10KTL-M1",
+            "productNumber": "",
+
             # input
             "trackers": [ 
                 {
@@ -141,7 +144,10 @@
     "electricalDeviceTypes": [
         {   # one type
             "id": 234,
+            "category": "",                 # fuse, meter
             "manufacturer": "Stäubli",
+            "productName": "",
+            "productNumber": "",
             
             "width": 654,       # in mm
             "height": 198,
@@ -158,8 +164,11 @@
     
     # How to mount a panel to the roof
     "substructureTypes":[
-        "id": 587,
-        "manufacturer": "Novotegra",
+        {   # one substructure
+            "id": 587,
+            "manufacturer": "Novotegra",
+            "productName": "Tile roof | insertion system side-fix",
+        }
     
     ]
     
