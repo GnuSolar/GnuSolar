@@ -10,7 +10,7 @@
     "formatVersion": 1,
     
     # base of the coordinate system, gps coordinates
-    # ocation of the photovoltaic system
+    # location of the photovoltaic system
     "latitude": 47.460815,      
     "longitude": 7.997237,
     "elevation": 435,           # in meters 
@@ -51,6 +51,7 @@
         {   # one building, a physical structure to mount stuff to
             "id": 543
             "label": "Barn",
+            
             "x": 1234,      # placement of the building in mm
             "y": 2215,
             "z": 0,
