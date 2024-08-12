@@ -31,11 +31,13 @@
             "zip": "",
             "city": "",
             "country": "",
-            "email": "",
-            "email2": "",
-            "phone": "",
-            "phone2": "",
-            "mobile": "",
+            "contacts": [
+                {   # one contact phone, email, mobile, postal
+                    "id": 234,
+                    "type": "phone",
+                    "value": "0800 888 888",
+                }
+            ]
             "bankAccounts": [
                 {
                     "owner" : "",
@@ -55,13 +57,27 @@
             "x": 1234,      # placement of the building in mm
             "y": 2215,
             "z": 0,
+            "azimuth": 234, # rotation of the whole building, relative to the base system
+
             "roofs": [
                 {   # one roof, anything a panel can be mounted on.
                     # can also be facade or erth plot
                     "id": 123,
                     "azimuth": 358,     # 0-359° from north
-                    "inclination": 33,
-                    
+                    "inclination": 33,  # 0 = flat
+                    "panels": [
+                        {   # one specific panel
+                            "id": 234,
+                            "typeId": 2343,         # the panelTypeId
+                            "from": 023948,         # 0 = from the begining of time
+                            "to": 02394230,         # 0 = till the heat death
+                            "x": 23409,
+                            "y": 2342, 
+                            "z": 458,
+                            "label": "Module 2342",
+                            "serialNumber": "adfafl",
+                        }
+                    ]
                     
                 }
             
