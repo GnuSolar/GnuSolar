@@ -198,7 +198,7 @@ class Building:
             QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'no coordiantes')
             return
 
-        url = "http://amsler-solar.ch/swissbuildings3d-2-0/api.php?x=2" + str(x) + "&y=1" + str(y) + "&format=stl"
+        url = "http://amsler-solar.ch/swissbuildings3d-3-0/api.php?x=2" + str(x) + "&y=1" + str(y) + "&format=stl"
         response = requests.get(url=url)
         resp_txt = response.text
         if not resp_txt.startswith("solid"):
