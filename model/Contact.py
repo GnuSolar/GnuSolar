@@ -105,7 +105,25 @@ class Contact:
         ret = company + " " + lastName + " " + firstName + " " + city
         ret = ret.strip()
         return ret
-       
+    
+    def getNameAddress(self):
+        lastName = self.lastName
+        if not self.lastName:
+            lastName = ""
+        firstName = self.firstName
+        if not self.firstName:
+            firstName = ""
+        city = self.city
+        company = self.company
+        if not self.company:
+            company = ""
+        ret = company + " " + lastName + " " + firstName
+        ret = ret.strip()
+        if not ret:
+            ret = "No Name"
+        return ret
+        
+    
     def getPhoneClean(self):
         return self.cleanPhoneNumber(self.phone)     
 

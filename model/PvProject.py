@@ -182,7 +182,7 @@ class PvProject:
                     'city': config.installer_city, 
                 },
                 debtor={
-                    'name': str(debtor.lastName) + " " + str(debtor.firstName), 
+                    'name': debtor.getNameAddress(), 
                     'street': debtor.street,
                     'house_num': debtor.streetNumber,
                     'pcode': debtor.zip,
