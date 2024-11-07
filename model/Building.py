@@ -11,6 +11,7 @@
 
 import json
 import requests
+import urllib.request
 
 from model.PvProject import *
 from model.Municipality import *
@@ -161,6 +162,10 @@ class Building:
         
         return False
 
+    def getHumanAddress(self):
+        str = self.street + " " + self.streetNumber + ", " + self.zip + " " + self.city
+        return str
+
     # Check wheter the address of the Building ist the same as the given
     # Contact
     def identicalAddress(self, contact):
@@ -179,6 +184,8 @@ class Building:
         self._ui = ui
         ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
         ui.get3dModel.clicked.connect(self.action_get3dModel)
+        ui.getAgisOrtho.clicked.connect(self.action_getAgisOrtho)
+        ui.getAgisSurvey.clicked.connect(self.action_getAgisSurvey)
 
     def action_updateFromAddress(self):
         self.coordinatesFromAddress()
@@ -218,6 +225,171 @@ class Building:
             f.write(resp_txt)
 
         openFolderIfExists(stl_file)
+
+    def action_getAgisOrtho(self):
+        x = self.swissGridX
+        y = self.swissGridY
+        if not x or not y:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'no coordiantes')
+            return
+
+        x = int(float(x))
+        y = int(float(y))
+
+        url = "https://www.ag.ch/geoportal/api/v1/print/"
+        json = {
+          # 1:500 x width=113, y height=97
+          "MapExtent":{
+            "Xmax":int(x+2000000 + 56),
+            "Xmin":int(x+2000000 - 57),
+            "Ymax":int(y+1000000 + 48),
+            "Ymin":int(y+1000000 - 49)
+          },
+          "MapServices":[
+            {
+              "Url":"https://www.ag.ch/geoportal/rest/services/base_ortho2023/MapServer",
+              "Opacity":1,
+              "Id":"base_ortho2023",
+              "Name":"base_ortho2023",
+              "LayerType":1,
+              "LayersInLegend":[0],
+              "Visible":True,
+              "VisibleLayers":[],
+              "Version":""
+            },
+            {
+              "Url":"https://www.ag.ch/geoportal/rest/services/va_avdaten/MapServer",
+              "Opacity":1,
+              "Id":"Amtliche Vermessung",
+              "Name":"Amtliche Vermessung",
+              "LayerType":0,
+              "LayersInLegend":[],
+              "Visible":True,
+              "VisibleLayers":[0,1,6,7,9,10,11,13,14,15,16],
+              "Version":""
+            }
+          ],
+          "CopyrightText":"Die gedruckten Daten haben nur informativen Charakter. Es k\u00f6nnen keine rechtlichen Anspr\u00fcche irgendwelcher Art geltend gemacht werden.\nBitte beachten Sie auch die Ausf\u00fchrungen zum Kartendienst 'va_avdaten' unter https://www.ag.ch/geoportal/api/v1/mapservices/176/documentation.\nQuelle: Daten des Kantons Aargau, Bundesamt f\u00fcr Landestopografie",
+          "Width":224.6,
+          "Height":194.268,
+          "LayoutId":"AgisDefault",
+          "Layoutformat":"a4",
+          "Layoutsubtitle":self.getHumanAddress(),
+          "Layouttitle":"Luftbild",
+          "LegendVisible":True,
+          "LogoFileName":"logo.wmf",
+          "MapOnly":False,
+          "MapOnlyImageType":"png",
+          "OverviewVisible":False,
+          "Scale":500,
+          "ScalebarVisible":True,
+          "CustomLegendName":"",
+          "LayoutOrientation":"quer",
+          "Angle":0,
+          "Graphics":[]
+        }
+        response = requests.post(url, json=json)
+        if response.status_code != 200:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'wrong status_code=' . str(response.status_code))
+            return
+
+        pdf_url = response.text
+
+        # download the pdf
+        gis_folder = os.path.dirname(config.pvpPath) + os.sep + "gis"
+        if not os.path.isdir(gis_folder):
+            os.mkdir(gis_folder)
+        today = date.today()
+        filename = today.isoformat() +"_Luftbild_500.pdf"
+        path = gis_folder + os.sep + filename
+        urllib.request.urlretrieve(pdf_url, path)
+
+        openFolder(path)
+
+        return
+
+    def action_getAgisSurvey(self):
+        x = self.swissGridX
+        y = self.swissGridY
+        if not x or not y:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'no coordiantes')
+            return
+
+        x = int(float(x))
+        y = int(float(y))
+
+        url = "https://www.ag.ch/geoportal/api/v1/print/"
+
+        json = {
+          # 1:500 x width=113, y height=97
+          "MapExtent":{
+            "Xmax":int(x+2000000 + 56),
+            "Xmin":int(x+2000000 - 57),
+            "Ymax":int(y+1000000 + 48),
+            "Ymin":int(y+1000000 - 49)
+          },
+          "MapServices":[
+            {
+              "Url":"https://www.ag.ch/geoportal/rest/services/base_landeskarten_sw/MapServer",
+              "Opacity":1,
+              "Id":"base_landeskarten_sw",
+              "Name":"base_landeskarten_sw",
+              "LayerType":1,
+              "LayersInLegend":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49],
+              "Visible":True,
+              "VisibleLayers":[],
+              "Version":""
+            },
+            {
+              "Url":"https://www.ag.ch/geoportal/rest/services/va_avdaten/MapServer",
+              "Opacity":1,
+              "Id":"Amtliche Vermessung",
+              "Name":"Amtliche Vermessung",
+              "LayerType":0,
+              "LayersInLegend":[],
+              "Visible":True,
+              "VisibleLayers":[0,1,6,7,9,10,11,13,14,15,16],
+              "Version":""
+            }
+          ],
+          "CopyrightText":"Die gedruckten Daten haben nur informativen Charakter. Es k\u00f6nnen keine rechtlichen Anspr\u00fcche irgendwelcher Art geltend gemacht werden.\nBitte beachten Sie auch die Ausf\u00fchrungen zum Kartendienst 'va_avdaten' unter https://www.ag.ch/geoportal/api/v1/mapservices/176/documentation.\nQuelle: Daten des Kantons Aargau, Bundesamt f\u00fcr Landestopografie",
+          "Width":224.6,
+          "Height":194.268,
+          "LayoutId":"AgisDefault",
+          "Layoutformat":"a4",
+          "Layoutsubtitle":self.getHumanAddress(),
+          "Layouttitle":"Luftbild",
+          "LegendVisible":True,
+          "LogoFileName":"logo.wmf",
+          "MapOnly":False,
+          "MapOnlyImageType":"png",
+          "OverviewVisible":False,
+          "Scale":500,
+          "ScalebarVisible":True,
+          "CustomLegendName":"",
+          "LayoutOrientation":"quer",
+          "Angle":0,
+          "Graphics":[]
+        }
+        response = requests.post(url, json=json)
+        if response.status_code != 200:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'wrong status_code=' . str(response.status_code))
+            return
+
+        pdf_url = response.text
+
+        # download the pdf
+        gis_folder = os.path.dirname(config.pvpPath) + os.sep + "gis"
+        if not os.path.isdir(gis_folder):
+            os.mkdir(gis_folder)
+        today = date.today()
+        filename = today.isoformat() +"_Vermessung_500.pdf"
+        path = gis_folder + os.sep + filename
+        urllib.request.urlretrieve(pdf_url, path)
+
+        openFolder(path)
+
+        return
 
     # for jsonpickle to ignore
     def __getstate__(self):

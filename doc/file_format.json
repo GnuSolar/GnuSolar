@@ -1,8 +1,8 @@
 # abstraction of a photovoltaic system
 # units: millimeter(mm), kilogram(kg), second(s), volt(V), ampere(A) 
-# coordinate system:
+# coordinate systems:
 #   the system is anchored to the planet
-#   each has its own coordinate system, achored to the system
+#   each has its own coordinate system, anchored to the system
 #   each roof hast its own coordinate system, anchored to the building
 #   
 {
@@ -15,7 +15,6 @@
     "longitude": 7.997237,
     "elevation": 435,           # in meters 
     
-    # reference point of the coordinate system
     "contacts": [
         {   # one contact
             "id": 123,
