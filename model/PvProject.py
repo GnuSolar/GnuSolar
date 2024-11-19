@@ -289,7 +289,7 @@ class PvProject:
             del state['_savePath']
             del state['_ui']
             del state['config']
-        except AttributeError:
+        except (AttributeError, KeyError) as e:
             pass
         return state
 
