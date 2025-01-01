@@ -6,6 +6,7 @@
 from model.PvProject import *
 from model.Contact import *
 from Config import *
+from GnuSolar import *
 
 class Contacts:
 
@@ -16,6 +17,10 @@ class Contacts:
         self._owner.role = "owner"
         self._installer_ac = Contact(top)      # mandatory
         self._installer_ac.role = "installer_ac"
+        self.contacts = {
+            "owner" : self._owner,
+            "installer_ac" : self._installer_ac,
+        }
 
     # getter / setter for owner
     # owner is always set
@@ -42,13 +47,23 @@ class Contacts:
 
     def getTreeContextMenu(self):
         ret = {
-            "add": "Kontakt hinzufügen",
+            "contact_add": "Kontakt hinzufügen",
         }
         return ret
     
-    def treeAction(self, action):
+    def treeAction(self, action, ui_parent):
         actionKey = action.actionKey
-        print(actionKey)
+        if actionKey == "contact_add":
+            role = "test"
+            c = Contact(self._top)
+            c.role = role
+            self.contacts[role] = c
+            # update the ui
+            caption = c.getTreeCaption()
+            item = QTreeWidgetItem(None, [caption])
+            item.pvpObj = c
+            ui_parent.addChild(item)
+        
 
     def initUi(self, ui):
         pass

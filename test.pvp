@@ -1,0 +1,287 @@
+{
+    "py/object": "model.PvProject.PvProject",
+    "py/state": {
+        "building": {
+            "py/object": "model.Building.Building",
+            "py/state": {
+                "areZoneCode": null,
+                "areZoneName": null,
+                "buildingId": null,
+                "buildingState": null,
+                "city": null,
+                "country": null,
+                "mainFuseSize": null,
+                "meterNumberNew": null,
+                "meterNumberOld": null,
+                "municipalityCode": null,
+                "municipalityName": null,
+                "plotNumber": null,
+                "region": null,
+                "street": null,
+                "streetNumber": null,
+                "swissGridX": null,
+                "swissGridY": null,
+                "zip": null
+            }
+        },
+        "comment": null,
+        "contacts": {
+            "py/object": "model.Contacts.Contacts",
+            "py/state": {
+                "_installer_ac": {
+                    "py/object": "model.Contact.Contact",
+                    "py/state": {
+                        "accountBank": null,
+                        "accountBic": null,
+                        "accountIban": null,
+                        "accountIid": null,
+                        "accountOwner": null,
+                        "city": null,
+                        "company": "Elektriker AC",
+                        "email": null,
+                        "email2": null,
+                        "firstName": null,
+                        "lastName": null,
+                        "mobile": null,
+                        "phone": null,
+                        "phone2": null,
+                        "role": "installer_ac",
+                        "street": null,
+                        "streetNumber": null,
+                        "title": null,
+                        "zip": null
+                    }
+                },
+                "_installer_dc": {
+                    "py/object": "model.Contact.Contact",
+                    "py/state": {
+                        "accountBank": null,
+                        "accountBic": null,
+                        "accountIban": null,
+                        "accountIid": null,
+                        "accountOwner": null,
+                        "city": null,
+                        "company": "Elektriker DC",
+                        "email": null,
+                        "email2": null,
+                        "firstName": null,
+                        "lastName": null,
+                        "mobile": null,
+                        "phone": null,
+                        "phone2": null,
+                        "role": "installer_dc",
+                        "street": null,
+                        "streetNumber": null,
+                        "title": null,
+                        "zip": null
+                    }
+                },
+                "_owner": {
+                    "py/object": "model.Contact.Contact",
+                    "py/state": {
+                        "accountBank": null,
+                        "accountBic": null,
+                        "accountIban": null,
+                        "accountIid": null,
+                        "accountOwner": null,
+                        "city": null,
+                        "company": "Bauherr",
+                        "email": null,
+                        "email2": null,
+                        "firstName": null,
+                        "lastName": null,
+                        "mobile": null,
+                        "phone": null,
+                        "phone2": null,
+                        "role": "owner",
+                        "street": null,
+                        "streetNumber": null,
+                        "title": null,
+                        "zip": null
+                    }
+                }
+            }
+        },
+        "municipality": {
+            "py/object": "model.Municipality.Municipality",
+            "py/state": {
+                "buildingContact": {
+                    "py/object": "model.Contact.Contact",
+                    "py/state": {
+                        "accountBank": null,
+                        "accountBic": null,
+                        "accountIban": null,
+                        "accountIid": null,
+                        "accountOwner": null,
+                        "city": null,
+                        "company": null,
+                        "email": null,
+                        "email2": null,
+                        "firstName": null,
+                        "lastName": null,
+                        "mobile": null,
+                        "phone": null,
+                        "phone2": null,
+                        "role": "mun_building",
+                        "street": null,
+                        "streetNumber": null,
+                        "title": null,
+                        "zip": null
+                    }
+                },
+                "code": null,
+                "countryCode": null,
+                "districtCode": null,
+                "fkFormBuilding": null,
+                "fkPowerCompany": null,
+                "id": null,
+                "mainContact": {
+                    "py/object": "model.Contact.Contact",
+                    "py/state": {
+                        "accountBank": null,
+                        "accountBic": null,
+                        "accountIban": null,
+                        "accountIid": null,
+                        "accountOwner": null,
+                        "city": null,
+                        "company": null,
+                        "email": null,
+                        "email2": null,
+                        "firstName": null,
+                        "lastName": null,
+                        "mobile": null,
+                        "phone": null,
+                        "phone2": null,
+                        "role": "mun_main",
+                        "street": null,
+                        "streetNumber": null,
+                        "title": null,
+                        "zip": null
+                    }
+                },
+                "name": null,
+                "stateCode": null,
+                "website": null
+            }
+        },
+        "plant": {
+            "py/object": "model.Plant.Plant",
+            "py/state": {
+                "constructionType": null,
+                "inverterDesc": null,
+                "panelDesc": null,
+                "totalArea": null,
+                "totalCost": null,
+                "totalPanelCount": null,
+                "totalPowerAc": null,
+                "totalPowerDc": null
+            }
+        },
+        "powerCompany": {
+            "py/object": "model.PowerCompany.PowerCompany",
+            "py/state": {
+                "address1": null,
+                "address2": null,
+                "city": null,
+                "fkContactTag": null,
+                "fkFormIa": null,
+                "fkFormTag": null,
+                "id": null,
+                "mainContact": {
+                    "py/object": "model.Contact.Contact",
+                    "py/state": {
+                        "accountBank": null,
+                        "accountBic": null,
+                        "accountIban": null,
+                        "accountIid": null,
+                        "accountOwner": null,
+                        "city": null,
+                        "company": null,
+                        "email": null,
+                        "email2": null,
+                        "firstName": null,
+                        "lastName": null,
+                        "mobile": null,
+                        "phone": null,
+                        "phone2": null,
+                        "role": "pow_main",
+                        "street": null,
+                        "streetNumber": null,
+                        "title": null,
+                        "zip": null
+                    }
+                },
+                "name": null,
+                "tagContact": {
+                    "py/object": "model.Contact.Contact",
+                    "py/state": {
+                        "accountBank": null,
+                        "accountBic": null,
+                        "accountIban": null,
+                        "accountIid": null,
+                        "accountOwner": null,
+                        "city": null,
+                        "company": null,
+                        "email": null,
+                        "email2": null,
+                        "firstName": null,
+                        "lastName": null,
+                        "mobile": null,
+                        "phone": null,
+                        "phone2": null,
+                        "role": "pow_tag",
+                        "street": null,
+                        "streetNumber": null,
+                        "title": null,
+                        "zip": null
+                    }
+                },
+                "vseId": null,
+                "zipCode": null
+            }
+        },
+        "progress": {
+            "py/object": "model.Progress.Progress",
+            "py/state": {
+                "archived": null,
+                "bauReceived": null,
+                "bauSent": null,
+                "constructionFixed": false,
+                "constructionSort": null,
+                "constructionStart": null,
+                "documentationCreated": null,
+                "documentationPlaced": null,
+                "eivComplete": null,
+                "eivPayed": null,
+                "finalInvoiceReceived": null,
+                "finalInvoiceSent": null,
+                "iaReceived": null,
+                "iaSent": null,
+                "inactiv": null,
+                "inquiryReceived": null,
+                "launch": null,
+                "materialOrdered": null,
+                "materialReceived": null,
+                "orderReceived": null,
+                "orderRejected": null,
+                "partialInvoice2Received": null,
+                "partialInvoice2Sent": null,
+                "partialInvoiceReceived": null,
+                "partialInvoiceSent": null,
+                "quote1Sent": null,
+                "quote2Sent": null,
+                "quote3Sent": null,
+                "quote4Sent": null,
+                "roofMeasure": null,
+                "roofMeasured": null,
+                "siNaAcOrdered": null,
+                "siNaAcReceived": null,
+                "siNaDcOrdered": null,
+                "siNaDcReceived": null,
+                "tagReceived": null,
+                "tagSent": null
+            }
+        },
+        "state": null
+    }
+}

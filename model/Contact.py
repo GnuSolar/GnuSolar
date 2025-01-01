@@ -190,6 +190,7 @@ class Contact:
             "mun_main": "Haupt",
             "pow_main": "Haupt",
             "pow_tag": "TAG's",
+            "test": "Test",
         }
         return roles[self.role]
 

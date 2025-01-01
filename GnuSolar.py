@@ -214,6 +214,7 @@ class GnuSolar(QApplication):
         self.ui.action_Preferences.triggered.connect(self.action_preferences)
 
         self.ui.tree.currentItemChanged.connect(self.action_treeClicked)
+
         # Right click on tree
         self.ui.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.ui.tree.customContextMenuRequested.connect(self.action_treeContext)
@@ -230,7 +231,7 @@ class GnuSolar(QApplication):
 
         self.unsavedChanges = False
         self.updateWindowTitle()
-        self.updateTree()
+        GnuSolar.updateTree(self.ui, model)
         GnuSolar.updateUi(self.ui, model, "pvp")
         
         self.window.show()
@@ -298,6 +299,7 @@ class GnuSolar(QApplication):
         
     def action_treeClicked(self, item):
         obj = item.pvpObj
+        print(obj)
         class_name = type(obj).__name__
         
         # load the ui into the detail window
@@ -358,7 +360,7 @@ class GnuSolar(QApplication):
         
         action = menu.exec_(self.ui.tree.mapToGlobal(event))
         if action is not None:
-            obj.treeAction(action)
+            obj.treeAction(action, item)
         
     # open a Project with a path
     def openFile(self, pvpPath):
@@ -401,22 +403,41 @@ class GnuSolar(QApplication):
         self.window.setWindowTitle(title)
 
     # Populates the UI Tree View from the data model
-    def updateTree(self):
-        global model
-        tree = self.ui.tree
+    @staticmethod
+    def updateTree(ui, model):
+        tree = ui.tree
         tree.setColumnCount(1)
+        
         # Iterate trhough the model and populate the treeview
         top = QTreeWidgetItem(None, ["PV-Anlage"])
         top.pvpObj = model
-        self.addTreeItems(model, top)
+        GnuSolar.addTreeItems(model, top)
         items = [top]
         tree.addTopLevelItems(items)
         tree.expandAll()
     
-    def addTreeItems(self, modelObj, parent):
+    @staticmethod
+    def addTreeItems(modelObj, parent):
         for key, value in modelObj.__dict__.items():
-            if key == "config" or key=="_top":
+            if key == "config" or key[0]=="_":
                 continue
+            
+            # Loop over all dictionary element
+            if isinstance(value, dict):
+                for k,v in value.items():
+                    if hasattr(v, "__dict__") and isinstance(v.__dict__, dict):
+                        el = value[k]
+                        caption = str(k)
+                        try:
+                            caption = el.getTreeCaption()
+                        except AttributeError:
+                            pass
+                        item = QTreeWidgetItem(None, [caption])
+                        item.pvpObj = el
+                        parent.addChild(item)
+                        GnuSolar.addTreeItems(el, item)
+            
+            # recurse into child objects
             if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
                 el = getattr(modelObj, key)
                 caption = str(key)
@@ -427,8 +448,7 @@ class GnuSolar(QApplication):
                 item = QTreeWidgetItem(None, [caption])
                 item.pvpObj = el
                 parent.addChild(item)
-                self.addTreeItems(el, item)
-
+                GnuSolar.addTreeItems(el, item)
 
     # Updates the User Interface from the Model
     # Iterates through all widgets and searches for pvp_* named Widgets
