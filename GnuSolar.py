@@ -299,7 +299,6 @@ class GnuSolar(QApplication):
         
     def action_treeClicked(self, item):
         obj = item.pvpObj
-        print(obj)
         class_name = type(obj).__name__
         
         # load the ui into the detail window
