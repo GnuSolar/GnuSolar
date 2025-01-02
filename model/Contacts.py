@@ -54,6 +54,9 @@ class Contacts:
     def treeAction(self, action, ui_parent):
         actionKey = action.actionKey
         if actionKey == "contact_add":
+            # key already exists
+            if "test" in self.contacts:
+                return
             role = "test"
             c = Contact(self._top)
             c.role = role
