@@ -197,11 +197,32 @@ class Contact:
     def getTreeCaption(self):
         ret = "Kontakt (" + self.getRoleName() + ")"
         return ret
-        
+
+    def getTreeContextMenu(self):
+        ret = {
+            "contact_delete": "Kontakt löschen",
+        }
+        return ret
+
+    def treeAction(self, action, ui_parent):
+        actionKey = action.actionKey
+        if actionKey == "contact_delete":
+            # remove from ui
+            contacts = ui_parent.parent().pvpObj
+            ui_parent.parent().removeChild(ui_parent)
+
+            # remove from model
+            for k, c in contacts.contacts.items():
+                if c == self:
+                    del contacts.contacts[k]
+                    return
+            raise Exception("key not found: " + str(k))
+         
     # for jsonpickle to ignore
     def __getstate__(self):
         state = self.__dict__.copy()
-        del state['_top']
+        if "_top" in state:         # it should always exists? Whatever
+            del state['_top']
         return state
 
     def __setstate__(self, state):
