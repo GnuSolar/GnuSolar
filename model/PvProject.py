@@ -239,6 +239,13 @@ class PvProject:
                 ret.contacts = Contacts(self)
             ret.contacts._owner = ret.owner
 
+        # contacts moved to contacts dict
+        if hasattr(ret.contacts, "_owner"):
+            ret.contacts.contacts["owner"] = ret.contacts._owner
+
+        if hasattr(ret.contacts, "_installer_ac"):
+            ret.contacts.contacts["installer_ac"] = ret.contacts._installer_ac
+
         # loop over all attributes from self and copy them over from ret
         # makes sure if you open a file with an older model, the attributes 
         # default to default :)
@@ -252,6 +259,15 @@ class PvProject:
                 continue
             if not hasattr(dest, key):
                 continue
+
+            # Loop over all dictionary element
+            if isinstance(value, dict):
+                d  = getattr(dest, key)
+                for k,v in d.items():
+                    if hasattr(v, "__dict__") and isinstance(v.__dict__, dict):
+                        self._copyOver(value[k], d[k])
+                    else:
+                        value[k] = d[k]
                 
             if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
                 self._copyOver(getattr(src, key), getattr(dest, key))

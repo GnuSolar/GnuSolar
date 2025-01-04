@@ -13,33 +13,33 @@ class Contacts:
     def __init__(self, top):
         # role => contact dict
         self._top = top
-        self._owner = Contact(top)             # owner of the photovoltaic system, is mandatory
-        self._owner.role = "owner"
-        self._installer_ac = Contact(top)      # mandatory
-        self._installer_ac.role = "installer_ac"
+        owner = Contact(top)             # owner of the photovoltaic system, is mandatory
+        owner.role = "owner"
+        installer_ac = Contact(top)      # mandatory
+        installer_ac.role = "installer_ac"
         self.contacts = {
-            "owner" : self._owner,
-            "installer_ac" : self._installer_ac,
+            "owner" : owner,
+            "installer_ac" : installer_ac,
         }
 
     # getter / setter for owner
     # owner is always set
     @property
     def owner(self):
-        return self._owner
+        return self.contacts["owner"]
         
     @owner.setter
     def owner(self, value):
-        self._owner = value
+        self.contacts["owner"] = value
 
     # getter / setter for installer_ac
     @property
     def installer_ac(self):
-        return self._installer_ac
+        return self.contacts["installer_ac"]
         
     @installer_ac.setter
     def installer_ac(self, value):
-        self._installer_ac = value
+        self.contacts["installer_ac"] = value
 
     # tree hooks
     def getTreeCaption(self):

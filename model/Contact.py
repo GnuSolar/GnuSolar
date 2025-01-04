@@ -99,9 +99,9 @@ class Contact:
         city = self.city
         if not self.city:
             city = ""
-        company = self.company
-        if not self.company:
-            company = ""
+        company = ""
+        if hasattr(self, "company") and self.company:
+            company = self.company
         ret = company + " " + lastName + " " + firstName + " " + city
         ret = ret.strip()
         return ret
@@ -114,9 +114,9 @@ class Contact:
         if not self.firstName:
             firstName = ""
         city = self.city
-        company = self.company
-        if not self.company:
-            company = ""
+        company = ""
+        if hasattr(self, "company") and self.company:
+            company = self.company
         ret = company + " " + lastName + " " + firstName
         ret = ret.strip()
         if not ret:
