@@ -265,6 +265,11 @@ class PvProject:
                 d  = getattr(dest, key)
                 for k,v in d.items():
                     if hasattr(v, "__dict__") and isinstance(v.__dict__, dict):
+                        if not k in value:
+                            class_name = d[k].__class__.__name__
+                            class_object = globals()[class_name]
+                            value[k] = class_object(self)
+                            
                         self._copyOver(value[k], d[k])
                     else:
                         value[k] = d[k]
