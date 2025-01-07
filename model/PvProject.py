@@ -239,6 +239,10 @@ class PvProject:
                 ret.contacts = Contacts(self)
             ret.contacts._owner = ret.owner
 
+        # check if contacts array exists
+        if not hasattr(ret.contacts, "contacts"):
+            ret.contacts.contacts = {}
+
         # contacts moved to contacts dict
         if hasattr(ret.contacts, "_owner"):
             ret.contacts.contacts["owner"] = ret.contacts._owner
