@@ -217,10 +217,11 @@ class PvProject:
         ret = jsonpickle.decode(json_str)
 
         # Migrate data from older models.
-
+        
         # plantLocation was renamed to building
         try:
             ret.building = ret.plantLocation
+            delattr(ret, "plantLocation") 
         except Exception:
             pass
         
@@ -230,14 +231,17 @@ class PvProject:
             ret.owner.streetNumber = ret.owner.address.streetNumber
             ret.owner.zip = ret.owner.address.zip
             ret.owner.city = ret.owner.address.city
+            delattr(ret.owner, "address")
         except Exception:
             pass
 
+        if not hasattr(ret, "contacts"):
+            ret.contacts = Contacts(self)
+
         # owner moved to contacts._owner
         if hasattr(ret, "owner"):
-            if not hasattr(ret, "contacts"):
-                ret.contacts = Contacts(self)
             ret.contacts._owner = ret.owner
+            delattr(ret, "owner")
 
         # check if contacts array exists
         if not hasattr(ret.contacts, "contacts"):
@@ -246,9 +250,17 @@ class PvProject:
         # contacts moved to contacts dict
         if hasattr(ret.contacts, "_owner"):
             ret.contacts.contacts["owner"] = ret.contacts._owner
+            delattr(ret.contacts, "_owner")
+            # TODO: should happen in _copyOver, but im too lazy right now
+            ret.contacts.contacts["owner"].role = "owner"
+            ret.contacts.contacts["owner"].company = ""
+            ret.contacts.contacts["owner"].accountOwner = ""
+            ret.contacts.contacts["owner"].accountBank = ""
+            ret.contacts.contacts["owner"].accountIban = ""
 
         if hasattr(ret.contacts, "_installer_ac"):
             ret.contacts.contacts["installer_ac"] = ret.contacts._installer_ac
+            delattr(ret.contacts, "_installer_ac")
 
         # loop over all attributes from self and copy them over from ret
         # makes sure if you open a file with an older model, the attributes 
