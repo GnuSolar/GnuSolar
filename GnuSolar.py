@@ -227,7 +227,12 @@ class GnuSolar(QApplication):
         self.unsavedChanges = False
 
         if len(args[0]) >= 2:
-            self.openFile(args[0][1])
+            path = args[0][1]
+            ret = self.openFile(path)
+            if not ret:
+                QtWidgets.QMessageBox.warning(None, 'Datei nicht gefunden', "Datei '" + path + "' nicht gefunden.")
+                exit()
+
 
         self.unsavedChanges = False
         self.updateWindowTitle()
@@ -385,12 +390,11 @@ class GnuSolar(QApplication):
     def openFile(self, pvpPath):
         global model
         if not pvpPath:
-            return
+            return False
             
         # check if path exists
-        if not os.path.exists(pvpPath):
-            print("File not found: '" + pvpPath + "'")
-            return
+        if not os.path.isfile(pvpPath):
+            return False
         
         # expand the path
         pvpPath = os.path.abspath(pvpPath)
@@ -400,6 +404,7 @@ class GnuSolar(QApplication):
         model.open(pvpPath)
         GnuSolar.updateUi(self.ui, model, "pvp")
         self.updateWindowTitle()
+        return True
     
     def saveFile(self):
         global model
