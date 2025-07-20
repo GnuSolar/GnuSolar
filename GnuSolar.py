@@ -248,17 +248,18 @@ class GnuSolar(QApplication):
 
     def action_save(self):
         if not self.path:
-            self.action_saveAs()
-            return
-        self.saveFile()
+            return self.action_saveAs()
+        return self.saveFile()
 
     def action_saveAs(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getSaveFileName(self.window, "QFileDialog.getSaveFileName()", "", "Photovoltaic Project (*.pvp)", options=options)
-
+        if fileName == "":
+            return False
+        
         self.path = fileName
-        self.saveFile()
+        return self.saveFile()
 
     def action_quit(self):
         if self.unsavedChanges:
@@ -270,7 +271,10 @@ class GnuSolar(QApplication):
 
             # Check which button was clicked
             if ret == QMessageBox.Save:
-                self.action_save()
+                ret2 = self.action_save()
+                if not ret2:
+                    # if file was not saved dont quit
+                    return
                 exit()
             elif ret == QMessageBox.Discard:
                 exit()
@@ -400,9 +404,13 @@ class GnuSolar(QApplication):
     def saveFile(self):
         global model
         self.updateModel(self.ui, model, "pvp")
-        model.saveAs(self.path)
+        ret = model.saveAs(self.path)
+        if not ret:
+            # saving failed
+            return False
         self.unsavedChanges = False
         self.updateWindowTitle()
+        return True
 
     def updateWindowTitle(self):
         title = "Photovoltaic Project - " + Config.getAppVersion()

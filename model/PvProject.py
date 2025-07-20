@@ -318,6 +318,7 @@ class PvProject:
         f = open(self._savePath, 'w')
         f.write(json)
         f.close()
+        return True
 
     # for jsonpickle to ignore
     def __getstate__(self):
