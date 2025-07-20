@@ -178,7 +178,6 @@ class Config():
             "Dez" : "12"
         }
         date_in = date_in.strip()
-        #print(date_in)
 
         # check already iso
         pat = re.compile('\d\d\d\d-\d\d-\d\d', re.DOTALL)
@@ -191,7 +190,6 @@ class Config():
         m = pat.match(date_in)
         if m:
             date_out = m.group(3) + "-" + m.group(2) + "-" + m.group(1)
-            #print(date_out)
             return date_out
 
 
@@ -200,7 +198,6 @@ class Config():
         m = pat.match(date_in)
         if m:
             date_out = "20" + m.group(3) + "-" + m.group(2) + "-" + m.group(1)
-            #print(date_out)
             return date_out
 
         pat = re.compile('(\d{1,2})\.?\W?(\w*)\.?\W?(\d\d\d\d)', re.DOTALL)
@@ -213,7 +210,6 @@ class Config():
                 day = "0" + day
             date_out = m.group(3) + "-" + month + "-" + day
             
-            #print(date_out)
             return date_out
 
         pat = re.compile('\W?(\w*)\.?\W?(\d\d\d\d)', re.DOTALL)

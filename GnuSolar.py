@@ -261,6 +261,22 @@ class GnuSolar(QApplication):
         self.saveFile()
 
     def action_quit(self):
+        if self.unsavedChanges:
+            msgBox = QMessageBox()
+            msgBox.setText("Änderungen vor dem Beenden speichern?")
+            msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+            msgBox.setDefaultButton(QMessageBox.Save)
+            ret = msgBox.exec_()
+
+            # Check which button was clicked
+            if ret == QMessageBox.Save:
+                self.action_save()
+                exit()
+            elif ret == QMessageBox.Discard:
+                exit()
+            elif ret == QMessageBox.Cancel:
+                return
+
         exit()
 
     def action_changed(self):

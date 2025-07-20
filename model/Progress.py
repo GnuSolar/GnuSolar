@@ -6,7 +6,6 @@
 import os
 
 from model.PvProject import *
-from model.Positions import *
 
 from Config import Config
 
