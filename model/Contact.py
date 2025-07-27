@@ -64,38 +64,40 @@ class Contact:
         con = sqlite3.connect(Config.getMasterDbPath())
         con.row_factory = sqlite3.Row
         cur = con.cursor()
-        sql = "SELECT * FROM contact WHERE id=?"
+        sql = "SELECT * FROM address WHERE id=?"
         res = cur.execute(sql, [contactId])
         db_row = res.fetchone()
 
         if db_row:
-            self.company = db_row["function"]
-            self.firstName = db_row["name"]
+            self.company = db_row["company"]
+            self.firstName = db_row["firstName"]
             self.email = db_row["email"]
             self.email2 = db_row["email2"]
             self.phone = db_row["phone"]
             self.phone2 = db_row["phone2"]
-            self.street = db_row["address1"]
-            self.zip = db_row["zip_code"]
+            self.street = db_row["street"]
+            self.streetNumber = db_row["streetNumber"]
+            self.zip = db_row["zip"]
             self.city = db_row["city"]
 
     def fromMunicipalityType(self, munId, contactType):
         con = sqlite3.connect(Config.getMasterDbPath())
         con.row_factory = sqlite3.Row
         cur = con.cursor()
-        sql = "SELECT * FROM contact WHERE fk_municipality=? AND type=?"
+        sql = "SELECT * FROM address WHERE fk_municipality=? AND role=?"
         res = cur.execute(sql, [munId, contactType])
         db_row = res.fetchone()
 
         if db_row:
-            self.company = db_row["function"]
-            self.firstName = db_row["name"]
+            self.company = db_row["company"]
+            self.firstName = db_row["firstName"]
             self.email = db_row["email"]
             self.email2 = db_row["email2"]
             self.phone = db_row["phone"]
             self.phone2 = db_row["phone2"]
-            self.street = db_row["address1"]
-            self.zip = db_row["zip_code"]
+            self.street = db_row["street"]
+            self.streetNumber = db_row["streetNumber"]
+            self.zip = db_row["zip"]
             self.city = db_row["city"]
         
     # get the first phone Number

@@ -54,12 +54,12 @@ class Municipality:
             self.fkPowerCompany = db_row["fk_power_company"]
             self.fkFormBuilding = db_row["fk_form_building"]
             self.website = db_row["website"]
-            self.buildingContact.fromMunicipalityType(self.id, "municipality_build")
-            self.mainContact.fromMunicipalityType(self.id, "municipality_main")
+            self.buildingContact.fromMunicipalityType(self.id, "mun_build")
+            self.mainContact.fromMunicipalityType(self.id, "mun_main")
 
     def getBuildingContact(self):
         contact = Contact()
-        contact.fromMunicipalityType(self.id, "municipality_build")
+        contact.fromMunicipalityType(self.id, "mun_build")
         return contact
 
     def createBuildingForm(self):

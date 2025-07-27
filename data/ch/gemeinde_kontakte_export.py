@@ -10,7 +10,7 @@ con = sqlite3.connect("../master.db")
 con.row_factory = sqlite3.Row
 cur = con.cursor()
 
-sql = "SELECT municipality.code, municipality.name as mun_name, contact.* FROM contact INNER JOIN municipality ON contact.fk_municipality=municipality.id WHERE municipality.country_code=? ORDER BY code+0"     # Order numerically
+sql = "SELECT municipality.code, municipality.name as mun_name, address.* FROM address INNER JOIN municipality ON address.fk_municipality=municipality.id WHERE municipality.country_code=? ORDER BY code+0"     # Order numerically
 res = cur.execute(sql, ["CH"])
 
 count = 0
@@ -22,7 +22,7 @@ with open('gemeinde_kontakte.csv', 'w', newline='') as csvfile:
 
 
     for row in cur:
-        writer.writerow([row["code"], row["mun_name"], row["type"], row["function"], row["email"], row["phone"], row["address1"], row["zip_code"], row["city"]])
+        writer.writerow([row["code"], row["mun_name"], row["role"], row["company"], row["email"], row["phone"], row["street"] + " " + row["streetNumber"], row["zip_code"], row["city"]])
         count += 1
         
 print (str(count) + " Gemeinde Kontakte exportiert")
