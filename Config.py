@@ -266,7 +266,7 @@ class Config():
         return path
 
     def getMasterDbPath():
-        path = Config.getDataPath() + os.sep + "masterdata.db"
+        path = Config.getDataPath() + os.sep + "master.db"
         return path
 
     def getUserDbPath():

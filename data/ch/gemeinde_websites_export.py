@@ -6,7 +6,7 @@
 import sqlite3
 import csv
 
-con = sqlite3.connect("../masterdata.db")
+con = sqlite3.connect("../master.db")
 con.row_factory = sqlite3.Row
 cur = con.cursor()
 
