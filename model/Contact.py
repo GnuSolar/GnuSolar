@@ -21,7 +21,7 @@ class Contact:
         # Role is a string with the following format:
         # aaa_whatever
         # aaa = addon code
-        # builtin roles: bin_owner, bin_invoice
+
         self.role = None
         
         # Organizational
@@ -69,16 +69,7 @@ class Contact:
         db_row = res.fetchone()
 
         if db_row:
-            self.company = db_row["company"]
-            self.firstName = db_row["firstName"]
-            self.email = db_row["email"]
-            self.email2 = db_row["email2"]
-            self.phone = db_row["phone"]
-            self.phone2 = db_row["phone2"]
-            self.street = db_row["street"]
-            self.streetNumber = db_row["streetNumber"]
-            self.zip = db_row["zip"]
-            self.city = db_row["city"]
+            self.fromDbRow(db_row)
 
     def fromMunicipalityType(self, munId, contactType):
         con = sqlite3.connect(Config.getMasterDbPath())
@@ -89,16 +80,19 @@ class Contact:
         db_row = res.fetchone()
 
         if db_row:
-            self.company = db_row["company"]
-            self.firstName = db_row["firstName"]
-            self.email = db_row["email"]
-            self.email2 = db_row["email2"]
-            self.phone = db_row["phone"]
-            self.phone2 = db_row["phone2"]
-            self.street = db_row["street"]
-            self.streetNumber = db_row["streetNumber"]
-            self.zip = db_row["zip"]
-            self.city = db_row["city"]
+            self.fromDbRow(db_row)
+        
+    def fromDbRow(self, db_row):
+        self.company = db_row["company"]
+        self.firstName = db_row["firstName"]
+        self.email = db_row["email"]
+        self.email2 = db_row["email2"]
+        self.phone = db_row["phone"]
+        self.phone2 = db_row["phone2"]
+        self.street = db_row["street"]
+        self.streetNumber = db_row["streetNumber"]
+        self.zip = db_row["zip"]
+        self.city = db_row["city"]
         
     # get the first phone Number
     def getAnyPhone(self):
