@@ -658,7 +658,6 @@ def main(args):
 
     checkEnv()
         
-    config = Config()
     config.load()
 
     projects = Projects(args)
