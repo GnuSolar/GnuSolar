@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from Ui.MainWindow import *
+from Ui.Projects import *
 
 from model.PvProject import *
 
@@ -51,7 +51,7 @@ class Projects(QApplication):
         QApplication.__init__(self, *args)
         self.window = QMainWindow()
 
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_Projects()
         self.ui.setupUi(self.window)
         
         self.fillTableProjects()
