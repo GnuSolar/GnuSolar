@@ -2,6 +2,7 @@
 
 pyuic5 Ui/MainWindow.ui -o Ui/MainWindow.py
 pyuic5 Ui/Preferences.ui -o Ui/Preferences.py
+pyuic5 Ui/AddressBook.ui -o Ui/AddressBook.py
 pyuic5 Ui/GnuSolar.ui -o Ui/GnuSolar.py
 
 pyuic5 Ui/Contact.ui -o Ui/Contact.py

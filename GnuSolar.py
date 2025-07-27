@@ -212,6 +212,7 @@ class GnuSolar(QApplication):
         self.ui.action_Save_As.triggered.connect(self.action_saveAs)
         self.ui.action_Quit.triggered.connect(self.action_quit)
         self.ui.action_Preferences.triggered.connect(self.action_preferences)
+        self.ui.action_Address_Book.triggered.connect(self.action_addressBook)
 
         self.ui.tree.currentItemChanged.connect(self.action_treeClicked)
 
@@ -298,6 +299,11 @@ class GnuSolar(QApplication):
         global config
         
         config.show()
+
+    def action_addressBook(self):
+        cmd = "python3 AddressBook.py &"
+        print (cmd)
+        os.system(cmd)
 
     # Update the attribute of the model
     def action_attributeChanged(self):
@@ -536,10 +542,12 @@ def checkEnv():
     # If we are on python 3 we will verify that the environment is
     # sane at this point of reject further execution to avoid a
     # broken script.
+    print(PY2)
     if not PY2:
         try:
             import locale
             fs_enc = codecs.lookup(locale.getpreferredencoding()).name
+            print(fs_enc)
         except Exception:
            fs_enc = 'ascii'
         if fs_enc == 'ascii':
