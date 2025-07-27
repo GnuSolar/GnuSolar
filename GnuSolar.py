@@ -543,12 +543,10 @@ def checkEnv():
     # If we are on python 3 we will verify that the environment is
     # sane at this point of reject further execution to avoid a
     # broken script.
-    print(PY2)
     if not PY2:
         try:
             import locale
             fs_enc = codecs.lookup(locale.getpreferredencoding()).name
-            print(fs_enc)
         except Exception:
            fs_enc = 'ascii'
         if fs_enc == 'ascii':

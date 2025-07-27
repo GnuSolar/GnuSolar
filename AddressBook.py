@@ -21,6 +21,9 @@ class AddressBook(QApplication):
         self.ui.action_Quit.triggered.connect(self.action_quit)
 
         self.window.show()
+        
+        self.userDbPath = Config.getUserDbPath()
+        print(self.userDbPath)
 
     def action_quit(self):
         exit()

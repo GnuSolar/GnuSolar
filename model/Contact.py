@@ -9,29 +9,51 @@ import sqlite3
 from Config import *
 from GnuSolar import *
 
+# An address / contact all in one
+# can be renamed after serializing is independet of the object sttructure
+
 class Contact:
 
     def __init__(self, top):
         # class members
         self._top = top
+        
+        # Role is a string with the following format:
+        # aaa_whatever
+        # aaa = addon code
+        # builtin roles: bin_owner, bin_invoice
         self.role = None
-        self.company = None
+        
+        # Organizational
+        self.company = None         # any Organization
+        self.department = None
+        
+        # Personal
         self.title = None
         self.firstName = None
+        self.middleName = None
         self.lastName = None
+        self.nickName = None
 
+        # Locational
+        self.floor = None
+        self.room = None
         self.street = None
         self.streetNumber = None
+        self.address1 = None
+        self.address2 = None
         self.zip = None
         self.city = None
+        self.country = None
 
+        # Communicational
         self.email = None
         self.email2 = None
         self.phone = None
         self.phone2 = None
         self.mobile = None
         
-        # Bank account information
+        # Financial
         self.accountOwner = None
         self.accountBank = None
         self.accountIban = None

@@ -50,9 +50,7 @@ class Config():
         f.close()
 
     def load(self):
-        from os.path import expanduser
-        home = expanduser("~")
-        configDir = home + os.sep + ".gnusolar"
+        configDir = Config.getConfigDir()
         self.configPath = configDir + os.sep + "config.json"
         print("Config File: " + self.configPath)
 
@@ -257,12 +255,22 @@ class Config():
         cmd = "\"" + pdftotext + "\" \"" + file_name + "\" - -layout -nopgbrk"
         return subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT).decode(charset)
 
+    def getConfigDir():
+        from os.path import expanduser
+        home = expanduser("~")
+        configDir = home + os.sep + ".gnusolar"
+        return configDir
+
     def getDataPath():
         path = str(pathlib.Path(__file__).parent.absolute()) + os.sep + "data"
         return path
 
     def getMasterDbPath():
         path = Config.getDataPath() + os.sep + "masterdata.db"
+        return path
+
+    def getUserDbPath():
+        path = Config.getConfigDir() + os.sep + "user.db"
         return path
 
     def getAppVersion():
