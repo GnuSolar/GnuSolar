@@ -8,6 +8,7 @@ import codecs
 from Ui.AddressBook import *
 
 from Config import *
+from ErrorHandler import *
 
 class AddressBook(QApplication):
     def __init__(self, *args):
