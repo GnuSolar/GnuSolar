@@ -188,13 +188,16 @@ class Contact:
         ui.callMobile.clicked.connect(self.action_callMobile)
 
     def action_callPhone(self):
-        callSip(self.phone)
+        global config
+        callSip(self.phone, config.sipServer)
 
     def action_callPhone2(self):
-        callSip(self.phone2)
+        global config
+        callSip(self.phone2, config.sipServer)
 
     def action_callMobile(self):
-        callSip(self.mobile)
+        global config
+        callSip(self.mobile, config.sipServer)
 
     def action_composeEmail(self):
         composeEmail(config.installer_email, self.email , "", "")

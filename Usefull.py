@@ -43,7 +43,7 @@ def composeEmail(from_adr, to, subject, body, attachments=[]):
     os.system(cmd)
 
 # Place a phone call over SIP
-def callSip(number):
+def callSip(number, sipServer):
     global config
     if not number:
         print("empty number")
@@ -51,7 +51,7 @@ def callSip(number):
     # fixup number
     number = number.replace(' ','')
     # build SIP URL
-    sip = "sip:" + number + "@" + config.sipServer
+    sip = "sip:" + number + "@" + sipServer
     print("call: " + sip)
     openFolder(sip)
 
