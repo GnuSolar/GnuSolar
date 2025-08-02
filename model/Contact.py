@@ -7,14 +7,14 @@
 import sqlite3
 
 from Config import *
-from GnuSolar import *
+from Usefull import *
 
 # An address / contact all in one
 # can be renamed after serializing is independet of the object sttructure
 
 class Contact:
 
-    def __init__(self, top):
+    def __init__(self, top=None):
         # class members
         self._top = top
         
@@ -85,6 +85,7 @@ class Contact:
     def fromDbRow(self, db_row):
         self.company = db_row["company"]
         self.firstName = db_row["firstName"]
+        self.lastName = db_row["lastName"]
         self.email = db_row["email"]
         self.email2 = db_row["email2"]
         self.phone = db_row["phone"]
@@ -140,8 +141,7 @@ class Contact:
         if not ret:
             ret = "No Name"
         return ret
-        
-    
+
     def getPhoneClean(self):
         return self.cleanPhoneNumber(self.phone)     
 
