@@ -1,6 +1,7 @@
 #!/bin/bash
 
 apt-get install python3
+apt-get install pyqt5-dev-tools
 pip3 install PyQt5
 pip3 install jsonpickle
 pip3 install requests
@@ -14,3 +15,4 @@ pip3 install genshi
 
 # debian bookworm
 # apt install python3-pyqt5 python3-jsonpickle python3-requests python3-selenium python3-qrcode python3-svgwrite python3-iso3166 python3-stdnum python3-svglib python3-genshi
+# apt install pyqt5-dev-tools
