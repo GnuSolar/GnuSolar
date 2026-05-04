@@ -14,6 +14,7 @@ import traceback
 import datetime
 import time
 import io
+import signal
 
 from datetime import date
 
@@ -27,6 +28,9 @@ from model.PvProject import *
 
 from Config import Config
 from ErrorHandler import *
+
+# exit application when CTRL-C pressed in command line
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if sys.platform == 'darwin':
     def openFolder(path):

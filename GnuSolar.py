@@ -13,6 +13,7 @@ import shutil
 import traceback
 import time
 import io
+import signal
 
 from relatorio.templates.opendocument import Template
 
@@ -43,6 +44,9 @@ from model.PvProject import *
 
 from Config import *
 from ErrorHandler import *
+
+# exit application when CTRL-C pressed in command line
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 # TODO: Where to put generally usefull functions?
 
