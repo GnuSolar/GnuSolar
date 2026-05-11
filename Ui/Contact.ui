@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>641</width>
-    <height>515</height>
+    <width>618</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
      <property name="title">
       <string>Bauherr</string>
      </property>
-     <layout class="QFormLayout" name="formLayout_2">
+     <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="label_58">
         <property name="text">
@@ -127,7 +127,7 @@
         <item>
          <widget class="QPushButton" name="composeEmail">
           <property name="text">
-           <string>E-Mail an Bauherr</string>
+           <string>E-Mail</string>
           </property>
          </widget>
         </item>
@@ -141,7 +141,18 @@
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QLineEdit" name="obj_email2"/>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="obj_email2"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="composeEmail2">
+          <property name="text">
+           <string>E-Mail</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item row="7" column="0">
        <widget class="QLabel" name="label_54">

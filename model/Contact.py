@@ -183,6 +183,7 @@ class Contact:
 
     def initUi(self, ui):
         ui.composeEmail.clicked.connect(self.action_composeEmail)
+        ui.composeEmail2.clicked.connect(self.action_composeEmail2)
         ui.callPhone.clicked.connect(self.action_callPhone)
         ui.callPhone2.clicked.connect(self.action_callPhone2)
         ui.callMobile.clicked.connect(self.action_callMobile)
@@ -201,6 +202,9 @@ class Contact:
 
     def action_composeEmail(self):
         composeEmail(config.installer_email, self.email , "", "")
+
+    def action_composeEmail2(self):
+        composeEmail(config.installer_email, self.email2 , "", "")
 
     def getRoleName(self):
         roles = {
