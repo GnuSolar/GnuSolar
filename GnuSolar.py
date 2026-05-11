@@ -148,6 +148,11 @@ def createFromTemplate(templateType, savePath, model):
     
     return outPath
 
+# override QMainWindow, to catch unsaved changes
+class MyMainWindow(QMainWindow):
+	def closeEvent(self, event):
+		app.action_quit()
+		event.ignore()
     
 class GnuSolar(QApplication):
     def __init__(self, *args):
@@ -155,7 +160,7 @@ class GnuSolar(QApplication):
         global model
         
         QApplication.__init__(self, *args)
-        self.window = QMainWindow()
+        self.window = MyMainWindow()
 
         self.ui = Ui_GnuSolar()
         self.ui.setupUi(self.window)
