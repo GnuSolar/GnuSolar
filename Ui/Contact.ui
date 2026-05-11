@@ -129,6 +129,12 @@
           <property name="text">
            <string>E-Mail</string>
           </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -149,6 +155,9 @@
          <widget class="QPushButton" name="composeEmail2">
           <property name="text">
            <string>E-Mail</string>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -171,6 +180,9 @@
           <property name="text">
            <string>Anruf</string>
           </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -192,6 +204,9 @@
           <property name="text">
            <string>Anruf</string>
           </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -212,6 +227,9 @@
          <widget class="QPushButton" name="callMobile">
           <property name="text">
            <string>Anruf</string>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
