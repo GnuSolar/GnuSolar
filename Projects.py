@@ -80,6 +80,18 @@ class Projects(QApplication):
         title = "Pv Projects - " + Config.getAppVersion()
         self.window.setWindowTitle(title)
         
+        # resize window if its too large
+        screen = QDesktopWidget().availableGeometry(self.window)
+        screen_width = screen.width()
+        screen_height = screen.height()
+        window_width = self.window.width()
+        window_height = self.window.height()
+        if(window_width > screen_width):
+            window_width = screen_width
+        if(window_height > screen_height):
+            window_height = screen_height
+        self.window.resize(window_width, window_height)
+
         self.window.show()
 
     def rightMenu(self, pos):
