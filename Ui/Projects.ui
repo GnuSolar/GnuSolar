@@ -330,11 +330,6 @@
               </item>
               <item>
                <property name="text">
-                <string>1 - nothing</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
                 <string>3 - lead</string>
                </property>
               </item>
