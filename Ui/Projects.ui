@@ -488,7 +488,6 @@
    </widget>
    <addaction name="menu_File"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Preferences">
    <property name="text">
     <string>&amp;Preferences</string>
