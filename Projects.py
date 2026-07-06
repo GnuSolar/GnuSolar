@@ -88,8 +88,8 @@ class Projects(QApplication):
         window_height = self.window.height()
         if(window_width > screen_width):
             window_width = screen_width
-        if(window_height > screen_height):
-            window_height = screen_height
+        if(window_height > screen_height - 25):
+            window_height = screen_height - 25
         self.window.resize(window_width, window_height)
 
         self.window.show()
