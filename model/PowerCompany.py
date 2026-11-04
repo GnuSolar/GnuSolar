@@ -8,6 +8,7 @@ import sqlite3
 import os
 
 import fillpdf
+import fillxlsx
 import datetime
 
 from datetime import date
@@ -72,6 +73,17 @@ class PowerCompany:
         contact.fromId(self.fkContactTag)
         return contact
 
+    def getTagForm(self):
+        if not self.fkFormTag:
+            return None
+
+        con = sqlite3.connect(Config.getMasterDbPath())
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        sql = "SELECT * FROM form WHERE id=?"
+        res = cur.execute(sql, [self.fkFormTag])
+        return res.fetchone()
+
     def createTag(self, model, tagPath):
         global config
         
@@ -79,13 +91,7 @@ class PowerCompany:
         if not self.fkFormTag:
             return "No fkFormTag powerCompany.id=" + str(self.id)
             
-        con = sqlite3.connect(Config.getMasterDbPath())
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        sql = "SELECT * FROM form WHERE id=?"
-        res = cur.execute(sql, [self.fkFormTag])
-        db_row = res.fetchone()
-
+        db_row = self.getTagForm()
         if not db_row:
             return "Form not found id=" + str(self.fkFormTag)
         
@@ -108,14 +114,32 @@ class PowerCompany:
         s = f.read()
         f.close()
 
-        exec(s)
-        
-        fillpdf.single_form_fill(form_file, self.fillpdf_data, tagPath)
+        if form_handler == "xlsx_replace":
+            self.fillxlsx_sheet = None
+            self.fillxlsx_signature = {}
+            exec(s)
+
+            # sign the form with the image of the signature
+            images = {}
+            signature = config.installer_signature
+            if signature:
+                if not os.path.exists(signature):
+                    return "Signature not found: '" + signature + "'"
+                for cells, scale in self.fillxlsx_signature.items():
+                    images[cells] = (signature, scale)
+
+            fillxlsx.single_form_fill(form_file, self.fillxlsx_data, tagPath, self.fillxlsx_sheet, images)
+            del self.fillxlsx_sheet
+            del self.fillxlsx_data
+            del self.fillxlsx_signature
+        else:
+            exec(s)
+            fillpdf.single_form_fill(form_file, self.fillpdf_data, tagPath)
+            del self.fillpdf_data
 
         # remove temporary attributes, so they dont get serialized
         del self.turnOnIso
         del self.todayIso
-        del self.fillpdf_data
 
     # Erzeuge Anschlussgesuch
     def action_createTag(self):
@@ -126,7 +150,9 @@ class PowerCompany:
         
         # assemble the path
         today = date.today()
-        tagName = "%04d-%02d-%02d_tag_fill.pdf" % (today.year, today.month, today.day)
+        form = self.getTagForm()
+        ext = os.path.splitext(form["file"])[1] if form else ".pdf"
+        tagName = "%04d-%02d-%02d_tag_fill%s" % (today.year, today.month, today.day, ext)
 
         projectDir = os.path.dirname(config.pvpPath)
         tagDir =  projectDir + os.sep + "evu"

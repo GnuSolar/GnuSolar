@@ -42,6 +42,7 @@ class Config():
         self.installer_bankIban = ""
         self.installer_bankIid = ""
         self.installer_bankBic = ""
+        self.installer_signature = ""   # image of the signature, for forms
 
     def write(self):
         f = open(self.configPath, "w")
@@ -94,9 +95,18 @@ class Config():
         self.ui.installer_bankIban.setText(self.installer_bankIban)
         self.ui.installer_bankIid.setText(self.installer_bankIid)
         self.ui.installer_bankBic.setText(self.installer_bankBic)
+        self.ui.installer_signature.setText(self.installer_signature)
+        self.ui.installer_signatureBrowse.clicked.connect(self.browseSignature)
 
         self.window.show()
         
+    def browseSignature(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self.window, "Unterschrift", self.ui.installer_signature.text(), "Bild (*.png *.jpg *.jpeg)", options=options)
+        if fileName:
+            self.ui.installer_signature.setText(fileName)
+
     def configAccepted(self):
         self.projectRoot = self.ui.projectRoot.text()
         self.templatePath = self.ui.templatePath.text()
@@ -119,6 +129,7 @@ class Config():
         self.installer_bankIban = self.ui.installer_bankIban.text()
         self.installer_bankIid = self.ui.installer_bankIid.text()
         self.installer_bankBic = self.ui.installer_bankBic.text()
+        self.installer_signature = self.ui.installer_signature.text()
         
         del self.ui
         del self.window
