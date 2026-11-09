@@ -8,16 +8,22 @@ import formats.pvp
 import subprocess
 import os
 import datetime
+import tempfile
+from datetime import date
 
-from model.Contact import *
-from model.Contacts import *
-from model.Building import *
-from model.Progress import *
-from model.PowerCompany import *
-from model.Plant import *
+from PyQt5 import QtWidgets
 
-from GnuSolar import *
+from model.Contacts import Contacts
+from model.Building import Building
+from model.Municipality import Municipality
+from model.PowerCompany import PowerCompany
+from model.Progress import Progress
+from model.Plant import Plant
+
+import documents.templates
+from documents import DocumentError
 from Config import *
+from Usefull import openFolderIfExists
 
 class PvProject(ModelNode):
 
@@ -104,44 +110,42 @@ class PvProject(ModelNode):
         folder = os.path.dirname(self._savePath)
         openFolderIfExists(folder)
 
+    # Create a document from a template, show problems, open the new file
+    def createDocument(self, templateType):
+        try:
+            path = documents.templates.createFromTemplate(templateType, self._savePath, self, config)
+        except DocumentError as e:
+            QtWidgets.QMessageBox.warning(None, e.title, str(e))
+            return None
+        openFolderIfExists(path)
+        return path
+
     def action_createQuote(self):
-        global config
-
-        quotePath = createFromTemplate("quote", self._savePath, self)
-
-        openFolderIfExists(quotePath)
+        self.createDocument("quote")
 
     # Create Partial Invoice
     def action_createPartialInvoice(self):
-        global config
-
-        invoicePath = createFromTemplate("partial_invoice", self._savePath, self)
-
-        openFolderIfExists(invoicePath)
+        self.createDocument("partial_invoice")
 
     # Create Final Invoice
     def action_createFinalInvoice(self):
-        global config
-
-        invoicePath = createFromTemplate("final_invoice", self._savePath, self)
-
-        openFolderIfExists(invoicePath)
+        self.createDocument("final_invoice")
 
     # Create Small Invoice
     def action_createSmallInvoice(self):
-        global config
-
-        invoicePath = createFromTemplate("small_invoice", self._savePath, self)
-
-        openFolderIfExists(invoicePath)
+        self.createDocument("small_invoice")
 
     # Create Documentation
     def action_createDocumentation(self):
-        documentationPath = createFromTemplate("documentation", self._savePath, self)
-        openFolderIfExists(documentationPath)
+        self.createDocument("documentation")
 
     # Create swiss QR Bill
     def action_createQrBill(self):
+        # only needed here, bundled in site-packages (added by documents)
+        from qrbill import QRBill
+        from svglib.svglib import svg2rlg
+        from reportlab.graphics import renderPDF
+
         global config
         if not self._savePath:
             QtWidgets.QMessageBox.warning(None, 'QR Bill', 'TODO: ohne Pfad')

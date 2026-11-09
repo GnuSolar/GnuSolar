@@ -15,13 +15,6 @@ import time
 import io
 import signal
 
-from relatorio.templates.opendocument import Template
-
-import tempfile
-from qrbill import QRBill
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPDF
-
 from datetime import date
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QTableWidgetItem, QMessageBox, QFileDialog, QLineEdit, QPlainTextEdit, QComboBox, QCheckBox
 from PyQt5.QtWidgets import QTreeWidgetItem
@@ -41,6 +34,7 @@ from Ui.PowerCompany import *
 from Ui.Municipality import *
 
 from model.PvProject import *
+from gui.binding import updateUi, updateModel
 
 from Config import *
 from ErrorHandler import *
@@ -51,113 +45,6 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 # TODO: Where to put generally usefull functions?
 
 from Usefull import *
-
-def templateCopyReplace(src, dest, model):
-    # print("templateCopyReplace: src:" + src + " dest:" + dest)
-    basic = Template(source='', filepath=src)
-    basic_generated = basic.generate(o=model, c=model.contacts).render()
-
-    f = open(dest, 'wb')
-    f.write(basic_generated.getvalue())
-    f.close()
-
-def createFromTemplate(templateType, savePath, model):
-    global config
-
-    # another window may have used a quote/invoice number in the meantime
-    config.reloadNumbers()
-
-    templates = {
-        "partial_invoice" : {
-            "in_path"  : "fin" + os.sep + "partial_invoice.odt",
-            "out_dir"  : "fin",
-            "out_file" : config.getNextInvoiceName() + ".odt"
-        },
-        "final_invoice" : {
-            "in_path"  : "fin" + os.sep + "final_invoice.odt",
-            "out_dir"  : "fin",
-            "out_file" : config.getNextInvoiceName() + ".odt"
-        },
-        "small_invoice" : {
-            "in_path"  : "fin" + os.sep + "small_invoice.odt",
-            "out_dir"  : "fin",
-            "out_file" : config.getNextInvoiceName() + ".odt"
-        },
-        "quote" : {
-            "in_path"  : "off" + os.sep + "quote.odt",
-            "out_dir"  : "off",
-            "out_file" : config.getNextQuoteName() + ".odt"
-        },
-        "documentation" : {
-            "in_path"  : "doc" + os.sep + "documentation.odt",
-            "out_dir"  : "doc",
-            "out_file" : "Dokumentation.odt"
-        },
-        "mundpp" : {
-            "in_path"  : "evu" + os.sep + "MP_PV_Final_20190301_de.ods",
-            "out_dir"  : "evu",
-            "out_file" : "MP_PV.ods"
-        }
-    }
-
-    if not savePath:
-        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Kein Pfad')
-        return
-
-    ret = Config.getDataPath() + os.sep + "ch" + os.sep + "templates"
-
-    template = templates[templateType]
-    
-    templatePath = ""
-    defaultPath = Config.getDataPath() + os.sep + "ch" + os.sep + "templates" + os.sep + template["in_path"]
-    localPath = config.templatePath + os.sep + template["in_path"]
-    # first search template in  "local", config path
-    if os.path.exists(localPath):
-        templatePath = localPath
-
-    # then default
-    elif os.path.exists(defaultPath):
-        templatePath = defaultPath
-    else:
-        QtWidgets.QMessageBox.warning(None, templateType + ' Vorlage nicht gefunden', 'def Pfad = ' + defaultPath)
-        return
-    
-    projectDir = os.path.dirname(savePath)
-    if not os.path.isdir(projectDir):
-        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Pfad nicht gefunden\n' + savePath)
-        return
-
-    outDir =  projectDir + os.sep + template["out_dir"]
-    outPath = outDir + os.sep + template["out_file"]
-    if not os.path.isdir(outDir):
-        os.makedirs(outDir)
-
-    # dot not overwrite existing files
-    if os.path.exists(outPath):
-        QtWidgets.QMessageBox.warning(None, templateType + ' erstellen', 'Datei existiert bereits:\n' + outPath)
-        return
-
-    model._invoiceName = config.getNextInvoiceName()
-    model._quoteName = config.getNextQuoteName()
-    today = date.today()
-    model._todayIso = today.isoformat()
-    model.owner = model.contacts.owner		# backwards compatibility
-    model.config = config       # stays on the model, the TAG scripts need it
-    try:
-        templateCopyReplace(templatePath, outPath, model)
-    finally:
-        del model.owner
-        del model._invoiceName
-        del model._quoteName
-        del model._todayIso
-
-    # the number is used only now that the file exists
-    if templateType == "quote":
-        config.useQuoteNumber()
-    elif templateType.endswith("_invoice"):
-        config.useInvoiceNumber()
-
-    return outPath
 
 # override QMainWindow, to catch unsaved changes
 class MyMainWindow(QMainWindow):
@@ -319,7 +206,7 @@ class GnuSolar(QApplication):
             pass
        
         # fill it with the attributes of the object
-        GnuSolar.updateUi(ui, obj, "obj")
+        updateUi(ui, obj, "obj")
         
         # hook for ui initializiation
         obj.initUi(ui)
@@ -401,12 +288,12 @@ class GnuSolar(QApplication):
         self.ui.tree.clear()
         self.clearDetails()
         GnuSolar.updateTree(self.ui, model)
-        GnuSolar.updateUi(self.ui, model, "pvp")
+        updateUi(self.ui, model, "pvp")
         self.updateWindowTitle()
     
     def saveFile(self):
         global model
-        self.updateModel(self.ui, model, "pvp")
+        updateModel(self.ui, model, "pvp")
         ret = model.saveAs(self.path)
         if not ret:
             # saving failed
@@ -476,58 +363,6 @@ class GnuSolar(QApplication):
                 parent.addChild(item)
                 GnuSolar.addTreeItems(el, item)
 
-    # Updates the User Interface from the Model
-    # Iterates through all widgets and searches for pvp_* named Widgets
-    @staticmethod
-    def updateUi(ui, obj, prefix):
-        for key, value in ui.__dict__.items():
-            # normal model<=>ui element?
-            if key.startswith(prefix + "_"):
-                attrs = key.split("_")
-                attrs.pop(0)
-
-                modelEl = obj
-                for attr in attrs:
-                    modelEl = getattr(modelEl, attr)
-                uiEl = getattr(ui, key)
-
-                if isinstance(uiEl, QLineEdit):
-                    uiEl.setText(modelEl)
-                elif isinstance(uiEl, QPlainTextEdit):
-                    uiEl.setPlainText(modelEl)
-                elif isinstance(uiEl, QComboBox):
-                    uiEl.setCurrentText(modelEl)
-                elif isinstance(uiEl, QCheckBox):
-                    uiEl.setChecked(modelEl)
-                else:
-                    raise Exception(str(type(uiEl)) + " not implemented")
-
-    # Updates the Data Model from the User Interface
-    # Iterates through all widgets and searches for pvp_* named Widgets
-    def updateModel(self, ui, obj, prefix):
-        for key, value in ui.__dict__.items():
-            if not key.startswith(prefix + "_"):
-                continue
-            
-            attrs = key.split("_")
-            attrs.pop(0)
-            last = attrs.pop()
-            
-            modelEl = obj
-            for attr in attrs:
-                modelEl = getattr(modelEl, attr)
-            uiEl = getattr(ui, key)
-
-            if isinstance(uiEl, QLineEdit):
-                setattr(modelEl, last, uiEl.text())
-            elif isinstance(uiEl, QPlainTextEdit):
-                setattr(modelEl, last, uiEl.toPlainText())
-            elif isinstance(uiEl, QComboBox):
-                setattr(modelEl, last, uiEl.currentText())
-            elif isinstance(uiEl, QCheckBox):
-                setattr(modelEl, last, uiEl.isChecked())
-            else:
-                raise Exception(str(type(uiEl)) + " not implemented")
 
 def checkEnv():
     PY2 = sys.version_info[0] == 2

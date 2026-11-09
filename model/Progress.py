@@ -5,8 +5,7 @@
 
 from model.ModelNode import ModelNode
 import os
-
-from model.PvProject import *
+from datetime import date
 
 from Config import Config
 

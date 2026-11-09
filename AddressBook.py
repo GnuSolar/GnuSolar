@@ -11,6 +11,7 @@ from Ui.AddressBook import *
 from Ui.Contact import *
 
 from model.Contact import *
+from gui.binding import updateUi
 
 from Config import *
 from ErrorHandler import *
@@ -97,7 +98,7 @@ class AddressBook(QApplication):
 
     def action_listClicked(self, item):
         # fill it with the attributes of the object
-        GnuSolar.updateUi(ui, obj, "obj")
+        updateUi(ui, obj, "obj")
         
 
 def checkEnv():

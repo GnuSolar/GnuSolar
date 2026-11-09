@@ -13,10 +13,13 @@ import fillxlsx
 import datetime
 
 from datetime import date
-from model.Contact import *
+
+from PyQt5 import QtWidgets
+
+from model.Contact import Contact
 
 from Config import *
-from GnuSolar import *
+from Usefull import composeEmail, openFolderIfExists
 
 class PowerCompany(ModelNode):
     
@@ -188,9 +191,7 @@ class PowerCompany(ModelNode):
 
     # Create M+PP
     def action_createMundpp(self):
-        model = self._top
-        documentationPath = createFromTemplate("mundpp", model._savePath, model)
-        openFolderIfExists(documentationPath)
+        self._top.createDocument("mundpp")
 
     def initUi(self, ui):
         ui.createMundpp.clicked.connect(self.action_createMundpp)

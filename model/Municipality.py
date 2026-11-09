@@ -4,15 +4,19 @@
 # Municipality, (politsche) Gemeinde
 
 from model.ModelNode import ModelNode
+import os
 import sqlite3
+import datetime
+from datetime import date
 from selenium import webdriver
 
-from model.PvProject import *
-from model.PowerCompany import *
-from model.Contact import *
+from PyQt5 import QtWidgets
 
-from Config import *
-from GnuSolar import *
+import fillpdf
+from model.Contact import Contact
+
+from Config import *        # also config, used by the form scripts
+from Usefull import openFolder, openFolderIfExists
 
 class Municipality(ModelNode):
     

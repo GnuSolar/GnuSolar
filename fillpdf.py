@@ -2,6 +2,7 @@
 
 # From https://github.com/WestHealth/pdf-form-filler
 
+import documents      # adds the bundled site-packages (pdfrw)
 import pdfrw
 
 

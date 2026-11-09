@@ -4,10 +4,9 @@
 # A collection of Contacts with a role
 
 from model.ModelNode import ModelNode
-from model.PvProject import *
-from model.Contact import *
-from Config import *
-from GnuSolar import *
+from model.Contact import Contact
+
+from PyQt5.QtWidgets import QTreeWidgetItem
 
 class Contacts(ModelNode):
 

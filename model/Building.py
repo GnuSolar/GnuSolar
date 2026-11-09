@@ -10,16 +10,18 @@
 #    - power meters
 
 from model.ModelNode import ModelNode
+import os
 import json
+import sqlite3
 import requests
 import urllib.request
+from datetime import date
 
-from model.PvProject import *
-from model.Municipality import *
-from model.PowerCompany import *
+from PyQt5 import QtWidgets
 
 from Config import *
-from GnuSolar import *
+from Usefull import openFolder, openFolderIfExists
+import gui.binding
 
 class Building(ModelNode):
     
@@ -194,7 +196,7 @@ class Building(ModelNode):
     def action_updateFromAddress(self):
         ret = self._top.updateFromAddress()
 
-        GnuSolar.updateUi(self._ui, self, "obj")
+        gui.binding.updateUi(self._ui, self, "obj")
         if isinstance(ret, str):
             QtWidgets.QMessageBox.warning(None, 'Update von Adresse', ret)
 
