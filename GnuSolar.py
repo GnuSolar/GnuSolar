@@ -203,13 +203,9 @@ class GnuSolar(QApplication):
             if not ret:
                 QtWidgets.QMessageBox.warning(None, 'Datei nicht gefunden', "Datei '" + path + "' nicht gefunden.")
                 exit()
+        else:
+            self.showModel()
 
-
-        self.unsavedChanges = False
-        self.updateWindowTitle()
-        GnuSolar.updateTree(self.ui, model)
-        GnuSolar.updateUi(self.ui, model, "pvp")
-        
         self.window.show()
 
     def action_new(self):
@@ -237,26 +233,25 @@ class GnuSolar(QApplication):
         self.path = fileName
         return self.saveFile()
 
+    # Ask to save unsaved changes. Returns False if the user cancelled
+    # or saving failed, then the current project must stay open.
+    def askSaveChanges(self, text):
+        if not self.unsavedChanges:
+            return True
+
+        msgBox = QMessageBox()
+        msgBox.setText(text)
+        msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+        msgBox.setDefaultButton(QMessageBox.Save)
+        ret = msgBox.exec_()
+
+        if ret == QMessageBox.Save:
+            return bool(self.action_save())
+        return ret == QMessageBox.Discard
+
     def action_quit(self):
-        if self.unsavedChanges:
-            msgBox = QMessageBox()
-            msgBox.setText("Änderungen vor dem Beenden speichern?")
-            msgBox.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
-            msgBox.setDefaultButton(QMessageBox.Save)
-            ret = msgBox.exec_()
-
-            # Check which button was clicked
-            if ret == QMessageBox.Save:
-                ret2 = self.action_save()
-                if not ret2:
-                    # if file was not saved dont quit
-                    return
-                exit()
-            elif ret == QMessageBox.Discard:
-                exit()
-            elif ret == QMessageBox.Cancel:
-                return
-
+        if not self.askSaveChanges("Änderungen vor dem Beenden speichern?"):
+            return
         exit()
 
     def action_changed(self):
@@ -299,14 +294,19 @@ class GnuSolar(QApplication):
         self.action_changed()
         
     def action_treeClicked(self, item):
+        # no item selected, e.g. while the tree is cleared
+        if item is None:
+            return
+
         obj = item.pvpObj
         class_name = type(obj).__name__
-        
+
         # load the ui into the detail window
         widget = QWidget()
         klass = globals()["Ui_" + class_name]
         ui = klass()
         ui.setupUi(widget)
+        self.clearDetails()
         self.currentObj = obj
         self.ui.stackedWidget.addWidget(widget)
         self.ui.stackedWidget.setCurrentWidget(widget)
@@ -367,20 +367,42 @@ class GnuSolar(QApplication):
         global model
         if not pvpPath:
             return False
-            
+
         # check if path exists
         if not os.path.isfile(pvpPath):
             return False
-        
+
         # expand the path
         pvpPath = os.path.abspath(pvpPath)
 
-        # valid pvp Project?
+        if not self.askSaveChanges("Änderungen speichern, bevor ein anderes Projekt geöffnet wird?"):
+            return False
+
+        # load into a new model, so nothing of the previous project remains
+        newModel = PvProject()
+        newModel.open(pvpPath)
+        model = newModel
+
         self.path = pvpPath
-        model.open(pvpPath)
+        self.unsavedChanges = False
+        self.showModel()
+        return True
+
+    # remove the detail view of the previously selected tree item
+    def clearDetails(self):
+        self.currentObj = None
+        while self.ui.stackedWidget.count():
+            widget = self.ui.stackedWidget.widget(0)
+            self.ui.stackedWidget.removeWidget(widget)
+            widget.deleteLater()
+
+    # show the current model: tree, details and window title
+    def showModel(self):
+        self.ui.tree.clear()
+        self.clearDetails()
+        GnuSolar.updateTree(self.ui, model)
         GnuSolar.updateUi(self.ui, model, "pvp")
         self.updateWindowTitle()
-        return True
     
     def saveFile(self):
         global model
