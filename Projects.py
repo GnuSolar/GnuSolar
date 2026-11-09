@@ -391,7 +391,7 @@ class Projects(QApplication):
         
         cs = pv.progress.constructionStart
         if pv.progress.constructionFixed:
-            cs += " fix"
+            cs = str(cs) + " fix" if cs else "fix"
            
         ownerName = pv.contacts.owner.getNameCity()
         kWp = 0

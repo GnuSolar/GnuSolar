@@ -163,9 +163,12 @@ class Building(ModelNode):
         
         return False
 
+    # "Street 1, 1234 City", empty parts are left out
     def getHumanAddress(self):
-        str = self.street + " " + self.streetNumber + ", " + self.zip + " " + self.city
-        return str
+        join = lambda sep, parts: sep.join(str(p) for p in parts if p)
+        street = join(" ", (self.street, self.streetNumber))
+        city = join(" ", (self.zip, self.city))
+        return join(", ", (street, city))
 
     # Check wheter the address of the Building ist the same as the given
     # Contact

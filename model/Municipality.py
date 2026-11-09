@@ -78,7 +78,7 @@ class Municipality(ModelNode):
         db_row = res.fetchone()
 
         if not db_row:
-            return "Form not found id=" + str(self.fkFormTag)
+            return "Form not found id=" + str(self.fkFormBuilding)
         
         form_type = db_row["type"]
         form_handler = db_row["handler"]
@@ -125,6 +125,7 @@ class Municipality(ModelNode):
 
         # remove temporary attributes, so they dont get serialized
         del self.todayIso
+        del self.turnOnIso
         del self.fillform_url
         del self.fillform_data
     
