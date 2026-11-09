@@ -290,9 +290,14 @@ class PvProject(ModelNode):
             else:
                 setattr(src, key, getattr(dest, key))
     
+    # folder of the project, None if not saved yet
+    def getProjectDir(self):
+        if not self._savePath:
+            return None
+        return os.path.dirname(self._savePath)
+
     # open from disk
     def open(self, path):
-        config.pvpPath = path
         self._savePath = path
         f = open(path)
         json_str = f.read()
@@ -302,7 +307,6 @@ class PvProject(ModelNode):
     
     # save to disk as json under specified path
     def saveAs(self, path):
-        config.pvpPath = path
         self._savePath = path
         return self.save()
     

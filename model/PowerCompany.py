@@ -146,7 +146,8 @@ class PowerCompany(ModelNode):
     def action_createTag(self):
         global config
 
-        if not config.pvpPath:
+        projectDir = self._top.getProjectDir()
+        if not projectDir:
             return
         
         # assemble the path
@@ -155,7 +156,6 @@ class PowerCompany(ModelNode):
         ext = os.path.splitext(form["file"])[1] if form else ".pdf"
         tagName = "%04d-%02d-%02d_tag_fill%s" % (today.year, today.month, today.day, ext)
 
-        projectDir = os.path.dirname(config.pvpPath)
         tagDir =  projectDir + os.sep + "evu"
         tagPath = tagDir + os.sep + tagName
         if not os.path.isdir(tagDir):
@@ -189,8 +189,7 @@ class PowerCompany(ModelNode):
     # Create M+PP
     def action_createMundpp(self):
         model = self._top
-        path = config.pvpPath
-        documentationPath = createFromTemplate("mundpp", path, model)
+        documentationPath = createFromTemplate("mundpp", model._savePath, model)
         openFolderIfExists(documentationPath)
 
     def initUi(self, ui):

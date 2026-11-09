@@ -209,7 +209,11 @@ class Building(ModelNode):
             QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', resp_txt)
             return
         
-        cad_folder = os.path.dirname(config.pvpPath) + os.sep + "cad"
+        projectDir = self._top.getProjectDir()
+        if not projectDir:
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'Projekt zuerst speichern')
+            return
+        cad_folder = projectDir + os.sep + "cad"
         if not os.path.isdir(cad_folder):
             os.mkdir(cad_folder)
         
@@ -293,7 +297,11 @@ class Building(ModelNode):
         pdf_url = response.text
 
         # download the pdf
-        gis_folder = os.path.dirname(config.pvpPath) + os.sep + "gis"
+        projectDir = self._top.getProjectDir()
+        if not projectDir:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'Projekt zuerst speichern')
+            return
+        gis_folder = projectDir + os.sep + "gis"
         if not os.path.isdir(gis_folder):
             os.mkdir(gis_folder)
         today = date.today()
@@ -376,7 +384,11 @@ class Building(ModelNode):
         pdf_url = response.text
 
         # download the pdf
-        gis_folder = os.path.dirname(config.pvpPath) + os.sep + "gis"
+        projectDir = self._top.getProjectDir()
+        if not projectDir:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'Projekt zuerst speichern')
+            return
+        gis_folder = projectDir + os.sep + "gis"
         if not os.path.isdir(gis_folder):
             os.mkdir(gis_folder)
         today = date.today()
