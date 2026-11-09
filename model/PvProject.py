@@ -4,7 +4,7 @@
 # Photovoltaics Project Base Class
 
 from model.ModelNode import ModelNode
-import json
+import formats.pvp
 import subprocess
 import os
 import datetime
@@ -18,9 +18,6 @@ from model.Plant import *
 
 from GnuSolar import *
 from Config import *
-
-FILE_FORMAT = "gnusolar-project"
-FILE_VERSION = 2
 
 class PvProject(ModelNode):
 
@@ -200,34 +197,6 @@ class PvProject(ModelNode):
         openFolderIfExists(qrPath)
 
     # Serializing stuff
-    # File format, plain JSON:
-    #   version 2: {"format": "gnusolar-project", "version": 2, "project": {...}}
-    #              "project" is PvProject.toDict()
-    #   version 1: jsonpickle, no longer read. All projects were converted on
-    #              2026-11-09 with tools/migrate_pvp.py, see git history.
-    def toJson(self):
-        data = {"format": FILE_FORMAT, "version": FILE_VERSION, "project": self.toDict()}
-        return json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
-
-    def fromJson(self, json_str):
-        data = json.loads(json_str)
-        if data.get("format") == FILE_FORMAT:
-            version = data.get("version")
-            if version != FILE_VERSION:
-                # migrations of older versions go here, one per version
-                raise Exception("File version " + str(version) + " is not supported, a newer GnuSolar is needed")
-            project = data["project"]
-        elif "py/state" in data:
-            raise Exception("Old file format (version 1), convert it with tools/migrate_pvp.py of GnuSolar commit cbb39e5")
-        else:
-            raise Exception("Not a GnuSolar project file")
-
-        # fromDict starts from a new project, keep where this one is saved
-        savePath = self._savePath
-        self.fromDict(project)
-        self._savePath = savePath
-        self.link(self)
-
     # defaults for ModelNode.fromDict
     def _initDefaults(self):
         self.__init__()
@@ -238,13 +207,10 @@ class PvProject(ModelNode):
             return None
         return os.path.dirname(self._savePath)
 
-    # open from disk
+    # open from disk, the file format is in formats/pvp.py
     def open(self, path):
+        formats.pvp.load(self, path)
         self._savePath = path
-        with open(path, encoding="utf-8") as f:
-            json_str = f.read()
-
-        self.fromJson(json_str)
     
     # save to disk as json under specified path
     def saveAs(self, path):
@@ -253,14 +219,7 @@ class PvProject(ModelNode):
     
     # save to disk
     def save(self):
-        json_str = self.toJson()
-
-        # write a temporary file and rename it, so a crash never leaves
-        # a half written project
-        tmpPath = self._savePath + ".tmp"
-        with open(tmpPath, "w", encoding="utf-8") as f:
-            f.write(json_str)
-        os.replace(tmpPath, self._savePath)
+        formats.pvp.save(self, self._savePath)
         return True
 
 model = PvProject()

@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.join(repo, "site-packages"))
 sys.path.insert(0, repo)
 
 from model.PvProject import PvProject
+import formats.pvp
 
 
 def find_projects(root):
@@ -61,15 +62,14 @@ def lost_values(old_json, new_json):
 def convert(path):
     old_json = open(path).read()
     project = PvProject(path)
-    new_json = project.toJson()
+    new_json = formats.pvp.dumps(project)
     if new_json == old_json:
         return "current", None, []
 
     # the new file must load to the same project
     reloaded = PvProject()
-    reloaded._savePath = path
-    reloaded.fromJson(new_json)
-    if reloaded.toJson() != new_json:
+    formats.pvp.loads(reloaded, new_json)
+    if formats.pvp.dumps(reloaded) != new_json:
         raise Exception("converted file does not load to the same project")
 
     return "convert", new_json, lost_values(old_json, new_json)
