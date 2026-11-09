@@ -4,6 +4,7 @@
 # Photovoltaics Project Base Class
 
 from model.ModelNode import ModelNode
+import json
 import jsonpickle
 import subprocess
 import os
@@ -206,90 +207,21 @@ class PvProject(ModelNode):
         return ret
         
     def fromJson(self, json_str):
+        # files from before the ModelNode format have no py/state, they were
+        # converted with tools/migrate_pvp.py on 2026-11-09
+        if "py/state" not in json.loads(json_str):
+            raise Exception("Old file format, convert it with tools/migrate_pvp.py of a GnuSolar version from before 2026-11-09")
+
         ret = jsonpickle.decode(json_str)
 
-        # Migrate data from older models.
-        
-        # plantLocation was renamed to building
-        try:
-            ret.building = ret.plantLocation
-            delattr(ret, "plantLocation") 
-        except Exception:
-            pass
-        
-        # owner.address is no more
-        try:
-            ret.owner.street = ret.owner.address.street
-            ret.owner.streetNumber = ret.owner.address.streetNumber
-            ret.owner.zip = ret.owner.address.zip
-            ret.owner.city = ret.owner.address.city
-            delattr(ret.owner, "address")
-        except Exception:
-            pass
-
-        if not hasattr(ret, "contacts"):
-            ret.contacts = Contacts(self)
-
-        # owner moved to contacts._owner
-        if hasattr(ret, "owner"):
-            ret.contacts._owner = ret.owner
-            delattr(ret, "owner")
-
-        # check if contacts array exists
-        if not hasattr(ret.contacts, "contacts"):
-            ret.contacts.contacts = {}
-
-        # contacts moved to contacts dict
-        if hasattr(ret.contacts, "_owner"):
-            ret.contacts.contacts["owner"] = ret.contacts._owner
-            delattr(ret.contacts, "_owner")
-            # TODO: should happen in _copyOver, but im too lazy right now
-            ret.contacts.contacts["owner"].role = "owner"
-            ret.contacts.contacts["owner"].company = ""
-            ret.contacts.contacts["owner"].accountOwner = ""
-            ret.contacts.contacts["owner"].accountBank = ""
-            ret.contacts.contacts["owner"].accountIban = ""
-
-        if hasattr(ret.contacts, "_installer_ac"):
-            ret.contacts.contacts["installer_ac"] = ret.contacts._installer_ac
-            delattr(ret.contacts, "_installer_ac")
-
-        # loop over all attributes from self and copy them over from ret
-        # makes sure if you open a file with an older model, the attributes 
-        # default to default :)
-        self._copyOver(self, ret)
-
-        # parts created while copying need the link to this project too
+        # take over the saved data, the runtime attributes (_savePath, config) stay
+        self.__dict__.update(ret.__getstate__())
         self.link(self)
 
-        
-    def _copyOver(self, src, dest):
-        for key, value in src.__dict__.items():
-            # runtime only (_top, _ui, ...), never in the file
-            if key.startswith("_"):
-                continue
-            if not hasattr(dest, key):
-                continue
+    # defaults for ModelNode.__setstate__
+    def _initDefaults(self):
+        self.__init__()
 
-            # Loop over all dictionary element
-            if isinstance(value, dict):
-                d  = getattr(dest, key)
-                for k,v in d.items():
-                    if hasattr(v, "__dict__") and isinstance(v.__dict__, dict):
-                        if not k in value:
-                            class_name = d[k].__class__.__name__
-                            class_object = globals()[class_name]
-                            value[k] = class_object(self)
-                            
-                        self._copyOver(value[k], d[k])
-                    else:
-                        value[k] = d[k]
-                
-            if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
-                self._copyOver(getattr(src, key), getattr(dest, key))
-            else:
-                setattr(src, key, getattr(dest, key))
-    
     # folder of the project, None if not saved yet
     def getProjectDir(self):
         if not self._savePath:
