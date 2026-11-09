@@ -45,10 +45,38 @@ class Config():
         self.installer_signature = ""   # image of the signature, for forms
 
     def write(self):
-        f = open(self.configPath, "w")
-        s = json.dumps(self.__dict__, indent=4, sort_keys=True)
+        # skip the preferences dialog, it is only there while the dialog is open
+        data = {k: v for k, v in self.__dict__.items() if k not in ("ui", "window")}
+        s = json.dumps(data, indent=4, sort_keys=True)
+
+        # write to a temporary file and rename it, so other GnuSolar windows
+        # never read a half written file
+        tmpPath = self.configPath + ".tmp"
+        f = open(tmpPath, "w")
         f.write(s)
         f.close()
+        os.replace(tmpPath, self.configPath)
+
+    # Reread the quote and invoice counters from disk. Every GnuSolar window is
+    # its own process, another window may have used a number in the meantime.
+    def reloadNumbers(self):
+        if not self.configPath or not os.path.exists(self.configPath):
+            return
+        f = open(self.configPath, "r")
+        ret = json.load(f)
+        f.close()
+        for key in ("nextQuoteNumber", "nextInvoiceNumber"):
+            if key in ret:
+                setattr(self, key, int(ret[key]))
+
+    # Use up the current quote / invoice number, call after the file is written
+    def useQuoteNumber(self):
+        self.nextQuoteNumber = self.nextQuoteNumber + 1
+        self.write()
+
+    def useInvoiceNumber(self):
+        self.nextInvoiceNumber = self.nextInvoiceNumber + 1
+        self.write()
 
     def load(self):
         configDir = Config.getConfigDir()

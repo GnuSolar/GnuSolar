@@ -104,9 +104,6 @@ class PvProject:
         global config
 
         quotePath = createFromTemplate("quote", self._savePath, self)
-        
-        config.nextQuoteNumber = config.nextQuoteNumber + 1
-        config.write()
 
         openFolderIfExists(quotePath)
 
@@ -115,9 +112,6 @@ class PvProject:
         global config
 
         invoicePath = createFromTemplate("partial_invoice", self._savePath, self)
-        
-        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
-        config.write()
 
         openFolderIfExists(invoicePath)
 
@@ -126,9 +120,6 @@ class PvProject:
         global config
 
         invoicePath = createFromTemplate("final_invoice", self._savePath, self)
-        
-        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
-        config.write()
 
         openFolderIfExists(invoicePath)
 
@@ -137,9 +128,6 @@ class PvProject:
         global config
 
         invoicePath = createFromTemplate("small_invoice", self._savePath, self)
-        
-        config.nextInvoiceNumber = config.nextInvoiceNumber + 1
-        config.write()
 
         openFolderIfExists(invoicePath)
 

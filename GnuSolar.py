@@ -63,6 +63,10 @@ def templateCopyReplace(src, dest, model):
 
 def createFromTemplate(templateType, savePath, model):
     global config
+
+    # another window may have used a quote/invoice number in the meantime
+    config.reloadNumbers()
+
     templates = {
         "partial_invoice" : {
             "in_path"  : "fin" + os.sep + "partial_invoice.odt",
@@ -139,12 +143,20 @@ def createFromTemplate(templateType, savePath, model):
     model._todayIso = today.isoformat()
     model.owner = model.contacts.owner		# backwards compatibility
     model.config = config       # stays on the model, the TAG scripts need it
-    templateCopyReplace(templatePath, outPath, model)
-    del model.owner
-    del model._invoiceName
-    del model._quoteName
-    del model._todayIso
-    
+    try:
+        templateCopyReplace(templatePath, outPath, model)
+    finally:
+        del model.owner
+        del model._invoiceName
+        del model._quoteName
+        del model._todayIso
+
+    # the number is used only now that the file exists
+    if templateType == "quote":
+        config.useQuoteNumber()
+    elif templateType.endswith("_invoice"):
+        config.useInvoiceNumber()
+
     return outPath
 
 # override QMainWindow, to catch unsaved changes
