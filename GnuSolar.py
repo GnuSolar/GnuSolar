@@ -138,9 +138,8 @@ def createFromTemplate(templateType, savePath, model):
     today = date.today()
     model._todayIso = today.isoformat()
     model.owner = model.contacts.owner		# backwards compatibility
-    model.config = config
+    model.config = config       # stays on the model, the TAG scripts need it
     templateCopyReplace(templatePath, outPath, model)
-    del model.config
     del model.owner
     del model._invoiceName
     del model._quoteName
