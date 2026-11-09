@@ -3,13 +3,14 @@
 
 # Project Progress
 
+from model.ModelNode import ModelNode
 import os
 
 from model.PvProject import *
 
 from Config import Config
 
-class Progress:
+class Progress(ModelNode):
     
     def __init__(self, top):
         self._top = top
@@ -174,15 +175,3 @@ class Progress:
         now = date.today()
         attrName = "obj_" + actionName
         getattr(self._ui, attrName).setText(str(now))
-
-
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_ui']
-        del state['_top']
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)
-

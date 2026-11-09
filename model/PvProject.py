@@ -3,6 +3,7 @@
 
 # Photovoltaics Project Base Class
 
+from model.ModelNode import ModelNode
 import jsonpickle
 import subprocess
 import os
@@ -18,8 +19,11 @@ from model.Plant import *
 from GnuSolar import *
 from Config import *
 
-class PvProject:
-    
+class PvProject(ModelNode):
+
+    # the global config is only linked here, not saved with the project
+    _notSaved = ("config",)
+
     def __init__(self, path=""):
         self.config = config
         self._savePath = None
@@ -255,11 +259,14 @@ class PvProject:
         # default to default :)
         self._copyOver(self, ret)
 
+        # parts created while copying need the link to this project too
+        self.link(self)
+
         
     def _copyOver(self, src, dest):
         for key, value in src.__dict__.items():
-            if key=="_top" and value==self:
-                setattr(src, key, self)
+            # runtime only (_top, _ui, ...), never in the file
+            if key.startswith("_"):
                 continue
             if not hasattr(dest, key):
                 continue
@@ -307,19 +314,5 @@ class PvProject:
         f.write(json)
         f.close()
         return True
-
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        try:
-            del state['_savePath']
-            del state['_ui']
-            del state['config']
-        except (AttributeError, KeyError) as e:
-            pass
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)
 
 model = PvProject()

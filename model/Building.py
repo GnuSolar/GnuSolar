@@ -9,6 +9,7 @@
 #    - municipality
 #    - power meters
 
+from model.ModelNode import ModelNode
 import json
 import requests
 import urllib.request
@@ -20,7 +21,7 @@ from model.PowerCompany import *
 from Config import *
 from GnuSolar import *
 
-class Building:
+class Building(ModelNode):
     
     def __init__(self, top):
         self._top = top
@@ -390,13 +391,3 @@ class Building:
         openFolder(path)
 
         return
-
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_ui']
-        del state['_top']
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)

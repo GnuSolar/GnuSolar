@@ -3,6 +3,7 @@
 
 # Power Company, Power Supplier, EVU, EW, Elektrizitätsversorgunsunternehmen, Elektrizitätswerk, 
 
+from model.ModelNode import ModelNode
 import json
 import sqlite3
 import os
@@ -17,7 +18,7 @@ from model.Contact import *
 from Config import *
 from GnuSolar import *
 
-class PowerCompany:
+class PowerCompany(ModelNode):
     
     def __init__(self, top):
         self._top = top
@@ -196,12 +197,3 @@ class PowerCompany:
         ui.createMundpp.clicked.connect(self.action_createMundpp)
         ui.createTag.clicked.connect(self.action_createTag)
         ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
-
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_top']
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)

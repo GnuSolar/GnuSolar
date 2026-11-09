@@ -3,12 +3,13 @@
 
 # A collection of Contacts with a role
 
+from model.ModelNode import ModelNode
 from model.PvProject import *
 from model.Contact import *
 from Config import *
 from GnuSolar import *
 
-class Contacts:
+class Contacts(ModelNode):
 
     def __init__(self, top):
         # role => contact dict
@@ -70,12 +71,3 @@ class Contacts:
 
     def initUi(self, ui):
         pass
-
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_top']
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)

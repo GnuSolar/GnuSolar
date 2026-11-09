@@ -3,7 +3,9 @@
 
 # A Plant is one or more PV Arrays and one or more inverter, smartmeters an batteries.
 
-class Plant:
+from model.ModelNode import ModelNode
+
+class Plant(ModelNode):
 
     def __init__(self, top):
         # class members
@@ -25,12 +27,3 @@ class Plant:
 
     def initUi(self, ui):
         pass
-
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_top']
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)

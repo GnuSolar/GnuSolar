@@ -3,6 +3,7 @@
 
 # Municipality, (politsche) Gemeinde
 
+from model.ModelNode import ModelNode
 import sqlite3
 from selenium import webdriver
 
@@ -13,7 +14,7 @@ from model.Contact import *
 from Config import *
 from GnuSolar import *
 
-class Municipality:
+class Municipality(ModelNode):
     
     def __init__(self, top):
         self._top = top
@@ -188,13 +189,3 @@ class Municipality:
         ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
         ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
         ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)
-
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        del state['_top']
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)
-

@@ -4,6 +4,7 @@
 # A Contact is a way to contact a person. Postal address is mostly needed for bureaucratic stuff.
 
 
+from model.ModelNode import ModelNode
 import sqlite3
 
 from Config import *
@@ -12,7 +13,7 @@ from Usefull import *
 # An address / contact all in one
 # can be renamed after serializing is independet of the object sttructure
 
-class Contact:
+class Contact(ModelNode):
 
     def __init__(self, top=None):
         # class members
@@ -243,13 +244,3 @@ class Contact:
                     return
             raise Exception("key not found: " + str(k))
          
-    # for jsonpickle to ignore
-    def __getstate__(self):
-        state = self.__dict__.copy()
-        if "_top" in state:         # it should always exists? Whatever
-            del state['_top']
-        return state
-
-    def __setstate__(self, state):
-        self.__dict__.update(state)
-
