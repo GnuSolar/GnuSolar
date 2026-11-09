@@ -83,10 +83,6 @@ class PvProject(ModelNode):
         return True
         
         
-    # Ui hooks
-    def getTreeCaption(self):
-        return "PV Projekt"
-
     # Serializing stuff
     # defaults for ModelNode.fromDict
     def _initDefaults(self):

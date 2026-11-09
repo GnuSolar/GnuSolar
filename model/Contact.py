@@ -192,29 +192,4 @@ class Contact(ModelNode):
             "pow_tag": "TAG's",
             "test": "Test",
         }
-        return roles[self.role]
-
-    def getTreeCaption(self):
-        ret = "Kontakt (" + self.getRoleName() + ")"
-        return ret
-
-    def getTreeContextMenu(self):
-        ret = {
-            "contact_delete": "Kontakt löschen",
-        }
-        return ret
-
-    def treeAction(self, action, ui_parent):
-        actionKey = action.actionKey
-        if actionKey == "contact_delete":
-            # remove from ui
-            contacts = ui_parent.parent().pvpObj
-            ui_parent.parent().removeChild(ui_parent)
-
-            # remove from model
-            for k, c in contacts.contacts.items():
-                if c == self:
-                    del contacts.contacts[k]
-                    return
-            raise Exception("key not found: " + str(k))
-         
+        return roles.get(self.role, str(self.role))

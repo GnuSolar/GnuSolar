@@ -155,6 +155,3 @@ class Progress(ModelNode):
         if not self.constructionSort:
             self.constructionSort = self.orderReceived
         return self.constructionSort
-
-    def getTreeCaption(self):
-        return "Fortschritt"

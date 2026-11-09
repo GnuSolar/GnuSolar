@@ -36,6 +36,7 @@ from Ui.Municipality import *
 from model.PvProject import *
 from gui.binding import updateUi, updateModel
 from gui.pages import createPage
+import gui.tree
 
 from Config import *
 from ErrorHandler import *
@@ -200,11 +201,9 @@ class GnuSolar(QApplication):
         self.ui.stackedWidget.setCurrentWidget(widget)
 
         # Set the label
-        try:
-            label = obj.getTreeCaption()
+        label = gui.tree.caption(obj)
+        if label and hasattr(ui, "groupBox"):
             ui.groupBox.setTitle(label)
-        except AttributeError:
-            pass
        
         # fill it with the attributes of the object
         updateUi(ui, obj, "obj")
@@ -229,27 +228,24 @@ class GnuSolar(QApplication):
                 else:
                     raise Exception(str(type(el)) + " not implemented")
 
-    # display Context Menu of the Tree
-    # gets them from the getTreeContextMenu
-    # calls the treeAction
+    # display Context Menu of the Tree, entries and actions from gui.tree
     def action_treeContext(self, event):
         item = self.ui.tree.currentItem()
-        obj = item.pvpObj
+        if item is None:
+            return
+        contextMenu = gui.tree.contextMenu(item)
+        if not contextMenu:
+            return
 
         menu = QtWidgets.QMenu(self.ui.tree)
-        try:
-            contextMenu = obj.getTreeContextMenu()
-        except AttributeError:
-            return
-            
         for key, value in contextMenu.items():
             actn = menu.addAction(value)
             actn.actionKey = key
-        
+
         action = menu.exec_(self.ui.tree.mapToGlobal(event))
         if action is not None:
-            obj.treeAction(action, item)
-        
+            gui.tree.treeAction(action.actionKey, item)
+
     # open a Project with a path
     def openFile(self, pvpPath):
         global model
@@ -289,7 +285,7 @@ class GnuSolar(QApplication):
     def showModel(self):
         self.ui.tree.clear()
         self.clearDetails()
-        GnuSolar.updateTree(self.ui, model)
+        gui.tree.buildTree(self.ui.tree, model)
         updateUi(self.ui, model, "pvp")
         self.updateWindowTitle()
     
@@ -316,54 +312,6 @@ class GnuSolar(QApplication):
         if self.unsavedChanges:
             title = "*" + title
         self.window.setWindowTitle(title)
-
-    # Populates the UI Tree View from the data model
-    @staticmethod
-    def updateTree(ui, model):
-        tree = ui.tree
-        tree.setColumnCount(1)
-        
-        # Iterate trhough the model and populate the treeview
-        top = QTreeWidgetItem(None, ["PV-Anlage"])
-        top.pvpObj = model
-        GnuSolar.addTreeItems(model, top)
-        items = [top]
-        tree.addTopLevelItems(items)
-        tree.expandAll()
-    
-    @staticmethod
-    def addTreeItems(modelObj, parent):
-        for key, value in modelObj.__dict__.items():
-            if key == "config" or key[0]=="_":
-                continue
-            
-            # Loop over all dictionary element
-            if isinstance(value, dict):
-                for k,v in value.items():
-                    if hasattr(v, "__dict__") and isinstance(v.__dict__, dict):
-                        el = value[k]
-                        caption = str(k)
-                        try:
-                            caption = el.getTreeCaption()
-                        except AttributeError:
-                            pass
-                        item = QTreeWidgetItem(None, [caption])
-                        item.pvpObj = el
-                        parent.addChild(item)
-                        GnuSolar.addTreeItems(el, item)
-            
-            # recurse into child objects
-            if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
-                el = getattr(modelObj, key)
-                caption = str(key)
-                try:
-                    caption = el.getTreeCaption()
-                except AttributeError:
-                    pass
-                item = QTreeWidgetItem(None, [caption])
-                item.pvpObj = el
-                parent.addChild(item)
-                GnuSolar.addTreeItems(el, item)
 
 
 def checkEnv():

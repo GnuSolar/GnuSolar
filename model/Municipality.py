@@ -130,9 +130,6 @@ class Municipality(ModelNode):
         del self.fillform_url
         del self.fillform_data
     
-    def getTreeCaption(self):
-        return "Gemeinde"
-
     # Fill the Gebäudeversicherung Zürich form into gvzPath.
     # Returns an error text, or None.
     def createGvzDocumentation(self, gvzPath):

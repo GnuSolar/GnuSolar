@@ -176,6 +176,3 @@ class Building(ModelNode):
             return False
 
         return True
-
-    def getTreeCaption(self):
-        return "Gebäude"

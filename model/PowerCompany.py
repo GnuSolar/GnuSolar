@@ -141,6 +141,3 @@ class PowerCompany(ModelNode):
         # remove temporary attributes, so they dont get serialized
         del self.turnOnIso
         del self.todayIso
-
-    def getTreeCaption(self):
-        return "Stromversorger"

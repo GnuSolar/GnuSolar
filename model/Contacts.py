@@ -6,8 +6,6 @@
 from model.ModelNode import ModelNode
 from model.Contact import Contact
 
-from PyQt5.QtWidgets import QTreeWidgetItem
-
 class Contacts(ModelNode):
 
     def __init__(self, top):
@@ -41,29 +39,30 @@ class Contacts(ModelNode):
     def installer_ac(self, value):
         self.contacts["installer_ac"] = value
 
-    # tree hooks
-    def getTreeCaption(self):
-        return "Kontakte"
+    # roles which must always exist
+    MANDATORY = ("owner", "installer_ac")
 
-    def getTreeContextMenu(self):
-        ret = {
-            "contact_add": "Kontakt hinzufügen",
-        }
-        return ret
-    
-    def treeAction(self, action, ui_parent):
-        actionKey = action.actionKey
-        if actionKey == "contact_add":
-            # key already exists
-            if "test" in self.contacts:
-                return
-            role = "test"
-            c = Contact(self._top)
-            c.role = role
-            self.contacts[role] = c
-            # update the ui
-            caption = c.getTreeCaption()
-            item = QTreeWidgetItem(None, [caption])
-            item.pvpObj = c
-            ui_parent.addChild(item)
-        
+    # add a new contact with role, None if the role exists already
+    def addContact(self, role):
+        if role in self.contacts:
+            return None
+        c = Contact(self._top)
+        c.role = role
+        self.contacts[role] = c
+        return c
+
+    def _roleOf(self, contact):
+        for k, c in self.contacts.items():
+            if c is contact:
+                return k
+        return None
+
+    # a contact of this list which is not mandatory
+    def canRemove(self, contact):
+        role = self._roleOf(contact)
+        return role is not None and role not in Contacts.MANDATORY
+
+    def removeContact(self, contact):
+        if not self.canRemove(contact):
+            raise Exception("contact can not be removed: " + str(self._roleOf(contact)))
+        del self.contacts[self._roleOf(contact)]
