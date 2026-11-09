@@ -290,7 +290,7 @@ class Building:
         }
         response = requests.post(url, json=json)
         if response.status_code != 200:
-            QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'wrong status_code=' . str(response.status_code))
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'wrong status_code=' + str(response.status_code))
             return
 
         pdf_url = response.text
@@ -373,7 +373,7 @@ class Building:
         }
         response = requests.post(url, json=json)
         if response.status_code != 200:
-            QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'wrong status_code=' . str(response.status_code))
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'wrong status_code=' + str(response.status_code))
             return
 
         pdf_url = response.text
