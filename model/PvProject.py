@@ -8,10 +8,7 @@ import formats.pvp
 import subprocess
 import os
 import datetime
-import tempfile
 from datetime import date
-
-from PyQt5 import QtWidgets
 
 from model.Contacts import Contacts
 from model.Building import Building
@@ -20,10 +17,7 @@ from model.PowerCompany import PowerCompany
 from model.Progress import Progress
 from model.Plant import Plant
 
-import documents.templates
-from documents import DocumentError
 from Config import *
-from Usefull import openFolderIfExists
 
 class PvProject(ModelNode):
 
@@ -33,7 +27,6 @@ class PvProject(ModelNode):
     def __init__(self, path=""):
         self.config = config
         self._savePath = None
-        self._ui = None
         self.contacts = Contacts(self)
         self.building = Building(self)
         self.municipality = Municipality(self)
@@ -93,112 +86,6 @@ class PvProject(ModelNode):
     # Ui hooks
     def getTreeCaption(self):
         return "PV Projekt"
-
-    def initUi(self, ui):
-        self._ui = ui
-        ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
-        ui.createQuote.clicked.connect(self.action_createQuote)
-        ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
-        ui.createFinalInvoice.clicked.connect(self.action_createFinalInvoice)
-        ui.createSmallInvoice.clicked.connect(self.action_createSmallInvoice)
-        ui.createQrBill.clicked.connect(self.action_createQrBill)
-        ui.createDocumentation.clicked.connect(self.action_createDocumentation)
-
-    def action_openProjectFolder(self):
-        if not self._savePath:
-            return
-        folder = os.path.dirname(self._savePath)
-        openFolderIfExists(folder)
-
-    # Create a document from a template, show problems, open the new file
-    def createDocument(self, templateType):
-        try:
-            path = documents.templates.createFromTemplate(templateType, self._savePath, self, config)
-        except DocumentError as e:
-            QtWidgets.QMessageBox.warning(None, e.title, str(e))
-            return None
-        openFolderIfExists(path)
-        return path
-
-    def action_createQuote(self):
-        self.createDocument("quote")
-
-    # Create Partial Invoice
-    def action_createPartialInvoice(self):
-        self.createDocument("partial_invoice")
-
-    # Create Final Invoice
-    def action_createFinalInvoice(self):
-        self.createDocument("final_invoice")
-
-    # Create Small Invoice
-    def action_createSmallInvoice(self):
-        self.createDocument("small_invoice")
-
-    # Create Documentation
-    def action_createDocumentation(self):
-        self.createDocument("documentation")
-
-    # Create swiss QR Bill
-    def action_createQrBill(self):
-        # only needed here, bundled in site-packages (added by documents)
-        from qrbill import QRBill
-        from svglib.svglib import svg2rlg
-        from reportlab.graphics import renderPDF
-
-        global config
-        if not self._savePath:
-            QtWidgets.QMessageBox.warning(None, 'QR Bill', 'TODO: ohne Pfad')
-            return
-
-        qrAmount = self._ui.qrbill_amount.text()
-        qrInfo = self._ui.qrbill_info.text()
-        
-        projectDir = os.path.dirname(self._savePath)
-        if not os.path.isdir(projectDir):
-            QtWidgets.QMessageBox.warning(None, 'QR Bill', 'Pfad nicht gefunden\n' + self._savePath)
-            return
-
-        today = date.today()
-        fileName = "QR" + today.isoformat() + ".pdf"
-        outDir =  projectDir + os.sep + "fin"
-        qrPath = outDir + os.sep + fileName
-        if not os.path.isdir(outDir):
-            os.makedirs(outDir)
-
-        debtor = self.contacts.owner
-        my_bill = QRBill(
-                account=config.installer_bankIban,
-                language='de',
-                creditor={
-                    'name': config.installer_company, 
-                    'street': config.installer_street,
-                    'house_num': config.installer_streetNumber,
-                    'pcode': config.installer_zip,
-                    'city': config.installer_city, 
-                },
-                debtor={
-                    'name': debtor.getNameAddress(), 
-                    'street': debtor.street,
-                    'house_num': debtor.streetNumber,
-                    'pcode': debtor.zip,
-                    'city': debtor.city, 
-                },
-                amount=qrAmount,
-                additional_information=(
-                    qrInfo
-                )                
-            )
-        with tempfile.TemporaryFile(encoding='utf-8', mode='r+') as temp:
-            my_bill.as_svg(temp, full_page=True)
-            temp.seek(0)
-            drawing = svg2rlg(temp)
-        renderPDF.drawToFile(drawing, qrPath)
-
-        self._ui.qrbill_amount.setText("")
-        self._ui.qrbill_info.setText("")
-
-        openFolderIfExists(qrPath)
 
     # Serializing stuff
     # defaults for ModelNode.fromDict

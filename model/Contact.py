@@ -8,7 +8,6 @@ from model.ModelNode import ModelNode
 import sqlite3
 
 from Config import *
-from Usefull import *
 
 # An address / contact all in one
 # can be renamed after serializing is independet of the object sttructure
@@ -181,31 +180,6 @@ class Contact(ModelNode):
         ret += "END:VCARD\n"
  
         return ret
-
-    def initUi(self, ui):
-        ui.composeEmail.clicked.connect(self.action_composeEmail)
-        ui.composeEmail2.clicked.connect(self.action_composeEmail2)
-        ui.callPhone.clicked.connect(self.action_callPhone)
-        ui.callPhone2.clicked.connect(self.action_callPhone2)
-        ui.callMobile.clicked.connect(self.action_callMobile)
-
-    def action_callPhone(self):
-        global config
-        callSip(self.phone, config.sipServer)
-
-    def action_callPhone2(self):
-        global config
-        callSip(self.phone2, config.sipServer)
-
-    def action_callMobile(self):
-        global config
-        callSip(self.mobile, config.sipServer)
-
-    def action_composeEmail(self):
-        composeEmail(config.installer_email, self.email , "", "")
-
-    def action_composeEmail2(self):
-        composeEmail(config.installer_email, self.email2 , "", "")
 
     def getRoleName(self):
         roles = {

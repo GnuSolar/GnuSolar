@@ -14,12 +14,9 @@ import datetime
 
 from datetime import date
 
-from PyQt5 import QtWidgets
-
 from model.Contact import Contact
 
 from Config import *
-from Usefull import composeEmail, openFolderIfExists
 
 class PowerCompany(ModelNode):
     
@@ -145,55 +142,5 @@ class PowerCompany(ModelNode):
         del self.turnOnIso
         del self.todayIso
 
-    # Erzeuge Anschlussgesuch
-    def action_createTag(self):
-        global config
-
-        projectDir = self._top.getProjectDir()
-        if not projectDir:
-            return
-        
-        # assemble the path
-        today = date.today()
-        form = self.getTagForm()
-        ext = os.path.splitext(form["file"])[1] if form else ".pdf"
-        tagName = "%04d-%02d-%02d_tag_fill%s" % (today.year, today.month, today.day, ext)
-
-        tagDir =  projectDir + os.sep + "evu"
-        tagPath = tagDir + os.sep + tagName
-        if not os.path.isdir(tagDir):
-            os.makedirs(tagDir)
-        
-        ret = self.createTag(self._top, tagPath)
-        if isinstance(ret, str):
-            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
-            return
-            
-        openFolderIfExists(tagPath)
-        now = date.today()
-        self._top.progress.tagSent = now.isoformat()
-
-    # Sende Tag
-    def action_composeTagEmail(self):
-        global config
-        model = self._top
-        
-        to = model.powerCompany.tagContact.email
-        b = model.building
-        subject = "TAG PV-Anlage " + str(b.street) + " " + str(b.streetNumber) + " in " + str(b.city)
-        body = "Guten Tag\n\nIm Anhang finden Sie das Anschlussgesuch für eine PV-Anlage in " + str(b.city) + " sowie die zusätzlich benötigten Unterlagen.\n"
-        body += "\nmit freundlichen Grüssen\n\n" + str(config.installer_firstName) + " " + str(config.installer_lastName)
-        att = [""]
-        composeEmail(config.installer_email, to, subject, body, att)
-
     def getTreeCaption(self):
         return "Stromversorger"
-
-    # Create M+PP
-    def action_createMundpp(self):
-        self._top.createDocument("mundpp")
-
-    def initUi(self, ui):
-        ui.createMundpp.clicked.connect(self.action_createMundpp)
-        ui.createTag.clicked.connect(self.action_createTag)
-        ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)

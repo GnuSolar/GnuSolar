@@ -35,6 +35,7 @@ from Ui.Municipality import *
 
 from model.PvProject import *
 from gui.binding import updateUi, updateModel
+from gui.pages import createPage
 
 from Config import *
 from ErrorHandler import *
@@ -208,8 +209,8 @@ class GnuSolar(QApplication):
         # fill it with the attributes of the object
         updateUi(ui, obj, "obj")
         
-        # hook for ui initializiation
-        obj.initUi(ui)
+        # the page handles the buttons, keep it as long as it is shown
+        self.currentPage = createPage(ui, obj, self)
         
         # connect all obj_ fields with attributeChanged
         # updates the model on the fly from the ui
@@ -278,6 +279,7 @@ class GnuSolar(QApplication):
     # remove the detail view of the previously selected tree item
     def clearDetails(self):
         self.currentObj = None
+        self.currentPage = None
         while self.ui.stackedWidget.count():
             widget = self.ui.stackedWidget.widget(0)
             self.ui.stackedWidget.removeWidget(widget)

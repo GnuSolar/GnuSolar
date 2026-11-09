@@ -24,6 +24,3 @@ class Plant(ModelNode):
 
     def getTreeCaption(self):
         return "Anlage"
-
-    def initUi(self, ui):
-        pass

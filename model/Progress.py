@@ -13,7 +13,6 @@ class Progress(ModelNode):
     
     def __init__(self, top):
         self._top = top
-        self._ui = None
         self.inquiryReceived = None         # Anfrage erhalten
         self.roofMeasure = None
         self.roofMeasured = None
@@ -159,18 +158,3 @@ class Progress(ModelNode):
 
     def getTreeCaption(self):
         return "Fortschritt"
-
-    def initUi(self, ui):
-        self._ui = ui
-        for key, value in ui.__dict__.items():
-            # connect all pb_progress_* with action_progress
-            if key.startswith("pb_"):
-                el = getattr(ui, key)
-                el.clicked.connect(lambda _, x=key: self.action_progress(x))    # well, basically magic for me
-
-    def action_progress(self, buttonName):
-        actionName = buttonName.replace("pb_", "")
-
-        now = date.today()
-        attrName = "obj_" + actionName
-        getattr(self._ui, attrName).setText(str(now))

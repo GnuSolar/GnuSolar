@@ -10,13 +10,10 @@ import datetime
 from datetime import date
 from selenium import webdriver
 
-from PyQt5 import QtWidgets
-
 import fillpdf
 from model.Contact import Contact
 
 from Config import *        # also config, used by the form scripts
-from Usefull import openFolder, openFolderIfExists
 
 class Municipality(ModelNode):
     
@@ -136,17 +133,10 @@ class Municipality(ModelNode):
     def getTreeCaption(self):
         return "Gemeinde"
 
-    # Erzeuge Gebäudeversicherung Zürich Formular
-    def action_createGvzDocumentation(self):
-        model = self._top
-        projectDir = model.getProjectDir()
-        if not projectDir:
-            return
-
-        gvzDir =  projectDir + os.sep + "gov"
-        gvzPath = gvzDir + os.sep + "01_gvz_dokumentation.pdf"
-        if not os.path.isdir(gvzDir):
-            os.makedirs(gvzDir)
+    # Fill the Gebäudeversicherung Zürich form into gvzPath.
+    # Returns an error text, or None.
+    def createGvzDocumentation(self, gvzPath):
+        model = self._top       # used by the form script
 
         form_file = Config.getDataPath() + os.sep + "ch" + os.sep + "build" + os.sep + "gvz_documentation.pdf"
         if not os.path.exists(form_file):
@@ -173,23 +163,3 @@ class Municipality(ModelNode):
         del self.turnOnIso
         del self.todayIso
         del self.fillpdf_data
-
-        openFolderIfExists(gvzPath)
-
-    # Erzeuge Solarmeldung
-    def action_createBuildingForm(self):
-        ret = self.createBuildingForm()
-        if isinstance(ret, str):
-            QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
-            return
-
-    # Gemeinde Webseite öffnen
-    def action_openMunicipalityWebsite(self):
-        if not self.website:
-            return
-        openFolder(self.website)
-
-    def initUi(self, ui):
-        ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
-        ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
-        ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)

@@ -67,6 +67,3 @@ class Contacts(ModelNode):
             item.pvpObj = c
             ui_parent.addChild(item)
         
-
-    def initUi(self, ui):
-        pass

@@ -12,6 +12,7 @@ from Ui.Contact import *
 
 from model.Contact import *
 from gui.binding import updateUi
+from gui.pages import createPage
 
 from Config import *
 from ErrorHandler import *
@@ -43,7 +44,7 @@ class AddressBook(QApplication):
         self.ui.stackedWidget.setCurrentWidget(widget)
 
         # hook for ui initializiation
-        self.contact.initUi(ui)
+        self.contactPage = createPage(ui, self.contact, None)
         
         # connect all obj_ fields with attributeChanged
         # updates the model on the fly from the ui
