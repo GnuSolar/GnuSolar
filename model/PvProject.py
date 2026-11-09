@@ -203,8 +203,8 @@ class PvProject(ModelNode):
     # File format, plain JSON:
     #   version 2: {"format": "gnusolar-project", "version": 2, "project": {...}}
     #              "project" is PvProject.toDict()
-    #   version 1: jsonpickle, {"py/object": "model.PvProject.PvProject", "py/state": {...}}
-    #              still read, never written
+    #   version 1: jsonpickle, no longer read. All projects were converted on
+    #              2026-11-09 with tools/migrate_pvp.py, see git history.
     def toJson(self):
         data = {"format": FILE_FORMAT, "version": FILE_VERSION, "project": self.toDict()}
         return json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
@@ -218,7 +218,7 @@ class PvProject(ModelNode):
                 raise Exception("File version " + str(version) + " is not supported, a newer GnuSolar is needed")
             project = data["project"]
         elif "py/state" in data:
-            project = PvProject._fromVersion1(data)
+            raise Exception("Old file format (version 1), convert it with tools/migrate_pvp.py of GnuSolar commit cbb39e5")
         else:
             raise Exception("Not a GnuSolar project file")
 
@@ -227,17 +227,6 @@ class PvProject(ModelNode):
         self.fromDict(project)
         self._savePath = savePath
         self.link(self)
-
-    # version 1 (jsonpickle) to plain data: take the py/state, drop the py/ markers
-    @staticmethod
-    def _fromVersion1(node):
-        if isinstance(node, dict):
-            if "py/state" in node:
-                return PvProject._fromVersion1(node["py/state"])
-            return {k: PvProject._fromVersion1(v) for k, v in node.items() if not k.startswith("py/")}
-        if isinstance(node, list):
-            return [PvProject._fromVersion1(v) for v in node]
-        return node
 
     # defaults for ModelNode.fromDict
     def _initDefaults(self):
