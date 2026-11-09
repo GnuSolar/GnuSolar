@@ -189,15 +189,11 @@ class Building(ModelNode):
         ui.getAgisSurvey.clicked.connect(self.action_getAgisSurvey)
 
     def action_updateFromAddress(self):
-        self.coordinatesFromAddress()
-        self.queryPlotNumber()
-        self.queryZoneing()
-        
-        muni = self._top.municipality
-        muni.fromCode(self.municipalityCode)
-        self._top.powerCompany.fromId(muni.fkPowerCompany)
+        ret = self._top.updateFromAddress()
 
         GnuSolar.updateUi(self._ui, self, "obj")
+        if isinstance(ret, str):
+            QtWidgets.QMessageBox.warning(None, 'Update von Adresse', ret)
 
     def action_get3dModel(self):
         x = self.swissGridX
