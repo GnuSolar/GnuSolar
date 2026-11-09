@@ -5,7 +5,6 @@
 
 from model.ModelNode import ModelNode
 import json
-import jsonpickle
 import subprocess
 import os
 import datetime
@@ -19,6 +18,9 @@ from model.Plant import *
 
 from GnuSolar import *
 from Config import *
+
+FILE_FORMAT = "gnusolar-project"
+FILE_VERSION = 2
 
 class PvProject(ModelNode):
 
@@ -198,27 +200,46 @@ class PvProject(ModelNode):
         openFolderIfExists(qrPath)
 
     # Serializing stuff
+    # File format, plain JSON:
+    #   version 2: {"format": "gnusolar-project", "version": 2, "project": {...}}
+    #              "project" is PvProject.toDict()
+    #   version 1: jsonpickle, {"py/object": "model.PvProject.PvProject", "py/state": {...}}
+    #              still read, never written
     def toJson(self):
-        jsonpickle.set_preferred_backend('json')
-        jsonpickle.set_encoder_options('json', sort_keys=True, indent=4)
-        
-        ret = jsonpickle.encode(self)
-        
-        return ret
-        
+        data = {"format": FILE_FORMAT, "version": FILE_VERSION, "project": self.toDict()}
+        return json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
+
     def fromJson(self, json_str):
-        # files from before the ModelNode format have no py/state, they were
-        # converted with tools/migrate_pvp.py on 2026-11-09
-        if "py/state" not in json.loads(json_str):
-            raise Exception("Old file format, convert it with tools/migrate_pvp.py of a GnuSolar version from before 2026-11-09")
+        data = json.loads(json_str)
+        if data.get("format") == FILE_FORMAT:
+            version = data.get("version")
+            if version != FILE_VERSION:
+                # migrations of older versions go here, one per version
+                raise Exception("File version " + str(version) + " is not supported, a newer GnuSolar is needed")
+            project = data["project"]
+        elif "py/state" in data:
+            project = PvProject._fromVersion1(data)
+        else:
+            raise Exception("Not a GnuSolar project file")
 
-        ret = jsonpickle.decode(json_str)
-
-        # take over the saved data, the runtime attributes (_savePath, config) stay
-        self.__dict__.update(ret.__getstate__())
+        # fromDict starts from a new project, keep where this one is saved
+        savePath = self._savePath
+        self.fromDict(project)
+        self._savePath = savePath
         self.link(self)
 
-    # defaults for ModelNode.__setstate__
+    # version 1 (jsonpickle) to plain data: take the py/state, drop the py/ markers
+    @staticmethod
+    def _fromVersion1(node):
+        if isinstance(node, dict):
+            if "py/state" in node:
+                return PvProject._fromVersion1(node["py/state"])
+            return {k: PvProject._fromVersion1(v) for k, v in node.items() if not k.startswith("py/")}
+        if isinstance(node, list):
+            return [PvProject._fromVersion1(v) for v in node]
+        return node
+
+    # defaults for ModelNode.fromDict
     def _initDefaults(self):
         self.__init__()
 
@@ -231,10 +252,9 @@ class PvProject(ModelNode):
     # open from disk
     def open(self, path):
         self._savePath = path
-        f = open(path)
-        json_str = f.read()
-        f.close()
-    
+        with open(path, encoding="utf-8") as f:
+            json_str = f.read()
+
         self.fromJson(json_str)
     
     # save to disk as json under specified path
@@ -244,11 +264,14 @@ class PvProject(ModelNode):
     
     # save to disk
     def save(self):
-        json = self.toJson()
+        json_str = self.toJson()
 
-        f = open(self._savePath, 'w')
-        f.write(json)
-        f.close()
+        # write a temporary file and rename it, so a crash never leaves
+        # a half written project
+        tmpPath = self._savePath + ".tmp"
+        with open(tmpPath, "w", encoding="utf-8") as f:
+            f.write(json_str)
+        os.replace(tmpPath, self._savePath)
         return True
 
 model = PvProject()
