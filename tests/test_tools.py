@@ -92,6 +92,14 @@ class ToolsTest(unittest.TestCase):
         self.assertTrue(os.path.isfile(os.path.join(copy, "plant.pvp.merged")))
         self.assertFalse(os.path.exists(os.path.join(copy, "plant.pvp")))
 
+        # a second copy of the same project
+        third = self.project("Musterwil/Kirchweg 26_3", second)
+        ret, out = quiet(merge_copies.main, [main, third, "--write"])
+        self.assertEqual(ret, 0, out)
+        merged = PvProject(os.path.join(main, "plant.pvp"))
+        self.assertEqual([o.folder for o in merged.orders], ["", "../Kirchweg 26_2", "../Kirchweg 26_3"])
+        self.assertEqual(json.load(open(os.path.join(main, "plant.pvp.before_merge")))["version"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

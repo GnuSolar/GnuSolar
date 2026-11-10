@@ -10,8 +10,8 @@
 #   python3 tools/merge_copies.py <main folder> <copy folder>            dry run, changes nothing
 #   python3 tools/merge_copies.py <main folder> <copy folder> --write
 #
-# With --write the main plant.pvp is saved as plant.pvp.before_merge and then
-# written with both projects in it; the plant.pvp of the copy is renamed to
+# With --write the main plant.pvp is saved as plant.pvp.before_merge (once,
+# also when several copies are merged) and then written with both projects in it; the plant.pvp of the copy is renamed to
 # plant.pvp.merged, so the project is no longer listed twice. No other file
 # is touched, the folder of the copy stays where it is.
 #
@@ -197,10 +197,11 @@ def merge_folders(mainFolder, copyFolder, write):
 
     mainPath = os.path.join(mainFolder, "plant.pvp")
     copyPath = os.path.join(copyFolder, "plant.pvp")
-    for path in (mainPath + ".before_merge", copyPath + ".merged"):
-        if os.path.exists(path):
-            raise Exception("exists already: " + path)
-    shutil.copy2(mainPath, mainPath + ".before_merge")
+    if os.path.exists(copyPath + ".merged"):
+        raise Exception("exists already: " + copyPath + ".merged")
+    # with several copies the file from before the first merge is kept
+    if not os.path.exists(mainPath + ".before_merge"):
+        shutil.copy2(mainPath, mainPath + ".before_merge")
     project.prepareSave()
     formats.pvp.save(project, mainPath)
     os.rename(copyPath, copyPath + ".merged")
