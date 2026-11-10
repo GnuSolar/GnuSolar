@@ -28,6 +28,7 @@ sys.excepthook = sys.__excepthook__
 # message boxes would wait for a click: collect their texts instead
 messages = []
 GnuSolar.QMessageBox.warning = lambda parent, title, text, *args: messages.append(text)
+GnuSolar.QMessageBox.information = lambda parent, title, text, *args: messages.append(text)
 GnuSolar.QMessageBox.question = lambda parent, title, text, *args: GnuSolar.QMessageBox.Yes
 
 
@@ -297,6 +298,14 @@ class ProjectWindowTest(unittest.TestCase):
             "conductors": ["L1", "L2", "L3", "N", "PE"],
             "cable": {"designation": "5G6", "crossSection": 6, "length": 8000}})
         self.assertEqual(tree.currentItem().text(0), "Verbindung: ac F1.out – Wechselrichter: Fronius Symo 10.0-3-M.GRID")
+
+        self.run_action(tree.topLevelItem(0), "Projekt prüfen")
+        self.assertEqual(messages[-1], "Nichts gefunden: Verweise und Verbindungen sind in Ordnung.")
+        tree.setCurrentItem(find(self.app, "Verbindung: ac"))
+        self.input("ends.0.port").setText("top")
+        self.run_action(tree.topLevelItem(0), "Projekt prüfen")
+        self.assertIn("hat keinen Anschluss 'top' (in, out)", messages[-1])
+        self.assertFalse(self.app.currentObj is None)
 
         # a device with a cable can not be deleted
         self.run_action(find(self.app, "Leitungsschutzschalter: F1"), "Löschen")

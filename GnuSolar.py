@@ -307,6 +307,9 @@ class GnuSolar(QApplication):
                 return
         try:
             result = action.func()
+        except gui.tree.Message as e:
+            QMessageBox.information(self.window, 'GnuSolar', str(e))
+            return
         except ValueError as e:
             QMessageBox.warning(self.window, 'GnuSolar', str(e))
             return

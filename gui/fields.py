@@ -115,11 +115,12 @@ _LIFETIME = [
 ]
 
 
-# all kinds of steps: the common ones and those of the country extensions
+# all kinds of steps: the common ones and those of the enabled country
+# extensions
 def stepKinds():
     kinds = dict(Order.STEP_KINDS)
-    for pluginId in plugins.AVAILABLE:
-        kinds.update(getattr(plugins.get(pluginId), "STEP_KINDS", {}))
+    for plugin in plugins.enabled():
+        kinds.update(getattr(plugin, "STEP_KINDS", {}))
     return kinds
 
 

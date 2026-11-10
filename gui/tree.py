@@ -15,6 +15,7 @@ from model.Building import Building, Roof, ModuleGroup, Obstacle, Surrounding, O
 from model.Device import DeviceType, Device, String, Connection, DEVICE_KINDS, TYPE_KINDS, CONNECTION_KINDS
 from model.Order import Order, Step, Invoice, Quote, Design, ORDER_TYPES, INVOICE_KINDS
 from model.compat import SiteView, PlantView, ProgressView
+from model.checks import check
 from gui.captions import caption
 from gui.fields import stepKinds
 
@@ -45,6 +46,11 @@ SECTIONS = (
     ("connections", "Verbindungen", "Kabel zwischen den Geräten: Leistung, Schutzleiter und Signal. Geräte und "
                                     "Verbindungen zusammen sind das Schema der Installation."),
 )
+
+
+# raised by an action which only has something to tell
+class Message(Exception):
+    pass
 
 
 # One entry of a context menu: func does it and returns the object to show
@@ -257,8 +263,12 @@ def contextMenu(item):
     parent = item.parent().pvpObj if item.parent() else None
 
     if isinstance(obj, PvProject):
+        def checkProject():
+            found = check(obj)
+            raise Message("\n".join(found) if found else "Nichts gefunden: Verweise und Verbindungen sind in Ordnung.")
         return [Action("Neuer Auftrag", entries=[
-            Action(name, lambda t=orderType: obj.addOrder(t)) for orderType, name in ORDER_TYPES.items()])]
+                    Action(name, lambda t=orderType: obj.addOrder(t)) for orderType, name in ORDER_TYPES.items()]),
+                Action("Projekt prüfen", checkProject)]
 
     if isinstance(obj, ContactList):
         return [Action("Kontakt hinzufügen", entries=[

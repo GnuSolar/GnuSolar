@@ -24,6 +24,16 @@ CAPTIONS = {
 }
 
 
+# caption of a kind of step, also of plugins which are not enabled
+def _stepName(kind):
+    import plugins
+    from model.Order import STEP_KINDS
+    if kind in STEP_KINDS:
+        return STEP_KINDS[kind]
+    plugin = plugins.get(str(kind).split(".")[0])
+    return getattr(plugin, "STEP_KINDS", {}).get(kind, kind)
+
+
 def _join(prefix, *parts):
     detail = " ".join(str(p) for p in parts if p not in (None, ""))
     return prefix + (": " + detail if detail else "")
@@ -31,15 +41,13 @@ def _join(prefix, *parts):
 
 # caption of a model object
 def caption(obj):
-    from gui.fields import stepKinds
-
     if isinstance(obj, Contact):
         name = " ".join(p for p in (obj.organization, obj.lastName, obj.firstName) if p)
         return "Kontakt (" + obj.getRoleName() + ")" + (" " + name if name else "")
     if isinstance(obj, Order):
         return _join("Auftrag", obj.getCaption())
     if isinstance(obj, Step):
-        return _join("Schritt", stepKinds().get(obj.kind, obj.kind), "(" + str(obj.state) + ")")
+        return _join("Schritt", _stepName(obj.kind), "(" + str(obj.state) + ")")
     if isinstance(obj, Invoice):
         return _join("Rechnung", INVOICE_KINDS.get(obj.kind, obj.kind), obj.number, values.dateToText(obj.date))
     if isinstance(obj, Quote):

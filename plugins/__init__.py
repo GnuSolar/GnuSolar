@@ -21,6 +21,14 @@ def get(pluginId):
     return importlib.import_module(name) if name else None
 
 
+# The modules of the plugins the user enabled ("plugins" in config.json).
+# A plugin that is not enabled offers nothing in the program; its data in a
+# project file is kept all the same.
+def enabled():
+    from Config import config
+    return [get(pluginId) for pluginId in config.plugins if pluginId in AVAILABLE]
+
+
 # all ext namespaces used anywhere in plain project data
 def usedNamespaces(node, found=None):
     found = set() if found is None else found

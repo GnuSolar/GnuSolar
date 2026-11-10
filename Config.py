@@ -25,6 +25,9 @@ class Config():
         self.nextInvoiceNumber = 0
 
         self.sipServer = ""             # SIP Server for voip
+
+        # enabled plugins and country extensions, see plugins/
+        self.plugins = ["ch"]
         
         # Installer info
         self.installer_company = ""

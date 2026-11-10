@@ -1,6 +1,6 @@
 # GnuSolar project file, version 3
 
-Draft. Version 2 is the current format (see `formats/pvp.py`); this document describes version 3, the next one.
+Version 3 is the format GnuSolar writes (`formats/pvp.py`). It still reads version 2, the format before it.
 
 A project file describes one solar project: the site, the people involved, the buildings and roofs, the devices
 installed over time, and the quotes and orders that brought them there. GnuSolar reads and writes it, and any other
@@ -111,7 +111,8 @@ Every date and every point in time is a Unix timestamp: the seconds since 1970-0
 ### Missing values
 
 - A value that is not known is left out or `null`. The empty string `""` means an empty text, never "not known";
-  numbers and dates are never `""`.
+  numbers and dates are never `""`. GnuSolar leaves unknown values and empty lists out, except the lists of the
+  project object.
 
 ### Units
 
@@ -785,6 +786,7 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
         "date": 1793880000,
         "variant": "Aufdach mit Batterie",
         "designId": "uuid",
+        "orderId": "uuid",
         "validUntil": 1798718400,
         "state": "sent",
         "items": [
@@ -804,8 +806,11 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
 | `items[].kind` | `device`, `material`, `service`, `discount`, `text` |
 | `items[].unit` | `piece`, `m`, `m2`, `h`, `lump_sum`. The order of the items is their position number. |
 | `variant` | Free text shown on the quote. `designId` points to the layout that goes with it. |
+| `orderId` | The order (job) the quote was made for. An order exists from the inquiry on, so every quote has one. The order's `quoteId` names the quote the client accepted. |
 
-A migrated quote may have only a `date` (from version 2 `quoteNSent`) and no number, items or total.
+A migrated quote may have only a `date` (from version 2 `quoteNSent`) and no number, items or total. A quote
+GnuSolar created from a template starts as `draft` with its `number` and document, and gets its `date` when it is
+sent.
 
 ## 12. Orders
 
@@ -900,7 +905,8 @@ A step is something done with an authority, the grid operator, a subsidy office 
 
 `state` goes through `ordered` → `filled` → `signed` → `submitted` → `approved` → `paid`, or ends in `rejected`; a step
 uses only the states that apply to it. A step not yet started has state `open`; one that doesn't apply to this order
-is left out. `dates` holds the date each state was reached. `documents` lists files in the order's folder:
+is left out. `dates` holds the date each state was reached, and `state` is the furthest one that has a date. `notes`
+is free text. `documents` lists files of the step, with their path relative to the project folder:
 
 ```json
 { "path": "evu/2026-05-10_tag_bew.pdf", "kind": "approved", "date": 1778414400 }
@@ -975,6 +981,9 @@ The extension for Switzerland, `ch`:
 
 A reader that doesn't know a country extension keeps its data and shows its steps by their `kind` and dates.
 
+In GnuSolar the extension is `plugins/ch.py`. Which plugins are enabled is a setting of the program (`plugins` in
+`config.json`), not of the project: a plugin that is not enabled offers nothing, and its data stays in the file.
+
 ### Plugin list
 
 The project's `plugins` lists every plugin that wrote data to the file, so a reader without the plugin knows what the
@@ -986,21 +995,35 @@ data is:
 ]
 ```
 
-## 14. Implementation notes
+## 14. Implementation
 
-`model/ModelNode.py` turns the model into plain data and back. Version 3 needs two changes there:
+How GnuSolar implements this document:
 
-- **Keep unknown fields.** `fromDict()` currently skips keys the class doesn't have, so the next save drops them. For
-  version 3 it keeps them in a runtime attribute (for example `_unknown`), and `toDict()` writes them back.
-- **Dates as timestamps.** The model holds dates as integers. The forms show and take days in local notation, and
-  `Progress` compares numbers where it compares date strings today.
-- **Lists of parts.** Version 3 has lists of objects (contacts, orders, devices …). Their class comes from the field,
-  not from the file, as for the dicts of parts today.
+| Part | Where |
+|---|---|
+| Reading and writing the file, refusing newer versions, migrating older ones | `formats/pvp.py` |
+| Plain data ↔ model: unknown fields are kept (`_unknown`), lists of parts get their class from the field (`_parts`), values have a type (`_types`) | `model/ModelNode.py` |
+| Dates and numbers ↔ the text of forms and documents | `model/values.py` |
+| The objects of sections 4 to 12 | `model/Site.py`, `Contact.py`, `Building.py`, `Device.py`, `Order.py`, `PvProject.py` |
+| The fields of version 2 on top of the new model, for forms, document templates and form scripts written for it: `project.building`, `.plant`, `.progress`, and `.existing` for what was installed before the order at hand | `model/compat.py` |
+| Checks: references that point nowhere, ports a device doesn't have, connectors that don't fit | `model/checks.py` |
+| Country extension for Switzerland | `plugins/ch.py` |
+| Pages of the project window made from field lists | `gui/fields.py`, `gui/forms.py` |
+| Tests, including the examples of sections 10 and 17 of this document | `tests/` |
+
+Forms show a day as `2015-03-21` and also take `21.03.2015`. Text that is no date or number is not stored.
+
+The program doesn't do everything the format can hold yet. Roofs, obstacles, module groups, strings and connections
+are entered as values, there is no drawing. Quote and order `items`, `panels`, `warranties` and plugin data are
+edited as JSON. There is no import from PV*SOL, PVsyst or swissBUILDINGS3D (section 16), and no plugin besides the
+country extension.
 
 ## 15. Migration from version 2
 
-GnuSolar converts a version 2 project in `formats/pvp.py: _migrate()`, on the plain data. `tools/migrate_pvp.py`
-converts all projects at once, with a dry run that lists lost values and a backup of all files.
+GnuSolar converts a version 2 project when it reads it (`formats/migrate_v2.py`, on the plain data) and writes it
+as version 3 when it is saved. The first time, the version 2 file is kept next to it as `plant.pvp.v2`.
+`tools/migrate_pvp.py` converts all projects at once, with a backup of all files. Its dry run reads every converted
+project back through the fields of version 2 and compares it with the old file, and lists what didn't fit.
 
 Version 2 has one building, one plant and one progress per file. In version 3 they become the site, one building with
 one roof, and one order of type `new_system`.
@@ -1039,7 +1062,7 @@ one roof, and one order of type `new_system`.
 | `plant.constructionType` | order `constructionType`: `builton` → `on_roof`, `integrated` → `in_roof`, `facade` → `facade` |
 | `plant.totalCost` | order `totalCost` |
 | `progress.inquiryReceived`, `roofMeasure`, `roofMeasured`, `orderReceived`, `orderRejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `launch`, `archived`, `inactiv` | order `inquiry`, `roofMeasure`, `roofMeasured`, `ordered`, `rejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `commissioned`, `archived`, `inactive` |
-| `progress.quote1Sent`, `quote2Sent`, `quote3Sent`, `quote4Sent` | one quote each, with `date` and `state: "sent"`; numbers from `off/O<date>-*.pdf` where one matches |
+| `progress.quote1Sent`, `quote2Sent`, `quote3Sent`, `quote4Sent` | one quote each, with `date`, `state: "sent"` and the order as `orderId`; numbers from the files `off/O<year>-<month>-<number>.*`, where a month has as many such numbers as quotes |
 | `progress.tagSent`, `tagReceived` | step `ch.tag`: `submitted`, `approved` |
 | `progress.iaSent`, `iaReceived` | step `ch.ia`: `submitted`, `approved` |
 | `progress.bauSent`, `bauReceived` | step `ch.building_permit`: `submitted`, `approved` |
@@ -1050,7 +1073,7 @@ one roof, and one order of type `new_system`.
 | `progress.eivComplete`, `eivPayed` | step `ch.pronovo`: `submitted`, `paid` |
 | `progress.partialInvoiceSent`, `partialInvoiceReceived` | invoice of kind `partial`, `date` and `paid` |
 | `progress.partialInvoice2Sent`, `partialInvoice2Received` | a second invoice of kind `partial` |
-| `progress.finalInvoiceSent`, `finalInvoiceReceived` | invoice of kind `final`; invoice numbers from `fin/R<date>-*.pdf` where one matches |
+| `progress.finalInvoiceSent`, `finalInvoiceReceived` | invoice of kind `final`; invoice numbers from the files `fin/R<year>-<month>-<number>.*`, matched like the quotes |
 | `state` (`Running`, …) | dropped: the order `state` is derived from the dates |
 | `comment` | project `notes` |
 
@@ -1063,19 +1086,27 @@ Version 2 values are text as typed. The migration converts them:
 - **Empty strings** of numbers, dates and optional fields become `null`.
 - **Dates:** version 2 stores days as text like 2015-03-21. They become timestamps of that day (section 3).
   Values that are not such a date:
-  - a year only (`"2021"`): the date `null`, the text kept in the step's or order's `notes`
+  - a year only (`"2021"`): the date `null`, the text kept in the step's or order's `notes` as `eivPayed: 2021`
   - two dates (`"2022-09-27/2023-06-28"`): the first date in the field as a timestamp, the whole text in `notes`; such a project
     most likely had two orders and needs a manual look (the dry run lists them)
   - other text (`"other"`): `null`, the text in `notes`
 - **IDs:** every object gets a new UUID.
 
 Nothing of a version 2 file is lost: a value that has no place in version 3 goes to `ext.gnusolar.v2` of the object
-it belonged to. The dry run of `tools/migrate_pvp.py` lists every such value.
+it belonged to, under its version 2 name:
+
+```json
+"ext": { "gnusolar": { "v": 1, "v2": { "buildingState": "existing" } } }
+```
+
+The dry run of `tools/migrate_pvp.py` lists every such value.
 
 ### Folder copies
 
 Project folders that are copies of another project at the same address (`Heid 2.3_2`) are merged by a separate tool,
-not by the file migration: their order becomes an order of the main project with `folder` pointing to the copy.
+`tools/merge_copies.py`, not by the file migration: their order becomes an order of the main project with `folder`
+pointing to the copy (`../Heid 2.3_2`, as long as the copy is not moved into the project folder). Types, meters and
+contacts that are the same in both are not added twice.
 
 ## 16. Reading other formats
 
@@ -1183,7 +1214,6 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                         "path": "2026_Bat/batterie.pvprj"
                     }
                 ],
-                "expectedYield": null,
                 "id": "0a1b2c3d-0000-4000-8000-000000000080",
                 "label": "Batterie 10 kWh"
             }
@@ -1212,8 +1242,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "kind": "inverter",
                 "label": "Hybrid-WR",
                 "orderId": "0a1b2c3d-0000-4000-8000-000000000051",
-                "replacesId": "0a1b2c3d-0000-4000-8000-000000000031",
-                "typeId": null
+                "replacesId": "0a1b2c3d-0000-4000-8000-000000000031"
             },
             {
                 "access": {
