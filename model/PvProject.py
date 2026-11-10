@@ -130,6 +130,40 @@ class PvProject(ModelNode):
             return None
         return os.path.join(projectDir, order.folder) if order.folder else projectDir
 
+    # ---- documents ----------------------------------------------------------
+
+    # what a document created by GnuSolar is: kind => (part, kind of the part, kind of the document)
+    DOCUMENTS = {
+        "quote": ("quote", None, "quote"),
+        "partial_invoice": ("invoice", "partial", "invoice"),
+        "final_invoice": ("invoice", "final", "invoice"),
+        "small_invoice": ("invoice", "small", "invoice"),
+        "documentation": ("step", "documentation", "filled"),
+        "mundpp": ("step", "measurement", "filled"),
+        "tag": ("step", "ch.tag", "filled"),
+        "gvz": ("step", "documentation", "filled"),
+    }
+
+    # Record a document GnuSolar created for the current order: a quote and
+    # an invoice become a new entry with the number of the file, anything
+    # else is added to its step. Returns the part the document is in.
+    def addDocument(self, kind, path):
+        if kind not in self.DOCUMENTS or not self.getProjectDir():
+            return None
+        part, partKind, documentKind = self.DOCUMENTS[kind]
+        order = self.currentOrder
+        relPath = os.path.relpath(path, self.getProjectDir()).replace(os.sep, "/")
+        document = {"path": relPath, "kind": documentKind}
+        number = os.path.splitext(os.path.basename(path))[0]
+        if part == "quote":
+            return self.addPart("quotes", number=number, state="draft", orderId=order.id, documents=[document])
+        if part == "invoice":
+            return order.addPart("invoices", kind=partKind, number=number, documents=[document])
+        step = order.getStep(partKind) or order.addPart("steps", kind=partKind)
+        if document not in step.documents:
+            step.documents.append(dict(document, date=values.today()))
+        return step
+
     # ---- the project of file version 2 --------------------------------------
 
     @property

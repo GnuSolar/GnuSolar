@@ -53,8 +53,16 @@ class Page:
         except DocumentError as e:
             QtWidgets.QMessageBox.warning(None, e.title, str(e))
             return None
+        self.recordDocument(templateType, path)
         openFolderIfExists(path)
         return path
+
+    # Note a created document in the project and show it in the tree
+    def recordDocument(self, kind, path):
+        part = self.project.addDocument(kind, path)
+        if part is not None and self.app is not None:
+            self.app.action_changed()
+            self.app.showModel(select=self.obj)
 
 
 class PvProjectPage(Page):
@@ -112,6 +120,7 @@ class PvProjectPage(Page):
         if not os.path.isdir(projectDir):
             QtWidgets.QMessageBox.warning(None, 'QR Bill', 'Pfad nicht gefunden\n' + self.obj._savePath)
             return
+        projectDir = self.obj.getOrderDir()
 
         today = date.today()
         fileName = "QR" + today.isoformat() + ".pdf"
@@ -414,7 +423,7 @@ class MunicipalityPage(Page):
 
     # Erzeuge Gebäudeversicherung Zürich Formular
     def action_createGvzDocumentation(self):
-        projectDir = self.project.getProjectDir()
+        projectDir = self.project.getOrderDir()
         if not projectDir:
             return
 
@@ -428,6 +437,7 @@ class MunicipalityPage(Page):
             QtWidgets.QMessageBox.information(None, 'Error Creating GVZ', ret)
             return
 
+        self.recordDocument("gvz", gvzPath)
         openFolderIfExists(gvzPath)
 
     # Erzeuge Solarmeldung
@@ -454,7 +464,7 @@ class PowerCompanyPage(Page):
     def action_createTag(self):
         global config
 
-        projectDir = self.project.getProjectDir()
+        projectDir = self.project.getOrderDir()
         if not projectDir:
             return
         
@@ -477,6 +487,7 @@ class PowerCompanyPage(Page):
         openFolderIfExists(tagPath)
         now = date.today()
         self.project.progress.tagSent = now.isoformat()
+        self.recordDocument("tag", tagPath)
 
     # Sende Tag
     def action_composeTagEmail(self):

@@ -65,6 +65,8 @@ def createFromTemplate(templateType, savePath, model, config):
     projectDir = os.path.dirname(savePath)
     if not os.path.isdir(projectDir):
         raise DocumentError(templateType + ' erstellen', 'Pfad nicht gefunden\n' + savePath)
+    # the documents of an order go into its folder
+    projectDir = model.getOrderDir() or projectDir
 
     outDir = projectDir + os.sep + out_dir
     outPath = outDir + os.sep + out_file

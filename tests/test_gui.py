@@ -17,9 +17,13 @@ from PyQt5.QtWidgets import QLineEdit
 
 import GnuSolar
 import gui.tree
+import gui.pages
 from tests.test_project import v2_text
 
 app = None
+
+# an exception in the window must fail the test, not open a dialog
+sys.excepthook = sys.__excepthook__
 
 # message boxes would wait for a click: collect their texts instead
 messages = []
@@ -55,10 +59,17 @@ def field(app, name):
     return app.ui.stackedWidget.currentWidget().findChild(QLineEdit, name)
 
 
+# created documents are not opened
+opened = []
+gui.pages.openFolderIfExists = opened.append
+
+
 class ProjectWindowTest(unittest.TestCase):
 
     def setUp(self):
         self.folder = tempfile.mkdtemp()
+        GnuSolar.config.configPath = os.path.join(self.folder, "config.json")
+        GnuSolar.config.templatePath = ""
         self.path = os.path.join(self.folder, "plant.pvp")
         with open(self.path, "w", encoding="utf-8") as f:
             f.write(v2_text())
@@ -293,6 +304,38 @@ class ProjectWindowTest(unittest.TestCase):
         self.run_action(find(self.app, "Verbindung: ac"), "Löschen")
         self.run_action(find(self.app, "Leitungsschutzschalter: F1"), "Löschen")
         self.assertNotIn(fuse, project.devices)
+
+    def test_documents_go_to_the_order(self):
+        tree = self.app.ui.tree
+        project = GnuSolar.model
+        order = self.run_action(tree.topLevelItem(0), "Neuer Auftrag", "Batterie")
+        self.input("folder").setText("2026_Bat")
+        tree.setCurrentItem(tree.topLevelItem(0))
+        self.assertIs(project.currentOrder, order)
+
+        self.app.currentPage.ui.createQuote.click()
+        number = os.path.splitext(os.path.basename(opened[-1]))[0]
+        self.assertTrue(os.path.isfile(os.path.join(self.folder, "2026_Bat", "off", number + ".odt")))
+        quote = project.quotes[-1]
+        self.assertEqual((quote.number, quote.state, quote.orderId, quote.date), (number, "draft", order.id, None))
+        self.assertEqual(quote.documents, [{"path": "2026_Bat/off/" + number + ".odt", "kind": "quote"}])
+        self.assertTrue(self.app.unsavedChanges)
+        self.assertEqual(order.deriveState(), "inquiry")
+        # the date it was sent comes from the progress page
+        project.progress.quote1Sent = "2026-08-05"
+        self.assertEqual((quote.state, quote.date, order.deriveState()), ("sent", 1785931200, "quoted"))
+
+        self.app.currentPage.ui.createPartialInvoice.click()
+        invoice = order.invoices[0]
+        self.assertEqual((invoice.kind, invoice.documents[0]["path"]),
+                         ("partial", "2026_Bat/fin/" + invoice.number + ".odt"))
+        project.progress.partialInvoiceSent = "2026-09-01"
+        self.assertEqual(invoice.date, 1788264000)
+
+        self.app.currentPage.ui.createDocumentation.click()
+        step = order.getStep("documentation")
+        self.assertEqual((step.state, step.documents[0]["path"]), ("open", "2026_Bat/doc/Dokumentation.odt"))
+        self.assertIsNotNone(find(self.app, "Schritt: Dokumentation"))
 
     def test_replacement_device(self):
         project = GnuSolar.model
