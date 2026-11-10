@@ -34,9 +34,25 @@ from Ui.PowerCompany import *
 from Ui.Municipality import *
 
 from model.PvProject import *
-from gui.binding import updateUi, updateModel
+from gui.binding import updateUi, updateModel, resolve, storeWidget
 from gui.pages import createPage
 import gui.tree
+
+from model.Contact import Contact, ContactList
+from model.Site import Municipality, GridOperator
+from model.compat import SiteView, PlantView, ProgressView
+
+# model class => generated form of its detail page
+FORMS = {
+    PvProject: Ui_PvProject,
+    ContactList: Ui_Contacts,
+    Contact: Ui_Contact,
+    SiteView: Ui_Building,
+    Municipality: Ui_Municipality,
+    GridOperator: Ui_PowerCompany,
+    ProgressView: Ui_Progress,
+    PlantView: Ui_Plant,
+}
 
 from Config import *
 from ErrorHandler import *
@@ -162,38 +178,22 @@ class GnuSolar(QApplication):
     # Update the attribute of the model
     def action_attributeChanged(self):
         el = self.sender()
-        obj = self.currentObj
+        obj, name = resolve(self.currentObj, el.objectName())
+        storeWidget(el, obj, name)
 
-        if isinstance(el, QLineEdit):
-            val = el.text()
-        elif isinstance(el, QPlainTextEdit):
-            val = el.toPlainText()
-        elif isinstance(el, QComboBox):
-            val = el.currentText()
-        elif isinstance(el, QCheckBox):
-            val = el.isChecked()
-        else:
-            raise Exception(str(type(el)) + " not implemented")
-
-        att_name = el.objectName()
-        att_name = att_name[4:]         # remove obj_ from the start
-        obj.__dict__[att_name] = val
-        
         # signal something changed
         self.action_changed()
-        
+
     def action_treeClicked(self, item):
         # no item selected, e.g. while the tree is cleared
         if item is None:
             return
 
         obj = item.pvpObj
-        class_name = type(obj).__name__
 
         # load the ui into the detail window
         widget = QWidget()
-        klass = globals()["Ui_" + class_name]
-        ui = klass()
+        ui = FORMS[type(obj)]()
         ui.setupUi(widget)
         self.clearDetails()
         self.currentObj = obj
@@ -201,7 +201,7 @@ class GnuSolar(QApplication):
         self.ui.stackedWidget.setCurrentWidget(widget)
 
         # Set the label
-        label = gui.tree.caption(obj)
+        label = item.text(0)
         if label and hasattr(ui, "groupBox"):
             ui.groupBox.setTitle(label)
        

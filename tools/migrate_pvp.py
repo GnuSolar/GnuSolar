@@ -8,8 +8,13 @@
 #   python3 tools/migrate_pvp.py <projectRoot> --write <backup.tar.gz>
 #
 # Checks before anything is written:
-#  - the converted file loads to exactly the same project as the original
-#  - no value of the original file is lost (lists the values that would be)
+#  - the converted file loads to exactly the same project
+#  - every value of the old file is still there: the project is read back
+#    through the fields of the old version (project.building, project.plant,
+#    project.progress, ...) and compared with the old file
+# It lists what the migration could not place: values kept in
+# ext.gnusolar.v2, dates that are no dates (kept in the notes) and projects
+# that need a look by hand.
 # With --write all plant.pvp files are first saved into the backup archive.
 
 import os
@@ -22,7 +27,11 @@ sys.path.insert(0, os.path.join(repo, "site-packages"))
 sys.path.insert(0, repo)
 
 from model.PvProject import PvProject
+from formats.migrate_v2 import Report
 import formats.pvp
+
+# fields of version 2 which version 3 doesn't have on purpose
+DROPPED = ("/state", "/municipality/fkPowerCompany", "/powerCompany/fkContactTag")
 
 
 def find_projects(root):
@@ -47,24 +56,90 @@ def leaves(node, path=""):
         yield path, node
 
 
-# the values of the old file which are not in the new one
-def lost_values(old_json, new_json):
-    new_values = {str(v) for p, v in leaves(json.loads(new_json))}
+def _norm(value):
+    if value is None or value is False:
+        return ""
+    return str(value).strip()
+
+
+# the same value, as text or as number
+def same(old, new):
+    old, new = _norm(old), _norm(new)
+    if old == new:
+        return True
+    try:
+        a, b = float(old.replace(",", ".")), float(new.replace(",", "."))
+    except ValueError:
+        return False
+    return abs(a - b) <= 1e-6 * max(1, abs(a))
+
+
+# The value a version 2 field has in the migrated project
+def new_value(project, path):
+    parts = path.strip("/").split("/")
+    if parts[:2] == ["contacts", "contacts"]:
+        role = {"owner": "owner", "installer_ac": "electrician"}.get(parts[2], parts[2])
+        obj = project.contacts.withRole(role)
+        if obj is None:
+            return None
+        parts = parts[3:]
+    else:
+        obj = project
+    for part in parts:
+        obj = getattr(obj, part)
+    return obj
+
+
+# the values of a version 2 file which the migrated project doesn't give back
+def lost_values(old, project, report):
+    noted = {p.replace(".", "/") for p, v in report.notes} | {p.replace(".", "/") for p, v in report.kept}
     lost = []
-    for path, value in leaves(json.loads(old_json)):
-        if value in (None, "", False, 0) or "py/" in path.rsplit("/", 1)[-1]:
+    for path, value in leaves(old):
+        if _norm(value) == "" or path in DROPPED or path.strip("/") in noted:
             continue
-        if str(value) not in new_values:
+        name = path.rsplit("/", 1)[-1]
+        if name == "role":
+            continue
+        try:
+            new = new_value(project, path)
+        except AttributeError:
+            lost.append((path, value))
+            continue
+        # coordinates: LV95 with 7 digits comes back as LV03 with 6
+        if name in ("swissGridX", "swissGridY") and not same(value, new):
+            try:
+                offset = 2000000 if name == "swissGridX" else 1000000
+                if same(float(str(value).strip()) - offset, new):
+                    continue
+            except ValueError:
+                pass
+        # the second phone or email moves up if there is no first
+        if name in ("phone2", "email2") and not same(value, new):
+            first = new_value(project, path[:-1])
+            if same(value, first):
+                continue
+        # a quote moves up if an earlier one is missing
+        if name in ("quote2Sent", "quote3Sent", "quote4Sent") and not same(value, new):
+            if any(same(value, getattr(project.progress, "quote%dSent" % n)) for n in (1, 2, 3)):
+                continue
+        if not same(value, new):
             lost.append((path, value))
     return lost
 
 
 def convert(path):
-    old_json = open(path).read()
-    project = PvProject(path)
+    old_json = open(path, encoding="utf-8").read()
+    old = json.loads(old_json)
+    report = Report()
+    project = PvProject()
+    formats.pvp.load(project, path, report=report)
+    if not project._migratedFrom:
+        return "current", None, [], report
+
+    project._savePath = path
+    lost = lost_values(old.get("project"), project, report)
+    project.prepareSave()
     new_json = formats.pvp.dumps(project)
-    if new_json == old_json:
-        return "current", None, []
 
     # the new file must load to the same project
     reloaded = PvProject()
@@ -72,7 +147,7 @@ def convert(path):
     if formats.pvp.dumps(reloaded) != new_json:
         raise Exception("converted file does not load to the same project")
 
-    return "convert", new_json, lost_values(old_json, new_json)
+    return "convert", new_json, lost, report
 
 
 def main(args):
@@ -96,15 +171,29 @@ def main(args):
         len(files), len(results) - len(todo), len(todo), len(errors)))
     for f, e in errors:
         print("  ERROR " + os.path.relpath(f, root) + ": " + e)
-    for f, (state, new_json, lost) in todo.items():
+    lostCount = 0
+    for f, (state, new_json, lost, report) in todo.items():
+        name = os.path.relpath(os.path.dirname(f), root)
         for path, value in lost:
-            print("  LOST  %s: %s = %r" % (os.path.relpath(f, root), path, value))
+            lostCount += 1
+            print("  LOST   %s: %s = %r" % (name, path, value))
+        for path, value in report.manual:
+            print("  CHECK  %s: %s = %r (two dates: two orders?)" % (name, path, value))
+        for path, value in report.notes:
+            if (path, value) not in report.manual:
+                print("  NOTE   %s: %s = %r (no date, kept in the notes)" % (name, path, value))
+        for path, value in report.kept:
+            if path != "building.buildingState":
+                print("  KEPT   %s: %s = %r (in ext.gnusolar.v2)" % (name, path, value))
+    kept = sum(len(r[3].kept) for r in todo.values())
+    print("lost values: %d, kept in ext.gnusolar.v2: %d (buildingState: %d)" % (
+        lostCount, kept, sum(1 for r in todo.values() for p, v in r[3].kept if p == "building.buildingState")))
 
     if not write:
         print("dry run, nothing written")
-        return 1 if errors else 0
-    if errors:
-        print("not written, fix the errors first")
+        return 1 if errors or lostCount else 0
+    if errors or lostCount:
+        print("not written, fix the errors and lost values first")
         return 1
 
     # backup of all project files, then write
@@ -117,9 +206,9 @@ def main(args):
             tar.add(f, arcname=os.path.relpath(f, root))
     print("backup: %s (%d files)" % (backup, len(files)))
 
-    for f, (state, new_json, lost) in todo.items():
+    for f, (state, new_json, lost, report) in todo.items():
         tmp = f + ".tmp"
-        with open(tmp, "w") as out:
+        with open(tmp, "w", encoding="utf-8") as out:
             out.write(new_json)
         os.replace(tmp, f)
     print("converted: %d" % len(todo))

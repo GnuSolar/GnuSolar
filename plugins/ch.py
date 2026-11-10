@@ -54,3 +54,78 @@ def lv95ToWgs84(e, n):
     lon = 2.6779094 + 4.728982 * y + 0.791484 * y * x + 0.1306 * y * x * x - 0.0436 * y * y * y
     lat = 16.9023892 + 3.238272 * x - 0.270978 * y * y - 0.002528 * x * x - 0.0447 * y * y * x - 0.0140 * x * x * x
     return round(lat * 100 / 36, 6), round(lon * 100 / 36, 6)
+
+
+# ---- lookups at geo.admin.ch ------------------------------------------------
+
+# The building at an address: {"egid", "x", "y" (LV03), "municipalityCode",
+# "municipalityName"}, None if there is not exactly one.
+def findAddress(zipCode, street, streetNumber):
+    import json
+    import requests
+
+    url = r"https://api3.geo.admin.ch/rest/services/api/MapServer/find"
+    params = {
+        "layer": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis",
+        "searchField": "zip_label",
+        "searchText": zipCode,
+        "layerDefs": json.dumps(
+            {
+                "ch.swisstopo.amtliches-gebaeudeadressverzeichnis":"adr_number ilike '"+str(streetNumber)+"' and stn_label ilike '"+str(street)+"'"
+            })
+    }
+    try:
+        response = requests.get(url=url, params=params)
+        results = response.json()["results"]
+    except Exception:
+        return None
+
+    if len(results) != 1:
+        return None
+
+    return {
+        "egid": str(results[0]["id"]),
+        "x": str(results[0]["geometry"]["x"]),
+        "y": str(results[0]["geometry"]["y"]),
+        "municipalityCode": str(results[0]["attributes"]["com_fosnr"]),
+        "municipalityName": str(results[0]["attributes"]["com_name"]),
+    }
+
+
+# the properties of the one object of a layer at LV95 coordinates, None if
+# there is not exactly one
+def _identify(layer, e, n):
+    import requests
+
+    url = r"https://api3.geo.admin.ch/rest/services/all/MapServer/identify"
+    params = {
+        "geometry": str(e) + "," + str(n),
+        "geometryFormat": "geojson",
+        "geometryType": "esriGeometryPoint",
+        "imageDisplay": "1155,600,96",
+        "layers": "all:" + layer,
+        "limit": "10",
+        "mapExtent": str(e-30) + "," + str(n-30) + "," + str(e+30) + "," + str(n+30),
+        "sr": "2056",
+        "tolerance": "10"
+    }
+
+    response = requests.get(url=url, params=params)
+    results = response.json()["results"]
+    if len(results) != 1:
+        return None
+    return results[0]["properties"]
+
+
+# number of the parcel at LV95 coordinates
+def queryPlotNumber(e, n):
+    properties = _identify("ch.swisstopo-vd.amtliche-vermessung", e, n)
+    return properties["number"] if properties else None
+
+
+# building zone (ARE) at LV95 coordinates: {"code", "name"}
+def queryZone(e, n):
+    properties = _identify("ch.are.bauzonen", e, n)
+    if not properties:
+        return None
+    return {"code": properties["ch_code_hn"], "name": properties["ch_bez_d"]}

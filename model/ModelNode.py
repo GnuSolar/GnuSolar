@@ -109,6 +109,10 @@ class ModelNode:
             # list of parts (e.g. the orders)
             if key in self._parts and isinstance(value, list):
                 value = [self._newPart(self._parts[key], v) for v in value]
+                # a list class of its own (ContactList) is kept
+                if type(default) is not list and isinstance(default, list):
+                    default[:] = value
+                    continue
 
             # dict of parts: entries of the data are added to the default
             # entries, all of the same class

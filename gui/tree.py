@@ -9,22 +9,18 @@
 from PyQt5.QtWidgets import QTreeWidgetItem
 
 from model.PvProject import PvProject
-from model.Contacts import Contacts
-from model.Contact import Contact
-from model.Building import Building
-from model.Municipality import Municipality
-from model.PowerCompany import PowerCompany
-from model.Progress import Progress
-from model.Plant import Plant
+from model.Contact import Contact, ContactList
+from model.Site import Municipality, GridOperator
+from model.compat import SiteView, PlantView, ProgressView
 
 CAPTIONS = {
     PvProject: "PV Projekt",
-    Contacts: "Kontakte",
-    Building: "Gebäude",
+    ContactList: "Kontakte",
+    SiteView: "Gebäude",
     Municipality: "Gemeinde",
-    PowerCompany: "Stromversorger",
-    Progress: "Fortschritt",
-    Plant: "Anlage",
+    GridOperator: "Stromversorger",
+    ProgressView: "Fortschritt",
+    PlantView: "Anlage",
 }
 
 
@@ -40,44 +36,44 @@ def buildTree(tree, project):
     tree.setColumnCount(1)
     top = QTreeWidgetItem(None, ["PV-Anlage"])
     top.pvpObj = project
-    _addItems(project, top)
+
+    # owner and electrician are always there
+    project.contacts.owner
+    project.contacts.installer_ac
+    contacts = _addItem(top, project.contacts)
+    for contact in project.contacts:
+        _addItem(contacts, contact)
+
+    _addItem(top, project.building)
+    municipality = _addItem(top, project.municipality)
+    _addItem(municipality, project.municipality.mainContact, "Kontakt (Haupt)")
+    _addItem(municipality, project.municipality.buildingContact, "Kontakt (Baubehörde)")
+    powerCompany = _addItem(top, project.powerCompany)
+    _addItem(powerCompany, project.powerCompany.mainContact, "Kontakt (Haupt)")
+    _addItem(powerCompany, project.powerCompany.tagContact, "Kontakt (TAG's)")
+    _addItem(top, project.progress)
+    _addItem(top, project.plant)
+
     tree.addTopLevelItems([top])
     tree.expandAll()
 
 
-def _addItem(parent, obj, name):
-    item = QTreeWidgetItem(None, [caption(obj) or str(name)])
+def _addItem(parent, obj, name=None):
+    item = QTreeWidgetItem(None, [name or caption(obj) or str(obj)])
     item.pvpObj = obj
+    item.pvpCaption = name
     parent.addChild(item)
-    _addItems(obj, item)
     return item
-
-
-# Iterate through the model and add an item for every part
-def _addItems(modelObj, parent):
-    for key, value in modelObj.__dict__.items():
-        if key == "config" or key[0] == "_":
-            continue
-
-        # Loop over all dictionary element
-        if isinstance(value, dict):
-            for k, v in value.items():
-                if hasattr(v, "__dict__") and isinstance(v.__dict__, dict):
-                    _addItem(parent, v, k)
-
-        # recurse into child objects
-        if hasattr(value, "__dict__") and isinstance(value.__dict__, dict):
-            _addItem(parent, value, key)
 
 
 # context menu of a tree item: actionKey => text, empty if none
 def contextMenu(item):
     obj = item.pvpObj
-    if isinstance(obj, Contacts):
+    if isinstance(obj, ContactList):
         return {"contact_add": "Kontakt hinzufügen"}
-    # only contacts of the contact list, and not the mandatory ones
+    # only contacts of the contact list
     parent = item.parent().pvpObj if item.parent() else None
-    if isinstance(obj, Contact) and isinstance(parent, Contacts) and parent.canRemove(obj):
+    if isinstance(obj, Contact) and isinstance(parent, ContactList) and parent.canRemove(obj):
         return {"contact_delete": "Kontakt löschen"}
     return {}
 
@@ -86,11 +82,8 @@ def contextMenu(item):
 def treeAction(actionKey, item):
     obj = item.pvpObj
     if actionKey == "contact_add":
-        contact = obj.addContact("test")
-        if contact is not None:
-            child = QTreeWidgetItem(None, [caption(contact)])
-            child.pvpObj = contact
-            item.addChild(child)
+        contact = obj.addContact("contact")
+        _addItem(item, contact)
     elif actionKey == "contact_delete":
         item.parent().pvpObj.removeContact(obj)
         item.parent().removeChild(item)

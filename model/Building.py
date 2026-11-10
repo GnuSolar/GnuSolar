@@ -1,178 +1,154 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 
-# A Building has :
-#    - several roofs with/without solarpanels
-#    - a physical place on earth, with coordinates
-#    - a power supplier
-#    - administration area
-#    - municipality
-#    - power meters
+# Buildings, roofs, obstacles and module groups (doc/file_format.md,
+# section 6). Lengths and positions are in mm, angles in degrees, the azimuth
+# counts from north clockwise.
 
 from model.ModelNode import ModelNode
-import os
-import json
-import sqlite3
-import requests
-from datetime import date
 
-from Config import *
+ROOF_KINDS = ("pitched", "flat", "facade", "ground", "carport")
+ROOF_COVERINGS = ("tiles", "slate", "metal", "standing_seam", "trapezoidal", "fibre_cement", "membrane", "gravel",
+                  "green", "other")
+OBSTACLE_KINDS = ("chimney", "window", "skylight", "dormer", "vent", "solar_thermal", "blocked", "firewall",
+                  "tree", "other")
+OBSTACLE_SHAPES = ("rect", "circle", "polygon")
+MOUNTINGS = ("on_roof", "in_roof", "flat_roof_east_west", "flat_roof_south", "facade", "ground")
+ORIENTATIONS = ("portrait", "landscape")
+SURROUNDING_KINDS = ("tree", "building", "wall", "mast", "terrain", "other")
+
+
+# A block of identical modules on a roof
+class ModuleGroup(ModelNode):
+
+    _types = {"rows": "int", "columns": "int", "count": "int", "x": "number", "y": "number", "gapX": "number",
+              "gapY": "number", "tilt": "number", "azimuth": "number", "rowPitch": "number", "panels": "json",
+              "ext": "json"}
+
+    def __init__(self, top=None):
+        self._top = top
+        self.id = None
+        self.designId = None                # the design this group belongs to
+        self.typeId = None                  # the module
+        self.mounting = None                # see MOUNTINGS
+        self.mountingSystemTypeId = None
+        self.orientation = None             # see ORIENTATIONS
+        self.rows = None
+        self.columns = None
+        self.count = None                   # number of modules
+        self.x = None
+        self.y = None
+        self.gapX = None
+        self.gapY = None
+        self.tilt = None                    # of the modules, where it differs from the roof
+        self.azimuth = None
+        self.rowPitch = None
+        self.panels = []                    # single modules, only where they matter
+        self.ext = {}
+
+    # the module type, None if not known
+    def getType(self):
+        return self._top.byId("types", self.typeId) if self._top else None
+
+    # power of all modules in W, None if not known
+    def getPower(self):
+        moduleType = self.getType()
+        power = moduleType.specs.get("power") if moduleType else None
+        if power is None or self.count is None:
+            return None
+        return power * self.count
+
+
+class Obstacle(ModelNode):
+
+    _types = {"x": "number", "y": "number", "width": "number", "height": "number", "radius": "number",
+              "points": "points", "ext": "json"}
+
+    def __init__(self, top=None):
+        self._top = top
+        self.id = None
+        self.kind = None        # see OBSTACLE_KINDS
+        self.shape = None       # see OBSTACLE_SHAPES
+        self.x = None
+        self.y = None
+        self.width = None
+        self.height = None
+        self.radius = None
+        self.points = []
+        self.ext = {}
+
+
+class Margins(ModelNode):
+
+    _types = {"eave": "number", "ridge": "number", "left": "number", "right": "number"}
+
+    def __init__(self, top=None):
+        self._top = top
+        self.eave = None
+        self.ridge = None
+        self.left = None
+        self.right = None
+
+
+class Roof(ModelNode):
+
+    _parts = {"obstacles": Obstacle, "moduleGroups": ModuleGroup}
+    _types = {"x": "number", "y": "number", "z": "number", "azimuth": "number", "inclination": "number",
+              "eaveHeight": "number", "ridgeHeight": "number", "outline": "points", "ext": "json"}
+
+    def __init__(self, top=None):
+        self._top = top
+        self.id = None
+        self.label = None
+        self.kind = None            # see ROOF_KINDS
+        self.covering = None        # see ROOF_COVERINGS
+        self.x = None               # the left end of the eave, in the building's coordinates
+        self.y = None
+        self.z = None
+        self.azimuth = None         # the direction the surface faces
+        self.inclination = None
+        self.eaveHeight = None
+        self.ridgeHeight = None
+        self.margins = Margins(top)
+        self.outline = []           # [[x, y], ...] in the roof's coordinates
+        self.obstacles = []
+        self.moduleGroups = []
+        self.ext = {}
+
 
 class Building(ModelNode):
-    
-    def __init__(self, top):
+
+    _parts = {"roofs": Roof}
+    _types = {"x": "number", "y": "number", "z": "number", "azimuth": "number", "model": "json", "ext": "json"}
+
+    def __init__(self, top=None):
         self._top = top
-        self.buildingState = None       # "new" or "existing"
-        self.buildingId = None          # swiss building id
-        self.street = None
-        self.streetNumber = None
-        self.zip = None
-        self.city = None
-        self.region = None
-        self.country = None
-        self.plotNumber = None      # Parzelle Nummer
-        self.swissGridX = None
-        self.swissGridY = None
-        self.municipalityCode = None  # Gemeinde Nummer, BFS-Nr. same as masterdata.municipality.code
-        self.municipalityName = None  # Gemeinde Name
-        
-        self.meterNumberOld = None
-        self.meterNumberNew = None
-        self.mainFuseSize = None
+        self.id = None
+        self.label = None
+        self.x = None
+        self.y = None
+        self.z = None
+        self.azimuth = None
+        self.roofs = []
+        self.model = {}             # a 3D model file in the project folder
+        self.ext = {}
 
-        """
-        Bauzone nach Bundesamt für Raumentwicklung(ARE):
-        11 - Wohnzonen
-        12 - Arbeitszonen
-        13 - Mischzonen
-        14 - Zentrumszonen
-        15 - Zonen für öffentliche Nutzungen
-        16 - eingeschränkte Bauzonen
-"""        
-        self.areZoneName = None         # Bauzone nach Bundesamt für Raumentwicklung(ARE)
-        self.areZoneCode = None
 
-    def coordinatesFromAddress(self):
-        url = r"https://api3.geo.admin.ch/rest/services/api/MapServer/find"
-        params = {
-            "layer": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis",
-            "searchField": "zip_label",
-            "searchText": self.zip,
-            "layerDefs": json.dumps(
-                {
-                    "ch.swisstopo.amtliches-gebaeudeadressverzeichnis":"adr_number ilike '"+str(self.streetNumber)+"' and stn_label ilike '"+str(self.street)+"'"
-                })
-        }
-        try:
-            response = requests.get(url=url, params=params)
-            results = response.json()["results"]
-        except Exception:
-            return
-        
-        if len(results) != 1:
-            return
+# Something next to the buildings that throws shade
+class Surrounding(ModelNode):
 
-        self.buildingId = str(results[0]["id"])
-        self.swissGridX = str(results[0]["geometry"]["x"])
-        self.swissGridY = str(results[0]["geometry"]["y"])
-        self.municipalityCode = str(results[0]["attributes"]["com_fosnr"])
-        self.municipalityName = str(results[0]["attributes"]["com_name"])
-        
-        return
-        
-    def queryPlotNumber(self):
-        if not self.swissGridX or not self.swissGridY:
-            return
-        x = float("2" + self.swissGridX)
-        y = float("1" + self.swissGridY)
-        url = r"https://api3.geo.admin.ch/rest/services/all/MapServer/identify"
-        params = {
-            "geometry": str(x) + "," + str(y),
-            "geometryFormat": "geojson",
-            "geometryType": "esriGeometryPoint",
-            "imageDisplay": "1155,600,96",
-            "layers": "all:ch.swisstopo-vd.amtliche-vermessung",
-            "limit": "10",
-            "mapExtent": str(x-30) + "," + str(y-30) + "," + str(x+30) + "," + str(y+30),
-            "sr": "2056",
-            "tolerance": "10"
-        }
+    _types = {"x": "number", "y": "number", "z": "number", "height": "number", "radius": "number",
+              "outline": "points", "ext": "json"}
 
-        response = requests.get(url=url, params=params)
-        results = response.json()["results"]
-        if len(results) != 1:
-            return
-
-        if not self.plotNumber:
-            self.plotNumber = results[0]["properties"]["number"]
-
-    def queryZoneing(self):
-        if not self.swissGridX or not self.swissGridY:
-            return
-        x = float("2" + self.swissGridX)
-        y = float("1" + self.swissGridY)
-        url = r"https://api3.geo.admin.ch/rest/services/all/MapServer/identify"
-        params = {
-            "geometry": str(x) + "," + str(y),
-            "geometryFormat": "geojson",
-            "geometryType": "esriGeometryPoint",
-            "imageDisplay": "1155,600,96",
-            "layers": "all:ch.are.bauzonen",
-            "limit": "10",
-            "mapExtent": str(x-30) + "," + str(y-30) + "," + str(x+30) + "," + str(y+30),
-            "sr": "2056",
-            "tolerance": "10"
-        }
-
-        response = requests.get(url=url, params=params)
-        results = response.json()["results"]
-        if len(results) != 1:
-            return
-
-        self.areZoneCode = results[0]["properties"]["ch_code_hn"]
-        self.areZoneName = results[0]["properties"]["ch_bez_d"]
-
-    # Lookup the PowerCompany for this building.
-    def getPowerCompanyId(self):
-
-        # First check if in zip_code, city
-        con = sqlite3.connect(Config.getMasterDbPath())
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        sql = "SELECT * FROM zip_code WHERE zip_code=?"
-        res = cur.execute(sql, [self.zip])
-        db_row = res.fetchone()
-
-        if db_row:
-            fkPowerCompany = db_row["fk_power_company"]
-            if fkPowerCompany:
-                return fkPowerCompany
-        
-        # Next in the Municipality
-        sql = "SELECT * FROM municipality WHERE code=?"
-        res = cur.execute(sql, [self.municipalityCode])
-        db_row = res.fetchone()
-        if db_row:
-            fkPowerCompany = db_row["fk_power_company"]
-            if fkPowerCompany:
-                return fkPowerCompany
-        
-        return False
-
-    # "Street 1, 1234 City", empty parts are left out
-    def getHumanAddress(self):
-        join = lambda sep, parts: sep.join(str(p) for p in parts if p)
-        street = join(" ", (self.street, self.streetNumber))
-        city = join(" ", (self.zip, self.city))
-        return join(", ", (street, city))
-
-    # Check wheter the address of the Building ist the same as the given
-    # Contact
-    def identicalAddress(self, contact):
-        if self.street != contact.street or \
-           self.streetNumber != contact.streetNumber or \
-           self.zip != contact.zip or \
-           self.city != contact.city:
-            return False
-
-        return True
+    def __init__(self, top=None):
+        self._top = top
+        self.id = None
+        self.kind = None            # see SURROUNDING_KINDS
+        self.label = None
+        self.x = None
+        self.y = None
+        self.z = None
+        self.height = None
+        self.radius = None
+        self.outline = []
+        self.ext = {}

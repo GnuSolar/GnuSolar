@@ -29,13 +29,9 @@ from Config import config
 from Usefull import openFolder, openFolderIfExists, composeEmail, callSip
 
 from model.PvProject import PvProject
-from model.Contacts import Contacts
-from model.Contact import Contact
-from model.Building import Building
-from model.Municipality import Municipality
-from model.PowerCompany import PowerCompany
-from model.Progress import Progress
-from model.Plant import Plant
+from model.Contact import Contact, ContactList
+from model.Site import Municipality, GridOperator
+from model.compat import SiteView, PlantView, ProgressView
 
 
 class Page:
@@ -520,13 +516,13 @@ class PlantPage(Page):
 
 PAGES = {
     PvProject: PvProjectPage,
-    Contacts: ContactsPage,
+    ContactList: ContactsPage,
     Contact: ContactPage,
-    Building: BuildingPage,
+    SiteView: BuildingPage,
     Municipality: MunicipalityPage,
-    PowerCompany: PowerCompanyPage,
-    Progress: ProgressPage,
-    Plant: PlantPage,
+    GridOperator: PowerCompanyPage,
+    ProgressView: ProgressPage,
+    PlantView: PlantPage,
 }
 
 
