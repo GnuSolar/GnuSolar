@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The fields of the model parts which have no hand-made form (Ui/*.ui):
-# orders, steps, devices, types, roofs, connections ... gui/forms.py builds
-# their detail page from the lists here.
+# The fields of the pages of the project window. gui/forms.py builds the
+# detail page of every part of the project from the lists here.
 #
 #   fieldsOf(obj)  ->  [(title of the group, [Field, ...]), ...]
 #
@@ -11,19 +10,26 @@
 # "ends.0.port"). Its type decides the input: text, number, int, date, bool,
 # list (comma separated), points, json, multiline, readonly. A field with
 # choices is a drop down; ref names the list of the project it points into.
+#
+# The pages of the views of model/compat.py (Standort, Fortschritt, Anlage)
+# show the names of file version 2. These take and give text; a date there
+# has the type "day": text with the button for today.
 
 import plugins
 from model import Building, Device, Order, Site
-from model.Contact import ROLE_NAMES
+from model.PvProject import PvProject
+from model.Contact import Contact, ROLES
+from model.compat import SiteView, PlantView, ProgressView
 
 
 class Field:
-    def __init__(self, path, caption, type="text", choices=None, ref=None, unit=None):
+    def __init__(self, path, caption, type="text", choices=None, ref=None, unit=None, hint=None):
         self.path = path
         self.caption = caption + (" [" + unit + "]" if unit else "")
         self.type = type
         self.choices = choices      # list of values, or dict value => caption
         self.ref = ref              # name of a list of the project
+        self.hint = hint            # shown in the empty input
 
 
 F = Field
@@ -122,6 +128,156 @@ def stepKinds():
     for plugin in plugins.enabled():
         kinds.update(getattr(plugin, "STEP_KINDS", {}))
     return kinds
+
+
+def _project(obj):
+    return [
+        # the property keeps the notes a text
+        ("Projekt", [F("comment", "Bemerkungen", "multiline")]),
+    ]
+
+
+def _contact(obj):
+    return [
+        ("Kontakt", [
+            F("organization", "Firma"),
+            F("title", "Anrede"),
+            F("lastName", "Name"),
+            F("firstName", "Vorname"),
+            F("address.street", "Strasse"),
+            F("address.streetNumber", "Nummer"),
+            F("address.zip", "PLZ"),
+            F("address.city", "Ort"),
+            F("roles", "Rollen", "list", hint=", ".join(ROLES)),
+        ]),
+        ("Erreichbar", [
+            F("email", "E-Mail"),
+            F("email2", "E-Mail 2"),
+            F("phone", "Telefon"),
+            F("phone2", "Telefon 2"),
+            F("mobile", "Mobile"),
+        ]),
+        ("Bankverbindung", [
+            F("accountOwner", "Kontoinhaber"),
+            F("accountBank", "Bankname"),
+            F("accountIban", "IBAN"),
+        ]),
+    ]
+
+
+def _siteView(obj):
+    return [
+        ("Gebäude", [
+            F("buildingState", "Status", choices=("new", "existing")),
+            F("street", "Strasse"),
+            F("streetNumber", "Nummer"),
+            F("zip", "PLZ"),
+            F("city", "Ort"),
+        ]),
+        ("Grundstück", [
+            F("buildingId", "amtl. Gebäude-Id"),
+            F("areZoneName", "Bauzone BFS"),
+            F("areZoneCode", "Bauzone Nr"),
+            F("plotNumber", "Parzelle"),
+            F("swissGridX", "Koordinate LV03 x"),
+            F("swissGridY", "Koordinate LV03 y"),
+        ]),
+        ("Anschluss", [
+            F("meterNumberOld", "Zähler bisher"),
+            F("meterNumberNew", "Zähler neu"),
+            F("mainFuseSize", "HAK Sicherung", unit="A"),
+        ]),
+    ]
+
+
+def _municipality(obj):
+    return [
+        ("Gemeinde", [
+            F("name", "Gemeinde"),
+            F("code", "Nummer"),
+            F("website", "Webseite"),
+        ]),
+    ]
+
+
+def _gridOperator(obj):
+    return [
+        ("Netzbetreiber", [
+            F("name", "Netzbetreiber"),
+            F("connectionContact.email", "Anschlussgesuch E-Mail"),
+        ]),
+    ]
+
+
+def _days(*fields):
+    return [F(name, caption, "day") for name, caption in fields]
+
+
+def _progress(obj):
+    return [
+        ("Anfrage und Offerte", _days(
+            ("inquiryReceived", "Anfrage erhalten"),
+            ("roofMeasure", "Dach anschauen"),
+            ("roofMeasured", "Dach angeschaut"),
+            ("quote1Sent", "Offerte erstellt"),
+            ("quote2Sent", "Offerte 2 erstellt"),
+            ("quote3Sent", "Offerte 3 erstellt"),
+            ("quote4Sent", "Offerte 4 erstellt"),
+            ("orderRejected", "Auftrag nicht erhalten"),
+            ("orderReceived", "Auftrag erhalten"),
+        )),
+        ("Bau", _days(
+            ("partialInvoiceSent", "Akontorechnung erstellt"),
+            ("partialInvoiceReceived", "Akontorechnung bezahlt"),
+            ("partialInvoice2Sent", "Akontorechnung 2 erstellt"),
+            ("partialInvoice2Received", "Akontorechnung 2 bezahlt"),
+            ("materialOrdered", "Material bestellt"),
+            ("materialReceived", "Material erhalten"),
+            ("constructionStart", "Baubeginn"),
+        ) + [F("constructionFixed", "Baubeginn fix", "bool")] + _days(
+            ("constructionSort", "Sortierung Baubeginn"),
+            ("launch", "Inbetriebnahme"),
+            ("documentationPlaced", "Anlagedoku vor Ort"),
+        )),
+        ("Anmeldungen", _days(
+            ("tagSent", "Anschlussgesuch verschickt"),
+            ("tagReceived", "Anschlussgesuch erhalten"),
+            ("iaSent", "Installationsanzeige verschickt"),
+            ("iaReceived", "Installationsanzeige erhalten"),
+            ("bauSent", "Solarmeldung verschickt"),
+            ("bauReceived", "Solarmeldung erhalten"),
+        )),
+        ("Abschluss", _days(
+            ("finalInvoiceSent", "Schlussrechnung verschickt"),
+            ("finalInvoiceReceived", "Schlussrechnung bezahlt"),
+            ("siNaDcOrdered", "M+PP bestellt"),
+            ("siNaDcReceived", "M+PP erhalten"),
+            ("siNaAcOrdered", "SiNa AC bestellt"),
+            ("siNaAcReceived", "SiNa AC erhalten"),
+            ("eivComplete", "EIV vollständig"),
+            ("documentationCreated", "Anlagedoku erstellt"),
+            ("eivPayed", "EIV ausbezahlt"),
+            ("archived", "Projekt archiviert"),
+        )),
+    ]
+
+
+def _plant(obj):
+    return [
+        ("Finanzen", [F("totalCost", "Gesamtkosten", unit="CHF")]),
+        ("Generatorfeld", [
+            F("constructionType", "Bauart",
+              choices={"builton": "Aufdach", "integrated": "Indach", "facade": "Fassade"}),
+            F("totalPowerDc", "Gesamtleistung DC", unit="kWp"),
+            F("totalArea", "Gesamtfläche", unit="m2"),
+            F("totalPanelCount", "Gesamtanzahl Module"),
+            F("panelDesc", "Modulbezeichung"),
+        ]),
+        ("Wechselrichter", [
+            F("totalPowerAc", "Gesamtleistung AC", unit="kW"),
+            F("inverterDesc", "Bezeichnung"),
+        ]),
+    ]
 
 
 def _site(obj):
@@ -442,6 +598,13 @@ def _connection(obj):
 
 
 FIELDS = {
+    PvProject: _project,
+    Contact: _contact,
+    SiteView: _siteView,
+    Site.Municipality: _municipality,
+    Site.GridOperator: _gridOperator,
+    ProgressView: _progress,
+    PlantView: _plant,
     Site.Site: _site,
     Order.Order: _order,
     Order.Step: _step,
@@ -460,7 +623,17 @@ FIELDS = {
 }
 
 
-# the groups of fields of a model part, [] if it has no generated page
+# pages with many fields show their groups side by side
+COLUMNS = {
+    ProgressView: 2,
+}
+
+
+# the groups of fields of a part, [] if its page has none (Kontakte, Geräte)
 def fieldsOf(obj):
     func = FIELDS.get(type(obj))
     return func(obj) if func else []
+
+
+def columnsOf(obj):
+    return COLUMNS.get(type(obj), 1)

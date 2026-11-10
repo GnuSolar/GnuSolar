@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The detail pages of the project window, one per model class.
+# The buttons of the pages of the project window which do more than adding
+# and deleting parts (gui/tree.py): creating documents, lookups, calls and
+# e-mails.
 #
-# A page connects the buttons of its generated form (Ui/*.py) and handles
-# them: it asks for what is missing, shows messages, opens folders, and calls
-# the model, documents and services for the actual work. The model itself
-# knows nothing about the window.
+# A page handles its buttons: it asks for what is missing, shows messages,
+# opens folders, and calls the model, documents and services for the actual
+# work. The model itself knows nothing about the window.
 #
-#   page = createPage(ui, obj, app)
+#   page = createPage(obj, app)     None if the page has no such buttons
+#   page.actions                    the buttons above the fields
+#   page.fieldActions               path of a field => the button beside it
 #
-# ui is the generated form, obj the model object shown (Building, Contact, ...),
-# app the GnuSolar application (None in the address book).
+# obj is the model object shown (PvProject, Contact, ...), app the GnuSolar
+# application (None in the address book).
 
 import os
 import json
@@ -24,27 +27,58 @@ from PyQt5 import QtWidgets
 
 import documents.templates
 from documents import DocumentError
-from gui.binding import updateUi
+from gui.tree import Action
 from Config import config
 from Usefull import openFolder, openFolderIfExists, composeEmail, callSip
 
 from model.PvProject import PvProject
-from model.Contact import Contact, ContactList
+from model.Contact import Contact
 from model.Site import Municipality, GridOperator
-from model.compat import SiteView, PlantView, ProgressView
+from model.compat import SiteView
+
+
+# Ask for some texts in one dialog. Returns the texts, None if cancelled.
+def askTexts(title, captions):
+    dialog = QtWidgets.QDialog()
+    dialog.setWindowTitle(title)
+    layout = QtWidgets.QFormLayout(dialog)
+    inputs = []
+    for caption in captions:
+        inputs.append(QtWidgets.QLineEdit())
+        layout.addRow(caption, inputs[-1])
+    buttons = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel)
+    buttons.accepted.connect(dialog.accept)
+    buttons.rejected.connect(dialog.reject)
+    layout.addRow(buttons)
+    if dialog.exec_() != QtWidgets.QDialog.Accepted:
+        return None
+    return [el.text() for el in inputs]
 
 
 class Page:
-    def __init__(self, ui, obj, app):
-        self.ui = ui
+    def __init__(self, obj, app):
         self.obj = obj
         self.app = app
         self.project = obj if isinstance(obj, PvProject) else getattr(obj, "_top", None)
-        self.connect()
+        self.actions = [self._action(text, func) for text, func in self.buttons()]
+        self.fieldActions = {path: self._action(text, func) for path, (text, func) in self.fieldButtons().items()}
 
-    # connect the buttons of the form
-    def connect(self):
-        pass
+    def _action(self, text, func):
+        return Action(text, func, refresh=False)
+
+    # the buttons above the fields: [(text, method)]
+    def buttons(self):
+        return []
+
+    # the buttons beside a field: path => (text, method)
+    def fieldButtons(self):
+        return {}
+
+    # the project was changed: mark it, build the tree and the page anew
+    def changed(self):
+        if self.app is not None:
+            self.app.action_changed()
+            self.app.showModel(select=self.obj)
 
     # Create a document from a template, show problems, open the new file
     def createDocument(self, templateType):
@@ -60,21 +94,21 @@ class Page:
     # Note a created document in the project and show it in the tree
     def recordDocument(self, kind, path):
         part = self.project.addDocument(kind, path)
-        if part is not None and self.app is not None:
-            self.app.action_changed()
-            self.app.showModel(select=self.obj)
+        if part is not None:
+            self.changed()
 
 
 class PvProjectPage(Page):
-    def connect(self):
-        ui = self.ui
-        ui.openProjectFolder.clicked.connect(self.action_openProjectFolder)
-        ui.createQuote.clicked.connect(self.action_createQuote)
-        ui.createPartialInvoice.clicked.connect(self.action_createPartialInvoice)
-        ui.createFinalInvoice.clicked.connect(self.action_createFinalInvoice)
-        ui.createSmallInvoice.clicked.connect(self.action_createSmallInvoice)
-        ui.createQrBill.clicked.connect(self.action_createQrBill)
-        ui.createDocumentation.clicked.connect(self.action_createDocumentation)
+    def buttons(self):
+        return [
+            ("Projektordner öffnen", self.action_openProjectFolder),
+            ("neue Offerte", self.action_createQuote),
+            ("Anlagedoku erstellen", self.action_createDocumentation),
+            ("Akontorechnung", self.action_createPartialInvoice),
+            ("Schlussrechnung", self.action_createFinalInvoice),
+            ("Kleinrechnung", self.action_createSmallInvoice),
+            ("QR Bill erstellen", self.action_createQrBill),
+        ]
 
     def action_openProjectFolder(self):
         if not self.obj._savePath:
@@ -113,14 +147,16 @@ class PvProjectPage(Page):
             QtWidgets.QMessageBox.warning(None, 'QR Bill', 'TODO: ohne Pfad')
             return
 
-        qrAmount = self.ui.qrbill_amount.text()
-        qrInfo = self.ui.qrbill_info.text()
-        
         projectDir = os.path.dirname(self.obj._savePath)
         if not os.path.isdir(projectDir):
             QtWidgets.QMessageBox.warning(None, 'QR Bill', 'Pfad nicht gefunden\n' + self.obj._savePath)
             return
         projectDir = self.obj.getOrderDir()
+
+        answer = askTexts("QR Bill", ["Betrag", "Info"])
+        if answer is None:
+            return
+        qrAmount, qrInfo = answer
 
         today = date.today()
         fileName = "QR" + today.isoformat() + ".pdf"
@@ -158,23 +194,17 @@ class PvProjectPage(Page):
             drawing = svg2rlg(temp)
         renderPDF.drawToFile(drawing, qrPath)
 
-        self.ui.qrbill_amount.setText("")
-        self.ui.qrbill_info.setText("")
-
         openFolderIfExists(qrPath)
 
-class ContactsPage(Page):
-    pass
-
-
 class ContactPage(Page):
-    def connect(self):
-        ui = self.ui
-        ui.composeEmail.clicked.connect(self.action_composeEmail)
-        ui.composeEmail2.clicked.connect(self.action_composeEmail2)
-        ui.callPhone.clicked.connect(self.action_callPhone)
-        ui.callPhone2.clicked.connect(self.action_callPhone2)
-        ui.callMobile.clicked.connect(self.action_callMobile)
+    def fieldButtons(self):
+        return {
+            "email": ("E-Mail", self.action_composeEmail),
+            "email2": ("E-Mail", self.action_composeEmail2),
+            "phone": ("Anruf", self.action_callPhone),
+            "phone2": ("Anruf", self.action_callPhone2),
+            "mobile": ("Anruf", self.action_callMobile),
+        }
 
     def action_callPhone(self):
         global config
@@ -195,17 +225,18 @@ class ContactPage(Page):
         composeEmail(config.installer_email, self.obj.email2 , "", "")
 
 class BuildingPage(Page):
-    def connect(self):
-        ui = self.ui
-        ui.updateFromAddress.clicked.connect(self.action_updateFromAddress)
-        ui.get3dModel.clicked.connect(self.action_get3dModel)
-        ui.getAgisOrtho.clicked.connect(self.action_getAgisOrtho)
-        ui.getAgisSurvey.clicked.connect(self.action_getAgisSurvey)
+    def buttons(self):
+        return [
+            ("Update von Adresse", self.action_updateFromAddress),
+            ("Get 3D Model", self.action_get3dModel),
+            ("Get Agis Ortho", self.action_getAgisOrtho),
+            ("Get Agis Survey", self.action_getAgisSurvey),
+        ]
 
     def action_updateFromAddress(self):
         ret = self.project.updateFromAddress()
 
-        updateUi(self.ui, self.obj, "obj")
+        self.changed()
         if isinstance(ret, str):
             QtWidgets.QMessageBox.warning(None, 'Update von Adresse', ret)
 
@@ -415,11 +446,14 @@ class BuildingPage(Page):
         return
 
 class MunicipalityPage(Page):
-    def connect(self):
-        ui = self.ui
-        ui.openMunicipalityWebsite.clicked.connect(self.action_openMunicipalityWebsite)
-        ui.createBuildingForm.clicked.connect(self.action_createBuildingForm)
-        ui.createGvzDocumentation.clicked.connect(self.action_createGvzDocumentation)
+    def buttons(self):
+        return [
+            ("Solarmeldung erstellen", self.action_createBuildingForm),
+            ("GVZ Dokumentation", self.action_createGvzDocumentation),
+        ]
+
+    def fieldButtons(self):
+        return {"website": ("Webseite öffnen", self.action_openMunicipalityWebsite)}
 
     # Erzeuge Gebäudeversicherung Zürich Formular
     def action_createGvzDocumentation(self):
@@ -454,11 +488,14 @@ class MunicipalityPage(Page):
         openFolder(self.obj.website)
 
 class PowerCompanyPage(Page):
-    def connect(self):
-        ui = self.ui
-        ui.createMundpp.clicked.connect(self.action_createMundpp)
-        ui.createTag.clicked.connect(self.action_createTag)
-        ui.composeTagEmail.clicked.connect(self.action_composeTagEmail)
+    def buttons(self):
+        return [
+            ("M+PP erstellen", self.action_createMundpp),
+            ("Anschlussgesuch erstellen", self.action_createTag),
+        ]
+
+    def fieldButtons(self):
+        return {"connectionContact.email": ("TAG E-Mail", self.action_composeTagEmail)}
 
     # Erzeuge Anschlussgesuch
     def action_createTag(self):
@@ -487,7 +524,8 @@ class PowerCompanyPage(Page):
         openFolderIfExists(tagPath)
         now = date.today()
         self.project.progress.tagSent = now.isoformat()
-        self.recordDocument("tag", tagPath)
+        self.project.addDocument("tag", tagPath)
+        self.changed()
 
     # Sende Tag
     def action_composeTagEmail(self):
@@ -506,37 +544,16 @@ class PowerCompanyPage(Page):
     def action_createMundpp(self):
         self.createDocument("mundpp")
 
-class ProgressPage(Page):
-    def connect(self):
-        # connect all pb_progress_* with action_progress
-        for key, value in self.ui.__dict__.items():
-            if key.startswith("pb_"):
-                el = getattr(self.ui, key)
-                el.clicked.connect(lambda _, x=key: self.action_progress(x))
-
-    def action_progress(self, buttonName):
-        actionName = buttonName.replace("pb_", "")
-
-        now = date.today()
-        attrName = "obj_" + actionName
-        getattr(self.ui, attrName).setText(str(now))
-
-class PlantPage(Page):
-    pass
-
-
 PAGES = {
     PvProject: PvProjectPage,
-    ContactList: ContactsPage,
     Contact: ContactPage,
     SiteView: BuildingPage,
     Municipality: MunicipalityPage,
     GridOperator: PowerCompanyPage,
-    ProgressView: ProgressPage,
-    PlantView: PlantPage,
 }
 
 
-# the page for a model object
-def createPage(ui, obj, app):
-    return PAGES[type(obj)](ui, obj, app)
+# the page for a model object, None if it has no buttons of its own
+def createPage(obj, app):
+    page = PAGES.get(type(obj))
+    return page(obj, app) if page else None

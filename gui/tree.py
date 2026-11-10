@@ -53,14 +53,17 @@ class Message(Exception):
     pass
 
 
-# One entry of a context menu: func does it and returns the object to show
-# afterwards. entries makes it a submenu. confirm is a question to ask first.
+# One entry of a context menu or button of a page: func does it and returns
+# the object to show afterwards. entries makes it a submenu. confirm is a
+# question to ask first. refresh=False: func doesn't change the project, or
+# shows the change itself (gui/pages.py).
 class Action:
-    def __init__(self, text, func=None, entries=None, confirm=None):
+    def __init__(self, text, func=None, entries=None, confirm=None, refresh=True):
         self.text = text
         self.func = func
         self.entries = entries
         self.confirm = confirm
+        self.refresh = refresh
 
 
 # ---- building the tree ------------------------------------------------------

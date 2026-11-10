@@ -24,36 +24,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Ui.GnuSolar import *
 from Ui.Preferences import *
 
-from Ui.PvProject import *
-from Ui.Contacts import *
-from Ui.Contact import *
-from Ui.Building import *
-from Ui.Plant import *
-from Ui.Progress import *
-from Ui.PowerCompany import *
-from Ui.Municipality import *
-
 from model.PvProject import *
-from gui.binding import updateUi, updateModel, resolve, storeWidget
 from gui.pages import createPage
 from gui.forms import Form
 import gui.tree
-
-from model.Contact import Contact, ContactList
-from model.Site import Municipality, GridOperator
-from model.compat import SiteView, PlantView, ProgressView
-
-# model class => generated form of its detail page
-FORMS = {
-    PvProject: Ui_PvProject,
-    ContactList: Ui_Contacts,
-    Contact: Ui_Contact,
-    SiteView: Ui_Building,
-    Municipality: Ui_Municipality,
-    GridOperator: Ui_PowerCompany,
-    ProgressView: Ui_Progress,
-    PlantView: Ui_Plant,
-}
 
 from Config import *
 from ErrorHandler import *
@@ -177,15 +151,6 @@ class GnuSolar(QApplication):
         print (cmd)
         os.system(cmd)
 
-    # Update the attribute of the model
-    def action_attributeChanged(self):
-        el = self.sender()
-        obj, name = resolve(self.currentObj, el.objectName())
-        storeWidget(el, obj, name)
-
-        # signal something changed
-        self.action_changed()
-
     def action_treeClicked(self, item):
         # no item selected, e.g. while the tree is cleared
         if item is None:
@@ -202,51 +167,17 @@ class GnuSolar(QApplication):
         self.clearDetails()
         self.currentObj = obj
 
-        # parts without a hand-made form get a page made from their fields
-        if type(obj) not in FORMS:
-            self.currentForm = Form(obj, onChange=self.action_formChanged,
-                                    actions=gui.tree.contextMenu(item), runAction=self.runTreeAction,
-                                    text=getattr(obj, "text", None))
-            self.ui.stackedWidget.addWidget(self.currentForm.widget)
-            self.ui.stackedWidget.setCurrentWidget(self.currentForm.widget)
-            return
+        # the page is made from the fields of the object (gui/fields.py), the
+        # buttons are the ones of the page and of the tree item
+        self.currentPage = createPage(obj, self)
+        actions = (self.currentPage.actions if self.currentPage else []) + gui.tree.contextMenu(item)
+        self.currentForm = Form(obj, onChange=self.action_formChanged, actions=actions,
+                                runAction=self.runTreeAction, text=getattr(obj, "text", None),
+                                fieldActions=self.currentPage.fieldActions if self.currentPage else None)
+        self.ui.stackedWidget.addWidget(self.currentForm.widget)
+        self.ui.stackedWidget.setCurrentWidget(self.currentForm.widget)
 
-        # load the ui into the detail window
-        widget = QWidget()
-        ui = FORMS[type(obj)]()
-        ui.setupUi(widget)
-        self.ui.stackedWidget.addWidget(widget)
-        self.ui.stackedWidget.setCurrentWidget(widget)
-
-        # Set the label
-        label = item.text(0)
-        if label and hasattr(ui, "groupBox"):
-            ui.groupBox.setTitle(label)
-       
-        # fill it with the attributes of the object
-        updateUi(ui, obj, "obj")
-        
-        # the page handles the buttons, keep it as long as it is shown
-        self.currentPage = createPage(ui, obj, self)
-        
-        # connect all obj_ fields with attributeChanged
-        # updates the model on the fly from the ui
-        for key, value in ui.__dict__.items():
-            if key.startswith("obj_"):
-                el = getattr(ui, key)
-
-                if isinstance(el, QLineEdit):
-                    el.textChanged.connect(self.action_attributeChanged)
-                elif isinstance(el, QPlainTextEdit):
-                    el.textChanged.connect(self.action_attributeChanged)
-                elif isinstance(el, QComboBox):
-                    el.currentIndexChanged.connect(self.action_attributeChanged)
-                elif isinstance(el, QCheckBox):
-                    el.toggled.connect(self.action_attributeChanged)
-                else:
-                    raise Exception(str(type(el)) + " not implemented")
-
-    # a field of a generated page was changed
+    # a field of the page was changed
     def action_formChanged(self, form, field):
         self.action_changed()
         item = self.ui.tree.currentItem()
@@ -299,7 +230,7 @@ class GnuSolar(QApplication):
             else:
                 menu.addAction(action.text).treeAction = action
 
-    # run an action of gui.tree and show what it made
+    # run an action of gui.tree or gui.pages and show what it made
     def runTreeAction(self, action):
         if action.confirm:
             ret = QMessageBox.question(self.window, 'GnuSolar', action.confirm, QMessageBox.Yes | QMessageBox.No)
@@ -312,6 +243,8 @@ class GnuSolar(QApplication):
             return
         except ValueError as e:
             QMessageBox.warning(self.window, 'GnuSolar', str(e))
+            return
+        if not action.refresh:
             return
         self.action_changed()
         self.showModel(select=result)
@@ -361,7 +294,6 @@ class GnuSolar(QApplication):
         self.ui.tree.clear()
         self.clearDetails()
         gui.tree.buildTree(self.ui.tree, model)
-        updateUi(self.ui, model, "pvp")
         self.updateWindowTitle()
         self.markCurrentOrder()
         if select is not None:
@@ -379,7 +311,6 @@ class GnuSolar(QApplication):
     
     def saveFile(self):
         global model
-        updateModel(self.ui, model, "pvp")
         ret = model.saveAs(self.path)
         if not ret:
             # saving failed

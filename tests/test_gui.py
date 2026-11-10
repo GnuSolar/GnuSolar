@@ -13,8 +13,6 @@ import unittest
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PyQt5.QtWidgets import QLineEdit
-
 import GnuSolar
 import gui.tree
 import gui.pages
@@ -55,9 +53,14 @@ def find(app, text):
     raise KeyError(text)
 
 
-# the field of the page currently shown
-def field(app, name):
-    return app.ui.stackedWidget.currentWidget().findChild(QLineEdit, name)
+# the input of a field of the page currently shown
+def field(app, path):
+    return app.currentForm.inputs[path]
+
+
+# click a button of the page currently shown
+def click(app, text):
+    app.currentForm.buttons[text].click()
 
 
 # created documents are not opened
@@ -95,20 +98,20 @@ class ProjectWindowTest(unittest.TestCase):
     def test_edit_and_save(self):
         tree = self.app.ui.tree
         tree.setCurrentItem(find(self.app, "Fortschritt"))
-        self.assertEqual(field(self.app, "obj_launch").text(), "2026-06-20")
-        field(self.app, "obj_siNaDcOrdered").setText("2026-06-21")
+        self.assertEqual(field(self.app, "launch").text(), "2026-06-20")
+        field(self.app, "siNaDcOrdered").setText("2026-06-21")
         self.assertTrue(self.app.unsavedChanges)
 
         tree.setCurrentItem(find(self.app, "Anlage"))
-        self.assertEqual(field(self.app, "obj_totalPowerDc").text(), "10.56")
-        field(self.app, "obj_totalPanelCount").setText("26")
+        self.assertEqual(field(self.app, "totalPowerDc").text(), "10.56")
+        field(self.app, "totalPanelCount").setText("26")
 
         tree.setCurrentItem(find(self.app, "Kontakt (Bauherr)"))
-        field(self.app, "obj_lastName").setText("Beispiel")
-        field(self.app, "obj_email2").setText("zwei@example.ch")
+        field(self.app, "lastName").setText("Beispiel")
+        field(self.app, "email2").setText("zwei@example.ch")
 
         tree.setCurrentItem(find(self.app, "Standort"))
-        field(self.app, "obj_mainFuseSize").setText("63")
+        field(self.app, "mainFuseSize").setText("63")
 
         self.assertTrue(self.app.action_save())
         self.assertFalse(self.app.unsavedChanges)
@@ -124,7 +127,7 @@ class ProjectWindowTest(unittest.TestCase):
     def test_invalid_text_is_not_stored(self):
         tree = self.app.ui.tree
         tree.setCurrentItem(find(self.app, "Fortschritt"))
-        tag = field(self.app, "obj_tagSent")
+        tag = field(self.app, "tagSent")
         tag.setText("2026")
         self.assertNotEqual(tag.styleSheet(), "")
         self.assertEqual(self.app.currentObj.tagSent, "2026-04-20")
@@ -136,8 +139,9 @@ class ProjectWindowTest(unittest.TestCase):
         from datetime import date
         tree = self.app.ui.tree
         tree.setCurrentItem(find(self.app, "Fortschritt"))
-        page = self.app.ui.stackedWidget.currentWidget()
-        self.app.currentPage.ui.pb_iaReceived.click()
+        today = field(self.app, "iaReceived").parent().findChildren(GnuSolar.QtWidgets.QToolButton)
+        self.assertEqual([b.text() for b in today], ["heute"])
+        today[0].click()
         self.assertEqual(self.app.currentObj.iaReceived, date.today().isoformat())
 
     def test_contacts_menu(self):
@@ -148,10 +152,141 @@ class ProjectWindowTest(unittest.TestCase):
         contacts = find(self.app, "Kontakte")
         self.assertEqual(contacts.childCount(), before + 1)
         self.assertEqual(self.app.currentObj.roles, ["architect"])
-        field(self.app, "obj_roles").setText("architect, planner")
+        field(self.app, "roles").setText("architect, planner")
         self.assertEqual(self.app.currentObj.roles, ["architect", "planner"])
         self.run_action(tree.currentItem(), "Löschen")
         self.assertEqual(find(self.app, "Kontakte").childCount(), before)
+
+    # ---- pages and their buttons ------------------------------------------
+
+    # a path that is no field of the part would be stored as an unknown field
+    def test_fields_exist(self):
+        import gui.fields
+        from model.ModelNode import ModelNode
+        tree = self.app.ui.tree
+        seen = set()
+        for item in items(tree.topLevelItem(0)):
+            obj = item.pvpObj
+            seen.add(type(obj).__name__)
+            for title, fields in gui.fields.fieldsOf(obj):
+                for f in fields:
+                    key = f.path.split(".")[0]
+                    known = isinstance(getattr(type(obj), key, None), property) or \
+                        (isinstance(obj, ModelNode) and key in obj.__dict__)
+                    # the fields of a kind of device are no attributes
+                    if type(obj).__name__ == "Device":
+                        known = known or key in [k[0].split(".")[0] for k in gui.fields.Device.KIND_FIELDS.get(obj.kind, [])]
+                    self.assertTrue(known, type(obj).__name__ + "." + f.path)
+        self.assertLessEqual({"PvProject", "Contact", "SiteView", "Municipality", "GridOperator", "ProgressView",
+                              "PlantView", "Order", "Site"}, seen)
+
+    def test_views_and_snapshots(self):
+        tree = self.app.ui.tree
+        project = GnuSolar.model
+        tree.setCurrentItem(find(self.app, "Standort"))
+        state = field(self.app, "buildingState")
+        state.setCurrentIndex(state.findData("existing"))
+        self.assertEqual(project.building.buildingState, "existing")
+        field(self.app, "swissGridX").setText("12")
+        self.assertNotEqual(field(self.app, "swissGridX").styleSheet(), "")
+        field(self.app, "swissGridX").setText("645000")
+        self.assertEqual(field(self.app, "swissGridX").styleSheet(), "")
+        self.assertEqual(project.site.ext["ch"]["lv95"]["e"], 2645000)
+
+        tree.setCurrentItem(find(self.app, "Fortschritt"))
+        fixed = field(self.app, "constructionFixed")
+        fixed.setChecked(not fixed.isChecked())
+        self.assertEqual(project.progress.constructionFixed, fixed.isChecked())
+        field(self.app, "bauSent").setText("")
+        self.assertEqual(project.progress.bauSent, "")
+
+        tree.setCurrentItem(find(self.app, "Gemeinde"))
+        self.assertEqual(field(self.app, "name").text(), project.municipality.name or "")
+        field(self.app, "website").setText("https://www.example.ch")
+        self.assertEqual(project.municipality.website, "https://www.example.ch")
+
+        tree.setCurrentItem(find(self.app, "Stromversorger"))
+        field(self.app, "connectionContact.email").setText("tag@example.ch")
+        self.assertEqual(project.powerCompany.tagContact.email, "tag@example.ch")
+
+        tree.setCurrentItem(tree.topLevelItem(0))
+        field(self.app, "comment").setPlainText("")
+        self.assertEqual(project.notes, "")
+        field(self.app, "comment").setPlainText("Hund im Garten")
+        self.assertEqual(project.notes, "Hund im Garten")
+
+    # the plant page sets a single module group; with two it refuses
+    def test_refused_value(self):
+        tree = self.app.ui.tree
+        project = GnuSolar.model
+        roof = project.allRoofs()[0]
+        group = roof.addPart("moduleGroups", typeId=roof.moduleGroups[0].typeId, count=4)
+        array = [d for d in project.devices if d.kind == "pv_array"][0]
+        array.set("moduleGroupIds", array.get("moduleGroupIds") + [group.id])
+        tree.setCurrentItem(find(self.app, "Anlage"))
+        count = field(self.app, "totalPanelCount")
+        self.assertEqual(count.text(), "28")
+        count.setText("30")
+        self.assertNotEqual(count.styleSheet(), "")
+        self.assertNotEqual(count.toolTip(), "")
+        self.assertEqual([g.count for g in roof.moduleGroups], [24, 4])
+
+    def test_field_buttons(self):
+        tree = self.app.ui.tree
+        calls = []
+        gui.pages.callSip = lambda number, server: calls.append(number)
+        gui.pages.composeEmail = lambda sender, to, *more: calls.append(to)
+        gui.pages.openFolder = calls.append
+        tree.setCurrentItem(find(self.app, "Kontakt (Bauherr)"))
+        field(self.app, "mobile").setText("079 000 00 00")
+        field(self.app, "email").setText("eins@example.ch")
+        click(self.app, "Anruf mobile")
+        click(self.app, "E-Mail email")
+        tree.setCurrentItem(find(self.app, "Gemeinde"))
+        field(self.app, "website").setText("https://www.example.ch")
+        click(self.app, "Webseite öffnen website")
+        self.assertEqual(calls, ["079 000 00 00", "eins@example.ch", "https://www.example.ch"])
+
+    # a button which changes nothing doesn't mark the project as changed
+    def test_page_buttons(self):
+        tree = self.app.ui.tree
+        project = GnuSolar.model
+        tree.setCurrentItem(tree.topLevelItem(0))
+        self.assertEqual(list(self.app.currentForm.buttons), [
+            "Projektordner öffnen", "neue Offerte", "Anlagedoku erstellen", "Akontorechnung", "Schlussrechnung",
+            "Kleinrechnung", "QR Bill erstellen", "Neuer Auftrag", "Projekt prüfen"])
+        click(self.app, "Projektordner öffnen")
+        self.assertEqual(opened[-1], self.folder)
+        gui.pages.askTexts = lambda title, captions: None
+        click(self.app, "QR Bill erstellen")
+        self.assertFalse(self.app.unsavedChanges)
+
+        # the page is built anew after a lookup
+        tree.setCurrentItem(find(self.app, "Standort"))
+        self.assertEqual(list(self.app.currentForm.buttons),
+                         ["Update von Adresse", "Get 3D Model", "Get Agis Ortho", "Get Agis Survey"])
+
+        def lookup():
+            project.building.plotNumber = "1234"
+        project.updateFromAddress = lookup
+        click(self.app, "Update von Adresse")
+        self.assertTrue(self.app.unsavedChanges)
+        self.assertEqual(tree.currentItem().text(0), "Standort")
+        self.assertEqual(field(self.app, "plotNumber").text(), "1234")
+
+    def test_address_book_contact(self):
+        from gui.forms import Form
+        from model.Contact import Contact
+        contact = Contact()
+        form = Form(contact, fieldActions=gui.pages.createPage(contact, None).fieldActions)
+        form.inputs["lastName"].setText("Muster")
+        form.inputs["phone"].setText("061 000 00 00")
+        form.inputs["address.city"].setText("Aarau")
+        self.assertEqual((contact.lastName, contact.phone, contact.city), ("Muster", "061 000 00 00", "Aarau"))
+        calls = []
+        gui.pages.callSip = lambda number, server: calls.append(number)
+        form.buttons["Anruf phone"].click()
+        self.assertEqual(calls, ["061 000 00 00"])
 
     # ---- the parts new with version 3 -------------------------------------
 
@@ -205,10 +340,10 @@ class ProjectWindowTest(unittest.TestCase):
         # the pages of the first order still show the first order
         tree.setCurrentItem(find(self.app, "Auftrag: PV-Anlage").child(1))
         self.assertIs(project.currentOrder, project.orders[0])
-        self.assertEqual(field(self.app, "obj_totalPowerDc").text(), "10.56")
+        self.assertEqual(field(self.app, "totalPowerDc").text(), "10.56")
         tree.setCurrentItem(find(self.app, "Auftrag: Batterie").child(0))
         self.assertIs(project.currentOrder, order)
-        self.assertEqual(field(self.app, "obj_inquiryReceived").text(), "2026-08-01")
+        self.assertEqual(field(self.app, "inquiryReceived").text(), "2026-08-01")
 
         self.assertTrue(self.app.action_save())
         saved = self.saved()
@@ -322,7 +457,7 @@ class ProjectWindowTest(unittest.TestCase):
         tree.setCurrentItem(tree.topLevelItem(0))
         self.assertIs(project.currentOrder, order)
 
-        self.app.currentPage.ui.createQuote.click()
+        click(self.app, "neue Offerte")
         number = os.path.splitext(os.path.basename(opened[-1]))[0]
         self.assertTrue(os.path.isfile(os.path.join(self.folder, "2026_Bat", "off", number + ".odt")))
         quote = project.quotes[-1]
@@ -334,14 +469,14 @@ class ProjectWindowTest(unittest.TestCase):
         project.progress.quote1Sent = "2026-08-05"
         self.assertEqual((quote.state, quote.date, order.deriveState()), ("sent", 1785931200, "quoted"))
 
-        self.app.currentPage.ui.createPartialInvoice.click()
+        click(self.app, "Akontorechnung")
         invoice = order.invoices[0]
         self.assertEqual((invoice.kind, invoice.documents[0]["path"]),
                          ("partial", "2026_Bat/fin/" + invoice.number + ".odt"))
         project.progress.partialInvoiceSent = "2026-09-01"
         self.assertEqual(invoice.date, 1788264000)
 
-        self.app.currentPage.ui.createDocumentation.click()
+        click(self.app, "Anlagedoku erstellen")
         step = order.getStep("documentation")
         self.assertEqual((step.state, step.documents[0]["path"]), ("open", "2026_Bat/doc/Dokumentation.odt"))
         self.assertIsNotNone(find(self.app, "Schritt: Dokumentation"))

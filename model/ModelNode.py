@@ -191,13 +191,22 @@ class ModelNode:
         return False
 
 
+# True for a name a class computes: the names of file version 2 on the parts
+# (contact.phone) and everything of the views in model/compat.py. They take
+# and give text, "" for nothing.
+def _isProperty(node, key):
+    return isinstance(getattr(type(node), key, None), property)
+
+
 # Value at a path of field names below a part: "specs.power", "ends.0.port".
-# The steps go through parts, dicts and lists.
+# The steps go through parts, dicts, lists and properties.
 def getPath(node, path):
     for key in path.split("."):
         if node is None:
             return None
-        if isinstance(node, ModelNode):
+        if _isProperty(node, key):
+            node = getattr(node, key)
+        elif isinstance(node, ModelNode):
             node = node.get(key)
         elif isinstance(node, dict):
             node = node.get(key)
@@ -232,7 +241,9 @@ def setPath(node, path, value):
 
 
 def _setKey(node, key, value):
-    if isinstance(node, ModelNode):
+    if _isProperty(node, key):
+        setattr(node, key, "" if value is None else value)
+    elif isinstance(node, ModelNode):
         if value is None and key in node.__dict__ and isinstance(node.__dict__[key], (dict, list)):
             value = type(node.__dict__[key])()
         node.set(key, value)

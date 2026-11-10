@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# Detail pages built from the field lists of gui/fields.py, for the model
-# parts without a hand-made form.
+# The detail pages of the project window, built from the field lists of
+# gui/fields.py.
 #
 #   form = Form(obj, onChange)
 #   form.widget     the page
+#   form.inputs     path of a field => its input
 #
-# Every change is stored in the model at once, like in the hand-made forms.
-# Text that is no number, date or JSON is not stored: the field turns red.
+# Every change is stored in the model at once. Text that is no number, date
+# or JSON, or that the model refuses, is not stored: the field turns red.
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QGroupBox, QScrollArea, QLineEdit,
@@ -16,19 +17,23 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QGr
 
 from model.ModelNode import getPath, setPath
 from model import values
-from gui.binding import INVALID_STYLE
-from gui.fields import fieldsOf
+from gui.fields import fieldsOf, columnsOf
 import gui.captions
+
+INVALID_STYLE = "background-color: #ffc0c0;"
 
 
 class Form:
-    # actions: the actions of the tree item (gui.tree.Action), shown as
-    # buttons above the fields. runAction(action) runs one.
-    def __init__(self, obj, onChange=None, actions=None, runAction=None, text=None):
+    # actions: the actions of the page (gui.tree.Action), shown as buttons
+    # above the fields. fieldActions: path of a field => action, a button
+    # beside that field. runAction(action) runs one.
+    def __init__(self, obj, onChange=None, actions=None, runAction=None, text=None, fieldActions=None):
         self.obj = obj
         self.onChange = onChange
         self.runAction = runAction
+        self.fieldActions = fieldActions or {}
         self.inputs = {}        # path => input widget
+        self.buttons = {}       # text of an action => its button
 
         self.widget = QWidget()
         outer = QVBoxLayout(self.widget)
@@ -58,19 +63,36 @@ class Form:
                     self._fillMenu(menu, action.entries)
                     button.setMenu(menu)
                 else:
-                    button.clicked.connect(lambda _, a=action: self.runAction(a))
+                    button.clicked.connect(lambda _, a=action: self._run(a))
+                self.buttons[action.text] = button
                 rows.addWidget(button, shown // 3, shown % 3)
                 shown += 1
             rows.setColumnStretch(3, 1)
             layout.addLayout(rows)
 
-        for title, fields in fieldsOf(obj):
-            box = QGroupBox(title)
-            form = QFormLayout(box)
-            for field in fields:
-                form.addRow(field.caption, self._input(field))
-            layout.addWidget(box)
+        # the groups of fields, in columns from top to bottom
+        groups = fieldsOf(obj)
+        columns = QHBoxLayout()
+        count = max(1, min(columnsOf(obj), len(groups)))
+        perColumn = max(1, -(-len(groups) // count))
+        for start in range(0, len(groups), perColumn):
+            column = QVBoxLayout()
+            for title, fields in groups[start:start + perColumn]:
+                box = QGroupBox(title)
+                form = QFormLayout(box)
+                for field in fields:
+                    form.addRow(field.caption, self._row(field))
+                column.addWidget(box)
+            column.addStretch()
+            columns.addLayout(column)
+        layout.addLayout(columns)
         layout.addStretch()
+
+    def _run(self, action):
+        if self.runAction:
+            self.runAction(action)
+        else:
+            action.func()
 
     def _fillMenu(self, menu, actions):
         for action in actions:
@@ -78,9 +100,37 @@ class Form:
                 if action.entries:
                     self._fillMenu(menu.addMenu(action.text), action.entries)
             else:
-                menu.addAction(action.text).triggered.connect(lambda _, a=action: self.runAction(a))
+                menu.addAction(action.text).triggered.connect(lambda _, a=action: self._run(a))
 
     # ---- inputs -------------------------------------------------------------
+
+    # the input of a field with its buttons: today for a date, and the
+    # action of the field
+    def _row(self, field):
+        widget = self._input(field)
+        buttons = []
+        if field.type in ("date", "day"):
+            # room for a date, also where the page is narrow
+            widget.setMinimumWidth(widget.fontMetrics().horizontalAdvance("2000-00-00") + 28)
+            today = QtWidgets.QToolButton()
+            today.setText("heute")
+            today.clicked.connect(lambda _, w=widget: w.setText(values.dateToText(values.today())))
+            buttons.append(today)
+        action = self.fieldActions.get(field.path)
+        if action is not None:
+            button = QPushButton(action.text)
+            button.clicked.connect(lambda _, a=action: self._run(a))
+            self.buttons[action.text + " " + field.path] = button
+            buttons.append(button)
+        if not buttons:
+            return widget
+        row = QWidget()
+        rowLayout = QHBoxLayout(row)
+        rowLayout.setContentsMargins(0, 0, 0, 0)
+        rowLayout.addWidget(widget)
+        for button in buttons:
+            rowLayout.addWidget(button)
+        return row
 
     def _input(self, field):
         value = getPath(self.obj, field.path)
@@ -113,26 +163,17 @@ class Form:
         else:
             widget = QLineEdit()
             widget.setText(values.toText(field.type, value))
+            if field.hint:
+                widget.setPlaceholderText(field.hint)
             widget.textChanged.connect(lambda text, f=field, w=widget: self._storeText(f, w, text))
         self.inputs[field.path] = widget
-
-        if field.type != "date":
-            return widget
-        # a date gets a button for today
-        row = QWidget()
-        rowLayout = QHBoxLayout(row)
-        rowLayout.setContentsMargins(0, 0, 0, 0)
-        rowLayout.addWidget(widget)
-        today = QPushButton("heute")
-        today.clicked.connect(lambda _, w=widget: w.setText(values.dateToText(values.today())))
-        rowLayout.addWidget(today)
-        return row
+        return widget
 
     # (value, caption) of the entries of a drop down
     def _choices(self, field):
         if field.ref:
             name, _, kind = field.ref.partition(":")
-            top = self.obj._top
+            top = getattr(self.obj, "_top", None)
             ret = []
             for other in (top.collection(name) if top else []):
                 if other is self.obj:
@@ -148,20 +189,29 @@ class Form:
     # ---- storing --------------------------------------------------------------
 
     def _storeText(self, field, widget, text):
-        fieldType = "text" if field.type == "multiline" else field.type
+        fieldType = "text" if field.type in ("multiline", "day") else field.type
         try:
             value = values.fromText(fieldType, text)
         except ValueError as e:
-            widget.setStyleSheet(INVALID_STYLE)
-            widget.setToolTip(str(e))
+            self._invalid(widget, e)
+            return
+        self._store(field, widget, value)
+
+    def _invalid(self, widget, error):
+        widget.setStyleSheet(INVALID_STYLE)
+        widget.setToolTip(str(error))
+
+    def _store(self, field, widget, value):
+        try:
+            setPath(self.obj, field.path, value)
+        except ValueError as e:
+            # the names of file version 2 check their text themselves
+            self._invalid(widget, e)
             return
         widget.setStyleSheet("")
         widget.setToolTip("")
-        self._store(field, widget, value)
-
-    def _store(self, field, widget, value):
-        setPath(self.obj, field.path, value)
-        self.obj.changed()
+        if hasattr(self.obj, "changed"):
+            self.obj.changed()
         # derived values may have changed
         for path, label in self.inputs.items():
             if isinstance(label, QLabel):

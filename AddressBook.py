@@ -8,11 +8,10 @@ import codecs
 import sqlite3
 
 from Ui.AddressBook import *
-from Ui.Contact import *
 
 from model.Contact import *
-from gui.binding import updateUi
 from gui.pages import createPage
+from gui.forms import Form
 
 from Config import *
 from ErrorHandler import *
@@ -36,34 +35,8 @@ class AddressBook(QApplication):
 
         self.contact = Contact()
         
-        # load the ui into the detail window
-        widget = QWidget()
-        ui = Ui_Contact()
-        ui.setupUi(widget)
-        self.ui.stackedWidget.addWidget(widget)
-        self.ui.stackedWidget.setCurrentWidget(widget)
+        self.showContact()
 
-        # hook for ui initializiation
-        self.contactPage = createPage(ui, self.contact, None)
-        
-        # connect all obj_ fields with attributeChanged
-        # updates the model on the fly from the ui
-        for key, value in ui.__dict__.items():
-            if key.startswith("obj_"):
-                el = getattr(ui, key)
-
-                if isinstance(el, QLineEdit):
-                    el.textChanged.connect(self.action_attributeChanged)
-                elif isinstance(el, QPlainTextEdit):
-                    el.textChanged.connect(self.action_attributeChanged)
-                elif isinstance(el, QComboBox):
-                    el.currentIndexChanged.connect(self.action_attributeChanged)
-                elif isinstance(el, QCheckBox):
-                    el.toggled.connect(self.action_attributeChanged)
-                else:
-                    raise Exception(str(type(el)) + " not implemented")
-
-        
         self.fillContactList()
 
     def action_quit(self):
@@ -73,9 +46,21 @@ class AddressBook(QApplication):
         print("TODO: newContact")
         return
 
-    def action_attributeChanged(self):
+    def action_attributeChanged(self, form, field):
         self.attributeChanged = True
         return
+
+    # show the page of the contact in the detail window
+    def showContact(self):
+        while self.ui.stackedWidget.count():
+            widget = self.ui.stackedWidget.widget(0)
+            self.ui.stackedWidget.removeWidget(widget)
+            widget.deleteLater()
+        self.contactPage = createPage(self.contact, None)
+        self.contactForm = Form(self.contact, onChange=self.action_attributeChanged,
+                                fieldActions=self.contactPage.fieldActions)
+        self.ui.stackedWidget.addWidget(self.contactForm.widget)
+        self.ui.stackedWidget.setCurrentWidget(self.contactForm.widget)
 
     def fillContactList(self):
         con = sqlite3.connect(self.userDbPath)
@@ -99,7 +84,7 @@ class AddressBook(QApplication):
 
     def action_listClicked(self, item):
         # fill it with the attributes of the object
-        updateUi(ui, obj, "obj")
+        self.showContact()
         
 
 def checkEnv():
