@@ -8,7 +8,7 @@ program can too: the format is plain JSON and documented here.
 
 Version 2 stores the existing model (one building, one plant, one progress) as plain JSON. Version 3 changes the
 model: one project holds several orders, devices with their history, roofs, quotes and plugin data. GnuSolar converts
-version 2 files when it opens them (section 14).
+version 2 files when it opens them (section 15).
 
 ## 1. Principles
 
@@ -19,6 +19,9 @@ version 2 files when it opens them (section 14).
   relied on (grid operator, municipality), so it can be read without a database.
 - **History, not only the current state.** Devices have a start and an end date. Replaced devices stay in the file.
 - **No secrets.** Passwords, tokens and access codes never go into a project file.
+- **Country independent.** The fields of this document mean the same in every country. National coordinate systems,
+  register numbers, classifications and the steps with a country's authorities belong to a country extension
+  (section 13).
 - **The installation, not the simulation.** The file describes what is planned and what is built. The inputs and
   results of a simulation (weather data, loss settings, hourly values, screenshots) stay in the files of the
   simulation tool, which are referenced as documents. Only their outcome, such as the expected yield, is copied.
@@ -50,7 +53,7 @@ version 2 files when it opens them (section 14).
 |---|---|
 | `format` | Always `"gnusolar-project"` |
 | `version` | The format version. It changes only when existing readers can no longer read the file correctly. Adding optional fields does not change it. |
-| `project` | The project, sections 4 to 12 |
+| `project` | The project, sections 4 to 13 |
 
 A reader that finds a higher `version` than it knows refuses the file instead of guessing, so an older GnuSolar never
 damages a newer file. A reader that finds a lower `version` migrates it, one version step at a time, on the plain
@@ -61,9 +64,10 @@ data (`formats/pvp.py: _migrate()`).
 ```json
 "project": {
     "id": "uuid",
-    "created": "2026-11-10T14:00:00+01:00",
-    "modified": "2026-11-10T14:00:00+01:00",
+    "created": 1794315600,
+    "modified": 1794315600,
     "generator": "GnuSolar git...c96ce2c",
+    "currency": "CHF",
     "site": {},
     "contacts": [],
     "buildings": [],
@@ -71,6 +75,7 @@ data (`formats/pvp.py: _migrate()`).
     "types": [],
     "devices": [],
     "strings": [],
+    "connections": [],
     "designs": [],
     "quotes": [],
     "orders": [],
@@ -79,6 +84,8 @@ data (`formats/pvp.py: _migrate()`).
     "ext": {}
 }
 ```
+
+`currency` is the currency of every amount in the project (ISO 4217).
 
 ## 3. Conventions
 
@@ -92,8 +99,14 @@ UUIDs let two copies of a file, for example synced with Syncthing, be merged obj
 
 ### Dates and times
 
-- A date is an ISO 8601 date string: `"2026-11-10"`.
-- A point in time is an ISO 8601 date-time with its offset: `"2026-11-10T14:00:00+01:00"`.
+Every date and every point in time is a Unix timestamp: the seconds since 1970-01-01 00:00 UTC, as an integer.
+
+- A point in time, such as `created` or `modified`, is that moment: 1794315600 is 10 November 2026, 14:00 in
+  Switzerland.
+- A calendar day without a time, such as the day a system went into operation, is 12:00 UTC of that day: 1794312000
+  is 10 November 2026. Noon keeps the day the same in every time zone, and a reader gets the day back by taking the
+  UTC date of the value.
+- There are no date strings anywhere in the file. A date that is not known is `null` or left out, never 0.
 
 ### Missing values
 
@@ -116,9 +129,10 @@ UUIDs let two copies of a file, for example synced with Syncthing, be merged obj
 | Voltage | V | `"voc": 41.2` |
 | Current | A | `"isc": 13.9`, `"mainFuse": 40` |
 | Temperature | °C | |
+| Date, time | Unix timestamp, seconds, integer | `"from": 1426939200` |
 | Percent | % (0–100) | `"efficiency": 21.3` |
-| Money | the amount as a number, with a `currency` field (ISO 4217, default `"CHF"`) | `"amount": 18450.00` |
-| Swiss coordinates | LV95 (EPSG 2056), metres | `"e": 2632561.2` |
+| Money | the amount as a number, in the project's `currency`. An amount in another currency carries its own `currency` field. | `"amount": 18450.00` |
+| Geographic position | WGS84 latitude and longitude, degrees | `"latitude": 47.5419` |
 
 Numbers are JSON numbers, never strings, and use a decimal point. Field names never carry a unit (`powerAc`, not
 `powerAcKw`). Device values use the names of ModbusSpec's `vocabulary.yaml` where one exists.
@@ -126,7 +140,7 @@ Numbers are JSON numbers, never strings, and use a decimal point. Field names ne
 ### Values
 
 - Enumerations are lower-case strings in `snake_case`, for example `"heat_pump"`.
-- Text in the file is in the language of its users (usually German). Keys are English.
+- Text in the file is in the language of its users. Keys and enumeration values are English.
 
 ## 4. Site
 
@@ -139,63 +153,59 @@ The place where the system stands.
     "latitude": 47.5419,
     "longitude": 7.8696,
     "elevation": 330,
-    "swissGrid": { "e": 2632561.2, "n": 1265432.8 },
     "plotNumber": "1060",
-    "buildingIds": ["190335642"],
-    "zone": { "code": "11", "name": "Wohnzonen" },
-    "mainFuse": 40,
+    "supply": { "phases": 3, "voltage": 400, "frequency": 50, "earthingSystem": "tn_c_s", "mainFuse": 40 },
     "annualConsumption": 4500000,
     "designTemperature": { "minAmbient": -10, "maxCell": 70 },
     "horizon": [[0, 2], [90, 5], [180, 8], [270, 3]],
-    "meters": [
-        { "id": "uuid", "number": "12345678", "kind": "bidirectional", "from": "2015-03-21", "to": null }
-    ],
-    "municipality": { "taken": "2026-11-10", "code": "4264", "name": "Zeiningen", "…": "snapshot, see below" },
-    "gridOperator": { "taken": "2026-11-10", "id": 402, "vseId": null, "name": "Elektra Zeiningen", "…": "snapshot, see below" }
+    "municipality": { "taken": 1794312000, "code": "4264", "name": "Zeiningen", "…": "snapshot, see below" },
+    "gridOperator": { "taken": 1794312000, "id": 402, "name": "Elektra Zeiningen", "…": "snapshot, see below" },
+    "ext": {
+        "ch": { "v": 1, "lv95": { "e": 2632561.2, "n": 1265432.8 }, "egid": [190335642], "zone": { "code": "11", "name": "Wohnzonen" } }
+    }
 }
 ```
 
 | Field | Content |
 |---|---|
-| `latitude`, `longitude` | WGS84, degrees. Origin of the coordinate system (section 6). |
+| `latitude`, `longitude` | WGS84, degrees. The position of the site, and the origin of the coordinate system (section 6). |
 | `elevation` | Metres above sea level |
-| `swissGrid` | LV95 coordinates, metres |
-| `plotNumber` | Parcel number (Parzelle) |
-| `buildingIds` | Federal building IDs (EGID) |
-| `zone` | Building zone (ARE): code and name |
-| `mainFuse` | Rating of the house connection fuse, A |
+| `plotNumber` | Number of the parcel in the land register |
+| `ext` | National data of the site, such as coordinates in the national grid, building register numbers and the building zone, in the country extension (section 13) |
+| `supply` | The connection to the grid: number of `phases`, nominal `voltage` between the phases in V (for one phase: to neutral), `frequency` in Hz, the `earthingSystem` (section 10) and `mainFuse`, the rating of the house connection fuse in A |
 | `annualConsumption` | Electricity the site uses per year, Wh |
 | `designTemperature` | For sizing strings: `minAmbient` is the lowest ambient temperature (it gives the highest open-circuit voltage), `maxCell` the highest cell temperature (it gives the lowest MPP voltage), °C |
 | `horizon` | The horizon line seen from the site, as `[azimuth, elevation]` pairs in degrees |
-| `meters` | The grid operator's meters, with `from`/`to` because they get replaced. `kind` is `consumption`, `bidirectional` or `production`. Meters that belong to the system itself are devices (section 8). |
 
 ### Master data snapshots
 
 `municipality` and `gridOperator` are copies of GnuSolar's master data (`master.db`) as they were when the project
-used them, so a TAG from 2019 still shows the grid operator contact of 2019. `taken` is the date of the copy; `id`
+used them, so a connection request from 2019 still shows the grid operator contact of 2019. `taken` is the date of the copy; `id`
 refers to the master data row it came from. GnuSolar may refresh a snapshot, and then sets a new `taken`.
 
 ```json
 "municipality": {
-    "taken": "2026-11-10",
+    "taken": 1794312000,
     "id": 4264, "code": "4264", "name": "Zeiningen",
     "countryCode": "CH", "stateCode": "AG", "districtCode": null,
     "website": "https://www.zeiningen.ch",
-    "buildingFormId": 7,
     "mainContact": { "organization": "Gemeinde Zeiningen", "address": {}, "channels": [] },
-    "buildingContact": { "organization": "Bauverwaltung", "address": {}, "channels": [] }
+    "buildingContact": { "organization": "Bauverwaltung", "address": {}, "channels": [] },
+    "ext": { "ch": { "v": 1, "buildingFormId": 7 } }
 },
 "gridOperator": {
-    "taken": "2026-11-10",
-    "id": 402, "vseId": null, "name": "Elektra Zeiningen",
+    "taken": 1794312000,
+    "id": 402, "name": "Elektra Zeiningen",
     "address": { "street": "Kirchweg", "streetNumber": "26", "zip": "4314", "city": "Zeiningen" },
-    "tagFormId": 4, "iaFormId": null,
     "mainContact": { "organization": "Elektra Zeiningen", "address": {}, "channels": [] },
-    "tagContact": { "organization": "IBW Technik AG", "address": {}, "channels": [] }
+    "connectionContact": { "organization": "IBW Technik AG", "address": {}, "channels": [] },
+    "ext": { "ch": { "v": 1, "vseId": null, "tagFormId": 4, "iaFormId": null } }
 }
 ```
 
-The contacts inside a snapshot have the form of section 5 without `id`, `roles`, `from` and `to`.
+The contacts inside a snapshot have the form of section 5 without `id`, `roles`, `from` and `to`. `code` is the
+municipality's official number in its country. `connectionContact` is who handles connection requests for the grid
+operator. Which forms a municipality or grid operator uses is national and sits in the country extension.
 
 ## 5. Contacts
 
@@ -219,7 +229,7 @@ People and companies involved in the project, each with one or more roles.
             { "kind": "email", "value": "hans@example.ch" }
         ],
         "bankAccounts": [
-            { "owner": "Hans Muster", "bank": "Raiffeisen", "iban": "CH00 0000 0000 0000 0000 0", "iid": null, "bic": null }
+            { "owner": "Hans Muster", "bank": "Raiffeisen", "iban": "CH00 0000 0000 0000 0000 0", "bic": null }
         ],
         "from": null,
         "to": null
@@ -313,7 +323,7 @@ module groups with only a count.
 | `obstacle.shape` | `rect` (`x`, `y` = lower left corner, `width`, `height`), `circle` (`x`, `y` = centre, `radius`), `polygon` (`points`) |
 | `moduleGroup.mounting` | `on_roof`, `in_roof`, `flat_roof_east_west`, `flat_roof_south`, `facade`, `ground` |
 | `moduleGroup.orientation` | `portrait`, `landscape` |
-| `moduleGroup.designId` | The design this group belongs to (section 10). Left out when the project has only one layout. |
+| `moduleGroup.designId` | The design this group belongs to (section 11). Left out when the project has only one layout. |
 | `moduleGroup.tilt`, `azimuth` | Tilt and direction of the modules themselves, where they differ from the roof: racked rows on a flat roof, east-west systems. Left out when the modules lie in the roof plane. |
 | `moduleGroup.rowPitch` | Distance from one racked row to the next, mm |
 
@@ -323,7 +333,7 @@ them or to record a serial number or a replaced module:
 
 ```json
 "panels": [
-    { "id": "uuid", "row": 0, "column": 3, "stringId": "uuid", "serial": "JA2024…", "from": "2015-03-21", "to": "2026-04-02", "replacedById": "uuid" }
+    { "id": "uuid", "row": 0, "column": 3, "stringId": "uuid", "serial": "JA2024…", "from": 1426939200, "to": 1775131200, "replacedById": "uuid" }
 ]
 ```
 
@@ -332,19 +342,19 @@ A module group belongs to the order that installed it through a device of kind `
 A dormer that carries modules is a roof of its own, and at the same time an obstacle of kind `dormer` on the roof it
 sits on.
 
-Where a roof came from (swisstopo, a laser measurement, a PV*SOL import) is plugin data in its `ext` (section 12).
+Where a roof came from (a public 3D building dataset, a laser measurement, a PV*SOL import) is plugin data in its `ext` (section 13).
 
 ### Building model
 
-A building may point to a 3D model file in the project folder, for example a mesh from swisstopo or from a planning
-tool. The roofs above stay the reference for the layout; the model is for display and shading.
+A building may point to a 3D model file in the project folder, for example a mesh from a public 3D building dataset or from a
+planning tool. The roofs above stay the reference for the layout; the model is for display and shading.
 
 ```json
 "model": { "path": "cad/house_geo.stl", "format": "stl", "unit": "mm",
-           "origin": { "e": 2647238, "n": 1235998, "elevation": 507 }, "source": "swissBUILDINGS3D 3.0, 2026" }
+           "origin": { "x": -9200, "y": -10600, "z": 0 }, "source": "swissBUILDINGS3D 3.0, 2026" }
 ```
 
-`origin` is the point the model's coordinates count from: LV95 in metres and the height above sea level in metres.
+`origin` is the point the model's coordinates count from, in the building's coordinates.
 
 ### Surroundings
 
@@ -401,7 +411,7 @@ it uses, so it stays complete without a database.
 
 | Kind | Common `specs` fields |
 |---|---|
-| `panel` | `power` (W at STC), `voc`, `isc`, `vmp`, `imp`, `tempCoeffVoc`, `tempCoeffPower` (%/°C), `efficiency`, `width`, `height`, `depth`, `weight`, `cells`, `bifacial` |
+| `panel` | `power` (W at STC), `voc`, `isc`, `vmp`, `imp`, `tempCoeffVoc`, `tempCoeffPower` (%/°C), `efficiency`, `width`, `height`, `depth`, `weight`, `cells`, `bifacial`, `connector` (the DC connector on its leads, as for a port in section 10), `cableLength` |
 | `inverter` | `powerAc`, `apparentPower`, `phases`, `mpptCount`, `inputsPerMppt`, `maxDcVoltage`, `mpptVoltageMin`, `mpptVoltageMax`, `maxInputCurrent`, `hybrid` |
 | `battery` | `capacity`, `powerCharge`, `powerDischarge`, `voltage`, `chemistry` |
 | `optimizer` | `powerDc`, `maxInputVoltage`, `maxInputCurrent`, `maxOutputCurrent` |
@@ -429,7 +439,7 @@ added by an order, and removed or replaced by a later one.
         "firmware": "V100R001C10SPC140",
         "location": "Keller",
         "orderId": "uuid",
-        "from": "2015-03-21",
+        "from": 1426939200,
         "to": null,
         "replacesId": null,
         "access": {
@@ -437,9 +447,9 @@ added by an order, and removed or replaced by a later one.
             "cloud": { "portal": "huawei.fusionsolar", "linked": true }
         },
         "warranties": [
-            { "layer": "legal", "start": "2015-03-21", "end": "2017-03-21" },
-            { "layer": "manufacturer", "start": "2015-03-21", "end": "2025-03-21" },
-            { "layer": "online_extension", "start": "2025-03-21", "end": "2030-03-21", "condition": "device online" }
+            { "layer": "legal", "start": 1426939200, "end": 1490097600 },
+            { "layer": "manufacturer", "start": 1426939200, "end": 1742558400 },
+            { "layer": "online_extension", "start": 1742558400, "end": 1900324800, "condition": "device online" }
         ],
         "ext": {}
     }
@@ -455,13 +465,25 @@ The kinds follow ModbusSpec's device families, plus the parts of a solar system 
 | `pv_array` | The modules of an order, as one device: `moduleGroupIds` lists its module groups |
 | `inverter` | PV or hybrid inverter |
 | `battery` | Battery storage (with its battery inverter if separate) |
-| `meter` | Energy meter, smart meter |
+| `meter` | Energy meter: the grid operator's or one of the system's own |
 | `charger` | Charging station for electric vehicles |
 | `heat_pump` | Heat pump |
 | `heating_rod` | Heating rod, PV2Heat, Ohmpilot |
 | `energy_manager` | Energy manager, controller, data logger |
 | `optimizer` | Module optimizers (with `count`) |
-| `switchgear` | DC switch, AC distribution, surge protection, fuses |
+| `grid_connection` | The point where the building is connected to the grid |
+| `distribution_board` | Distribution board, meter cabinet, connection box: an enclosure for other devices |
+| `fuse` | Fuse with its holder |
+| `breaker` | Circuit breaker |
+| `rcd` | Residual current device |
+| `rcbo` | Residual current device and circuit breaker in one |
+| `switch` | Hand-operated switch: isolator, DC isolator, changeover or bypass switch |
+| `transfer_switch` | Automatic changeover between grid, backup supply and generator |
+| `spd` | Surge protection device |
+| `busbar` | Rail or terminal block where conductors of the same kind meet: phases, N, PE |
+| `earth_electrode` | Foundation earth or earth rod |
+| `load` | A consumer or a group of consumers |
+| `generator` | Generator |
 | `boiler`, `hvac`, `ventilation`, `pool`, `ups`, `io` | As in ModbusSpec |
 | `other` | Anything else |
 
@@ -470,12 +492,24 @@ The kinds follow ModbusSpec's device families, plus the parts of a solar system 
 | Kind | Fields besides the common ones |
 |---|---|
 | `pv_array` | `moduleGroupIds` |
-| `inverter` | `acCable`: the cable to the distribution board, in the form of a string's `cable` (section 9) |
-| `battery` | `coupling`: `ac` (own battery inverter), `dc_generator` (between modules and inverter) or `dc_link` (on the hybrid inverter's battery input). `connectedToId`: the inverter it works with. `backup`: `none`, `socket` (emergency power socket) or `full` (the house keeps running). |
+| `inverter` | `backup`: what it supplies when the grid fails: `none`, `socket`, `partial` (the loads on its backup output) or `whole_house`. `backupNeutralBond`: how neutral and earth are joined while it runs without the grid (section 10). |
+| `battery` | `coupling`: `ac` (own battery inverter), `dc_generator` (between modules and inverter) or `dc_link` (on the hybrid inverter's battery input). `connectedToId`: the inverter it works with. `backup`, as for an inverter, where the battery unit itself supplies the house in an outage. |
 | `optimizer` | `count` and `moduleGroupIds`: the module groups whose modules carry one |
 | `charger` | `connectedToId`: the device that controls it on solar surplus. `loadManagement`: true or false. |
 | `heat_pump`, `heating_rod` | `connectedToId`: the device that switches it on solar surplus |
-| `meter` | `role`: `production`, `consumption` or `grid`. These are the system's own meters; the grid operator's are in `site.meters`. |
+| `meter` | `owner`, `number`, `role`, `measuring`, `ct`, `measures` (section 10) |
+| `fuse` | `ratedCurrent`, `characteristic` (`gG`, `aM`, `gPV` …), `form`: the form factor (`nh00`, `nh1`, `d01`, `d02`, `dII`, `dIII`, `10x38`, `14x51` …), `poles`, `ratedVoltage`, `breakingCapacity` |
+| `breaker` | `ratedCurrent`, `characteristic` (`B`, `C`, `D`, `K`, `Z`), `poles`, `switchesNeutral`, `breakingCapacity`, `form` (`din_rail`, `moulded_case`) |
+| `rcd` | `ratedCurrent`, `residualCurrent` (0.03 for 30 mA), `rcdType` (`AC`, `A`, `F`, `B`), `selective`, `poles` |
+| `rcbo` | The fields of `breaker` and of `rcd` |
+| `switch` | `function`: `isolator`, `dc_isolator`, `changeover`, `bypass`. `ratedCurrent`, `poles`, `switchesNeutral`. |
+| `transfer_switch` | `ratedCurrent`, `poles`, `switchesNeutral` |
+| `spd` | `spdType` (`1`, `2`, `1+2`, `3`), `side`: `ac` or `dc` |
+| `busbar` | `conductors`: what it carries, for example `["N"]`, `["PE"]` or `["L1", "L2", "L3"]` |
+| `load` | `power`, and `backup`: true when it stays supplied in an outage |
+| `generator` | `powerAc`, `phases` |
+
+The name of a fuse or breaker as written on the board and in the diagram ("F1", "Q3") is the device's `label`.
 
 ### Lifetime
 
@@ -485,6 +519,7 @@ The kinds follow ModbusSpec's device families, plus the parts of a solar system 
 | `from` | Date the device went into operation |
 | `to` | Date it was removed, `null` while it is installed |
 | `replacesId` | The device this one replaces, for example a replacement inverter after a repair |
+| `parentId` | The device this one is built into or mounted in: a breaker in a distribution board, the meter built into an inverter |
 
 The **installed system** on a date is every device with `from` on or before that date and `to` empty or after it. A
 device without `from` belongs to an order that isn't finished yet.
@@ -502,7 +537,7 @@ device without `from` belongs to an order that isn't finished yet.
 | `modbusSpec` | The ModbusSpec device file, as `family/file` without extension |
 
 `access.cloud` names the manufacturer portal and whether the device is linked. Portal-specific data, such as plant
-IDs, belongs to the portal's plugin (section 12). Login data never goes into the file.
+IDs, belongs to the portal's plugin (section 13). Login data never goes into the file.
 
 ### Warranties
 
@@ -514,7 +549,7 @@ IDs, belongs to the portal's plugin (section 12). Login data never goes into the
 | `purchased_extension` | Extension bought separately |
 | `performance` | Performance guarantee, for example for modules |
 
-`condition` describes in words what the layer requires. Documents (section 11) can hold the warranty certificate.
+`condition` describes in words what the layer requires. Documents (section 12) can hold the warranty certificate.
 
 ## 9. Strings
 
@@ -523,7 +558,7 @@ How modules are wired to inverters. Optional; most migrated projects have none.
 ```json
 "strings": [
     { "id": "uuid", "inverterId": "uuid", "mppt": 1, "input": 1, "moduleGroupId": "uuid", "modulesInSeries": 12, "parallel": 1, "label": "S1",
-      "cable": { "crossSection": 6, "length": 25000, "material": "copper" } }
+      "cable": { "crossSection": 6, "length": 25000, "material": "copper" }, "connector": "MC4" }
 ]
 ```
 
@@ -532,9 +567,179 @@ is split into one entry per group with the same `label`.
 
 Which modules of the group belong to the string is given per module, with `stringId` in the group's `panels`
 (section 6), where the strings don't simply follow the rows. `cable` is the DC cable from the string to the inverter:
-cross-section in mm², one-way length in mm, `material` `copper` or `aluminium`.
+cross-section in mm², one-way length in mm, `material` `copper` or `aluminium`. `connector` is the plug fitted to
+that cable at the inverter. All other wiring is in `connections`
+(section 10).
 
-## 10. Designs and quotes
+## 10. Electrical installation
+
+Section 8 lists every electrical component of the building that matters for the system: the grid connection, meters,
+distribution boards, fuses, breakers, residual current devices, switches, busbars, loads, and the inverters,
+batteries and chargers themselves. `connections` says how they are wired, for power, protective earth and signal.
+Devices and connections together are the circuit diagram of the installation.
+
+A project doesn't need this part. Without connections the devices are simply a list.
+
+### Ports
+
+A device is wired at its ports. A port has the name printed on the device or used in its manual: `GRID`, `BACKUP`,
+`PV1`, `BAT`, `BMS`, `CT`, `COM1`. A type can list its ports in `specs.ports`:
+
+```json
+"ports": [
+    { "name": "PV1", "kind": "dc", "connector": "MC4" },
+    { "name": "GRID", "kind": "ac", "conductors": ["L1", "L2", "L3", "N", "PE"], "connector": "screw terminal" },
+    { "name": "BACKUP", "kind": "ac", "conductors": ["L1", "L2", "L3", "N", "PE"], "connector": "screw terminal" },
+    { "name": "BAT", "kind": "dc", "connector": "SUNCLIX" },
+    { "name": "BMS", "kind": "signal", "connector": "RJ45" }
+]
+```
+
+`connector` is the kind of connector the port has, written as its maker writes it: `MC4`, `MC4-Evo2`, `SUNCLIX`,
+`H4`, `RJ45`, or `screw terminal`, `spring terminal`, `cable lug` for terminals. It says which plug the cable needs
+and lets a program check that both sides fit. Mating DC connectors of different makes is a known cause of faults,
+so the exact name matters there.
+
+Simple devices have fixed port names:
+
+| Kind | Ports |
+|---|---|
+| `fuse`, `breaker`, `rcd`, `rcbo`, `switch` (isolator), a `meter` wired in line | `in` (supply side), `out` (load side) |
+| `switch` with `function` `changeover` or `bypass` | `common`, `a`, `b` |
+| `busbar` | `bar` |
+| `grid_connection` | `out` |
+| `load` | `in` |
+| `earth_electrode` | `pe` |
+| `spd` | `line`, `pe` |
+
+### Connections
+
+A connection is one cable, or one set of wires, between two ports.
+
+```json
+"connections": [
+    {
+        "id": "uuid",
+        "kind": "ac",
+        "ends": [ { "deviceId": "uuid", "port": "out" }, { "deviceId": "uuid", "port": "GRID" } ],
+        "conductors": ["L1", "L2", "L3", "N", "PE"],
+        "cable": { "designation": "5G6", "cores": 5, "crossSection": 6, "outerDiameter": 15, "length": 8000, "material": "copper" },
+        "label": "W3",
+        "orderId": "uuid",
+        "from": 1781956800,
+        "to": null
+    }
+]
+```
+
+| Field | Content |
+|---|---|
+| `kind` | `ac`, `dc`, `pe` (protective earth and equipotential bonding), `bond` (a link that joins neutral and earth) or `signal` |
+| `ends` | The two ports it joins. Where more than two cables meet, they meet at a device: a busbar, a breaker, a terminal. An end can carry `connector`, the plug fitted to the cable there, when the port doesn't say it or the plug differs from it. |
+| `conductors` | What the cable carries: `L1`, `L2`, `L3`, `N`, `PE`, `PEN` for AC, `+` and `-` for DC. A single-phase device names the phase it is on. |
+| `cable` | `designation` (the cable type as ordered), `cores`, `crossSection` of one conductor in mm², `outerDiameter` in mm, `length` in mm, `material`: `copper` or `aluminium` |
+| `protocol` | For `signal`: `rs485`, `can`, `ethernet`, `ct` (the leads of a current transformer), `digital` (a switching contact: remote shutdown, ripple control receiver, load control), `analog`, `other` |
+| `label` | The cable's name in the diagram |
+| `orderId`, `from`, `to` | As for devices: the order that installed it and the time it was in place |
+
+The strings of section 9 are the DC connections between modules and inverter. They are not repeated here.
+
+### Neutral and earth
+
+How neutral and protective earth are arranged decides which switches a backup supply needs, so the file records it
+in four places:
+
+- **The earthing system** of the supply is `site.supply.earthingSystem`: `tn_s`, `tn_c`, `tn_c_s`, `tt` or `it`, as
+  defined in IEC 60364.
+- **Busbars and the earth electrode are devices.** The N bar and the PE bar of a board are `busbar` devices, and the
+  earth electrode is connected to the PE bar by a `pe` connection. Where neutral and earth are joined, as at the
+  point where a PEN conductor is split, there is a connection of kind `bond` between the two bars. A board without
+  that connection keeps them apart.
+- **Whether a device interrupts the neutral** is its `poles` together with `switchesNeutral`. A three-pole changeover
+  switch leaves the neutral connected through; a four-pole one switches it.
+- **What the inverter does without the grid** is its `backupNeutralBond`: `relay` when it joins neutral and earth
+  itself while it supplies the backup loads, `external` when the installation provides the bond, `none` when there
+  is none.
+
+Inverter manuals show the same inverter wired in both ways. Where neutral and earth are joined in the board, the
+neutral of the grid side and the backup side stay connected and the switches have three poles. Where they are
+separate, switches and residual current devices have four poles, and the inverter bonds neutral to earth while it
+runs without the grid.
+
+### Meters
+
+Every meter is a device of kind `meter`, the grid operator's as well as the system's own.
+
+| Field | Content |
+|---|---|
+| `owner` | `grid_operator` or `system` |
+| `number` | The meter number, for the grid operator's meter |
+| `role` | What its reading means: `grid` (at the grid connection, both directions), `production`, `consumption`, `sub` (one consumer or a part of the building) |
+| `measuring` | `direct`: the current runs through the meter, which is wired with `in` and `out`. `ct`: it measures with current transformers around a cable. |
+| `ct` | For `ct`: the transformer ratio as `primary` and `secondary` current in A, for example 120 and 0.04 |
+| `measures` | For `ct`: the `connectionId` of the cable the transformers sit on, and `arrowTowardsId`, the device at the end their arrow points to |
+| `parentId` | The inverter, for a meter built into it; the board, for one mounted there |
+
+Where a meter sits in the circuit is given by its connections, or by `measures`. That place decides what it sees:
+
+- A `grid` meter sits between the grid connection and the first branch, so the whole building is behind it.
+- With partial backup, the loads that are not backed up branch off before the inverter. The transformers of the
+  inverter's meter then sit on the cable from the grid, before that branch.
+- With whole-house backup everything runs through the inverter, and its built-in meter needs no transformer at the
+  grid.
+- A second inverter needs its own `production` meter on its AC cable, if the system has to know its output.
+
+### Example
+
+A hybrid inverter with partial backup, with neutral and earth separate in the board. IDs are shortened to names here.
+
+```json
+"devices": [
+    { "id": "grid", "kind": "grid_connection" },
+    { "id": "F0",  "kind": "fuse", "label": "HAK", "ratedCurrent": 40, "characteristic": "gG", "form": "nh00", "poles": 3 },
+    { "id": "Z1",  "kind": "meter", "owner": "grid_operator", "number": "12345678", "role": "grid", "measuring": "direct" },
+    { "id": "HV",  "kind": "distribution_board", "label": "Hauptverteilung" },
+    { "id": "L",   "kind": "busbar", "parentId": "HV", "conductors": ["L1", "L2", "L3", "N"] },
+    { "id": "PE",  "kind": "busbar", "parentId": "HV", "conductors": ["PE"] },
+    { "id": "E",   "kind": "earth_electrode" },
+    { "id": "Q1",  "kind": "breaker", "parentId": "HV", "label": "Q1", "ratedCurrent": 32, "characteristic": "C", "poles": 4, "switchesNeutral": true },
+    { "id": "F1",  "kind": "rcd", "parentId": "HV", "label": "F1", "ratedCurrent": 40, "residualCurrent": 0.3, "rcdType": "A", "poles": 4 },
+    { "id": "INV", "kind": "inverter", "backup": "partial", "backupNeutralBond": "relay" },
+    { "id": "M0",  "kind": "meter", "parentId": "INV", "owner": "system", "role": "grid", "measuring": "ct",
+      "ct": { "primary": 120, "secondary": 0.04 }, "measures": { "connectionId": "W2", "arrowTowardsId": "Z1" } },
+    { "id": "BAT", "kind": "battery", "coupling": "dc_link", "connectedToId": "INV" },
+    { "id": "Q2",  "kind": "rcbo", "parentId": "HV", "label": "Q2", "ratedCurrent": 20, "characteristic": "C", "residualCurrent": 0.03, "rcdType": "A", "poles": 4 },
+    { "id": "LB",  "kind": "load", "label": "Notstromverbraucher", "backup": true },
+    { "id": "Q3",  "kind": "rcbo", "parentId": "HV", "label": "Q3", "ratedCurrent": 25, "characteristic": "C", "residualCurrent": 0.03, "rcdType": "A", "poles": 4 },
+    { "id": "LN",  "kind": "load", "label": "Übrige Verbraucher", "backup": false }
+],
+"connections": [
+    { "id": "W0",  "kind": "ac", "ends": [{ "deviceId": "grid", "port": "out" }, { "deviceId": "F0", "port": "in" }], "conductors": ["L1", "L2", "L3", "N"], "cable": { "crossSection": 16 } },
+    { "id": "W1",  "kind": "ac", "ends": [{ "deviceId": "F0", "port": "out" }, { "deviceId": "Z1", "port": "in" }], "conductors": ["L1", "L2", "L3", "N"], "cable": { "crossSection": 16 } },
+    { "id": "W2",  "kind": "ac", "ends": [{ "deviceId": "Z1", "port": "out" }, { "deviceId": "L", "port": "bar" }], "conductors": ["L1", "L2", "L3", "N"], "cable": { "crossSection": 16 } },
+    { "id": "W3",  "kind": "ac", "ends": [{ "deviceId": "L", "port": "bar" }, { "deviceId": "Q1", "port": "in" }], "conductors": ["L1", "L2", "L3", "N"], "cable": { "crossSection": 6 } },
+    { "id": "W4",  "kind": "ac", "ends": [{ "deviceId": "Q1", "port": "out" }, { "deviceId": "F1", "port": "in" }], "conductors": ["L1", "L2", "L3", "N"], "cable": { "crossSection": 6 } },
+    { "id": "W5",  "kind": "ac", "ends": [{ "deviceId": "F1", "port": "out" }, { "deviceId": "INV", "port": "GRID" }], "conductors": ["L1", "L2", "L3", "N"], "cable": { "designation": "5G6", "crossSection": 6, "length": 8000 } },
+    { "id": "W6",  "kind": "ac", "ends": [{ "deviceId": "INV", "port": "BACKUP" }, { "deviceId": "Q2", "port": "in" }], "conductors": ["L1", "L2", "L3", "N"], "cable": { "designation": "5G6", "crossSection": 6, "length": 8000 } },
+    { "id": "W7",  "kind": "ac", "ends": [{ "deviceId": "Q2", "port": "out" }, { "deviceId": "LB", "port": "in" }], "conductors": ["L1", "L2", "L3", "N", "PE"] },
+    { "id": "W8",  "kind": "ac", "ends": [{ "deviceId": "L", "port": "bar" }, { "deviceId": "Q3", "port": "in" }], "conductors": ["L1", "L2", "L3", "N"] },
+    { "id": "W9",  "kind": "ac", "ends": [{ "deviceId": "Q3", "port": "out" }, { "deviceId": "LN", "port": "in" }], "conductors": ["L1", "L2", "L3", "N", "PE"] },
+    { "id": "W10", "kind": "dc", "ends": [{ "deviceId": "INV", "port": "BAT" }, { "deviceId": "BAT", "port": "BAT" }], "conductors": ["+", "-"] },
+    { "id": "W11", "kind": "signal", "protocol": "can", "ends": [{ "deviceId": "INV", "port": "BMS" }, { "deviceId": "BAT", "port": "BMS" }] },
+    { "id": "W12", "kind": "pe", "ends": [{ "deviceId": "INV", "port": "PE" }, { "deviceId": "PE", "port": "bar" }], "conductors": ["PE"], "cable": { "crossSection": 6 } },
+    { "id": "W13", "kind": "pe", "ends": [{ "deviceId": "PE", "port": "bar" }, { "deviceId": "E", "port": "pe" }], "conductors": ["PE"], "cable": { "crossSection": 16 } }
+]
+```
+
+The built-in meter `M0` has its transformers on `W2`, between the grid operator's meter and the rail where the
+other loads branch off, so it sees what the whole building takes from the grid. In a board where neutral and earth
+are joined there would be an N bar as well, and one more connection:
+
+```json
+{ "id": "W14", "kind": "bond", "ends": [{ "deviceId": "N", "port": "bar" }, { "deviceId": "PE", "port": "bar" }] }
+```
+
+## 11. Designs and quotes
 
 ### Designs
 
@@ -547,7 +752,7 @@ Simulation tools keep one file per variant. Here a design is a named entry that 
         "id": "uuid",
         "label": "Aufdach 24 Module",
         "description": "",
-        "expectedYield": { "annual": 10200000, "source": "PVGIS 5.3", "date": "2026-11-05" },
+        "expectedYield": { "annual": 10200000, "source": "PVGIS 5.3", "date": 1793880000 },
         "documents": [
             { "path": "cad/haus_24M.pvprj", "kind": "simulation" },
             { "path": "off/24M.png", "kind": "layout" }
@@ -577,10 +782,10 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
     {
         "id": "uuid",
         "number": "O2026-11-0042",
-        "date": "2026-11-05",
+        "date": 1793880000,
         "variant": "Aufdach mit Batterie",
         "designId": "uuid",
-        "validUntil": "2026-12-31",
+        "validUntil": 1798718400,
         "state": "sent",
         "items": [
             { "id": "uuid", "kind": "device", "typeId": "uuid", "deviceKind": "panel", "count": 24, "unit": "piece", "text": "Solarmodul JA Solar 440 W", "unitPrice": 180.00 },
@@ -602,7 +807,7 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
 
 A migrated quote may have only a `date` (from version 2 `quoteNSent`) and no number, items or total.
 
-## 11. Orders
+## 12. Orders
 
 An order is a job at the site: the first installation, a battery, a replacement. It has its own process steps,
 documents and invoices.
@@ -616,15 +821,15 @@ documents and invoices.
         "state": "running",
         "quoteId": "uuid",
         "folder": "",
-        "inquiry": "2026-03-01",
+        "inquiry": 1772366400,
         "roofMeasure": null,
-        "roofMeasured": "2026-03-10",
-        "ordered": "2026-04-15",
+        "roofMeasured": 1773144000,
+        "ordered": 1776254400,
         "rejected": null,
-        "constructionStart": "2026-06-02",
-        "constructionSort": "2026-06-02",
+        "constructionStart": 1780401600,
+        "constructionSort": 1780401600,
         "constructionFixed": false,
-        "commissioned": "2026-06-20",
+        "commissioned": 1781956800,
         "completed": null,
         "archived": null,
         "inactive": null,
@@ -634,9 +839,9 @@ documents and invoices.
         "steps": [
             {
                 "id": "uuid",
-                "kind": "tag",
+                "kind": "ch.tag",
                 "state": "approved",
-                "dates": { "submitted": "2026-04-21", "approved": "2026-05-10" },
+                "dates": { "submitted": 1776772800, "approved": 1778414400 },
                 "documents": [
                     { "path": "evu/2026-04-20_tag_fill.xlsx", "kind": "filled" },
                     { "path": "evu/2026-05-10_tag_bew.pdf", "kind": "approved" }
@@ -644,7 +849,7 @@ documents and invoices.
             }
         ],
         "invoices": [
-            { "id": "uuid", "number": "R2026-06-0123", "kind": "partial", "date": "2026-06-01", "amount": 9000.00, "currency": "CHF", "paid": "2026-06-20", "documents": [ { "path": "fin/R2026-06-0123.pdf", "kind": "invoice" } ] }
+            { "id": "uuid", "number": "R2026-06-0123", "kind": "partial", "date": 1780315200, "amount": 9000.00, "currency": "CHF", "paid": 1781956800, "documents": [ { "path": "fin/R2026-06-0123.pdf", "kind": "invoice" } ] }
         ],
         "notes": "",
         "ext": {}
@@ -662,7 +867,7 @@ documents and invoices.
 | `commissioned` | First day of operation (Inbetriebnahme) |
 | `completed` | Everything done, including subsidy payment and final invoice |
 | `constructionType` | `on_roof`, `in_roof`, `facade`, `flat_roof`, `ground` |
-| `totalCost` | Total cost of the order, CHF, as needed for subsidy and solar forms |
+| `totalCost` | Total cost of the order, as needed for subsidy and permit forms |
 
 ### Types of order
 
@@ -675,7 +880,7 @@ documents and invoices.
 | `heat_pump` | Heat pump, PV2Heat, heating rod |
 | `replacement` | Replacement of a device (inverter, modules, battery) |
 | `repair` | Repair, damage, insurance case |
-| `inspection` | Inspection, safety certificate (SiNa), measurement |
+| `inspection` | Inspection, safety certificate, measurement |
 | `service` | Other work |
 
 `items` holds the order's positions in the format of quote items. When the client accepts a quote, its items are
@@ -687,23 +892,18 @@ A step is something done with an authority, the grid operator, a subsidy office 
 
 | `kind` | Step |
 |---|---|
-| `tag` | Technical connection request to the grid operator (TAG) |
-| `ia` | Installation notice (Installationsanzeige) |
-| `building_permit` | Solar notice or building permit |
-| `esti` | ESTI approval |
-| `pronovo` | Registration with Pronovo for the one-time remuneration (EIV) |
-| `sina_dc`, `sina_ac` | Safety certificate (Sicherheitsnachweis), DC and AC side |
+| `material` | Material ordered and delivered |
 | `measurement` | Measurement and test protocol |
 | `documentation` | System documentation created and handed over |
-| `material` | Material ordered and delivered |
 | `acceptance` | Acceptance by the client |
+| `<country>.<name>` | A step with an authority, the grid operator or a subsidy office. These differ from country to country, so their kinds are defined by the country extension and carry its prefix, for example `ch.tag` (section 13). |
 
 `state` goes through `ordered` → `filled` → `signed` → `submitted` → `approved` → `paid`, or ends in `rejected`; a step
 uses only the states that apply to it. A step not yet started has state `open`; one that doesn't apply to this order
 is left out. `dates` holds the date each state was reached. `documents` lists files in the order's folder:
 
 ```json
-{ "path": "evu/2026-05-10_tag_bew.pdf", "kind": "approved", "date": "2026-05-10" }
+{ "path": "evu/2026-05-10_tag_bew.pdf", "kind": "approved", "date": 1778414400 }
 ```
 
 ### Invoices
@@ -715,10 +915,10 @@ is left out. `dates` holds the date each state was reached. `documents` lists fi
 | `small` | Small invoice without down payments |
 | `credit` | Credit note |
 
-`paid` is the date the payment arrived. Payments of a subsidy, such as Pronovo's, are not invoices; they are the
-`paid` state of the `pronovo` step.
+`paid` is the date the payment arrived. Payments of a subsidy are not invoices; they are the `paid` state of the
+subsidy's step.
 
-## 12. Plugins and extensions
+## 13. Plugins and extensions
 
 Plugins connect GnuSolar to outside services: manufacturer portals, grid-operator portals, subsidy offices,
 suppliers, data sources. Each plugin stores its data in the `ext` field of the object it belongs to, under its own ID.
@@ -726,7 +926,7 @@ suppliers, data sources. Each plugin stores its data in the `ext` field of the o
 ```json
 "ext": {
     "huawei.fusionsolar": { "v": 1, "plantId": "NE=33…", "deviceDn": "NE=34…" },
-    "swisstopo.buildings3d": { "v": 1, "edition": 2026, "egid": 263008948, "uuid": "{DDE3…}" },
+    "ch.swisstopo.buildings3d": { "v": 1, "edition": 2026, "egid": 263008948, "uuid": "{DDE3…}" },
     "valentin.pvsol": { "v": 1, "file": "cad/haus_24M.pvprj", "sha256": "…", "guid": "{2F8701B0-…}" }
 }
 ```
@@ -737,13 +937,43 @@ types, devices, strings, quotes, orders, steps and invoices.
 ### Rules
 
 1. A plugin ID is lower case, with dots for namespaces: `manufacturer.product` or the name of the service
-   (`huawei.fusionsolar`, `sma.sunnyportal`, `elektroform`, `pronovo`, `swisstopo.buildings3d`).
+   (`huawei.fusionsolar`, `sma.sunnyportal`). A plugin for a national service starts with the country's code
+   (`ch.elektroform`, `ch.pronovo`, `ch.swisstopo.buildings3d`).
 2. A plugin writes only inside its own namespace. It changes other fields only through the program.
 3. Every namespace has a version `v`, an integer. A plugin migrates its own data.
 4. The content is plain JSON, in the conventions of this document. Each plugin documents its fields.
 5. A program that doesn't know a plugin keeps its data unchanged, also when it saves the file.
 6. No secrets in a namespace. A plugin that needs credentials stores them in the operating system's keyring and keeps
    at most a reference: `"credentialRef": "huawei.fusionsolar:installer"`.
+
+### Country extensions
+
+Everything that exists only in one country is kept out of the fields of this document. It lives in an extension
+named by the country's ISO 3166 code in lower case, which is a namespace in `ext` like any plugin's. A country
+extension holds national coordinates, register numbers and classifications, and it defines the kinds of the steps
+with that country's authorities.
+
+The extension for Switzerland, `ch`:
+
+| On | Field | Content |
+|---|---|---|
+| `site` | `lv95` | Coordinates in the national grid LV95 (EPSG 2056), `e` and `n` in metres |
+| `site` | `egid` | Federal building IDs (EGID) of the buildings |
+| `site` | `zone` | Building zone (ARE): `code` and `name` |
+| municipality snapshot | `buildingFormId` | The form for the solar notice or building permit, in the master data |
+| grid operator snapshot | `vseId`, `tagFormId`, `iaFormId` | VSE number of the grid operator; its forms for the TAG and the IA |
+| bank account | `iid` | Institution ID of the bank |
+
+| Step `kind` | Step |
+|---|---|
+| `ch.tag` | Technical connection request to the grid operator (TAG) |
+| `ch.ia` | Installation notice (Installationsanzeige) |
+| `ch.building_permit` | Solar notice (Solarmeldung) or building permit |
+| `ch.esti` | Plan approval by ESTI |
+| `ch.pronovo` | Registration with Pronovo for the one-time remuneration (EIV) |
+| `ch.sina_dc`, `ch.sina_ac` | Safety certificate (Sicherheitsnachweis), DC and AC side |
+
+A reader that doesn't know a country extension keeps its data and shows its steps by their `kind` and dates.
 
 ### Plugin list
 
@@ -756,16 +986,18 @@ data is:
 ]
 ```
 
-## 13. Implementation notes
+## 14. Implementation notes
 
 `model/ModelNode.py` turns the model into plain data and back. Version 3 needs two changes there:
 
 - **Keep unknown fields.** `fromDict()` currently skips keys the class doesn't have, so the next save drops them. For
   version 3 it keeps them in a runtime attribute (for example `_unknown`), and `toDict()` writes them back.
+- **Dates as timestamps.** The model holds dates as integers. The forms show and take days in local notation, and
+  `Progress` compares numbers where it compares date strings today.
 - **Lists of parts.** Version 3 has lists of objects (contacts, orders, devices …). Their class comes from the field,
   not from the file, as for the dicts of parts today.
 
-## 14. Migration from version 2
+## 15. Migration from version 2
 
 GnuSolar converts a version 2 project in `formats/pvp.py: _migrate()`, on the plain data. `tools/migrate_pvp.py`
 converts all projects at once, with a dry run that lists lost values and a backup of all files.
@@ -779,25 +1011,28 @@ one roof, and one order of type `new_system`.
 |---|---|
 | `building.street`, `streetNumber`, `zip`, `city`, `region`, `country` | `site.address` |
 | `building.plotNumber` | `site.plotNumber` |
-| `building.buildingId` | `site.buildingIds` (one entry) |
-| `building.swissGridX`, `swissGridY` | `site.swissGrid.e`, `.n`; LV03 values (6 digits) get +2 000 000 / +1 000 000 |
+| `building.buildingId` | `site.ext.ch.egid` (one entry) |
+| `building.swissGridX`, `swissGridY` | `site.ext.ch.lv95.e`, `.n`; LV03 values (6 digits) get +2 000 000 / +1 000 000. `site.latitude` and `longitude` are calculated from them. |
 | `building.municipalityCode`, `municipalityName` | `site.municipality.code`, `.name` |
-| `building.areZoneCode`, `areZoneName` | `site.zone.code`, `.name` |
-| `building.mainFuseSize` | `site.mainFuse` (number, A) |
-| `building.meterNumberOld`, `meterNumberNew` | `site.meters`: the old one with `to` = order `commissioned`, the new one with `from` = it |
+| `building.areZoneCode`, `areZoneName` | `site.ext.ch.zone.code`, `.name` |
+| `building.mainFuseSize` | `site.supply.mainFuse` (number, A) |
+| `building.meterNumberOld`, `meterNumberNew` | two devices of kind `meter` with `owner` `grid_operator` and the `number`: the old one with `to` = order `commissioned`, the new one with `from` = it |
 | `building.buildingState` | `ext.gnusolar.v2.buildingState` (kept, no v3 meaning yet) |
 | `municipality.id`, `code`, `name`, `countryCode`, `stateCode`, `districtCode`, `website`, `mainContact`, `buildingContact` | `site.municipality` snapshot with the same names, `taken` = file date |
-| `municipality.fkFormBuilding` | `site.municipality.buildingFormId` |
+| `municipality.fkFormBuilding` | `site.municipality.ext.ch.buildingFormId` |
 | `municipality.fkPowerCompany` | dropped: the grid operator is in `site.gridOperator` |
-| `powerCompany.id`, `vseId`, `name`, `mainContact`, `tagContact` | `site.gridOperator` snapshot with the same names, `taken` = file date |
+| `powerCompany.id`, `name`, `mainContact` | `site.gridOperator` snapshot with the same names, `taken` = file date |
+| `powerCompany.tagContact` | `site.gridOperator.connectionContact` |
+| `powerCompany.vseId` | `site.gridOperator.ext.ch.vseId` |
 | `powerCompany.address1`, `address2`, `zipCode`, `city` | `site.gridOperator.address` (`zipCode` as text) |
-| `powerCompany.fkFormTag`, `fkFormIa`, `fkContactTag` | `site.gridOperator.tagFormId`, `iaFormId`, `tagContactId` |
+| `powerCompany.fkFormTag`, `fkFormIa` | `site.gridOperator.ext.ch.tagFormId`, `iaFormId` |
+| `powerCompany.fkContactTag` | dropped: the contact itself is in `connectionContact` |
 | `contacts.contacts.owner` | a contact with `roles: ["owner"]`, if it has any value besides `role` |
 | `contacts.contacts.installer_ac` | a contact with `roles: ["electrician"]`, if it has any value besides `role` |
 | contact `company` | `organization` |
 | contact `street` … `country`, `address1`, `address2`, `floor`, `room` | `address` |
 | contact `phone`, `phone2`, `mobile`, `email`, `email2` | `channels`, in this order |
-| contact `account*` | one entry in `bankAccounts` |
+| contact `account*` | one entry in `bankAccounts`; `accountIid` goes to its `ext.ch.iid` |
 | `plant.panelDesc`, `totalPanelCount`, `totalPowerDc` | a manual panel type (`model` = `panelDesc`, `power` = `totalPowerDc` / count), one roof with one module group (`count`), a `pv_array` device |
 | `plant.totalArea` | the module group's `ext.gnusolar.v2.totalArea` (m²) until the roof has a real outline |
 | `plant.inverterDesc`, `totalPowerAc` | a manual inverter type and an `inverter` device |
@@ -805,14 +1040,14 @@ one roof, and one order of type `new_system`.
 | `plant.totalCost` | order `totalCost` |
 | `progress.inquiryReceived`, `roofMeasure`, `roofMeasured`, `orderReceived`, `orderRejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `launch`, `archived`, `inactiv` | order `inquiry`, `roofMeasure`, `roofMeasured`, `ordered`, `rejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `commissioned`, `archived`, `inactive` |
 | `progress.quote1Sent`, `quote2Sent`, `quote3Sent`, `quote4Sent` | one quote each, with `date` and `state: "sent"`; numbers from `off/O<date>-*.pdf` where one matches |
-| `progress.tagSent`, `tagReceived` | step `tag`: `submitted`, `approved` |
-| `progress.iaSent`, `iaReceived` | step `ia`: `submitted`, `approved` |
-| `progress.bauSent`, `bauReceived` | step `building_permit`: `submitted`, `approved` |
+| `progress.tagSent`, `tagReceived` | step `ch.tag`: `submitted`, `approved` |
+| `progress.iaSent`, `iaReceived` | step `ch.ia`: `submitted`, `approved` |
+| `progress.bauSent`, `bauReceived` | step `ch.building_permit`: `submitted`, `approved` |
 | `progress.materialOrdered`, `materialReceived` | step `material`: `ordered`, `approved` (delivered) |
 | `progress.documentationCreated`, `documentationPlaced` | step `documentation`: `filled`, `submitted` |
-| `progress.siNaDcOrdered`, `siNaDcReceived` | step `sina_dc`: `ordered`, `approved` |
-| `progress.siNaAcOrdered`, `siNaAcReceived` | step `sina_ac`: `ordered`, `approved` |
-| `progress.eivComplete`, `eivPayed` | step `pronovo`: `submitted`, `paid` |
+| `progress.siNaDcOrdered`, `siNaDcReceived` | step `ch.sina_dc`: `ordered`, `approved` |
+| `progress.siNaAcOrdered`, `siNaAcReceived` | step `ch.sina_ac`: `ordered`, `approved` |
+| `progress.eivComplete`, `eivPayed` | step `ch.pronovo`: `submitted`, `paid` |
 | `progress.partialInvoiceSent`, `partialInvoiceReceived` | invoice of kind `partial`, `date` and `paid` |
 | `progress.partialInvoice2Sent`, `partialInvoice2Received` | a second invoice of kind `partial` |
 | `progress.finalInvoiceSent`, `finalInvoiceReceived` | invoice of kind `final`; invoice numbers from `fin/R<date>-*.pdf` where one matches |
@@ -826,9 +1061,10 @@ Version 2 values are text as typed. The migration converts them:
 - **Numbers:** `"12,34"` and `"12.34"` become `12.34`; units are converted (`totalPowerDc` kWp × 1000 → W,
   `totalPowerAc` kW × 1000 → W). Leading and trailing white space is removed.
 - **Empty strings** of numbers, dates and optional fields become `null`.
-- **Dates** that are not ISO dates:
+- **Dates:** version 2 stores days as text like 2015-03-21. They become timestamps of that day (section 3).
+  Values that are not such a date:
   - a year only (`"2021"`): the date `null`, the text kept in the step's or order's `notes`
-  - two dates (`"2022-09-27/2023-06-28"`): the first date in the field, the whole text in `notes`; such a project
+  - two dates (`"2022-09-27/2023-06-28"`): the first date in the field as a timestamp, the whole text in `notes`; such a project
     most likely had two orders and needs a manual look (the dry run lists them)
   - other text (`"other"`): `null`, the text in `notes`
 - **IDs:** every object gets a new UUID.
@@ -841,7 +1077,7 @@ it belonged to. The dry run of `tools/migrate_pvp.py` lists every such value.
 Project folders that are copies of another project at the same address (`Heid 2.3_2`) are merged by a separate tool,
 not by the file migration: their order becomes an order of the main project with `folder` pointing to the copy.
 
-## 15. Reading other formats
+## 16. Reading other formats
 
 GnuSolar can take over data from planning tools and from public data. This section records how their data maps, as
 found in the example projects of PV*SOL premium 2026 (file versions 4 to 24) and PVsyst 8.1, and in swissBUILDINGS3D
@@ -877,7 +1113,7 @@ Conventions that differ from this format:
 Rules for an import:
 
 - The source file stays in the project folder as a document of the design. The imported objects record where they
-  came from in their `ext` (`valentin.pvsol`, `pvsyst`, `swisstopo.buildings3d`): file, checksum and the object's ID
+  came from in their `ext` (`valentin.pvsol`, `pvsyst`, `ch.swisstopo.buildings3d`): file, checksum and the object's ID
   in the source. A later import of a changed file then updates the same objects.
 - Not imported: weather data, loss settings, tariffs, charge schedules, consumption and hot water profiles, and
   results other than the yield.
@@ -887,7 +1123,7 @@ Rules for an import:
 - Old PV*SOL premium files (versions 4 to 6) keep module areas and inverters only in the 3D files; current ones also
   list them in `Project.xml`.
 
-## 16. Example
+## 17. Example
 
 A house with a solar system from 2015 and a battery added in 2026, written as GnuSolar writes it (keys sorted).
 
@@ -918,6 +1154,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 ]
             }
         ],
+        "connections": [],
         "contacts": [
             {
                 "channels": [
@@ -936,7 +1173,8 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 ]
             }
         ],
-        "created": "2015-01-10T09:00:00+01:00",
+        "created": 1420876800,
+        "currency": "CHF",
         "designs": [
             {
                 "documents": [
@@ -952,7 +1190,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
         ],
         "devices": [
             {
-                "from": "2015-03-21",
+                "from": 1426939200,
                 "id": "0a1b2c3d-0000-4000-8000-000000000030",
                 "kind": "pv_array",
                 "moduleGroupIds": [
@@ -961,15 +1199,15 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "orderId": "0a1b2c3d-0000-4000-8000-000000000050"
             },
             {
-                "from": "2015-03-21",
+                "from": 1426939200,
                 "id": "0a1b2c3d-0000-4000-8000-000000000031",
                 "kind": "inverter",
                 "orderId": "0a1b2c3d-0000-4000-8000-000000000050",
-                "to": "2026-06-20",
+                "to": 1781956800,
                 "typeId": "0a1b2c3d-0000-4000-8000-000000000021"
             },
             {
-                "from": "2026-06-20",
+                "from": 1781956800,
                 "id": "0a1b2c3d-0000-4000-8000-000000000032",
                 "kind": "inverter",
                 "label": "Hybrid-WR",
@@ -989,7 +1227,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "backup": "none",
                 "connectedToId": "0a1b2c3d-0000-4000-8000-000000000032",
                 "coupling": "dc_link",
-                "from": "2026-06-20",
+                "from": 1781956800,
                 "id": "0a1b2c3d-0000-4000-8000-000000000033",
                 "kind": "battery",
                 "orderId": "0a1b2c3d-0000-4000-8000-000000000051",
@@ -999,25 +1237,25 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
         "ext": {},
         "generator": "GnuSolar git...c96ce2c",
         "id": "3f0c2a9e-6a1b-4c8e-9d3f-1b2a3c4d5e6f",
-        "modified": "2026-11-10T14:00:00+01:00",
+        "modified": 1794315600,
         "notes": "",
         "orders": [
             {
-                "commissioned": "2015-03-21",
-                "completed": "2016-08-24",
+                "commissioned": 1426939200,
+                "completed": 1472040000,
                 "constructionType": "on_roof",
                 "folder": "",
                 "id": "0a1b2c3d-0000-4000-8000-000000000050",
-                "ordered": "2014-11-12",
+                "ordered": 1415793600,
                 "state": "completed",
                 "steps": [
                     {
                         "dates": {
-                            "paid": "2016-08-24",
-                            "submitted": "2015-12-02"
+                            "paid": 1472040000,
+                            "submitted": 1449057600
                         },
                         "id": "0a1b2c3d-0000-4000-8000-000000000060",
-                        "kind": "pronovo",
+                        "kind": "ch.pronovo",
                         "state": "paid"
                     }
                 ],
@@ -1025,27 +1263,27 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "type": "new_system"
             },
             {
-                "commissioned": "2026-06-20",
+                "commissioned": 1781956800,
                 "folder": "2026_Bat",
                 "id": "0a1b2c3d-0000-4000-8000-000000000051",
                 "invoices": [
                     {
                         "amount": 12800.0,
                         "currency": "CHF",
-                        "date": "2026-06-25",
+                        "date": 1782388800,
                         "id": "0a1b2c3d-0000-4000-8000-000000000070",
                         "kind": "final",
                         "number": "R2026-06-0123"
                     }
                 ],
-                "ordered": "2026-03-01",
+                "ordered": 1772366400,
                 "quoteId": "0a1b2c3d-0000-4000-8000-000000000040",
                 "state": "in_operation",
                 "steps": [
                     {
                         "dates": {
-                            "approved": "2026-03-20",
-                            "submitted": "2026-03-05"
+                            "approved": 1774008000,
+                            "submitted": 1772712000
                         },
                         "documents": [
                             {
@@ -1054,7 +1292,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                             }
                         ],
                         "id": "0a1b2c3d-0000-4000-8000-000000000061",
-                        "kind": "tag",
+                        "kind": "ch.tag",
                         "state": "approved"
                     }
                 ],
@@ -1062,11 +1300,17 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "type": "battery"
             }
         ],
-        "plugins": [],
+        "plugins": [
+            {
+                "id": "ch",
+                "name": "Switzerland",
+                "version": "1"
+            }
+        ],
         "quotes": [
             {
                 "currency": "CHF",
-                "date": "2026-02-10",
+                "date": 1770724800,
                 "designId": "0a1b2c3d-0000-4000-8000-000000000080",
                 "documents": [
                     {
@@ -1088,19 +1332,41 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "streetNumber": "26",
                 "zip": "4314"
             },
+            "ext": {
+                "ch": {
+                    "lv95": {
+                        "e": 2632561.2,
+                        "n": 1265432.8
+                    },
+                    "v": 1
+                }
+            },
             "gridOperator": {
+                "ext": {
+                    "ch": {
+                        "tagFormId": 4,
+                        "v": 1
+                    }
+                },
                 "id": 402,
                 "name": "Elektra Zeiningen",
-                "tagFormId": 4,
-                "taken": "2026-11-10"
+                "taken": 1794312000
             },
-            "mainFuse": 40,
+            "latitude": 47.5419,
+            "longitude": 7.8696,
             "municipality": {
                 "code": "4264",
                 "name": "Zeiningen",
-                "taken": "2026-11-10"
+                "taken": 1794312000
             },
-            "plotNumber": "1060"
+            "plotNumber": "1060",
+            "supply": {
+                "earthingSystem": "tn_c_s",
+                "frequency": 50,
+                "mainFuse": 40,
+                "phases": 3,
+                "voltage": 400
+            }
         },
         "strings": [],
         "surroundings": [],
@@ -1148,10 +1414,14 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
 }
 ```
 
-## 17. Open points
+## 18. Open points
 
 - **Designs before an order:** devices and strings exist only for orders, so a quoted design has its wiring only in
   the simulation file. If string plans are needed at the quote stage, designs get their own planned devices.
+- **Terminals inside a device:** a connection ends at a port, not at a single terminal. Terminal numbers, and which
+  core of a cable goes to which terminal, are not recorded.
+- **Where devices and cables are in the building:** a device has a `location` text and a parent, a cable a length,
+  but neither has a position or a route in space yet.
 - **Curved and irregular roofs** (barrel roofs, roofs that are not one plane) have no form here; they would be
   approximated by several roofs.
 - **Pricing of items:** whether quotes and orders carry full positions with prices, or only the devices and a total,
