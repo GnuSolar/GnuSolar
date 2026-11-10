@@ -571,6 +571,10 @@ class PlantView:
     def has(self, kind):
         return bool(self._devices(kind))
 
+    # the devices of a kind, for form scripts which list them one by one
+    def devices(self, kind):
+        return list(self._devices(kind))
+
     # ---- order ------------------------------------------------------------
 
     @property

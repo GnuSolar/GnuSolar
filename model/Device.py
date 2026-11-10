@@ -178,6 +178,19 @@ class Device(ModelNode):
     def getType(self):
         return self._top.byId("types", self.typeId) if self._top else None
 
+    # a value of the specifications of the type, None if not known
+    def getSpec(self, name):
+        deviceType = self.getType()
+        return deviceType.specs.get(name) if deviceType else None
+
+    def getManufacturer(self):
+        deviceType = self.getType()
+        return (deviceType.manufacturer or "") if deviceType else ""
+
+    def getModel(self):
+        deviceType = self.getType()
+        return (deviceType.model or "") if deviceType else ""
+
     # installed on a date (timestamp): in operation and not removed
     def isInstalled(self, day):
         since = self.get("from")
