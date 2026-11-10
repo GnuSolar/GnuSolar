@@ -14,7 +14,7 @@ from model.Contact import Contact, ContactList, ROLE_NAMES
 from model.Building import Building, Roof, ModuleGroup, Obstacle, Surrounding, OBSTACLE_KINDS, SURROUNDING_KINDS
 from model.Device import DeviceType, Device, String, Connection, DEVICE_KINDS, TYPE_KINDS, CONNECTION_KINDS
 from model.Order import Order, Step, Invoice, Quote, Design, ORDER_TYPES, INVOICE_KINDS
-from model.compat import SiteView, PlantView, ProgressView
+from model.compat import SiteView
 from model.checks import check
 from gui.captions import caption
 from gui.fields import stepKinds
@@ -98,8 +98,6 @@ def buildTree(tree, project):
     for order in project.orders:
         item = _addItem(top, order)
         expand.append(item)
-        _addItem(item, ProgressView(project, order))
-        _addItem(item, PlantView(project, order))
         for step in order.steps:
             _addItem(item, step)
         for invoice in order.invoices:
@@ -157,8 +155,8 @@ def allItems(item):
         yield from allItems(item.child(i))
 
 
-# The item showing an object. Views (Fortschritt, Anlage) are made anew with
-# every tree, they are the same if they show the same order.
+# The item showing an object. The view of the site (Standort) is made anew
+# with every tree.
 def findItem(tree, obj):
     if tree.topLevelItemCount() == 0:
         return None
@@ -168,8 +166,6 @@ def findItem(tree, obj):
             return item
         if type(other) is type(obj):
             if isinstance(obj, Section) and other.key == obj.key:
-                return item
-            if isinstance(obj, (PlantView, ProgressView)) and other._order is obj._order:
                 return item
             if isinstance(obj, SiteView):
                 return item
@@ -205,8 +201,9 @@ def _uses(value, ids):
     return False
 
 
-# captions of the parts outside of obj which refer to it or to a part of it
-def usedBy(project, obj):
+# captions of the parts outside of obj which refer to it or to a part of it.
+# ignore: generators whose list of module groups doesn't count.
+def usedBy(project, obj, ignore=()):
     ids = set()
     _ids(obj, ids)
     inside = set()
@@ -224,6 +221,8 @@ def usedBy(project, obj):
             return
         fields = dict(node.__dict__.get("_unknown") or {})
         fields.update({k: v for k, v in node.__dict__.items() if node._isSaved(k) and k != "id"})
+        if any(node is other for other in ignore):
+            fields.pop("moduleGroupIds", None)
         if any(_uses(v, ids) for v in fields.values() if not isinstance(v, ModelNode)
                and not (isinstance(v, list) and v and isinstance(v[0], ModelNode))):
             found.append(caption(node))
@@ -235,13 +234,23 @@ def usedBy(project, obj):
 
 def _delete(project, owner, obj):
     def func():
-        users = usedBy(project, obj)
+        # a module group leaves the generators it is part of; they are no
+        # reason to keep it
+        member = []
+        if isinstance(obj, ModuleGroup):
+            for device in project.devices:
+                ids = device.get("moduleGroupIds") or []
+                if obj.id in ids:
+                    member.append((device, [i for i in ids if i != obj.id]))
+        users = usedBy(project, obj, ignore=[device for device, ids in member])
         if users:
             raise ValueError("Wird noch verwendet von:\n" + "\n".join(users[:10]))
         if isinstance(owner, ContactList):
             owner.removeContact(obj)
         else:
             owner.removePart(obj)
+        for device, ids in member:
+            device.set("moduleGroupIds", ids or None)
         return owner if not isinstance(owner, (PvProject, ContactList)) else None
     return Action("Löschen", func, confirm="'" + caption(obj) + "' wirklich löschen?")
 
@@ -321,7 +330,12 @@ def contextMenu(item):
         return [_add("Dach hinzufügen", obj, "roofs"), _delete(project, project, obj)]
 
     if isinstance(obj, Roof):
-        return [_add("Modulgruppe hinzufügen", obj, "moduleGroups"),
+        # a new module group is part of the generator of the order at hand
+        def addGroup():
+            group = obj.addPart("moduleGroups")
+            project.addToGenerator(group)
+            return group
+        return [Action("Modulgruppe hinzufügen", addGroup),
                 _addKinds("Hindernis hinzufügen", obj, "obstacles", OBSTACLE_KINDS),
                 _delete(project, parent, obj)]
 

@@ -9,7 +9,7 @@ from model.Site import Site, Municipality, GridOperator
 from model.Building import Building, Roof, ModuleGroup, Obstacle, Surrounding
 from model.Device import DeviceType, Device, String, Connection, TYPE_KINDS
 from model.Order import Order, Step, Invoice, Quote, Design, INVOICE_KINDS
-from model.compat import SiteView, PlantView, ProgressView
+from model.compat import SiteView
 from model import values
 
 CAPTIONS = {
@@ -19,8 +19,6 @@ CAPTIONS = {
     Site: "Netzanschluss und Lage",
     Municipality: "Gemeinde",
     GridOperator: "Stromversorger",
-    ProgressView: "Fortschritt",
-    PlantView: "Anlage",
 }
 
 

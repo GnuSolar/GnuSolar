@@ -1005,7 +1005,7 @@ How GnuSolar implements this document:
 | Plain data ↔ model: unknown fields are kept (`_unknown`), lists of parts get their class from the field (`_parts`), values have a type (`_types`) | `model/ModelNode.py` |
 | Dates and numbers ↔ the text of forms and documents | `model/values.py` |
 | The objects of sections 4 to 12 | `model/Site.py`, `Contact.py`, `Building.py`, `Device.py`, `Order.py`, `PvProject.py` |
-| The fields of version 2 on top of the new model, for the pages Standort, Fortschritt and Anlage, and for document templates and form scripts written for it: `project.building`, `.plant`, `.progress`, and `.existing` for what was installed before the order at hand | `model/compat.py` |
+| The fields of version 2 on top of the new model, for the page Standort, the project list, and document templates and form scripts written for it: `project.building`, `.plant`, `.progress`, and `.existing` for what was installed before the order at hand | `model/compat.py` |
 | Checks: references that point nowhere, ports a device doesn't have, connectors that don't fit | `model/checks.py` |
 | Country extension for Switzerland | `plugins/ch.py` |
 | Every page of the project window, made from field lists; the buttons of the pages | `gui/fields.py`, `gui/forms.py`; `gui/tree.py`, `gui/pages.py` |

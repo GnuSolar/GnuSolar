@@ -360,12 +360,7 @@ class PlantView:
         building = top.buildings[0] if top.buildings else top.addPart("buildings")
         roof = building.roofs[0] if building.roofs else building.addPart("roofs")
         group = roof.addPart("moduleGroups")
-        arrays = self._order.getDevices("pv_array")
-        if arrays:
-            arrays[0].set("moduleGroupIds", (arrays[0].get("moduleGroupIds") or []) + [group.id])
-        else:
-            device = top.addPart("devices", kind="pv_array", orderId=self._order.id, moduleGroupIds=[group.id])
-            device.set("from", self._order.commissioned)
+        top.addToGenerator(group, self._order)
         return group
 
     # The type of a group or device, which must be one entered by hand and

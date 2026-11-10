@@ -122,6 +122,18 @@ class PvProject(ModelNode):
         order.deriveState()
         return order
 
+    # A module group belongs to the generator (pv_array) of the order that
+    # builds it. The order gets a generator if it has none.
+    def addToGenerator(self, group, order=None):
+        order = order or self.currentOrder
+        arrays = order.getDevices("pv_array")
+        if arrays:
+            arrays[0].set("moduleGroupIds", (arrays[0].get("moduleGroupIds") or []) + [group.id])
+            return arrays[0]
+        device = self.addPart("devices", kind="pv_array", orderId=order.id, moduleGroupIds=[group.id])
+        device.set("from", order.commissioned)
+        return device
+
     # folder of an order, None if the project is not saved yet
     def getOrderDir(self, order=None):
         order = order or self.currentOrder

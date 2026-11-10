@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QGr
 
 from model.ModelNode import getPath, setPath
 from model import values
-from gui.fields import fieldsOf, columnsOf
+from gui.fields import fieldsOf
 import gui.captions
 
 INVALID_STYLE = "background-color: #ffc0c0;"
@@ -70,22 +70,12 @@ class Form:
             rows.setColumnStretch(3, 1)
             layout.addLayout(rows)
 
-        # the groups of fields, in columns from top to bottom
-        groups = fieldsOf(obj)
-        columns = QHBoxLayout()
-        count = max(1, min(columnsOf(obj), len(groups)))
-        perColumn = max(1, -(-len(groups) // count))
-        for start in range(0, len(groups), perColumn):
-            column = QVBoxLayout()
-            for title, fields in groups[start:start + perColumn]:
-                box = QGroupBox(title)
-                form = QFormLayout(box)
-                for field in fields:
-                    form.addRow(field.caption, self._row(field))
-                column.addWidget(box)
-            column.addStretch()
-            columns.addLayout(column)
-        layout.addLayout(columns)
+        for title, fields in fieldsOf(obj):
+            box = QGroupBox(title)
+            form = QFormLayout(box)
+            for field in fields:
+                form.addRow(field.caption, self._row(field))
+            layout.addWidget(box)
         layout.addStretch()
 
     def _run(self, action):
@@ -109,9 +99,7 @@ class Form:
     def _row(self, field):
         widget = self._input(field)
         buttons = []
-        if field.type in ("date", "day"):
-            # room for a date, also where the page is narrow
-            widget.setMinimumWidth(widget.fontMetrics().horizontalAdvance("2000-00-00") + 28)
+        if field.type == "date":
             today = QtWidgets.QToolButton()
             today.setText("heute")
             today.clicked.connect(lambda _, w=widget: w.setText(values.dateToText(values.today())))
@@ -189,7 +177,7 @@ class Form:
     # ---- storing --------------------------------------------------------------
 
     def _storeText(self, field, widget, text):
-        fieldType = "text" if field.type in ("multiline", "day") else field.type
+        fieldType = "text" if field.type == "multiline" else field.type
         try:
             value = values.fromText(fieldType, text)
         except ValueError as e:
