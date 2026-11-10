@@ -62,6 +62,10 @@ class ModelNode:
         else:
             unknown[key] = value
 
+    # called after a field of this part was edited: update derived values
+    def changed(self):
+        pass
+
     # plain data of this part and all parts below it. Empty values are left
     # out, fields the class doesn't know are written back as they were read.
     def toDict(self):
@@ -185,6 +189,63 @@ class ModelNode:
                 self.__dict__[key].remove(node)
                 return True
         return False
+
+
+# Value at a path of field names below a part: "specs.power", "ends.0.port".
+# The steps go through parts, dicts and lists.
+def getPath(node, path):
+    for key in path.split("."):
+        if node is None:
+            return None
+        if isinstance(node, ModelNode):
+            node = node.get(key)
+        elif isinstance(node, dict):
+            node = node.get(key)
+        elif isinstance(node, list):
+            node = node[int(key)] if int(key) < len(node) else None
+        else:
+            return None
+    return node
+
+
+# Set the value at a path, missing dicts and list entries on the way are
+# created. None removes the value, and the dicts that get empty by it.
+def setPath(node, path, value):
+    keys = path.split(".")
+    trail = []
+    for i, key in enumerate(keys[:-1]):
+        child = getPath(node, key)
+        if child is None:
+            if value is None:
+                return
+            child = [] if keys[i + 1].isdigit() else {}
+            _setKey(node, key, child)
+        trail.append((node, key))
+        node = child
+    _setKey(node, keys[-1], value)
+    if value is None:
+        for parent, key in reversed(trail):
+            if getPath(parent, key) == {}:
+                _setKey(parent, key, None)
+            else:
+                break
+
+
+def _setKey(node, key, value):
+    if isinstance(node, ModelNode):
+        if value is None and key in node.__dict__ and isinstance(node.__dict__[key], (dict, list)):
+            value = type(node.__dict__[key])()
+        node.set(key, value)
+    elif isinstance(node, dict):
+        if value is None:
+            node.pop(key, None)
+        else:
+            node[key] = value
+    elif isinstance(node, list):
+        index = int(key)
+        while len(node) <= index:
+            node.append({})
+        node[index] = {} if value is None else value
 
 
 # a new id for an object of the file: UUID version 4, lower case

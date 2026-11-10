@@ -36,6 +36,7 @@ from Ui.Municipality import *
 from model.PvProject import *
 from gui.binding import updateUi, updateModel, resolve, storeWidget
 from gui.pages import createPage
+from gui.forms import Form
 import gui.tree
 
 from model.Contact import Contact, ContactList
@@ -102,9 +103,10 @@ class GnuSolar(QApplication):
 #        self.model = PvProject()       # the PvProject Model
         self.unsavedChanges = False
 
+        #   Second argument: id of the order to show
         if len(args[0]) >= 2:
             path = args[0][1]
-            ret = self.openFile(path)
+            ret = self.openFile(path, args[0][2] if len(args[0]) >= 3 else None)
             if not ret:
                 QtWidgets.QMessageBox.warning(None, 'Datei nicht gefunden', "Datei '" + path + "' nicht gefunden.")
                 exit()
@@ -191,12 +193,28 @@ class GnuSolar(QApplication):
 
         obj = item.pvpObj
 
+        # forms and documents work on the order the selected item belongs to
+        order = gui.tree.orderOf(item)
+        if order is not None and order is not model.currentOrder:
+            model.currentOrder = order
+        self.markCurrentOrder()
+
+        self.clearDetails()
+        self.currentObj = obj
+
+        # parts without a hand-made form get a page made from their fields
+        if type(obj) not in FORMS:
+            self.currentForm = Form(obj, onChange=self.action_formChanged,
+                                    actions=gui.tree.contextMenu(item), runAction=self.runTreeAction,
+                                    text=getattr(obj, "text", None))
+            self.ui.stackedWidget.addWidget(self.currentForm.widget)
+            self.ui.stackedWidget.setCurrentWidget(self.currentForm.widget)
+            return
+
         # load the ui into the detail window
         widget = QWidget()
         ui = FORMS[type(obj)]()
         ui.setupUi(widget)
-        self.clearDetails()
-        self.currentObj = obj
         self.ui.stackedWidget.addWidget(widget)
         self.ui.stackedWidget.setCurrentWidget(widget)
 
@@ -228,26 +246,75 @@ class GnuSolar(QApplication):
                 else:
                     raise Exception(str(type(el)) + " not implemented")
 
+    # a field of a generated page was changed
+    def action_formChanged(self, form, field):
+        self.action_changed()
+        item = self.ui.tree.currentItem()
+        if item is None or item.pvpObj is not form.obj:
+            return
+        self.updateCaptions()
+        # the fields of a device and of a type depend on its kind
+        if field.path == "kind" and type(form.obj).__name__ in ("Device", "DeviceType"):
+            QtCore.QTimer.singleShot(0, lambda: self.showObject(form.obj))
+
+    # captions follow the values: "Auftrag: Batterie 10 kWh"
+    def updateCaptions(self):
+        if self.ui.tree.topLevelItemCount() == 0:
+            return
+        for item in gui.tree.allItems(self.ui.tree.topLevelItem(0)):
+            text = gui.tree.itemCaption(item)
+            if text != item.text(0):
+                item.setText(0, text)
+
+    # the order the forms and documents work on is shown bold
+    def markCurrentOrder(self):
+        if self.ui.tree.topLevelItemCount() == 0:
+            return
+        for item in gui.tree.allItems(self.ui.tree.topLevelItem(0)):
+            if type(item.pvpObj).__name__ == "Order":
+                font = item.font(0)
+                font.setBold(item.pvpObj is model.currentOrder and len(model.orders) > 1)
+                item.setFont(0, font)
+
     # display Context Menu of the Tree, entries and actions from gui.tree
     def action_treeContext(self, event):
         item = self.ui.tree.currentItem()
         if item is None:
             return
-        contextMenu = gui.tree.contextMenu(item)
-        if not contextMenu:
+        actions = gui.tree.contextMenu(item)
+        if not actions:
             return
 
         menu = QtWidgets.QMenu(self.ui.tree)
-        for key, value in contextMenu.items():
-            actn = menu.addAction(value)
-            actn.actionKey = key
+        self.fillMenu(menu, actions)
+        chosen = menu.exec_(self.ui.tree.mapToGlobal(event))
+        if chosen is not None:
+            self.runTreeAction(chosen.treeAction)
 
-        action = menu.exec_(self.ui.tree.mapToGlobal(event))
-        if action is not None:
-            gui.tree.treeAction(action.actionKey, item)
+    def fillMenu(self, menu, actions):
+        for action in actions:
+            if action.entries is not None:
+                if action.entries:
+                    self.fillMenu(menu.addMenu(action.text), action.entries)
+            else:
+                menu.addAction(action.text).treeAction = action
+
+    # run an action of gui.tree and show what it made
+    def runTreeAction(self, action):
+        if action.confirm:
+            ret = QMessageBox.question(self.window, 'GnuSolar', action.confirm, QMessageBox.Yes | QMessageBox.No)
+            if ret != QMessageBox.Yes:
+                return
+        try:
+            result = action.func()
+        except ValueError as e:
+            QMessageBox.warning(self.window, 'GnuSolar', str(e))
+            return
+        self.action_changed()
+        self.showModel(select=result)
 
     # open a Project with a path
-    def openFile(self, pvpPath):
+    def openFile(self, pvpPath, orderId=None):
         global model
         if not pvpPath:
             return False
@@ -266,28 +333,46 @@ class GnuSolar(QApplication):
         newModel = PvProject()
         newModel.open(pvpPath)
         model = newModel
+        order = model.byId("orders", orderId)
+        if order is not None:
+            model.currentOrder = order
 
         self.path = pvpPath
         self.unsavedChanges = False
-        self.showModel()
+        self.showModel(select=order)
         return True
 
     # remove the detail view of the previously selected tree item
     def clearDetails(self):
         self.currentObj = None
         self.currentPage = None
+        self.currentForm = None
         while self.ui.stackedWidget.count():
             widget = self.ui.stackedWidget.widget(0)
             self.ui.stackedWidget.removeWidget(widget)
             widget.deleteLater()
 
-    # show the current model: tree, details and window title
-    def showModel(self):
+    # show the current model: tree, details and window title. select is
+    # the part to show the page of.
+    def showModel(self, select=None):
         self.ui.tree.clear()
         self.clearDetails()
         gui.tree.buildTree(self.ui.tree, model)
         updateUi(self.ui, model, "pvp")
         self.updateWindowTitle()
+        self.markCurrentOrder()
+        if select is not None:
+            self.showObject(select)
+
+    # select the tree item of a part
+    def showObject(self, obj):
+        item = gui.tree.findItem(self.ui.tree, obj)
+        if item is None:
+            return
+        if item is self.ui.tree.currentItem():
+            self.action_treeClicked(item)
+        else:
+            self.ui.tree.setCurrentItem(item)
     
     def saveFile(self):
         global model

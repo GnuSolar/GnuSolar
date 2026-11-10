@@ -618,6 +618,8 @@ class ProgressView:
         if number < len(quotes):
             quote = quotes[number]
             quote.date = day
+            if day is not None and quote.state in (None, "draft"):
+                quote.state = "sent"
             if day is None and not quote.hasContent():
                 self._top.removePart(quote)
         elif day is not None:
@@ -754,18 +756,7 @@ def _orderDateProperty(field):
         return values.dateToText(self._order.get(field))
 
     def setter(self, text):
-        day = values.textToDate(text)
-        before = self._order.get(field)
-        self._order.set(field, day)
-        # the devices of the order go into operation with it, and the
-        # devices they replace are removed that day
-        if field == "commissioned":
-            for device in self._order.getDevices():
-                if device.get("from") in (None, before):
-                    device.set("from", day)
-                replaced = self._top.byId("devices", device.replacesId)
-                if replaced is not None and replaced.to in (None, before):
-                    replaced.to = day
+        self._order.set(field, values.textToDate(text))
     return property(getter, setter)
 
 

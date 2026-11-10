@@ -265,6 +265,20 @@
       <item row="12" column="1">
        <widget class="QLineEdit" name="obj_accountIban"/>
       </item>
+      <item row="13" column="0">
+       <widget class="QLabel" name="label_roles">
+        <property name="text">
+         <string>Rollen</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="QLineEdit" name="obj_roles">
+        <property name="toolTip">
+         <string>owner, client, billing, tenant, electrician, architect, planner, roofer, contact</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

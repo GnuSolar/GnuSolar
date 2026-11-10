@@ -162,6 +162,12 @@ class Ui_Contact(object):
         self.obj_accountIban = QtWidgets.QLineEdit(self.groupBox)
         self.obj_accountIban.setObjectName("obj_accountIban")
         self.formLayout.setWidget(12, QtWidgets.QFormLayout.FieldRole, self.obj_accountIban)
+        self.label_roles = QtWidgets.QLabel(self.groupBox)
+        self.label_roles.setObjectName("label_roles")
+        self.formLayout.setWidget(13, QtWidgets.QFormLayout.LabelRole, self.label_roles)
+        self.obj_roles = QtWidgets.QLineEdit(self.groupBox)
+        self.obj_roles.setObjectName("obj_roles")
+        self.formLayout.setWidget(13, QtWidgets.QFormLayout.FieldRole, self.obj_roles)
         self.verticalLayout.addWidget(self.groupBox)
 
         self.retranslateUi(Contact)
@@ -189,3 +195,5 @@ class Ui_Contact(object):
         self.label_59.setText(_translate("Contact", "Kontoinhaber"))
         self.label_60.setText(_translate("Contact", "Bankname"))
         self.label_61.setText(_translate("Contact", "IBAN"))
+        self.label_roles.setText(_translate("Contact", "Rollen"))
+        self.obj_roles.setToolTip(_translate("Contact", "owner, client, billing, tenant, electrician, architect, planner, roofer, contact"))

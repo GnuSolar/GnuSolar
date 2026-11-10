@@ -8,6 +8,7 @@
 # Forms show a day as 2015-03-21 and take that or 21.03.2015.
 
 import re
+import json
 import calendar
 from datetime import date, datetime, timezone
 
@@ -87,10 +88,31 @@ def textToInt(text):
     return int(number)
 
 
+# "0,0; 12000,0; 12000,6500" for [[0, 0], [12000, 0], [12000, 6500]]
+def pointsToText(points):
+    return "; ".join(", ".join(numberToText(v) for v in point) for point in points or [])
+
+
+def textToPoints(text):
+    points = []
+    for part in (text or "").split(";"):
+        if not part.strip():
+            continue
+        point = [textToNumber(v) for v in part.split(",")]
+        if len(point) < 2 or None in point:
+            raise ValueError("kein Punkt: " + part.strip())
+        points.append(point)
+    return points
+
+
 # text of a value of a field type (ModelNode._types)
 def toText(fieldType, value):
     if value is None:
         return ""
+    if fieldType == "points":
+        return pointsToText(value)
+    if fieldType == "json":
+        return json.dumps(value, indent=2, ensure_ascii=False) if value not in ({}, []) else ""
     if fieldType == "date":
         return dateToText(value)
     if fieldType in ("int", "number"):
@@ -110,5 +132,14 @@ def fromText(fieldType, text):
         return textToNumber(text)
     if fieldType == "list":
         return [part.strip() for part in (text or "").split(",") if part.strip()]
+    if fieldType == "points":
+        return textToPoints(text)
+    if fieldType == "json":
+        if not (text or "").strip():
+            return None
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError as e:
+            raise ValueError("kein JSON: " + str(e))
     text = text or ""
     return text if text.strip() else None

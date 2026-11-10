@@ -102,7 +102,13 @@ class Step(ModelNode):
             self.dates.pop(state, None)
         else:
             self.dates[state] = day
+        self.changed()
+
+    def changed(self):
         self.state = states.stepState(self.dates)
+
+    def getCaption(self):
+        return "Schritt: " + str(self.kind)
 
     def hasContent(self):
         return bool(self.dates or self.documents or self.notes or self.ext)
@@ -174,8 +180,27 @@ class Order(ModelNode):
         return [q for q in self._top.quotes if q.orderId == self.id]
 
     def deriveState(self):
-        self.state = states.orderState(self.__dict__, quoted=bool(self.getQuotes()))
+        self.state = states.orderState(self.__dict__, quoted=any(q.date for q in self.getQuotes()))
         return self.state
+
+    def changed(self):
+        if self.folder is None:
+            self.folder = ""
+        self.deriveState()
+
+    # The devices of the order go into operation with it, and the devices
+    # they replace are removed that day.
+    def set(self, key, value):
+        before = self.__dict__.get(key)
+        super().set(key, value)
+        if key != "commissioned" or not self._top:
+            return
+        for device in self.getDevices():
+            if device.get("from") in (None, before):
+                device.set("from", value)
+            replaced = self._top.byId("devices", device.replacesId)
+            if replaced is not None and replaced.to in (None, before):
+                replaced.to = value
 
     # the step of a kind, None if the order doesn't have it
     def getStep(self, kind):

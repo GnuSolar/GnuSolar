@@ -231,7 +231,7 @@ class PvProject(ModelNode):
         self.modified = now
         self.generator = "GnuSolar " + Config.getAppVersion()
         for order in self.orders:
-            order.deriveState()
+            order.changed()
 
     # folder of the project, None if not saved yet
     def getProjectDir(self):
