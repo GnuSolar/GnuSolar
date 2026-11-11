@@ -7,6 +7,7 @@
 import os
 import sys
 import json
+import time
 import shutil
 import tempfile
 import unittest
@@ -481,6 +482,11 @@ class ProjectWindowTest(unittest.TestCase):
         tree = self.app.ui.tree
         project = GnuSolar.model
         order = self.run_action(tree.topLevelItem(0), "Neuer Auftrag", "Batterie")
+        # the first order works in the project folder, a later one gets a folder as a suggestion
+        year = time.localtime().tm_year
+        self.assertEqual([o.folder for o in project.orders], ["", "%d Batterie" % year])
+        self.assertEqual(project.newOrderFolder("battery"), "%d Batterie 2" % year)
+        self.assertEqual(os.listdir(self.folder), ["plant.pvp"])
         self.input("folder").setText("2026_Bat")
         tree.setCurrentItem(tree.topLevelItem(0))
         self.assertIs(project.currentOrder, order)

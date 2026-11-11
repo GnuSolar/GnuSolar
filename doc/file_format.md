@@ -865,7 +865,7 @@ documents and invoices.
 | Field | Content |
 |---|---|
 | `state` | `inquiry`, `quoted`, `running`, `in_operation`, `completed`, `rejected`, `inactive`. GnuSolar derives it from the dates; it is stored for other readers. |
-| `folder` | The order's subfolder in the project folder, relative to it (for example `2026_Bat`). An empty string is the project folder itself, which is the case for the first installation. |
+| `folder` | The order's subfolder in the project folder, relative to it (for example `2026_Bat`). An empty string is the project folder itself, which is the case for the first installation. GnuSolar suggests a name for every later order (`2026 Batterie`) and creates the folder with its first document. |
 | `roofMeasure`, `roofMeasured` | Roof measurement planned, done |
 | `constructionSort` | Date used only to sort the construction planning, defaults to `ordered` |
 | `constructionFixed` | The construction date can not be moved |

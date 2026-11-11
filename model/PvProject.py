@@ -16,7 +16,7 @@ from model.Contact import Contact, ContactList
 from model.Site import Site
 from model.Building import Building, Surrounding
 from model.Device import DeviceType, Device, String, Connection
-from model.Order import Order, Quote, Design
+from model.Order import Order, Quote, Design, ORDER_TYPES
 from model.compat import SiteView, PlantView, ProgressView
 from model import values
 
@@ -117,10 +117,25 @@ class PvProject(ModelNode):
     def currentOrder(self, order):
         self._currentOrder = order
 
+    # The first order works in the project folder itself. A later one gets
+    # a folder of its own, so its documents don't collide with the ones of
+    # the first. The name is a suggestion (page of the order, "Unterordner"),
+    # the folder is created with the first document.
     def addOrder(self, orderType, title=None):
-        order = self.addPart("orders", type=orderType, title=title)
+        folder = self.newOrderFolder(orderType) if self.orders else ""
+        order = self.addPart("orders", type=orderType, title=title, folder=folder)
         order.deriveState()
         return order
+
+    # "2026 Batterie", a name no other order has
+    def newOrderFolder(self, orderType):
+        name = "%d %s" % (time.localtime().tm_year, ORDER_TYPES.get(orderType, orderType))
+        used = [order.folder for order in self.orders]
+        folder, count = name, 1
+        while folder in used:
+            count += 1
+            folder = "%s %d" % (name, count)
+        return folder
 
     # A module group belongs to the generator (pv_array) of the order that
     # builds it. The order gets a generator if it has none.
