@@ -10,6 +10,8 @@ Version 2 stores the existing model (one building, one plant, one progress) as p
 model: one project holds several orders, devices with their history, roofs, quotes and plugin data. GnuSolar converts
 version 2 files when it opens them (section 15).
 
+Why the format is as it is, and which questions are still open, is in `design_considerations.md`.
+
 ## 1. Principles
 
 - **One project, one file.** A project is one site, usually one building or a group of buildings at one address.
