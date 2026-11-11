@@ -481,23 +481,37 @@
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="folderLabel_invoices">
+           <property name="toolTip">
+            <string>Rechnungen und QR-Rechnungen</string>
+           </property>
            <property name="text">
-            <string>Rechnungen, QR-Rechnungen</string>
+            <string>Rechnungen</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="folder_invoices"/>
+          <widget class="QLineEdit" name="folder_invoices">
+           <property name="toolTip">
+            <string>Rechnungen und QR-Rechnungen</string>
+           </property>
+          </widget>
          </item>
          <item row="2" column="0">
           <widget class="QLabel" name="folderLabel_documentation">
-           <property name="text">
+           <property name="toolTip">
             <string>Anlagedokumentation</string>
+           </property>
+           <property name="text">
+            <string>Dokumentation</string>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QLineEdit" name="folder_documentation"/>
+          <widget class="QLineEdit" name="folder_documentation">
+           <property name="toolTip">
+            <string>Anlagedokumentation</string>
+           </property>
+          </widget>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="folderLabel_gridOperator">
@@ -557,6 +571,57 @@
           <widget class="QLineEdit" name="folder_maps">
            <property name="toolTip">
             <string>Luftbild, Vermessung</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="folderLabel_simulation">
+           <property name="toolTip">
+            <string>Ertragssimulation, von GnuSolar noch nicht verwendet</string>
+           </property>
+           <property name="text">
+            <string>Simulation</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLineEdit" name="folder_simulation">
+           <property name="toolTip">
+            <string>Ertragssimulation, von GnuSolar noch nicht verwendet</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="folderLabel_pictures">
+           <property name="toolTip">
+            <string>Fotos, von GnuSolar noch nicht verwendet</string>
+           </property>
+           <property name="text">
+            <string>Bilder</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLineEdit" name="folder_pictures">
+           <property name="toolTip">
+            <string>Fotos, von GnuSolar noch nicht verwendet</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="folderLabel_misc">
+           <property name="toolTip">
+            <string>Alles andere, von GnuSolar noch nicht verwendet</string>
+           </property>
+           <property name="text">
+            <string>Diverses</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLineEdit" name="folder_misc">
+           <property name="toolTip">
+            <string>Alles andere, von GnuSolar noch nicht verwendet</string>
            </property>
           </widget>
          </item>
