@@ -4,7 +4,8 @@
 # Documents from OpenDocument templates (relatorio): quote, invoices,
 # documentation, M+PP.
 #
-# A template is searched first in config.templatePath, then in
+# A template is searched first in config.templatePath, in the folder the
+# installer uses for this kind of document (Config.FOLDERS), then in
 # data/ch/templates. In the template "o" is the project, "c" its contacts.
 
 import os
@@ -16,14 +17,15 @@ from documents import DocumentError
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
-# template type => template file, output folder in the project, numbering
+# template type => (folder and file of the template in data/ch/templates,
+# kind of folder in the project (Config.FOLDERS), numbering or file name)
 TEMPLATES = {
-    "partial_invoice": ("fin" + os.sep + "partial_invoice.odt", "fin", "invoice"),
-    "final_invoice":   ("fin" + os.sep + "final_invoice.odt",   "fin", "invoice"),
-    "small_invoice":   ("fin" + os.sep + "small_invoice.odt",   "fin", "invoice"),
-    "quote":           ("off" + os.sep + "quote.odt",           "off", "quote"),
-    "documentation":   ("doc" + os.sep + "documentation.odt",   "doc", "Dokumentation.odt"),
-    "mundpp":          ("evu" + os.sep + "MP_PV_Final_20190301_de.ods", "evu", "MP_PV.ods"),
+    "partial_invoice": (("fin", "partial_invoice.odt"), "invoices", "invoice"),
+    "final_invoice":   (("fin", "final_invoice.odt"),   "invoices", "invoice"),
+    "small_invoice":   (("fin", "small_invoice.odt"),   "invoices", "invoice"),
+    "quote":           (("off", "quote.odt"),           "quotes", "quote"),
+    "documentation":   (("doc", "documentation.odt"),   "documentation", "Dokumentation.odt"),
+    "mundpp":          (("evu", "MP_PV_Final_20190301_de.ods"), "gridOperator", "MP_PV.ods"),
 }
 
 
@@ -42,7 +44,7 @@ def createFromTemplate(templateType, savePath, model, config):
     # another window may have used a quote/invoice number in the meantime
     config.reloadNumbers()
 
-    in_path, out_dir, out_file = TEMPLATES[templateType]
+    (in_dir, in_file), folderKind, out_file = TEMPLATES[templateType]
     if out_file == "invoice":
         out_file = config.getNextInvoiceName() + ".odt"
     elif out_file == "quote":
@@ -51,10 +53,12 @@ def createFromTemplate(templateType, savePath, model, config):
     if not savePath:
         raise DocumentError(templateType + ' erstellen', 'Kein Pfad')
 
-    defaultPath = DATA_PATH + os.sep + "ch" + os.sep + "templates" + os.sep + in_path
-    localPath = config.templatePath + os.sep + in_path
+    defaultPath = os.path.join(DATA_PATH, "ch", "templates", in_dir, in_file)
+    localPath = ""
+    if config.templatePath:
+        localPath = os.path.join(config.getFolderPath(config.templatePath, folderKind), in_file)
     # first search template in  "local", config path
-    if os.path.exists(localPath):
+    if localPath and os.path.exists(localPath):
         templatePath = localPath
     # then default
     elif os.path.exists(defaultPath):
@@ -68,7 +72,7 @@ def createFromTemplate(templateType, savePath, model, config):
     # the documents of an order go into its folder
     projectDir = model.getOrderDir() or projectDir
 
-    outDir = projectDir + os.sep + out_dir
+    outDir = config.getFolderPath(projectDir, folderKind)
     outPath = outDir + os.sep + out_file
     if not os.path.isdir(outDir):
         os.makedirs(outDir)

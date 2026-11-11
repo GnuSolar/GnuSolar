@@ -16,6 +16,8 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import GnuSolar
 import gui.tree
 import gui.pages
+import documents.templates
+from Config import folderPreset
 from tests.test_project import v2_text
 
 app = None
@@ -74,6 +76,7 @@ class ProjectWindowTest(unittest.TestCase):
         self.folder = tempfile.mkdtemp()
         GnuSolar.config.configPath = os.path.join(self.folder, "config.json")
         GnuSolar.config.templatePath = ""
+        GnuSolar.config.folders = folderPreset("long")
         self.path = os.path.join(self.folder, "plant.pvp")
         with open(self.path, "w", encoding="utf-8") as f:
             f.write(v2_text())
@@ -484,10 +487,10 @@ class ProjectWindowTest(unittest.TestCase):
 
         click(self.app, "neue Offerte")
         number = os.path.splitext(os.path.basename(opened[-1]))[0]
-        self.assertTrue(os.path.isfile(os.path.join(self.folder, "2026_Bat", "off", number + ".odt")))
+        self.assertTrue(os.path.isfile(os.path.join(self.folder, "2026_Bat", "Offerten", number + ".odt")))
         quote = project.quotes[-1]
         self.assertEqual((quote.number, quote.state, quote.orderId, quote.date), (number, "draft", order.id, None))
-        self.assertEqual(quote.documents, [{"path": "2026_Bat/off/" + number + ".odt", "kind": "quote"}])
+        self.assertEqual(quote.documents, [{"path": "2026_Bat/Offerten/" + number + ".odt", "kind": "quote"}])
         self.assertTrue(self.app.unsavedChanges)
         self.assertEqual(order.deriveState(), "inquiry")
         # the date it was sent comes from the progress page
@@ -497,14 +500,81 @@ class ProjectWindowTest(unittest.TestCase):
         click(self.app, "Akontorechnung")
         invoice = order.invoices[0]
         self.assertEqual((invoice.kind, invoice.documents[0]["path"]),
-                         ("partial", "2026_Bat/fin/" + invoice.number + ".odt"))
+                         ("partial", "2026_Bat/Rechnungen/" + invoice.number + ".odt"))
         project.progress.partialInvoiceSent = "2026-09-01"
         self.assertEqual(invoice.date, 1788264000)
 
         click(self.app, "Anlagedoku erstellen")
         step = order.getStep("documentation")
-        self.assertEqual((step.state, step.documents[0]["path"]), ("open", "2026_Bat/doc/Dokumentation.odt"))
+        self.assertEqual((step.state, step.documents[0]["path"]), ("open", "2026_Bat/Dokumentation/Dokumentation.odt"))
         self.assertIsNotNone(find(self.app, "Schritt: Dokumentation"))
+
+    # the folders of the documents are named by the installer (Config.FOLDERS)
+    def test_folder_names(self):
+        config = GnuSolar.config
+        tree = self.app.ui.tree
+        project = GnuSolar.model
+
+        def newQuote():
+            tree.setCurrentItem(tree.topLevelItem(0))
+            click(self.app, "neue Offerte")
+            return project.quotes[-1].documents[0]["path"], project.quotes[-1].number
+
+        config.folders = folderPreset("short")
+        path, number = newQuote()
+        self.assertEqual(path, "off/" + number + ".odt")
+        config.folders["quotes"] = "Verkauf/Offerten"
+        path, number = newQuote()
+        self.assertEqual(path, "Verkauf/Offerten/" + number + ".odt")
+        self.assertTrue(os.path.isfile(os.path.join(self.folder, "Verkauf", "Offerten", number + ".odt")))
+        # no name: the project folder itself
+        config.folders["quotes"] = ""
+        path, number = newQuote()
+        self.assertEqual(path, number + ".odt")
+        # a name that can't be used is not used
+        config.folders["quotes"] = "../Offerten"
+        path, number = newQuote()
+        self.assertEqual(path, "Offerten/" + number + ".odt")
+        # documents created before stay where they are
+        self.assertEqual(project.quotes[-4].documents[0]["path"], "off/" + project.quotes[-4].number + ".odt")
+
+        # the installer's own templates lie in the folder of the same name
+        used = []
+        create = documents.templates.templateCopyReplace
+        documents.templates.templateCopyReplace = lambda src, dest, model: (used.append(src), create(src, dest, model))
+        try:
+            newQuote()
+            self.assertEqual(used[-1], os.path.join(documents.templates.DATA_PATH, "ch", "templates", "off", "quote.odt"))
+            config.templatePath = os.path.join(self.folder, "vorlagen")
+            config.folders["quotes"] = "Angebote"
+            os.makedirs(os.path.join(config.templatePath, "Angebote"))
+            own = os.path.join(config.templatePath, "Angebote", "quote.odt")
+            shutil.copy(used[-1], own)
+            path, number = newQuote()
+            self.assertEqual((used[-1], path), (own, "Angebote/" + number + ".odt"))
+        finally:
+            documents.templates.templateCopyReplace = create
+
+    def test_preferences_folders(self):
+        config = GnuSolar.config
+        self.app.action_preferences()
+        ui = config.ui
+        self.assertEqual((ui.folder_quotes.text(), ui.folder_gridOperator.text()), ("Offerten", "Netzbetreiber"))
+        ui.folderPresetShort.click()
+        self.assertEqual([getattr(ui, "folder_" + kind).text() for kind in GnuSolar.FOLDERS],
+                         ["off", "fin", "doc", "evu", "gov", "cad", "gis"])
+        ui.folderPresetLong.click()
+        self.assertEqual(ui.folder_invoices.text(), "Rechnungen")
+        ui.folder_invoices.setText(" Finanzen" + os.sep + "Rechnungen" + os.sep)
+        ui.folder_authorities.setText("amt")
+        ui.folder_plans.setText("../cad")
+        ui.folder_maps.setText("")
+        ui.buttonBox.button(GnuSolar.QtWidgets.QDialogButtonBox.Ok).click()
+        self.assertEqual(config.folders, {
+            "quotes": "Offerten", "invoices": "Finanzen/Rechnungen", "documentation": "Dokumentation",
+            "gridOperator": "Netzbetreiber", "authorities": "amt", "plans": "Pläne", "maps": ""})
+        self.assertIn('3D Modell: "../cad"', messages[-1])
+        self.assertEqual(json.load(open(config.configPath, encoding="utf-8"))["folders"], config.folders)
 
     def test_replacement_device(self):
         project = GnuSolar.model

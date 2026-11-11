@@ -37,7 +37,7 @@ version 2 files when it opens them (section 15).
 | Syntax | JSON (RFC 8259), no comments |
 | Formatting | 4 spaces indent, keys sorted, so files diff well (`json.dumps(..., indent=4, sort_keys=True, ensure_ascii=False)`) |
 | Writing | to `plant.pvp.tmp` first, then renamed, so a crash never leaves a half written file |
-| Attachments | Not in the file. Documents stay in the project folder and are referenced by relative path. |
+| Attachments | Not in the file. Documents stay in the project folder and are referenced by relative path. How the folder is organised is up to the installer: the format knows no folder names, the ones in the examples (`off/`, `fin/`) are one installer's. |
 
 ### Envelope
 
@@ -1008,6 +1008,7 @@ How GnuSolar implements this document:
 | The fields of version 2 on top of the new model, for the page Standort, the project list, and document templates and form scripts written for it: `project.building`, `.plant`, `.progress`, and `.existing` for what was installed before the order at hand | `model/compat.py` |
 | Checks: references that point nowhere, ports a device doesn't have, connectors that don't fit | `model/checks.py` |
 | Country extension for Switzerland | `plugins/ch.py` |
+| The folders new documents are created in: named by the installer in the preferences (tab Ordner), stored in `config.json` as `folders`. A config file without them is from before the setting and gets the short names GnuSolar used then (`off`, `fin`, `doc`, `evu`, `gov`, `cad`, `gis`), a new installation the written out ones. Documents the file already lists are never moved. | `Config.py` (`FOLDERS`), `documents/templates.py`, `gui/pages.py` |
 | Every page of the project window, made from field lists; the buttons of the pages | `gui/fields.py`, `gui/forms.py`; `gui/tree.py`, `gui/pages.py` |
 | Tests, including the examples of sections 10 and 17 of this document | `tests/` |
 

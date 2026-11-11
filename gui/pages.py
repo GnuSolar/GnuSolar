@@ -160,7 +160,7 @@ class PvProjectPage(Page):
 
         today = date.today()
         fileName = "QR" + today.isoformat() + ".pdf"
-        outDir =  projectDir + os.sep + "fin"
+        outDir = config.getFolderPath(projectDir, "invoices")
         qrPath = outDir + os.sep + fileName
         if not os.path.isdir(outDir):
             os.makedirs(outDir)
@@ -258,9 +258,9 @@ class BuildingPage(Page):
         if not projectDir:
             QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'Projekt zuerst speichern')
             return
-        cad_folder = projectDir + os.sep + "cad"
+        cad_folder = config.getFolderPath(projectDir, "plans")
         if not os.path.isdir(cad_folder):
-            os.mkdir(cad_folder)
+            os.makedirs(cad_folder)
         
         stl_file = cad_folder + os.sep + "house_geo.stl"
         if os.path.isfile(stl_file):
@@ -346,9 +346,9 @@ class BuildingPage(Page):
         if not projectDir:
             QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'Projekt zuerst speichern')
             return
-        gis_folder = projectDir + os.sep + "gis"
+        gis_folder = config.getFolderPath(projectDir, "maps")
         if not os.path.isdir(gis_folder):
-            os.mkdir(gis_folder)
+            os.makedirs(gis_folder)
         today = date.today()
         filename = today.isoformat() +"_Luftbild_500.pdf"
         path = gis_folder + os.sep + filename
@@ -433,9 +433,9 @@ class BuildingPage(Page):
         if not projectDir:
             QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'Projekt zuerst speichern')
             return
-        gis_folder = projectDir + os.sep + "gis"
+        gis_folder = config.getFolderPath(projectDir, "maps")
         if not os.path.isdir(gis_folder):
-            os.mkdir(gis_folder)
+            os.makedirs(gis_folder)
         today = date.today()
         filename = today.isoformat() +"_Vermessung_500.pdf"
         path = gis_folder + os.sep + filename
@@ -461,7 +461,7 @@ class MunicipalityPage(Page):
         if not projectDir:
             return
 
-        gvzDir =  projectDir + os.sep + "gov"
+        gvzDir = config.getFolderPath(projectDir, "authorities")
         gvzPath = gvzDir + os.sep + "01_gvz_dokumentation.pdf"
         if not os.path.isdir(gvzDir):
             os.makedirs(gvzDir)
@@ -511,7 +511,7 @@ class PowerCompanyPage(Page):
         ext = os.path.splitext(form["file"])[1] if form else ".pdf"
         tagName = "%04d-%02d-%02d_tag_fill%s" % (today.year, today.month, today.day, ext)
 
-        tagDir =  projectDir + os.sep + "evu"
+        tagDir = config.getFolderPath(projectDir, "gridOperator")
         tagPath = tagDir + os.sep + tagName
         if not os.path.isdir(tagDir):
             os.makedirs(tagDir)
