@@ -29,6 +29,10 @@ FOLDERS = {
     "authorities":   ("Behörden", "gov"),           # building insurance, permits
     "plans":         ("Pläne", "cad"),              # 3D model
     "maps":          ("Karten", "gis"),             # aerial image, survey
+    # not used by GnuSolar yet, part of the folder structure of the installer
+    "simulation":    ("Simulation", "sim"),
+    "pictures":      ("Bilder", "pic"),
+    "misc":          ("Diverses", "etc"),
 }
 
 # the folder names of a preset: "long" (written out) or "short"
@@ -144,7 +148,11 @@ class Config():
     def getFolder(self, kind):
         name = self.folders.get(kind)
         if not isinstance(name, str) or folderNameError(name):
-            name = FOLDERS[kind][0]
+            # no name, as for a kind added to GnuSolar later: the short one
+            # if the installer uses the short names, else the written out
+            short = sum(self.folders.get(k) == names[1] for k, names in FOLDERS.items())
+            long = sum(self.folders.get(k) == names[0] for k, names in FOLDERS.items())
+            name = FOLDERS[kind][1 if short > long else 0]
         return name
 
     # the folder of a kind in a project or order folder

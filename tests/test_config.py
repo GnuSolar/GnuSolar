@@ -40,7 +40,8 @@ class FolderNamesTest(unittest.TestCase):
         config = Config.Config()
         config.load()
         self.assertEqual(config.folders, {"quotes": "off", "invoices": "fin", "documentation": "doc",
-                                          "gridOperator": "evu", "authorities": "gov", "plans": "cad", "maps": "gis"})
+                                          "gridOperator": "evu", "authorities": "gov", "plans": "cad", "maps": "gis",
+                                          "simulation": "sim", "pictures": "pic", "misc": "etc"})
         self.assertNotIn("folders", self.stored())
         config.useQuoteNumber()
         self.assertEqual(self.stored()["folders"]["quotes"], "off")
@@ -51,6 +52,14 @@ class FolderNamesTest(unittest.TestCase):
         config = Config.Config()
         config.load()
         self.assertEqual((config.getFolder("quotes"), config.getFolder("invoices")), ("Angebote", "fin"))
+
+    # a folder added to GnuSolar later is named like the ones in use
+    def test_folder_added_later(self):
+        config = Config.Config()
+        config.folders = {"quotes": "off", "invoices": "fin", "authorities": "amt"}
+        self.assertEqual((config.getFolder("pictures"), config.getFolder("misc")), ("pic", "etc"))
+        config.folders = {"quotes": "Offerten", "invoices": "Rechnungen", "authorities": "amt"}
+        self.assertEqual((config.getFolder("pictures"), config.getFolder("simulation")), ("Bilder", "Simulation"))
 
     def test_folder_path(self):
         config = Config.Config()

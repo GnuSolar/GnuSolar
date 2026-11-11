@@ -537,10 +537,10 @@ class ProjectWindowTest(unittest.TestCase):
         config.folders["quotes"] = ""
         path, number = newQuote()
         self.assertEqual(path, number + ".odt")
-        # a name that can't be used is not used
+        # a name that can't be used is not used: the preset of the other names
         config.folders["quotes"] = "../Offerten"
         path, number = newQuote()
-        self.assertEqual(path, "Offerten/" + number + ".odt")
+        self.assertEqual(path, "off/" + number + ".odt")
         # documents created before stay where they are
         self.assertEqual(project.quotes[-4].documents[0]["path"], "off/" + project.quotes[-4].number + ".odt")
 
@@ -568,7 +568,7 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertEqual((ui.folder_quotes.text(), ui.folder_gridOperator.text()), ("Offerten", "Netzbetreiber"))
         ui.folderPresetShort.click()
         self.assertEqual([getattr(ui, "folder_" + kind).text() for kind in GnuSolar.FOLDERS],
-                         ["off", "fin", "doc", "evu", "gov", "cad", "gis"])
+                         ["off", "fin", "doc", "evu", "gov", "cad", "gis", "sim", "pic", "etc"])
         ui.folderPresetLong.click()
         self.assertEqual(ui.folder_invoices.text(), "Rechnungen")
         ui.folder_invoices.setText(" Finanzen" + os.sep + "Rechnungen" + os.sep)
@@ -578,7 +578,8 @@ class ProjectWindowTest(unittest.TestCase):
         ui.buttonBox.button(GnuSolar.QtWidgets.QDialogButtonBox.Ok).click()
         self.assertEqual(config.folders, {
             "quotes": "Offerten", "invoices": "Finanzen/Rechnungen", "documentation": "Dokumentation",
-            "gridOperator": "Netzbetreiber", "authorities": "amt", "plans": "Pläne", "maps": ""})
+            "gridOperator": "Netzbetreiber", "authorities": "amt", "plans": "Pläne", "maps": "",
+            "simulation": "Simulation", "pictures": "Bilder", "misc": "Diverses"})
         self.assertIn('3D Modell: "../cad"', messages[-1])
         self.assertEqual(json.load(open(config.configPath, encoding="utf-8"))["folders"], config.folders)
 
