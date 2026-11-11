@@ -15,6 +15,40 @@ from PyQt5.QtGui import *
 
 from Ui.Preferences import *
 
+# The folders of a project folder where GnuSolar puts the documents it creates.
+# Every installer names them their own way (Preferences, tab "Ordner"):
+#   kind => (written out name, short name)
+# A name may be a path ("Finanzen/Rechnungen"), an empty name is the project
+# folder itself. Only new documents follow the names, the project file keeps
+# the path of every document it knows.
+FOLDERS = {
+    "quotes":        ("Offerten", "off"),
+    "invoices":      ("Rechnungen", "fin"),
+    "documentation": ("Dokumentation", "doc"),
+    "gridOperator":  ("Netzbetreiber", "evu"),      # connection request, measurement protocol
+    "authorities":   ("Behörden", "gov"),           # building insurance, permits
+    "plans":         ("Pläne", "cad"),              # 3D model
+    "maps":          ("Karten", "gis"),             # aerial image, survey
+}
+
+# the folder names of a preset: "long" (written out) or "short"
+def folderPreset(preset):
+    column = {"long": 0, "short": 1}[preset]
+    return {kind: names[column] for kind, names in FOLDERS.items()}
+
+# What is wrong with a folder name, None if it can be used
+def folderNameError(name):
+    if name == "":
+        return None
+    if re.search(r'[\\:*?"<>|]', name):
+        return 'Die Zeichen \\ : * ? " < > | sind nicht erlaubt'
+    for part in name.split("/"):
+        if part in ("", ".", ".."):
+            return "Kein Pfad ausserhalb des Projektordners"
+        if part != part.strip() or part.endswith("."):
+            return "Kein Leerzeichen am Anfang oder Ende, kein Punkt am Ende"
+    return None
+
 class Config():
     def __init__(self):
         self.configPath = ""            # the Path of this file
@@ -25,6 +59,9 @@ class Config():
         self.nextInvoiceNumber = 0
 
         self.sipServer = ""             # SIP Server for voip
+
+        # names of the folders in a project folder, see FOLDERS
+        self.folders = folderPreset("long")
         
         # Installer info
         self.installer_company = ""
@@ -95,6 +132,23 @@ class Config():
         
         self._copyOver(self, ret)
 
+        # a config file from before the folder names could be set: GnuSolar
+        # used the short names then, the projects of this installer have them
+        if not isinstance(ret.get("folders"), dict):
+            self.folders = folderPreset("short")
+
+    # name of the folder of a kind (see FOLDERS), relative to the project folder
+    def getFolder(self, kind):
+        name = self.folders.get(kind)
+        if not isinstance(name, str) or folderNameError(name):
+            name = FOLDERS[kind][0]
+        return name
+
+    # the folder of a kind in a project or order folder
+    def getFolderPath(self, projectDir, kind):
+        name = self.getFolder(kind)
+        return os.path.join(projectDir, *name.split("/")) if name else projectDir
+
     def show(self):
         self.window = QDialog()
         self.ui = Ui_Preferences()
@@ -125,7 +179,16 @@ class Config():
         self.ui.installer_signature.setText(self.installer_signature)
         self.ui.installer_signatureBrowse.clicked.connect(self.browseSignature)
 
+        self.showFolders({kind: self.getFolder(kind) for kind in FOLDERS})
+        self.ui.folderPresetLong.clicked.connect(lambda: self.showFolders(folderPreset("long")))
+        self.ui.folderPresetShort.clicked.connect(lambda: self.showFolders(folderPreset("short")))
+
         self.window.show()
+
+    # put folder names (kind => name) into the tab "Ordner"
+    def showFolders(self, folders):
+        for kind, name in folders.items():
+            getattr(self.ui, "folder_" + kind).setText(name)
         
     def browseSignature(self):
         options = QFileDialog.Options()
@@ -157,6 +220,20 @@ class Config():
         self.installer_bankIid = self.ui.installer_bankIid.text()
         self.installer_bankBic = self.ui.installer_bankBic.text()
         self.installer_signature = self.ui.installer_signature.text()
+
+        # folder names with "/" on every system; a name that can't be used is not taken
+        refused = []
+        folders = {}
+        for kind in FOLDERS:
+            name = getattr(self.ui, "folder_" + kind).text().strip().replace(os.sep, "/").strip("/")
+            error = folderNameError(name)
+            if error:
+                refused.append("%s: \"%s\"\n%s" % (getattr(self.ui, "folderLabel_" + kind).text(), name, error))
+                name = self.getFolder(kind)
+            folders[kind] = name
+        self.folders = folders
+        if refused:
+            QMessageBox.warning(None, "Ordnername nicht übernommen", "\n\n".join(refused))
         
         del self.ui
         del self.window
