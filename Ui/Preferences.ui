@@ -501,23 +501,37 @@
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="folderLabel_gridOperator">
+           <property name="toolTip">
+            <string>Anschlussgesuch, Mess- und Prüfprotokoll</string>
+           </property>
            <property name="text">
-            <string>Netzbetreiber (Anschlussgesuch, Messprotokoll)</string>
+            <string>Netzbetreiber</string>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QLineEdit" name="folder_gridOperator"/>
+          <widget class="QLineEdit" name="folder_gridOperator">
+           <property name="toolTip">
+            <string>Anschlussgesuch, Mess- und Prüfprotokoll</string>
+           </property>
+          </widget>
          </item>
          <item row="4" column="0">
           <widget class="QLabel" name="folderLabel_authorities">
+           <property name="toolTip">
+            <string>Formular der Gebäudeversicherung</string>
+           </property>
            <property name="text">
-            <string>Behörden (Gebäudeversicherung)</string>
+            <string>Behörden</string>
            </property>
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QLineEdit" name="folder_authorities"/>
+          <widget class="QLineEdit" name="folder_authorities">
+           <property name="toolTip">
+            <string>Formular der Gebäudeversicherung</string>
+           </property>
+          </widget>
          </item>
          <item row="5" column="0">
           <widget class="QLabel" name="folderLabel_plans">
@@ -531,13 +545,20 @@
          </item>
          <item row="6" column="0">
           <widget class="QLabel" name="folderLabel_maps">
+           <property name="toolTip">
+            <string>Luftbild, Vermessung</string>
+           </property>
            <property name="text">
-            <string>Karten (Luftbild, Vermessung)</string>
+            <string>Karten</string>
            </property>
           </widget>
          </item>
          <item row="6" column="1">
-          <widget class="QLineEdit" name="folder_maps"/>
+          <widget class="QLineEdit" name="folder_maps">
+           <property name="toolTip">
+            <string>Luftbild, Vermessung</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
