@@ -3,8 +3,8 @@
 
 # The project as file version 2 saw it: one building, one plant, one progress.
 #
-# The forms (Ui/Building, Ui/Plant, Ui/Progress), the document templates and
-# the form scripts in data/ were written for that model. The views here give
+# The page Standort, the project list, the document templates and the form
+# scripts in data/ were written for that model. The views here give
 # them the same fields on top of the version 3 model:
 #
 #   project.building   SiteView       the site, as text fields
