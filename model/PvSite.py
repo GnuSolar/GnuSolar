@@ -17,7 +17,7 @@ from model.Contact import Contact, ContactList, Address
 from model.Site import Supply, DesignTemperature, Municipality, GridOperator
 from model.Building import Building, Surrounding
 from model.Device import DeviceType, Device, String, Connection
-from model.Project import Project, Quote, Design, PROJECT_TYPES
+from model.Project import Project, PROJECT_TYPES
 from model.compat import SiteView, PlantView, ProgressView
 from model import values
 
@@ -39,14 +39,12 @@ class PvSite(ModelNode):
         "devices": Device,
         "strings": String,
         "connections": Connection,
-        "designs": Design,
-        "quotes": Quote,
         "projects": Project,
     }
     _types = {"latitude": "number", "longitude": "number", "elevation": "number", "annualConsumption": "number",
               "horizon": "points", "plugins": "json", "ext": "json"}
     _always = ("contacts", "buildings", "surroundings", "types", "devices", "strings", "connections",
-               "designs", "quotes", "projects", "notes", "plugins", "ext")
+               "projects", "notes", "plugins", "ext")
 
     def __init__(self, path=""):
         self.config = config
@@ -81,8 +79,6 @@ class PvSite(ModelNode):
         self.devices = []
         self.strings = []
         self.connections = []
-        self.designs = []
-        self.quotes = []
         self.projects = []
         self.notes = ""
         self.plugins = []               # every plugin that wrote data to the file
@@ -100,12 +96,14 @@ class PvSite(ModelNode):
         return [group for roof in self.allRoofs() for group in roof.moduleGroups]
 
     # the entries of a list of the site; moduleGroups and roofs are
-    # collected from all buildings
+    # collected from all buildings, quotes and designs from all projects
     def collection(self, name):
         if name == "moduleGroups":
             return self.allModuleGroups()
         if name == "roofs":
             return self.allRoofs()
+        if name in ("quotes", "designs"):
+            return [part for project in self.projects for part in project.__dict__[name]]
         return self.__dict__[name]
 
     # the object with an id in a list of the site, None if there is none
@@ -199,7 +197,7 @@ class PvSite(ModelNode):
         document = {"path": relPath, "kind": documentKind}
         number = os.path.splitext(os.path.basename(path))[0]
         if part == "quote":
-            return self.addPart("quotes", number=number, state="draft", projectId=project.id, documents=[document])
+            return project.addPart("quotes", number=number, state="draft", documents=[document])
         if part == "invoice":
             return project.addPart("invoices", kind=partKind, number=number, documents=[document])
         step = project.getStep(partKind) or project.addPart("steps", kind=partKind)

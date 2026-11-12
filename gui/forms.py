@@ -161,9 +161,8 @@ class Form:
     def _choices(self, field):
         if field.ref:
             name, _, kind = field.ref.partition(":")
-            top = getattr(self.obj, "_top", None)
             ret = []
-            for other in (top.collection(name) if top else []):
+            for other in self._referable(name):
                 if other is self.obj:
                     continue
                 if kind and kind != "None" and getattr(other, "kind", None) not in (kind, None):
@@ -173,6 +172,17 @@ class Form:
         if isinstance(field.choices, dict):
             return list(field.choices.items())
         return [(choice, str(choice)) for choice in field.choices]
+
+    # The parts a field can point to: the list of the part itself (the quotes
+    # of a project), else the one of the part it is in (the designs of the
+    # project of a quote), else everything of that name at the site.
+    def _referable(self, name):
+        for holder in (self.obj, getattr(self.obj, "_parent", None)):
+            own = getattr(holder, "__dict__", {}).get(name)
+            if isinstance(own, list):
+                return own
+        top = getattr(self.obj, "_top", None)
+        return top.collection(name) if top else []
 
     # ---- storing --------------------------------------------------------------
 

@@ -358,16 +358,17 @@ class _Migration:
         self.numberDocuments(project["invoices"], "fin", "R", "invoice", "date")
 
         # quotes
+        project["quotes"] = []
         for key in QUOTE_DATES:
             day = self.date("progress." + key, progress.get(key), notes)
             if day:
-                new["quotes"].append({"id": self.newId(), "date": day, "state": "sent", "projectId": project["id"]})
-        self.numberDocuments(new["quotes"], "off", "O", "quote", "date")
+                project["quotes"].append({"id": self.newId(), "date": day, "state": "sent"})
+        self.numberDocuments(project["quotes"], "off", "O", "quote", "date")
 
         known = set(PROJECT_DATES) | set(STEP_DATES) | set(INVOICE_DATES) | set(QUOTE_DATES) | {"constructionFixed"}
         self.leftovers(project, "progress", progress, known)
         project["notes"] = "\n".join(notes) or None
-        project["state"] = projectState(project, quoted=bool(new["quotes"]))
+        project["state"] = projectState(project, quoted=bool(project["quotes"]))
         return project
 
     # Give quotes or invoices their number from the files O2026-11-0042.pdf /
@@ -485,8 +486,6 @@ class _Migration:
             "devices": [],
             "strings": [],
             "connections": [],
-            "designs": [],
-            "quotes": [],
             "projects": [],
             "notes": self.old.get("comment") or "",
             "plugins": [],

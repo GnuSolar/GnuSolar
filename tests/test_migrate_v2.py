@@ -132,17 +132,19 @@ class MigrateV2Test(unittest.TestCase):
                  "fin/R2026-06-0123.pdf", "fin/R2026-06-0130_Schluss.pdf", "fin/QR2026-06-01.pdf"]
         new, report = run(files=files)
         project = new["projects"][0]
-        self.assertEqual([(q["date"], q["number"], q["state"], q["projectId"]) for q in new["quotes"]],
-                         [(day("2026-03-20"), "O2026-03-0041", "sent", project["id"]),
-                          (day("2026-04-02"), "O2026-04-0050", "sent", project["id"])])
-        self.assertEqual(new["quotes"][0]["documents"], [{"path": "off/O2026-03-0041.pdf", "kind": "quote"}])
+        # the quotes are parts of the project
+        self.assertNotIn("quotes", new)
+        self.assertEqual([(q["date"], q["number"], q["state"], sorted(q)) for q in project["quotes"]],
+                         [(day("2026-03-20"), "O2026-03-0041", "sent", ["date", "documents", "id", "number", "state"]),
+                          (day("2026-04-02"), "O2026-04-0050", "sent", ["date", "documents", "id", "number", "state"])])
+        self.assertEqual(project["quotes"][0]["documents"], [{"path": "off/O2026-03-0041.pdf", "kind": "quote"}])
         self.assertEqual([(i["kind"], i["date"], i.get("paid"), i["number"]) for i in project["invoices"]],
                          [("partial", day("2026-06-01"), day("2026-06-20"), "R2026-06-0123"),
                           ("final", day("2026-06-25"), None, "R2026-06-0130")])
 
     def test_numbers_without_files(self):
         new, report = run()
-        self.assertNotIn("number", new["quotes"][0])
+        self.assertNotIn("number", new["projects"][0]["quotes"][0])
 
     def test_values_that_do_not_fit(self):
         old = v2_example.project()

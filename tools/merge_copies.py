@@ -15,8 +15,8 @@
 # plant.pvp.merged, so the site is no longer listed twice. No other file
 # is touched, the folder of the copy stays where it is.
 #
-# What is taken from the copy: its projects with steps and invoices, quotes,
-# devices, types, module groups, strings, connections, designs, and contacts
+# What is taken from the copy: its projects with designs, quotes, steps and
+# invoices, devices, types, module groups, strings, connections, and contacts
 # and values of the place the main site doesn't have. The address, the
 # municipality and the grid operator of the main site stay.
 
@@ -144,15 +144,12 @@ def merge(main, copy, folder):
         notes.append("project added: %s (%s), folder %s" % (project.get("title"), project.get("state"), project["folder"]))
     main.setdefault("projects", []).extend(projects)
     main.setdefault("devices", []).extend(devices)
-    for key in ("quotes", "strings", "connections", "designs", "surroundings"):
+    for key in ("strings", "connections", "surroundings"):
         main.setdefault(key, []).extend(copy.get(key, []))
 
     # documents of the copy are in its folder
-    for quote in copy.get("quotes", []):
-        for document in quote.get("documents", []):
-            document["path"] = folder.replace(os.sep, "/") + "/" + document["path"]
     for project in projects:
-        for part in project.get("steps", []) + project.get("invoices", []):
+        for part in project.get("quotes", []) + project.get("steps", []) + project.get("invoices", []):
             for document in part.get("documents", []):
                 document["path"] = folder.replace(os.sep, "/") + "/" + document["path"]
 

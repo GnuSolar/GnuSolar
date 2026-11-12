@@ -60,6 +60,16 @@ def check(site):
                 if objectId is not None and site.byId(collection, objectId) is None:
                     found.append("%s: %s zeigt auf nichts" % (_name(part), field))
 
+    # the accepted quote is one of the project, a quote offers a design of its project
+    for project in site.projects:
+        accepted = site.byId("quotes", project.quoteId)
+        if accepted is not None and accepted not in project.quotes:
+            found.append("%s: quoteId zeigt auf die Offerte eines anderen Projekts" % _name(project))
+        for quote in project.quotes:
+            design = site.byId("designs", quote.designId)
+            if design is not None and design not in project.designs:
+                found.append("%s: designId zeigt auf die Auslegung eines anderen Projekts" % _name(quote))
+
     # devices
     for device in site.devices:
         since, until = device.get("from"), device.to

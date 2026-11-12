@@ -11,6 +11,7 @@ import unittest
 
 from model.PvSite import PvSite
 from model import values
+from model.checks import check
 import formats.pvp
 from tests import v2_example
 
@@ -84,9 +85,41 @@ class FileFormatTest(unittest.TestCase):
             self.assertFalse(os.path.exists(path + ".v2"))
             self.assertIsNone(PvSite(path)._migratedFrom)
 
+    def test_quotes_and_designs_belong_to_a_project(self):
+        p = load()
+        first = p.projects[0]
+        battery = p.addProject("battery")
+        quote = battery.addPart("quotes", state="draft")
+        design = battery.addPart("designs", label="mit Batterie")
+        quote.designId = design.id
+        battery.quoteId = quote.id
+        # the site finds them in all projects
+        self.assertEqual(p.collection("quotes"), first.quotes + [quote])
+        self.assertIs(p.byId("designs", design.id), design)
+        self.assertEqual(battery.getQuotes(), [quote])
+        wrong = lambda: [text for text in check(p) if "anderen Projekts" in text or "zeigt auf nichts" in text]
+        self.assertEqual(wrong(), [])
+
+        data = p.toDict()
+        self.assertFalse({"quotes", "designs"} & set(data))
+        self.assertEqual([q["id"] for q in data["projects"][1]["quotes"]], [quote.id])
+        self.assertEqual(data["projects"][1]["designs"], [{"id": design.id, "label": "mit Batterie"}])
+        self.assertNotIn("projectId", data["projects"][1]["quotes"][0])
+        q = PvSite()
+        q.fromDict(data)
+        q.link(q)
+        self.assertEqual(q.toDict(), data)
+        self.assertIs(q.projects[1].quotes[0]._parent, q.projects[1])
+
+        # a project accepts its own quotes, a quote offers a design of its project
+        first.quoteId = quote.id
+        first.quotes[0].designId = design.id
+        self.assertEqual(len(wrong()), 2)
+
     def test_older_and_unknown_formats(self):
         for data in ({"format": "gnusolar-project", "version": 3, "project": {}},
                      {"format": "gnusolar-site", "version": 2, "site": {}},
+                     {"format": "gnusolar-site", "version": 3, "site": {"quotes": []}},
                      {"format": "something", "version": 3, "site": {}}):
             with self.assertRaises(Exception):
                 formats.pvp.loads(PvSite(), json.dumps(data))
@@ -249,9 +282,9 @@ class Version2FieldsTest(unittest.TestCase):
         pr.materialOrdered = ""
         self.assertIsNone(project.getStep("material"))
         pr.quote3Sent = "2026-04-10"
-        self.assertEqual(len(p.quotes), 3)
+        self.assertEqual(len(project.quotes), 3)
         pr.quote3Sent = ""
-        self.assertEqual(len(p.quotes), 2)
+        self.assertEqual(len(project.quotes), 2)
         with self.assertRaises(ValueError):
             pr.tagSent = "2026"
         self.assertEqual(pr.tagSent, "2026-04-20")

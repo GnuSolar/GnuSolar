@@ -68,7 +68,6 @@ class Quote(ModelNode):
         self.date = None
         self.variant = None
         self.designId = None
-        self.projectId = None         # the project (job) the quote was made for
         self.validUntil = None
         self.state = None           # see QUOTE_STATES
         self.items = []
@@ -78,7 +77,7 @@ class Quote(ModelNode):
         self.ext = {}
 
     def hasContent(self):
-        return any(key not in ("id", "date", "state", "projectId") for key in self.toDict())
+        return any(key not in ("id", "date", "state") for key in self.toDict())
 
 
 # Something done with an authority, the grid operator, a subsidy office or a
@@ -136,7 +135,7 @@ class Invoice(ModelNode):
 
 class Project(ModelNode):
 
-    _parts = {"steps": Step, "invoices": Invoice}
+    _parts = {"designs": Design, "quotes": Quote, "steps": Step, "invoices": Invoice}
     _types = {"inquiry": "date", "roofMeasure": "date", "roofMeasured": "date", "ordered": "date",
               "rejected": "date", "constructionStart": "date", "constructionSort": "date",
               "constructionFixed": "bool", "commissioned": "date", "completed": "date", "archived": "date",
@@ -168,6 +167,8 @@ class Project(ModelNode):
         self.constructionType = None    # see CONSTRUCTION_TYPES
         self.totalCost = None
         self.items = []
+        self.designs = []           # variants of what could be built
+        self.quotes = []            # sent to the client for this project
         self.steps = []
         self.invoices = []
         self.notes = None
@@ -175,9 +176,7 @@ class Project(ModelNode):
 
     # the quotes made for this project
     def getQuotes(self):
-        if not self._top:
-            return []
-        return [q for q in self._top.quotes if q.projectId == self.id]
+        return list(self.quotes)
 
     def deriveState(self):
         self.state = states.projectState(self.__dict__, quoted=any(q.date for q in self.getQuotes()))

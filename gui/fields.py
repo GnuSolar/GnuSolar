@@ -296,7 +296,6 @@ def _quote(obj):
             F("number", "Nummer"),
             F("date", "Datum", "date"),
             F("state", "Status", choices=Project.QUOTE_STATES),
-            F("projectId", "Projekt", ref="projects"),
             F("variant", "Variante"),
             F("designId", "Auslegung", ref="designs"),
             F("validUntil", "gültig bis", "date"),

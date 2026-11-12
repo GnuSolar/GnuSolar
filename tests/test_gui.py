@@ -410,9 +410,22 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertEqual(roofItem.text(0), "Dach: 185°")
         self.run_action(roofItem, "Hindernis hinzufügen", "chimney")
         self.run_action(find(self.app, "Dach: 185°"), "Modulgruppe hinzufügen")
-        self.run_action(find(self.app, "Offerten"), "Offerte hinzufügen")
-        self.run_action(find(self.app, "Auslegungen"), "Auslegung hinzufügen")
+        # designs and quotes are made on the page of their project
+        quote = self.run_action(find(self.app, "Projekt: PV-Anlage"), "Offerte hinzufügen")
+        design = self.run_action(find(self.app, "Projekt: PV-Anlage"), "Auslegung hinzufügen")
         self.input("expectedYield.annual").setText("10200000")
+        self.input("label").setText("Aufdach 24 Module")
+        self.assertIs(tree.currentItem().parent().pvpObj, site.projects[0])
+        # a quote can name a design of its project, a module group any design
+        tree.setCurrentItem(gui.tree.findItem(tree, quote))
+        self.assertEqual([self.input("designId").itemData(i) for i in range(self.input("designId").count())],
+                         [None, design.id])
+        self.input("designId").setCurrentIndex(1)
+        self.assertEqual(quote.designId, design.id)
+        # the design is used now and can not be deleted, neither can the project
+        self.run_action(gui.tree.findItem(tree, design), "Löschen")
+        self.assertIn("Wird noch verwendet von:\nOfferte", messages[-1])
+        self.assertIn(design, site.projects[0].designs)
         self.run_action(find(self.app, "Umgebung"), "Umgebung hinzufügen", "tree")
         self.run_action(find(self.app, "Strings"), "String hinzufügen")
         self.run_action(find(self.app, "Verbindungen"), "Verbindung hinzufügen", "ac")
@@ -422,7 +435,8 @@ class ProjectWindowTest(unittest.TestCase):
             self.assertIs(self.app.currentObj, item.pvpObj)
             count += 1
         self.assertGreater(count, 70)
-        self.assertEqual(site.designs[0].expectedYield, {"annual": 10200000})
+        self.assertEqual(site.projects[0].designs[0].expectedYield, {"annual": 10200000})
+        self.assertEqual((site.collection("designs"), site.byId("quotes", quote.id)), ([design], quote))
         self.assertTrue(self.app.action_save())
         reloaded = GnuSolar.PvSite(self.path)
         self.assertEqual(len(reloaded.devices), len(site.devices))
@@ -498,8 +512,9 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertIs(self.app.currentObj, project)
         number = os.path.splitext(os.path.basename(opened[-1]))[0]
         self.assertTrue(os.path.isfile(os.path.join(self.folder, "2026_Bat", "Offerten", number + ".odt")))
-        quote = site.quotes[-1]
-        self.assertEqual((quote.number, quote.state, quote.projectId, quote.date), (number, "draft", project.id, None))
+        quote = project.quotes[-1]
+        self.assertEqual((quote.number, quote.state, quote.date), (number, "draft", None))
+        self.assertEqual(site.projects[0].quotes, site.collection("quotes")[:-1])
         self.assertEqual(quote.documents, [{"path": "2026_Bat/Offerten/" + number + ".odt", "kind": "quote"}])
         self.assertTrue(self.app.unsavedChanges)
         self.assertEqual(project.deriveState(), "inquiry")
@@ -530,7 +545,8 @@ class ProjectWindowTest(unittest.TestCase):
         # also when the site thinks of another project
         site.currentProject = project
         click(self.app, "neue Offerte")
-        self.assertEqual(site.quotes[-1].projectId, first.id)
+        self.assertEqual(len(project.quotes), 1)
+        self.assertEqual(first.quotes[-1].state, "draft")
 
     # the folders of the documents are named by the installer (Config.FOLDERS)
     def test_folder_names(self):
@@ -541,7 +557,8 @@ class ProjectWindowTest(unittest.TestCase):
         def newQuote():
             tree.setCurrentItem(find(self.app, "Projekt: PV-Anlage"))
             click(self.app, "neue Offerte")
-            return site.quotes[-1].documents[0]["path"], site.quotes[-1].number
+            quotes = site.projects[0].quotes
+            return quotes[-1].documents[0]["path"], quotes[-1].number
 
         config.folders = folderPreset("short")
         path, number = newQuote()
@@ -559,7 +576,8 @@ class ProjectWindowTest(unittest.TestCase):
         path, number = newQuote()
         self.assertEqual(path, "off/" + number + ".odt")
         # documents created before stay where they are
-        self.assertEqual(site.quotes[-4].documents[0]["path"], "off/" + site.quotes[-4].number + ".odt")
+        quotes = site.projects[0].quotes
+        self.assertEqual(quotes[-4].documents[0]["path"], "off/" + quotes[-4].number + ".odt")
 
         # the installer's own templates lie in the folder of the same name
         used = []

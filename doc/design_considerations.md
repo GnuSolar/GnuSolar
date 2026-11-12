@@ -42,7 +42,7 @@ several projects at the same address there are three things where there was one:
 |---|---|---|
 | The place | Address, plot, buildings, roofs, grid operator | fields of the site, `buildings` |
 | What stands there | The devices over time | `devices`, `strings`, `connections` |
-| A piece of work | From inquiry to final invoice | `projects`, with `quotes` |
+| A piece of work | From inquiry to final invoice | `projects`, each with its `designs`, `quotes`, `steps` and `invoices` |
 
 The question is which of them a file, and its folder, stands for.
 
@@ -154,7 +154,7 @@ The installed system on a date is every device with `from` on or before that dat
 |---|---|---|
 | Site only | Address, plot, building, roofs, grid operator, contacts. The existing meter is a device with `from`. | – |
 | Lead | Roofs are measured or imported. | Project 1 with its inquiry date |
-| Quote | Module groups are drawn on the roofs, marked with their design. No devices. | Designs, quotes |
+| Quote | Module groups are drawn on the roofs, marked with their design. No devices. | Designs and quotes, inside project 1 |
 | Sale | The devices of project 1 appear as planned. | Date ordered, accepted quote, steps |
 | Installation | On the commissioning date the planned devices get it as `from`; the old meter gets it as `to`. | Commissioning, invoices, completion |
 | Site with PV | Unchanged | Project 1 stays as history |
@@ -201,6 +201,10 @@ Why the old names had to go:
 
 What was considered instead: `job` for the piece of work with the top level left as `project` (a smaller rename,
 but "project" would have kept meaning the file), and `plant` for the top level.
+
+Quotes and designs moved with it: they were lists of the site, with a `projectId` on each quote, because in the
+first draft a quote came before the piece of work existed. Since a project exists from the inquiry on, they are
+parts of their project, like its steps and invoices, and the reference is gone.
 
 What stays:
 

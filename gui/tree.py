@@ -34,9 +34,6 @@ class Section:
 
 
 SECTIONS = (
-    ("quotes", "Offerten", "Offerten, die dem Kunden geschickt wurden. Eine gesendete Offerte ändert nicht mehr, "
-                           "eine neue Fassung ist eine neue Offerte."),
-    ("designs", "Auslegungen", "Varianten, was gebaut werden könnte. Modulgruppen und Offerten verweisen darauf."),
     ("buildings", "Gebäude und Dächer", "Gebäude mit ihren Dachflächen, Hindernissen und Modulgruppen."),
     ("surroundings", "Umgebung", "Was neben den Gebäuden Schatten wirft: Bäume, Nachbarhäuser, Mauern."),
     ("devices", "Geräte", "Alles Installierte: Wechselrichter, Batterien, Zähler, Verteilungen, Sicherungen ... "
@@ -97,6 +94,10 @@ def buildTree(tree, site):
     for project in site.projects:
         item = _addItem(top, project)
         expand.append(item)
+        for design in project.designs:
+            _addItem(item, design)
+        for quote in project.quotes:
+            _addItem(item, quote)
         for step in project.steps:
             _addItem(item, step)
         for invoice in project.invoices:
@@ -294,7 +295,8 @@ def contextMenu(item):
         actions = [
             _addKinds("Schritt hinzufügen", obj, "steps", missing),
             _addKinds("Rechnung hinzufügen", obj, "invoices", INVOICE_KINDS),
-            _add("Offerte hinzufügen", site, "quotes", projectId=obj.id, state="draft"),
+            _add("Auslegung hinzufügen", obj, "designs"),
+            _add("Offerte hinzufügen", obj, "quotes", state="draft"),
             _addKinds("Gerät hinzufügen", site, "devices",
                       {kind: DEVICE_KINDS[kind] for kind in PROJECT_DEVICE_KINDS}, projectId=obj.id),
         ]
@@ -302,15 +304,11 @@ def contextMenu(item):
             actions.append(_delete(site, site, obj))
         return actions
 
-    if isinstance(obj, (Step, Invoice)):
+    if isinstance(obj, (Design, Quote, Step, Invoice)):
         return [_delete(site, parent, obj)]
 
     if isinstance(obj, Section):
         key = obj.key
-        if key == "quotes":
-            return [_add("Offerte hinzufügen", site, key, projectId=site.currentProject.id, state="draft")]
-        if key == "designs":
-            return [_add("Auslegung hinzufügen", site, key)]
         if key == "buildings":
             return [_add("Gebäude hinzufügen", site, key)]
         if key == "surroundings":
@@ -351,7 +349,7 @@ def contextMenu(item):
                 Action("Ersatzgerät hinzufügen", replacement),
                 _delete(site, site, obj)]
 
-    if isinstance(obj, (Quote, Design, Surrounding, DeviceType, String, Connection)):
+    if isinstance(obj, (Surrounding, DeviceType, String, Connection)):
         return [_delete(site, site, obj)]
 
     return []

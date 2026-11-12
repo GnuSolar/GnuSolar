@@ -621,9 +621,9 @@ class ProgressView:
             if day is not None and quote.state in (None, "draft"):
                 quote.state = "sent"
             if day is None and not quote.hasContent():
-                self._top.removePart(quote)
+                self._project.removePart(quote)
         elif day is not None:
-            self._top.addPart("quotes", date=day, state="sent", projectId=self._project.id)
+            self._project.addPart("quotes", date=day, state="sent")
 
     # ---- steps ------------------------------------------------------------
 

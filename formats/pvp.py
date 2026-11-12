@@ -57,7 +57,12 @@ def _migrate(data, taken=None, files=None, report=None):
     if data.get("format") == FILE_FORMAT:
         if version != FILE_VERSION:
             raise Exception("File version " + str(version) + " is not supported, a newer GnuSolar is needed")
-        return data.get("site"), None
+        site = data.get("site") or {}
+        # until 2026-11-12 quotes and designs were lists of the site: read as
+        # it is, such a file would lose them from its projects
+        if "quotes" in site or "designs" in site:
+            raise Exception("File of a draft of version 3 (quotes and designs at the site) is not supported")
+        return site, None
     if data.get("format") == V2_FILE_FORMAT:
         if version != 2:
             raise Exception("File version " + str(version) + " of the format " + V2_FILE_FORMAT + " is not supported")

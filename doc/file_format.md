@@ -83,8 +83,6 @@ Version 2 has another format name and top level: `{"format": "gnusolar-project",
     "devices": [],
     "strings": [],
     "connections": [],
-    "designs": [],
-    "quotes": [],
     "projects": [],
     "notes": "",
     "plugins": [],
@@ -750,10 +748,14 @@ are joined there would be an N bar as well, and one more connection:
 
 ## 11. Designs and quotes
 
+Designs and quotes are made for a project and are parts of it: the lists `designs` and `quotes` of a project
+(section 12).
+
 ### Designs
 
 A design is one variant of what could be built: on-roof with 24 modules, in-roof, with or without a battery.
-Simulation tools keep one file per variant. Here a design is a named entry that module groups and quotes point to.
+Simulation tools keep one file per variant. Here a design is a named entry of a project that module groups and its
+quotes point to.
 
 ```json
 "designs": [
@@ -777,8 +779,8 @@ Simulation tools keep one file per variant. Here a design is a named entry that 
 
 - A module group with a `designId` belongs to that design. A site with a single layout needs no designs, and its
   module groups have no `designId`.
-- A quote names the design it offers in its `designId`.
-- The file doesn't mark a design as built. The built module groups are the ones listed in the `pv_array` device of an
+- A quote names the design it offers in its `designId`, a design of the same project.
+- The file doesn't mark a design as built. The built module groups are the ones listed in the `pv_array` device of a
   project (section 8). Module groups of designs that were not built can stay as a record or be removed.
 - Devices and strings exist only for projects. A design that is only quoted lists its devices as quote items.
 
@@ -794,7 +796,6 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
         "date": 1793880000,
         "variant": "Aufdach mit Batterie",
         "designId": "uuid",
-        "projectId": "uuid",
         "validUntil": 1798718400,
         "state": "sent",
         "items": [
@@ -814,7 +815,9 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
 | `items[].kind` | `device`, `material`, `service`, `discount`, `text` |
 | `items[].unit` | `piece`, `m`, `m2`, `h`, `lump_sum`. The order of the items is their position number. |
 | `variant` | Free text shown on the quote. `designId` points to the layout that goes with it. |
-| `projectId` | The project (job) the quote was made for. A project exists from the inquiry on, so every quote has one. The project's `quoteId` names the quote the client accepted. |
+
+A project exists from the inquiry on, so a quote always has a project to be part of. The project's `quoteId` names the
+one the client accepted.
 
 A migrated quote may have only a `date` (from version 2 `quoteNSent`) and no number, items or total. A quote
 GnuSolar created from a template starts as `draft` with its `number` and document, and gets its `date` when it is
@@ -822,8 +825,8 @@ sent.
 
 ## 12. Projects
 
-A project is a job at the site: the first installation, a battery, a replacement. It has its own process steps,
-documents and invoices.
+A project is a job at the site: the first installation, a battery, a replacement. It has its own designs and quotes
+(section 11), process steps, documents and invoices.
 
 ```json
 "projects": [
@@ -849,6 +852,8 @@ documents and invoices.
         "constructionType": "on_roof",
         "totalCost": 18450.00,
         "items": [],
+        "designs": [],
+        "quotes": [],
         "steps": [
             {
                 "id": "uuid",
@@ -1071,7 +1076,7 @@ site, one building with one roof, and one project of type `new_system`.
 | `plant.constructionType` | project `constructionType`: `builton` → `on_roof`, `integrated` → `in_roof`, `facade` → `facade` |
 | `plant.totalCost` | project `totalCost` |
 | `progress.inquiryReceived`, `roofMeasure`, `roofMeasured`, `orderReceived`, `orderRejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `launch`, `archived`, `inactiv` | project `inquiry`, `roofMeasure`, `roofMeasured`, `ordered`, `rejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `commissioned`, `archived`, `inactive` |
-| `progress.quote1Sent`, `quote2Sent`, `quote3Sent`, `quote4Sent` | one quote each, with `date`, `state: "sent"` and the project as `projectId`; numbers from the files `off/O<year>-<month>-<number>.*`, where a month has as many such numbers as quotes |
+| `progress.quote1Sent`, `quote2Sent`, `quote3Sent`, `quote4Sent` | one quote each in the project's `quotes`, with `date` and `state: "sent"`; numbers from the files `off/O<year>-<month>-<number>.*`, where a month has as many such numbers as quotes |
 | `progress.tagSent`, `tagReceived` | step `ch.tag`: `submitted`, `approved` |
 | `progress.iaSent`, `iaReceived` | step `ch.ia`: `submitted`, `approved` |
 | `progress.bauSent`, `bauReceived` | step `ch.building_permit`: `submitted`, `approved` |
@@ -1121,7 +1126,7 @@ contacts that are the same in both are not added twice.
 
 GnuSolar can take over data from planning tools and from public data. This section records how their data maps, as
 found in the example projects of PV*SOL premium 2026 (file versions 4 to 24) and PVsyst 8.1, and in swissBUILDINGS3D
-3.0. None of them holds customers, projects or history. An import fills the site, buildings and roofs, one design,
+3.0. None of them holds customers, projects or history. An import fills the site, buildings and roofs, one design of a project,
 types, and strings where the source has them.
 
 | GnuSolar | PV*SOL (`.pvprj`: zip with XML and JSON) | PVsyst (`.PRJ` plus one `.VC*` per variant: text) | swissBUILDINGS3D |
@@ -1222,18 +1227,6 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
         ],
         "created": 1420876800,
         "currency": "CHF",
-        "designs": [
-            {
-                "documents": [
-                    {
-                        "kind": "simulation",
-                        "path": "2026_Bat/batterie.pvprj"
-                    }
-                ],
-                "id": "0a1b2c3d-0000-4000-8000-000000000080",
-                "label": "Batterie 10 kWh"
-            }
-        ],
         "devices": [
             {
                 "from": 1426939200,
@@ -1343,6 +1336,18 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
             },
             {
                 "commissioned": 1781956800,
+                "designs": [
+                    {
+                        "documents": [
+                            {
+                                "kind": "simulation",
+                                "path": "2026_Bat/batterie.pvprj"
+                            }
+                        ],
+                        "id": "0a1b2c3d-0000-4000-8000-000000000080",
+                        "label": "Batterie 10 kWh"
+                    }
+                ],
                 "folder": "2026_Bat",
                 "id": "0a1b2c3d-0000-4000-8000-000000000051",
                 "invoices": [
@@ -1357,6 +1362,23 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 ],
                 "ordered": 1772366400,
                 "quoteId": "0a1b2c3d-0000-4000-8000-000000000040",
+                "quotes": [
+                    {
+                        "currency": "CHF",
+                        "date": 1770724800,
+                        "designId": "0a1b2c3d-0000-4000-8000-000000000080",
+                        "documents": [
+                            {
+                                "kind": "quote",
+                                "path": "2026_Bat/O2026-02-0011.pdf"
+                            }
+                        ],
+                        "id": "0a1b2c3d-0000-4000-8000-000000000040",
+                        "number": "O2026-02-0011",
+                        "state": "accepted",
+                        "total": 12800.0
+                    }
+                ],
                 "state": "in_operation",
                 "steps": [
                     {
@@ -1377,23 +1399,6 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 ],
                 "title": "Batterie 10 kWh",
                 "type": "battery"
-            }
-        ],
-        "quotes": [
-            {
-                "currency": "CHF",
-                "date": 1770724800,
-                "designId": "0a1b2c3d-0000-4000-8000-000000000080",
-                "documents": [
-                    {
-                        "kind": "quote",
-                        "path": "2026_Bat/O2026-02-0011.pdf"
-                    }
-                ],
-                "id": "0a1b2c3d-0000-4000-8000-000000000040",
-                "number": "O2026-02-0011",
-                "state": "accepted",
-                "total": 12800.0
             }
         ],
         "strings": [],
@@ -1451,8 +1456,8 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
 
 ## 18. Open points
 
-- **Designs before a project:** devices and strings exist only for projects, so a quoted design has its wiring only in
-  the simulation file. If string plans are needed at the quote stage, designs get their own planned devices.
+- **Wiring of a design that is only quoted:** devices and strings exist only for what a project builds, so a quoted
+  design has its wiring only in the simulation file. If string plans are needed at the quote stage, designs get their own planned devices.
 - **Terminals inside a device:** a connection ends at a port, not at a single terminal. Terminal numbers, and which
   core of a cable goes to which terminal, are not recorded.
 - **Where devices and cables are in the building:** a device has a `location` text and a parent, a cable a length,
