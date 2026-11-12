@@ -32,6 +32,7 @@ from Config import config
 from Usefull import openFolder, openFolderIfExists, composeEmail, callSip
 
 from model.PvSite import PvSite
+from model.Project import Project
 from model.Contact import Contact
 from model.Site import Municipality, GridOperator
 from model.compat import SiteView
@@ -100,8 +101,20 @@ class Page:
 
 class PvSitePage(Page):
     def buttons(self):
+        return [("Ordner öffnen", self.action_openFolder)]
+
+    def action_openFolder(self):
+        if not self.obj._savePath:
+            return
+        folder = os.path.dirname(self.obj._savePath)
+        openFolderIfExists(folder)
+
+
+# The documents of a project. They are created in the folder of the project
+# and noted in it.
+class ProjectPage(Page):
+    def buttons(self):
         return [
-            ("Ordner öffnen", self.action_openFolder),
             ("neue Offerte", self.action_createQuote),
             ("Anlagedoku erstellen", self.action_createDocumentation),
             ("Akontorechnung", self.action_createPartialInvoice),
@@ -110,11 +123,10 @@ class PvSitePage(Page):
             ("QR Bill erstellen", self.action_createQrBill),
         ]
 
-    def action_openFolder(self):
-        if not self.obj._savePath:
-            return
-        folder = os.path.dirname(self.obj._savePath)
-        openFolderIfExists(folder)
+    # the document is for the project of this page
+    def createDocument(self, templateType):
+        self.site.currentProject = self.obj
+        return super().createDocument(templateType)
 
     def action_createQuote(self):
         self.createDocument("quote")
@@ -143,15 +155,14 @@ class PvSitePage(Page):
         from reportlab.graphics import renderPDF
 
         global config
-        if not self.obj._savePath:
+        if not self.site._savePath:
             QtWidgets.QMessageBox.warning(None, 'QR Bill', 'TODO: ohne Pfad')
             return
 
-        projectDir = os.path.dirname(self.obj._savePath)
-        if not os.path.isdir(projectDir):
-            QtWidgets.QMessageBox.warning(None, 'QR Bill', 'Pfad nicht gefunden\n' + self.obj._savePath)
+        if not os.path.isdir(self.site.getSiteDir()):
+            QtWidgets.QMessageBox.warning(None, 'QR Bill', 'Pfad nicht gefunden\n' + self.site._savePath)
             return
-        projectDir = self.obj.getProjectDir()
+        projectDir = self.site.getProjectDir(self.obj)
 
         answer = askTexts("QR Bill", ["Betrag", "Info"])
         if answer is None:
@@ -165,7 +176,7 @@ class PvSitePage(Page):
         if not os.path.isdir(outDir):
             os.makedirs(outDir)
 
-        debtor = self.obj.contacts.owner
+        debtor = self.site.contacts.owner
         my_bill = QRBill(
                 account=config.installer_bankIban,
                 language='de',
@@ -546,6 +557,7 @@ class PowerCompanyPage(Page):
 
 PAGES = {
     PvSite: PvSitePage,
+    Project: ProjectPage,
     Contact: ContactPage,
     SiteView: BuildingPage,
     Municipality: MunicipalityPage,

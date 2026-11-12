@@ -281,11 +281,15 @@ class ProjectWindowTest(unittest.TestCase):
         tree = self.app.ui.tree
         site = GnuSolar.model
         tree.setCurrentItem(tree.topLevelItem(0))
-        self.assertEqual(list(self.app.currentForm.buttons), [
-            "Ordner öffnen", "neue Offerte", "Anlagedoku erstellen", "Akontorechnung", "Schlussrechnung",
-            "Kleinrechnung", "QR Bill erstellen", "Neues Projekt", "Standort prüfen"])
+        self.assertEqual(list(self.app.currentForm.buttons), ["Ordner öffnen", "Neues Projekt", "Standort prüfen"])
         click(self.app, "Ordner öffnen")
         self.assertEqual(opened[-1], self.folder)
+
+        # the documents of a project are made on its page
+        tree.setCurrentItem(find(self.app, "Projekt: PV-Anlage"))
+        self.assertEqual(list(self.app.currentForm.buttons)[:6], [
+            "neue Offerte", "Anlagedoku erstellen", "Akontorechnung", "Schlussrechnung", "Kleinrechnung",
+            "QR Bill erstellen"])
         gui.pages.askTexts = lambda title, captions: None
         click(self.app, "QR Bill erstellen")
         self.assertFalse(self.app.unsavedChanges)
@@ -488,10 +492,10 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertEqual(site.newProjectFolder("battery"), "%d Batterie 2" % year)
         self.assertEqual(os.listdir(self.folder), ["plant.pvp"])
         self.input("folder").setText("2026_Bat")
-        tree.setCurrentItem(tree.topLevelItem(0))
-        self.assertIs(site.currentProject, project)
+        self.assertIs(self.app.currentObj, project)
 
         click(self.app, "neue Offerte")
+        self.assertIs(self.app.currentObj, project)
         number = os.path.splitext(os.path.basename(opened[-1]))[0]
         self.assertTrue(os.path.isfile(os.path.join(self.folder, "2026_Bat", "Offerten", number + ".odt")))
         quote = site.quotes[-1]
@@ -515,6 +519,19 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertEqual((step.state, step.documents[0]["path"]), ("open", "2026_Bat/Dokumentation/Dokumentation.odt"))
         self.assertIsNotNone(find(self.app, "Schritt: Dokumentation"))
 
+        # the page of the first project makes the documents of the first project
+        first = site.projects[0]
+        tree.setCurrentItem(find(self.app, "Projekt: PV-Anlage"))
+        count = len(first.invoices)
+        click(self.app, "Akontorechnung")
+        self.assertEqual((len(first.invoices), len(project.invoices)), (count + 1, 1))
+        self.assertEqual(first.invoices[-1].documents[0]["path"], "Rechnungen/" + first.invoices[-1].number + ".odt")
+        self.assertIs(self.app.currentObj, first)
+        # also when the site thinks of another project
+        site.currentProject = project
+        click(self.app, "neue Offerte")
+        self.assertEqual(site.quotes[-1].projectId, first.id)
+
     # the folders of the documents are named by the installer (Config.FOLDERS)
     def test_folder_names(self):
         config = GnuSolar.config
@@ -522,7 +539,7 @@ class ProjectWindowTest(unittest.TestCase):
         site = GnuSolar.model
 
         def newQuote():
-            tree.setCurrentItem(tree.topLevelItem(0))
+            tree.setCurrentItem(find(self.app, "Projekt: PV-Anlage"))
             click(self.app, "neue Offerte")
             return site.quotes[-1].documents[0]["path"], site.quotes[-1].number
 
