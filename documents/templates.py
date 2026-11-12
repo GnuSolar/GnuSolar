@@ -18,7 +18,7 @@ from documents import DocumentError
 DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
 # template type => (folder and file of the template in data/ch/templates,
-# kind of folder in the site (Config.FOLDERS), numbering or file name)
+# kind of folder in the folder of the project (Config.FOLDERS), numbering or file name)
 TEMPLATES = {
     "partial_invoice": (("fin", "partial_invoice.odt"), "invoices", "invoice"),
     "final_invoice":   (("fin", "final_invoice.odt"),   "invoices", "invoice"),
@@ -38,7 +38,7 @@ def templateCopyReplace(src, dest, model):
     f.close()
 
 
-# Create a document of templateType in the folder of the site saved under
+# Create a document of templateType for the current project of the site saved under
 # savePath. Returns the path of the new file, raises DocumentError.
 def createFromTemplate(templateType, savePath, model, config):
     # another window may have used a quote/invoice number in the meantime
