@@ -24,7 +24,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Ui.GnuSolar import *
 from Ui.Preferences import *
 
-from model.PvProject import *
+from model.PvSite import *
 from gui.pages import createPage
 from gui.forms import Form
 import gui.tree
@@ -73,11 +73,11 @@ class GnuSolar(QApplication):
         
         # Arguments:
         #   First argument: Path to the Pv-Project File
-        self.path = ""          # path = "" means new project
-#        self.model = PvProject()       # the PvProject Model
+        self.path = ""          # path = "" means new site
+#        self.model = PvSite()       # the PvSite Model
         self.unsavedChanges = False
 
-        #   Second argument: id of the order to show
+        #   Second argument: id of the project to show
         if len(args[0]) >= 2:
             path = args[0][1]
             ret = self.openFile(path, args[0][2] if len(args[0]) >= 3 else None)
@@ -115,7 +115,7 @@ class GnuSolar(QApplication):
         return self.saveFile()
 
     # Ask to save unsaved changes. Returns False if the user cancelled
-    # or saving failed, then the current project must stay open.
+    # or saving failed, then the current site must stay open.
     def askSaveChanges(self, text):
         if not self.unsavedChanges:
             return True
@@ -158,11 +158,11 @@ class GnuSolar(QApplication):
 
         obj = item.pvpObj
 
-        # forms and documents work on the order the selected item belongs to
-        order = gui.tree.orderOf(item)
-        if order is not None and order is not model.currentOrder:
-            model.currentOrder = order
-        self.markCurrentOrder()
+        # forms and documents work on the project the selected item belongs to
+        project = gui.tree.projectOf(item)
+        if project is not None and project is not model.currentProject:
+            model.currentProject = project
+        self.markCurrentProject()
 
         self.clearDetails()
         self.currentObj = obj
@@ -188,7 +188,7 @@ class GnuSolar(QApplication):
         if field.path == "kind" and type(form.obj).__name__ in ("Device", "DeviceType"):
             QtCore.QTimer.singleShot(0, lambda: self.showObject(form.obj))
 
-    # captions follow the values: "Auftrag: Batterie 10 kWh"
+    # captions follow the values: "Projekt: Batterie 10 kWh"
     def updateCaptions(self):
         if self.ui.tree.topLevelItemCount() == 0:
             return
@@ -197,14 +197,14 @@ class GnuSolar(QApplication):
             if text != item.text(0):
                 item.setText(0, text)
 
-    # the order the forms and documents work on is shown bold
-    def markCurrentOrder(self):
+    # the project the forms and documents work on is shown bold
+    def markCurrentProject(self):
         if self.ui.tree.topLevelItemCount() == 0:
             return
         for item in gui.tree.allItems(self.ui.tree.topLevelItem(0)):
-            if type(item.pvpObj).__name__ == "Order":
+            if type(item.pvpObj).__name__ == "Project":
                 font = item.font(0)
-                font.setBold(item.pvpObj is model.currentOrder and len(model.orders) > 1)
+                font.setBold(item.pvpObj is model.currentProject and len(model.projects) > 1)
                 item.setFont(0, font)
 
     # display Context Menu of the Tree, entries and actions from gui.tree
@@ -250,7 +250,7 @@ class GnuSolar(QApplication):
         self.showModel(select=result)
 
     # open a Project with a path
-    def openFile(self, pvpPath, orderId=None):
+    def openFile(self, pvpPath, projectId=None):
         global model
         if not pvpPath:
             return False
@@ -262,20 +262,20 @@ class GnuSolar(QApplication):
         # expand the path
         pvpPath = os.path.abspath(pvpPath)
 
-        if not self.askSaveChanges("Änderungen speichern, bevor ein anderes Projekt geöffnet wird?"):
+        if not self.askSaveChanges("Änderungen speichern, bevor ein anderer Standort geöffnet wird?"):
             return False
 
-        # load into a new model, so nothing of the previous project remains
-        newModel = PvProject()
+        # load into a new model, so nothing of the previous site remains
+        newModel = PvSite()
         newModel.open(pvpPath)
         model = newModel
-        order = model.byId("orders", orderId)
-        if order is not None:
-            model.currentOrder = order
+        project = model.byId("projects", projectId)
+        if project is not None:
+            model.currentProject = project
 
         self.path = pvpPath
         self.unsavedChanges = False
-        self.showModel(select=order)
+        self.showModel(select=project)
         return True
 
     # remove the detail view of the previously selected tree item
@@ -295,7 +295,7 @@ class GnuSolar(QApplication):
         self.clearDetails()
         gui.tree.buildTree(self.ui.tree, model)
         self.updateWindowTitle()
-        self.markCurrentOrder()
+        self.markCurrentProject()
         if select is not None:
             self.showObject(select)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The detail pages of the project window, built from the field lists of
+# The detail pages of the site window, built from the field lists of
 # gui/fields.py.
 #
 #   form = Form(obj, onChange)

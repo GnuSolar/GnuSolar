@@ -2,16 +2,16 @@
 #-*- coding: utf-8 -*-
 
 # Convert all plant.pvp files below a folder to the current file format,
-# by opening and saving them, like GnuSolar does when a project is saved.
+# by opening and saving them, like GnuSolar does when a site is saved.
 #
 #   python3 tools/migrate_pvp.py <projectRoot>                    dry run, changes nothing
 #   python3 tools/migrate_pvp.py <projectRoot> --write <backup.tar.gz>
 #
 # Checks before anything is written:
-#  - the converted file loads to exactly the same project
-#  - every value of the old file is still there: the project is read back
-#    through the fields of the old version (project.building, project.plant,
-#    project.progress, ...) and compared with the old file
+#  - the converted file loads to exactly the same site
+#  - every value of the old file is still there: the site is read back
+#    through the fields of the old version (site.building, site.plant,
+#    site.progress, ...) and compared with the old file
 # It lists what the migration could not place: values kept in
 # ext.gnusolar.v2, dates that are no dates (kept in the notes) and projects
 # that need a look by hand.
@@ -26,7 +26,7 @@ repo = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(repo, "site-packages"))
 sys.path.insert(0, repo)
 
-from model.PvProject import PvProject
+from model.PvSite import PvSite
 from formats.migrate_v2 import Report
 import formats.pvp
 
@@ -74,24 +74,24 @@ def same(old, new):
     return abs(a - b) <= 1e-6 * max(1, abs(a))
 
 
-# The value a version 2 field has in the migrated project
-def new_value(project, path):
+# The value a version 2 field has in the migrated site
+def new_value(site, path):
     parts = path.strip("/").split("/")
     if parts[:2] == ["contacts", "contacts"]:
         role = {"owner": "owner", "installer_ac": "electrician"}.get(parts[2], parts[2])
-        obj = project.contacts.withRole(role)
+        obj = site.contacts.withRole(role)
         if obj is None:
             return None
         parts = parts[3:]
     else:
-        obj = project
+        obj = site
     for part in parts:
         obj = getattr(obj, part)
     return obj
 
 
-# the values of a version 2 file which the migrated project doesn't give back
-def lost_values(old, project, report):
+# the values of a version 2 file which the migrated site doesn't give back
+def lost_values(old, site, report):
     noted = {p.replace(".", "/") for p, v in report.notes} | {p.replace(".", "/") for p, v in report.kept}
     lost = []
     for path, value in leaves(old):
@@ -101,7 +101,7 @@ def lost_values(old, project, report):
         if name == "role":
             continue
         try:
-            new = new_value(project, path)
+            new = new_value(site, path)
         except AttributeError:
             lost.append((path, value))
             continue
@@ -115,37 +115,66 @@ def lost_values(old, project, report):
                 pass
         # the second phone or email moves up if there is no first
         if name in ("phone2", "email2") and not same(value, new):
-            first = new_value(project, path[:-1])
+            first = new_value(site, path[:-1])
             if same(value, first):
                 continue
         # a quote moves up if an earlier one is missing
         if name in ("quote2Sent", "quote3Sent", "quote4Sent") and not same(value, new):
-            if any(same(value, getattr(project.progress, "quote%dSent" % n)) for n in (1, 2, 3)):
+            if any(same(value, getattr(site.progress, "quote%dSent" % n)) for n in (1, 2, 3)):
                 continue
         if not same(value, new):
             lost.append((path, value))
     return lost
 
 
+# The values of a draft of version 3 which are not where they belong after the
+# renaming (formats.pvp.fromDraft3). It only moves values: what was at
+# site.x is at x, orders are projects, orderId is projectId.
+def lost_draft_values(old):
+    def leaves(node, path=()):
+        if isinstance(node, dict):
+            return [leaf for key, value in node.items() for leaf in leaves(value, path + (key,))]
+        if isinstance(node, list):
+            return [leaf for i, value in enumerate(node) for leaf in leaves(value, path + (i,))]
+        return [(path, node)]
+
+    def moved(path):
+        if path[0] == "site":
+            path = path[1:]
+        elif path[0] == "orders":
+            path = ("projects",) + path[1:]
+        if "ext" not in path and path[-1] == "orderId":
+            path = path[:-1] + ("projectId",)
+        return path
+
+    new = dict(leaves(formats.pvp.fromDraft3(old)))
+    missing = object()
+    return [(".".join(str(key) for key in path), value) for path, value in leaves(old)
+            if new.get(moved(path), missing) != value]
+
+
 def convert(path):
     old_json = open(path, encoding="utf-8").read()
     old = json.loads(old_json)
     report = Report()
-    project = PvProject()
-    formats.pvp.load(project, path, report=report)
-    if not project._migratedFrom:
+    site = PvSite()
+    formats.pvp.load(site, path, report=report)
+    if not site._migratedFrom:
         return "current", None, [], report
 
-    project._savePath = path
-    lost = lost_values(old.get("project"), project, report)
-    project.prepareSave()
-    new_json = formats.pvp.dumps(project)
+    site._savePath = path
+    if site._migratedFrom == 2:
+        lost = lost_values(old.get("project"), site, report)
+    else:
+        lost = lost_draft_values(old.get("project"))
+    site.prepareSave()
+    new_json = formats.pvp.dumps(site)
 
-    # the new file must load to the same project
-    reloaded = PvProject()
+    # the new file must load to the same site
+    reloaded = PvSite()
     formats.pvp.loads(reloaded, new_json)
     if formats.pvp.dumps(reloaded) != new_json:
-        raise Exception("converted file does not load to the same project")
+        raise Exception("converted file does not load to the same site")
 
     return "convert", new_json, lost, report
 
@@ -167,7 +196,7 @@ def main(args):
             errors.append((f, "%s: %s" % (type(e).__name__, e)))
 
     todo = {f: r for f, r in results.items() if r[0] == "convert"}
-    print("projects: %d, already current: %d, to convert: %d, errors: %d" % (
+    print("files: %d, already current: %d, to convert: %d, errors: %d" % (
         len(files), len(results) - len(todo), len(todo), len(errors)))
     for f, e in errors:
         print("  ERROR " + os.path.relpath(f, root) + ": " + e)
@@ -178,7 +207,7 @@ def main(args):
             lostCount += 1
             print("  LOST   %s: %s = %r" % (name, path, value))
         for path, value in report.manual:
-            print("  CHECK  %s: %s = %r (two dates: two orders?)" % (name, path, value))
+            print("  CHECK  %s: %s = %r (two dates: two projects?)" % (name, path, value))
         for path, value in report.notes:
             if (path, value) not in report.manual:
                 print("  NOTE   %s: %s = %r (no date, kept in the notes)" % (name, path, value))
@@ -196,7 +225,7 @@ def main(args):
         print("not written, fix the errors and lost values first")
         return 1
 
-    # backup of all project files, then write
+    # backup of all site files, then write
     backup = args[2]
     if os.path.exists(backup):
         print("backup exists already: " + backup)

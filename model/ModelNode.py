@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Base class of the PvProject and all its parts (Site, Contact, Order, ...)
+# Base class of the PvSite and all its parts (Site, Contact, Project, ...)
 #
 # toDict() / fromDict() convert a part to plain data (dicts, lists, strings,
 # numbers, booleans, None) and back. The file format is built on top of that
@@ -10,7 +10,7 @@
 # Attributes starting with "_" are runtime only (_top, _savePath, ...)
 # and are never saved, neither are the ones listed in _notSaved.
 #
-# _top is the link from every part to the PvProject it belongs to, _parent
+# _top is the link from every part to the PvSite it belongs to, _parent
 # the part it sits in. Both are set by link() after loading and when a part
 # is added.
 #
@@ -110,7 +110,7 @@ class ModelNode:
                     default.fromDict(value)
                 continue
 
-            # list of parts (e.g. the orders)
+            # list of parts (e.g. the projects)
             if key in self._parts and isinstance(value, list):
                 value = [self._newPart(self._parts[key], v) for v in value]
                 # a list class of its own (ContactList) is kept

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The version 3 project: file format, and the fields of version 2 on top of
+# The version 3 site: file format, and the fields of version 2 on top of
 # it (model/compat.py).
 
 import os
@@ -9,18 +9,20 @@ import json
 import tempfile
 import unittest
 
-from model.PvProject import PvProject
+from model.PvSite import PvSite
 from model import values
 import formats.pvp
 from tests import v2_example
 
 
+# the content of a version 2 file
 def v2_text(project=None):
     return json.dumps({"format": "gnusolar-project", "version": 2, "project": project or v2_example.project()})
 
 
+# the site of a version 2 project
 def load(project=None):
-    p = PvProject()
+    p = PvSite()
     formats.pvp.loads(p, v2_text(project), taken=1794312000)
     return p
 
@@ -36,9 +38,9 @@ class FileFormatTest(unittest.TestCase):
         p.prepareSave()
         text = formats.pvp.dumps(p)
         data = json.loads(text)
-        self.assertEqual((data["format"], data["version"]), ("gnusolar-project", 3))
-        self.assertEqual(len(data["project"]["id"]), 36)
-        q = PvProject()
+        self.assertEqual((data["format"], data["version"]), ("gnusolar-site", 3))
+        self.assertEqual(len(data["site"]["id"]), 36)
+        q = PvSite()
         formats.pvp.loads(q, text)
         self.assertIsNone(q._migratedFrom)
         self.assertEqual(formats.pvp.dumps(q), text)
@@ -46,31 +48,31 @@ class FileFormatTest(unittest.TestCase):
     def test_unknown_fields_and_plugin_data_survive(self):
         p = load()
         data = json.loads(formats.pvp.dumps(p))
-        project = data["project"]
-        project["futureField"] = {"a": 1}
-        project["devices"][0]["ext"] = {"huawei.fusionsolar": {"v": 1, "plantId": "NE=33"}}
-        project["devices"][0]["futureDeviceField"] = 5
-        project["orders"][0]["steps"][0]["somethingNew"] = [1, 2]
-        project["plugins"].append({"id": "huawei.fusionsolar", "version": "1.2", "name": "Huawei FusionSolar"})
-        q = PvProject()
+        site = data["site"]
+        site["futureField"] = {"a": 1}
+        site["devices"][0]["ext"] = {"huawei.fusionsolar": {"v": 1, "plantId": "NE=33"}}
+        site["devices"][0]["futureDeviceField"] = 5
+        site["projects"][0]["steps"][0]["somethingNew"] = [1, 2]
+        site["plugins"].append({"id": "huawei.fusionsolar", "version": "1.2", "name": "Huawei FusionSolar"})
+        q = PvSite()
         formats.pvp.loads(q, json.dumps(data))
-        again = json.loads(formats.pvp.dumps(q))["project"]
+        again = json.loads(formats.pvp.dumps(q))["site"]
         self.assertEqual(again["futureField"], {"a": 1})
-        self.assertEqual(again["devices"][0]["ext"], project["devices"][0]["ext"])
+        self.assertEqual(again["devices"][0]["ext"], site["devices"][0]["ext"])
         self.assertEqual(again["devices"][0]["futureDeviceField"], 5)
-        self.assertEqual(again["orders"][0]["steps"][0]["somethingNew"], [1, 2])
+        self.assertEqual(again["projects"][0]["steps"][0]["somethingNew"], [1, 2])
         self.assertEqual([p["id"] for p in again["plugins"]], ["ch", "huawei.fusionsolar"])
 
     def test_newer_version_is_refused(self):
         with self.assertRaises(Exception):
-            formats.pvp.loads(PvProject(), json.dumps({"format": "gnusolar-project", "version": 4, "project": {}}))
+            formats.pvp.loads(PvSite(), json.dumps({"format": "gnusolar-site", "version": 4, "site": {}}))
 
     def test_save_keeps_the_version_2_file(self):
         with tempfile.TemporaryDirectory() as folder:
             path = os.path.join(folder, "plant.pvp")
             with open(path, "w", encoding="utf-8") as f:
                 f.write(v2_text())
-            p = PvProject(path)
+            p = PvSite(path)
             self.assertEqual(p._migratedFrom, 2)
             p.save()
             self.assertEqual(json.load(open(path + ".v2"))["version"], 2)
@@ -80,20 +82,75 @@ class FileFormatTest(unittest.TestCase):
             os.remove(path + ".v2")
             p.save()
             self.assertFalse(os.path.exists(path + ".v2"))
-            self.assertIsNone(PvProject(path)._migratedFrom)
+            self.assertIsNone(PvSite(path)._migratedFrom)
+
+    # a file written before the site was called site and a project an order
+    def test_draft_of_version_3(self):
+        with open(os.path.join(os.path.dirname(__file__), "v3_draft_example.json"), encoding="utf-8") as f:
+            draft = f.read()
+        old = json.loads(draft)["project"]
+        with tempfile.TemporaryDirectory() as folder:
+            path = os.path.join(folder, "plant.pvp")
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(draft)
+            p = PvSite(path)
+            self.assertEqual(p._migratedFrom, formats.pvp.DRAFT_3)
+
+            # the orders are the projects, and what pointed to them still does
+            self.assertEqual([x.id for x in p.projects], [o["id"] for o in old["orders"]])
+            self.assertEqual([q.projectId for q in p.quotes], [q["orderId"] for q in old["quotes"]])
+            self.assertEqual([d.projectId for d in p.devices], [d.get("orderId") for d in old["devices"]])
+            self.assertEqual([d.kind for d in p.projects[1].getDevices()], ["battery"])
+            self.assertNotIn("orders", p.toDict())
+            self.assertNotIn("orderId", json.dumps(p.toDict()))
+
+            # the section "site" is the site itself, the plugin data of both lies together
+            self.assertNotIn("site", p.toDict())
+            self.assertEqual(p.address.toDict(), old["site"]["address"])
+            self.assertEqual(p.supply.mainFuse, old["site"]["supply"]["mainFuse"])
+            self.assertEqual(p.gridOperator.name, old["site"]["gridOperator"]["name"])
+            self.assertEqual(p.ext["ch"], old["site"]["ext"]["ch"])
+            self.assertEqual(p.ext["gnusolar"]["v2"], {"buildingState": "existing", "topLevelLeftover": "kept"})
+
+            # the fields of version 2 give what they give for the version 2 file
+            v2 = load()
+            p.currentProject = p.projects[0]
+            for view, names in (("building", ("street", "city", "plotNumber", "swissGridX", "mainFuseSize",
+                                              "buildingState", "meterNumberNew")),
+                                ("plant", ("totalPowerDc", "totalPanelCount", "panelDesc", "inverterDesc")),
+                                ("progress", ("inquiryReceived", "orderReceived", "launch", "tagSent"))):
+                for name in names:
+                    self.assertEqual(getattr(getattr(p, view), name), getattr(getattr(v2, view), name), name)
+
+            # saved under the new names, the draft is kept
+            p.save()
+            saved = json.load(open(path, encoding="utf-8"))
+            self.assertEqual((saved["format"], saved["version"], sorted(saved)), ("gnusolar-site", 3,
+                                                                                  ["format", "site", "version"]))
+            self.assertEqual(json.load(open(path + ".v3-draft", encoding="utf-8")), json.loads(draft))
+            again = PvSite(path)
+            self.assertIsNone(again._migratedFrom)
+            self.assertEqual(again.toDict(), p.toDict())
+
+    def test_older_and_unknown_formats(self):
+        for data in ({"format": "gnusolar-project", "version": 4, "project": {}},
+                     {"format": "gnusolar-site", "version": 2, "site": {}},
+                     {"format": "something", "version": 3, "site": {}}):
+            with self.assertRaises(Exception):
+                formats.pvp.loads(PvSite(), json.dumps(data))
 
     def test_new_project(self):
         with tempfile.TemporaryDirectory() as folder:
             path = os.path.join(folder, "plant.pvp")
-            p = PvProject()
+            p = PvSite()
             p.initFromAddress("Kirchweg", "26", "4314", "Musterwil")
             p.saveAs(path)
-            data = json.load(open(path))["project"]
-            self.assertEqual(data["site"]["address"], {"street": "Kirchweg", "streetNumber": "26", "zip": "4314",
-                                                       "city": "Musterwil"})
-            self.assertEqual(data["orders"][0]["type"], "new_system")
-            self.assertEqual(data["orders"][0]["state"], "inquiry")
-            self.assertEqual(data["orders"][0]["inquiry"], values.today())
+            data = json.load(open(path))["site"]
+            self.assertEqual(data["address"], {"street": "Kirchweg", "streetNumber": "26", "zip": "4314",
+                                               "city": "Musterwil"})
+            self.assertEqual(data["projects"][0]["type"], "new_system")
+            self.assertEqual(data["projects"][0]["state"], "inquiry")
+            self.assertEqual(data["projects"][0]["inquiry"], values.today())
             self.assertEqual(data["currency"], "CHF")
             self.assertEqual(data["contacts"], [])
             self.assertTrue(data["created"])
@@ -116,21 +173,21 @@ class Version2FieldsTest(unittest.TestCase):
         b = p.building
         b.swissGridX = "2645484.8"
         b.swissGridY = "252470.8"
-        self.assertEqual(p.site.ext["ch"]["lv95"], {"e": 2645484.8, "n": 1252470.8})
-        self.assertAlmostEqual(p.site.latitude, 47.4215, places=3)
+        self.assertEqual(p.ext["ch"]["lv95"], {"e": 2645484.8, "n": 1252470.8})
+        self.assertAlmostEqual(p.latitude, 47.4215, places=3)
         with self.assertRaises(ValueError):
             b.swissGridX = "12"
         b.mainFuseSize = "63"
-        self.assertEqual(p.site.supply.mainFuse, 63)
+        self.assertEqual(p.supply.mainFuse, 63)
         with self.assertRaises(ValueError):
             b.mainFuseSize = "3x40"
         b.buildingId = ""
-        self.assertNotIn("egid", p.site.ext["ch"])
+        self.assertNotIn("egid", p.ext["ch"])
         b.areZoneCode = ""
         b.areZoneName = ""
         b.swissGridX = ""
         b.swissGridY = ""
-        self.assertNotIn("ch", p.site.ext)
+        self.assertNotIn("ch", p.ext)
 
     def test_meters(self):
         p = load(dict(v2_example.project(), building=dict(v2_example.project()["building"],
@@ -140,7 +197,7 @@ class Version2FieldsTest(unittest.TestCase):
         b.meterNumberNew = "222"
         b.meterNumberOld = "111"
         old, new = [d for d in p.devices if d.kind == "meter"]
-        self.assertEqual((old.get("number"), old.to, old.orderId), ("111", day("2026-06-20"), None))
+        self.assertEqual((old.get("number"), old.to, old.projectId), ("111", day("2026-06-20"), None))
         self.assertEqual((new.get("number"), new.get("from"), new.replacesId), ("222", day("2026-06-20"), old.id))
         b.meterNumberOld = ""
         self.assertEqual(len([d for d in p.devices if d.kind == "meter"]), 1)
@@ -162,7 +219,7 @@ class Version2FieldsTest(unittest.TestCase):
         pl.totalPowerAc = "8"
         self.assertEqual(p.types[1].specs["powerAc"], 8000)
         pl.constructionType = "integrated"
-        self.assertEqual(p.orders[0].constructionType, "in_roof")
+        self.assertEqual(p.projects[0].constructionType, "in_roof")
         self.assertEqual(p.allModuleGroups()[0].mounting, "in_roof")
         with self.assertRaises(ValueError):
             pl.totalCost = "ca. 18000"
@@ -172,7 +229,7 @@ class Version2FieldsTest(unittest.TestCase):
         self.assertEqual(p.types[0].specs["power"], 440)
 
     def test_plant_from_nothing(self):
-        p = PvProject()
+        p = PvSite()
         pl = p.plant
         self.assertEqual((pl.totalPowerDc, pl.totalPanelCount, pl.panelDesc, pl.inverterDesc), ("", "", "", ""))
         pl.totalPowerDc = "9.9"
@@ -184,7 +241,7 @@ class Version2FieldsTest(unittest.TestCase):
         self.assertEqual([(t.kind, t.model) for t in p.types], [("panel", "Modul 450"), ("inverter", "WR 10")])
         self.assertEqual(p.types[0].specs, {"power": 450})
         self.assertEqual([d.kind for d in p.devices], ["pv_array", "inverter"])
-        self.assertEqual(p.devices[0].orderId, p.orders[0].id)
+        self.assertEqual(p.devices[0].projectId, p.projects[0].id)
         self.assertEqual((pl.totalPowerDc, pl.totalPowerAc), ("9.9", "10"))
 
     def test_plant_with_several_groups(self):
@@ -199,11 +256,11 @@ class Version2FieldsTest(unittest.TestCase):
 
     def test_existing_system(self):
         p = load()
-        battery = p.addOrder("battery", "Batterie 10 kWh")
+        battery = p.addProject("battery", "Batterie 10 kWh")
         batteryType = p.addPart("types", kind="battery", manufacturer="BYD", model="HVS 10.2",
                                 specs={"capacity": 10240, "powerDischarge": 10240})
-        p.addPart("devices", kind="battery", orderId=battery.id, typeId=batteryType.id)
-        self.assertIs(p.currentOrder, battery)
+        p.addPart("devices", kind="battery", projectId=battery.id, typeId=batteryType.id)
+        self.assertIs(p.currentProject, battery)
         self.assertEqual((p.plant.totalPowerDc, p.plant.batteryDesc, p.plant.batteryCapacity),
                          ("", "BYD HVS 10.2", "10.24"))
         self.assertTrue(p.plant.has("battery"))
@@ -211,7 +268,7 @@ class Version2FieldsTest(unittest.TestCase):
         self.assertFalse(p.existing.has("battery"))
         with self.assertRaises(ValueError):
             p.existing.totalPowerDc = "5"
-        p.currentOrder = p.orders[0]
+        p.currentProject = p.projects[0]
         self.assertEqual(p.plant.totalPowerDc, "10.56")
         self.assertEqual(p.existing.totalPowerDc, "")
 
@@ -228,17 +285,17 @@ class Version2FieldsTest(unittest.TestCase):
     def test_progress_edit(self):
         p = load()
         pr = p.progress
-        order = p.orders[0]
+        project = p.projects[0]
         pr.eivPayed = "2026-09-01"
-        self.assertEqual(order.getStep("ch.pronovo").state, "paid")
+        self.assertEqual(project.getStep("ch.pronovo").state, "paid")
         self.assertEqual(pr.getState(), "7.2 - EIV payed 2026-09-01")
         pr.finalInvoiceReceived = "10.09.2026"
-        self.assertEqual(order.getInvoice("final").paid, day("2026-09-10"))
+        self.assertEqual(project.getInvoice("final").paid, day("2026-09-10"))
         self.assertEqual(pr.getState(), "8 - archived 2026-09-01 auto")
         pr.materialOrdered = "2026-05-01"
-        self.assertEqual(order.getStep("material").dates, {"ordered": day("2026-05-01")})
+        self.assertEqual(project.getStep("material").dates, {"ordered": day("2026-05-01")})
         pr.materialOrdered = ""
-        self.assertIsNone(order.getStep("material"))
+        self.assertIsNone(project.getStep("material"))
         pr.quote3Sent = "2026-04-10"
         self.assertEqual(len(p.quotes), 3)
         pr.quote3Sent = ""
@@ -247,16 +304,16 @@ class Version2FieldsTest(unittest.TestCase):
             pr.tagSent = "2026"
         self.assertEqual(pr.tagSent, "2026-04-20")
         pr.constructionFixed = False
-        self.assertIsNone(order.constructionFixed)
+        self.assertIsNone(project.constructionFixed)
 
     def test_launch_moves_the_devices(self):
         p = load()
         p.progress.launch = "2026-07-01"
-        self.assertEqual({d.get("from") for d in p.devices if d.orderId}, {day("2026-07-01")})
+        self.assertEqual({d.get("from") for d in p.devices if d.projectId}, {day("2026-07-01")})
         self.assertEqual(p.devices[2].to, day("2026-07-01"))     # the old meter
 
     def test_states(self):
-        p = PvProject()
+        p = PvSite()
         pr = p.progress
         self.assertEqual(pr.getState(), "1 - nothing")
         pr.inquiryReceived = "2026-01-05"
@@ -265,10 +322,10 @@ class Version2FieldsTest(unittest.TestCase):
         self.assertEqual((pr.getState(), pr.getToDo()), ("4 - quoted 2026-01-10", "1 - wait customer"))
         pr.orderReceived = "2026-02-01"
         self.assertEqual((pr.getState(), pr.getToDo()), ("5 - building 2026-02-01", "3 - send TAG"))
-        self.assertEqual(p.orders[0].deriveState(), "running")
+        self.assertEqual(p.projects[0].deriveState(), "running")
         pr.orderRejected = "2026-02-02"
         self.assertEqual(pr.getState(), "9 - rejected 2026-02-02")
-        self.assertEqual(p.orders[0].deriveState(), "rejected")
+        self.assertEqual(p.projects[0].deriveState(), "rejected")
 
     def test_contacts(self):
         p = load()

@@ -24,7 +24,7 @@ from PyQt5.QtGui import *
 
 from Ui.Projects import *
 
-from model.PvProject import *
+from model.PvSite import *
 from model.compat import PlantView, ProgressView
 
 from Config import Config
@@ -111,18 +111,18 @@ class Projects(QApplication):
                 self.openFolderMenu(row)
 
     def openFolderMenu(self, row):
-        pvp_path, order_id = self.rowProject(row)
+        pvp_path, project_id = self.rowProject(row)
         pvp_folder = os.path.dirname(pvp_path)
         try:
-            pv = PvProject(pvp_path)
-            order = pv.byId("orders", order_id)
-            if order is not None and os.path.isdir(pv.getOrderDir(order)):
-                pvp_folder = pv.getOrderDir(order)
+            pv = PvSite(pvp_path)
+            project = pv.byId("projects", project_id)
+            if project is not None and os.path.isdir(pv.getProjectDir(project)):
+                pvp_folder = pv.getProjectDir(project)
         except Exception:
             pass
         openFolder(pvp_folder)
 
-    # path of the project file and id of the order of a table row
+    # path of the site file and id of the project of a table row
     def rowProject(self, row):
         item = self.ui.tableWidgetProjects.item(row, 0)
         return item.data(Qt.UserRole), item.data(Qt.UserRole + 1)
@@ -334,15 +334,15 @@ class Projects(QApplication):
         
         self.ui.tableWidgetProjects.resizeColumnsToContents()
 
-    # Add a row for an order of a project. orderId is None if the project
+    # Add a row for a project of a site. projectId is None if the site
     # could not be read.
-    def addProjectEntry(self, pathPvp, name, orderId):
+    def addProjectEntry(self, pathPvp, name, projectId):
         rowN = self.ui.tableWidgetProjects.rowCount()
         self.ui.tableWidgetProjects.insertRow(rowN)
 
         item = QTableWidgetItem(name)
         item.setData(Qt.UserRole, pathPvp)
-        item.setData(Qt.UserRole + 1, orderId)
+        item.setData(Qt.UserRole + 1, projectId)
         self.ui.tableWidgetProjects.setItem(rowN, 0, item)
         return rowN
 
@@ -392,12 +392,12 @@ class Projects(QApplication):
         self.ui.tableWidgetProjects.setColumnCount(len(views[view]))
         self.ui.tableWidgetProjects.setHorizontalHeaderLabels(views[view])
 
-        # one row for every order of every project
+        # one row for every project of every site
         for pathPvp in self.projectPaths:
             projectName = os.path.dirname(pathPvp).replace(config.projectRoot + os.sep, "")
             try:
-                pv = PvProject(pathPvp)
-                orders = list(pv.orders) or [pv.currentOrder]
+                pv = PvSite(pathPvp)
+                projects = list(pv.projects) or [pv.currentProject]
             except:
                 rowN = self.addProjectEntry(pathPvp, projectName, None)
                 self.ui.tableWidgetProjects.setItem(rowN, 1, QTableWidgetItem("Decode Error"))
@@ -405,20 +405,20 @@ class Projects(QApplication):
                     self.ui.tableWidgetProjects.setItem(rowN, i, QTableWidgetItem(""))
                 continue
 
-            for order in orders:
+            for project in projects:
                 name = projectName
-                # the first order is the project itself, later ones get their title
-                if order is not orders[0]:
-                    name += " \u203a " + order.getCaption()
-                rowN = self.addProjectEntry(pathPvp, name, order.id)
-                self.updateProjectEntry(pv, order, rowN, view)
+                # the first project has the name of the site, later ones get their title
+                if project is not projects[0]:
+                    name += " \u203a " + project.getCaption()
+                rowN = self.addProjectEntry(pathPvp, name, project.id)
+                self.updateProjectEntry(pv, project, rowN, view)
         
         self.ui.tableWidgetProjects.setSortingEnabled(True)
 
 
-    def updateProjectEntry(self, pv, order, rowN, view="Default"):
-        progress = ProgressView(pv, order)
-        plant = PlantView(pv, order)
+    def updateProjectEntry(self, pv, project, rowN, view="Default"):
+        progress = ProgressView(pv, project)
+        plant = PlantView(pv, project)
 
         cs = progress.constructionStart
         if progress.constructionFixed:
@@ -497,7 +497,7 @@ class Projects(QApplication):
             return
 
         # create Project
-        pv = PvProject()
+        pv = PvSite()
         pv.initFromAddress(street, streetNumber, zipCode, city)
         pv.saveAs(pvp_path)
         self.projectPaths.append(pvp_path)
@@ -528,7 +528,7 @@ class Projects(QApplication):
                 if filename == "plant.pvp":
                     fn = os.path.join(dirname, filename)
                     try:
-                        pv = PvProject(fn)
+                        pv = PvSite(fn)
                     except Exception:
                         print("Decode Error: " + fn)
                         continue
@@ -548,10 +548,10 @@ class Projects(QApplication):
                                                                         
                     vCard += pv.contacts.owner.exportVCard()
 
-                    # one line for every order
-                    for order in pv.orders:
-                        progress = ProgressView(pv, order)
-                        plant = PlantView(pv, order)
+                    # one line for every project
+                    for project in pv.projects:
+                        progress = ProgressView(pv, project)
+                        plant = PlantView(pv, project)
                         projects_csv += name + ","
                         projects_csv += str(progress.launch) + ","
                         projects_csv += str(plant.totalPowerDc) + ","
@@ -592,21 +592,21 @@ class Projects(QApplication):
         
         rowN = self.ui.tableWidgetProjects.rowCount()
         for i in range(rowN):
-            pathPvp, orderId = self.rowProject(i)
+            pathPvp, projectId = self.rowProject(i)
             try:
-                pv = PvProject(pathPvp)
+                pv = PvSite(pathPvp)
             except:
                 print("Decode Error: " + pathPvp)
                 continue
-            order = pv.byId("orders", orderId)
-            if order is None:
+            project = pv.byId("projects", projectId)
+            if project is None:
                 continue
-            progress = ProgressView(pv, order)
+            progress = ProgressView(pv, project)
             if not progress.getState().startswith("5 -"):
                 continue
             constructionSort = progress.getConstructionSort()
             
-            projects.append({"sort":constructionSort, "path":pathPvp, "order":orderId})
+            projects.append({"sort":constructionSort, "path":pathPvp, "project":projectId})
 
         # sort the projects
         srt = sorted(projects, key=lambda x:x['sort'])
@@ -618,10 +618,10 @@ class Projects(QApplication):
         days = 0
         for item in srt:
             start = coming_monday + datetime.timedelta(days=days)
-            # read the project again: two orders of one project must not
+            # read the site again: two projects of one site must not
             # overwrite each other
-            pv = PvProject(item['path'])
-            progress = ProgressView(pv, pv.byId("orders", item['order']))
+            pv = PvSite(item['path'])
+            progress = ProgressView(pv, pv.byId("projects", item['project']))
             if not progress.constructionFixed:
                 progress.constructionStart = str(start)
                 pv.save()
@@ -633,14 +633,14 @@ class Projects(QApplication):
             
 
     def projectOpen(self, index):
-        pvp_path, order_id = self.rowProject(index.row())
-        self.projectOpenPath(pvp_path, order_id)
+        pvp_path, project_id = self.rowProject(index.row())
+        self.projectOpenPath(pvp_path, project_id)
 
 
-    def projectOpenPath(self, pvp_path, order_id=None):
+    def projectOpenPath(self, pvp_path, project_id=None):
         cmd = "python3 GnuSolar.py \"" + pvp_path + "\""
-        if order_id:
-            cmd += " \"" + order_id + "\""
+        if project_id:
+            cmd += " \"" + project_id + "\""
         cmd += " &"
         print (cmd)
 

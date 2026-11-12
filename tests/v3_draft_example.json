@@ -1,0 +1,356 @@
+{
+    "format": "gnusolar-project",
+    "project": {
+        "buildings": [
+            {
+                "id": "dabadc31-e6db-489b-87d5-100dd890cb93",
+                "roofs": [
+                    {
+                        "id": "8e48e5d1-06f9-4761-b300-c177c0894621",
+                        "moduleGroups": [
+                            {
+                                "count": 24,
+                                "ext": {
+                                    "gnusolar": {
+                                        "v": 1,
+                                        "v2": {
+                                            "totalArea": 47.9
+                                        }
+                                    }
+                                },
+                                "id": "a1f5d256-8eaf-4025-b388-7082b28a38d8",
+                                "mounting": "on_roof",
+                                "typeId": "0198f493-dd72-4ab8-bed1-b37da8b72756"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "connections": [],
+        "contacts": [
+            {
+                "address": {
+                    "city": "Musterwil",
+                    "street": "Kirchweg",
+                    "streetNumber": "26",
+                    "zip": "4314"
+                },
+                "bankAccounts": [
+                    {
+                        "bank": "Musterbank",
+                        "ext": {
+                            "ch": {
+                                "iid": "80808",
+                                "v": 1
+                            }
+                        },
+                        "iban": "CH00 0000 0000 0000 0000 0",
+                        "owner": "Hans Muster"
+                    }
+                ],
+                "channels": [
+                    {
+                        "kind": "phone",
+                        "value": "061 000 00 00"
+                    },
+                    {
+                        "kind": "mobile",
+                        "value": "079 000 00 00"
+                    },
+                    {
+                        "kind": "email",
+                        "value": "hans@example.ch"
+                    }
+                ],
+                "firstName": "Hans",
+                "id": "8953a000-141b-451c-aa38-c340445edacd",
+                "lastName": "Muster",
+                "roles": [
+                    "owner"
+                ],
+                "title": "Herr"
+            }
+        ],
+        "created": 1794442053,
+        "currency": "CHF",
+        "designs": [],
+        "devices": [
+            {
+                "from": 1781956800,
+                "id": "b7c8b5fc-6176-47e5-9112-088b99f1dc16",
+                "kind": "pv_array",
+                "moduleGroupIds": [
+                    "a1f5d256-8eaf-4025-b388-7082b28a38d8"
+                ],
+                "orderId": "09b69c6d-342d-483f-b07b-b76e49533115"
+            },
+            {
+                "from": 1781956800,
+                "id": "3abcf05e-21eb-47ce-9577-502becfc7d0e",
+                "kind": "inverter",
+                "orderId": "09b69c6d-342d-483f-b07b-b76e49533115",
+                "typeId": "b3bc16eb-2af4-4256-9ecb-3a5f8a2025a0"
+            },
+            {
+                "id": "392841d1-602a-439d-99d0-6bd58b84348a",
+                "kind": "meter",
+                "number": "12345678",
+                "owner": "grid_operator",
+                "role": "grid",
+                "to": 1781956800
+            },
+            {
+                "from": 1781956800,
+                "id": "539cd87f-088d-42a4-9b9e-cd652421666b",
+                "kind": "meter",
+                "number": "87654321",
+                "orderId": "09b69c6d-342d-483f-b07b-b76e49533115",
+                "owner": "grid_operator",
+                "replacesId": "392841d1-602a-439d-99d0-6bd58b84348a",
+                "role": "grid"
+            },
+            {
+                "id": "184e41ac-0d6e-4df1-af6e-26de2b0983fc",
+                "kind": "battery",
+                "orderId": "79d4ee04-616e-48db-8708-47197ef9e325"
+            }
+        ],
+        "ext": {
+            "gnusolar": {
+                "v": 1,
+                "v2": {
+                    "topLevelLeftover": "kept"
+                }
+            }
+        },
+        "generator": "GnuSolar git...959f9601e\n",
+        "id": "43663279-1f77-42b1-b74d-d469be7889af",
+        "modified": 1794442053,
+        "notes": "Hund im Garten",
+        "orders": [
+            {
+                "commissioned": 1781956800,
+                "constructionFixed": true,
+                "constructionStart": 1780401600,
+                "constructionType": "on_roof",
+                "folder": "",
+                "id": "09b69c6d-342d-483f-b07b-b76e49533115",
+                "inquiry": 1772366400,
+                "invoices": [
+                    {
+                        "date": 1780315200,
+                        "id": "c172ec33-772f-47eb-934d-aebe97b8c2b9",
+                        "kind": "partial",
+                        "paid": 1781956800
+                    },
+                    {
+                        "date": 1782388800,
+                        "id": "74c5338f-8fbb-47dc-9d1a-e57c85dd75e2",
+                        "kind": "final"
+                    }
+                ],
+                "ordered": 1776254400,
+                "roofMeasured": 1773144000,
+                "state": "in_operation",
+                "steps": [
+                    {
+                        "dates": {
+                            "approved": 1778414400,
+                            "submitted": 1776686400
+                        },
+                        "id": "57c31948-1e2a-4df7-855c-1f01ccd9969e",
+                        "kind": "ch.tag",
+                        "state": "approved"
+                    },
+                    {
+                        "dates": {
+                            "submitted": 1777636800
+                        },
+                        "id": "574984f5-57f5-463d-8b00-bdf852d2501f",
+                        "kind": "ch.ia",
+                        "notes": "iaSent: 2026-05-01/2026-06-01",
+                        "state": "submitted"
+                    },
+                    {
+                        "dates": {
+                            "submitted": 1776772800
+                        },
+                        "id": "dfc51126-e603-4b31-ac6c-1932e276f04d",
+                        "kind": "ch.building_permit",
+                        "notes": "bauReceived: other",
+                        "state": "submitted"
+                    },
+                    {
+                        "dates": {
+                            "submitted": 1782907200
+                        },
+                        "id": "233603da-7efe-4622-af5b-01bc4eb9c7fe",
+                        "kind": "ch.pronovo",
+                        "notes": "eivPayed: 2027",
+                        "state": "submitted"
+                    }
+                ],
+                "title": "PV-Anlage 10.56 kWp",
+                "totalCost": 18450.0,
+                "type": "new_system"
+            },
+            {
+                "folder": "2026 Batterie",
+                "id": "79d4ee04-616e-48db-8708-47197ef9e325",
+                "state": "inquiry",
+                "title": "Batterie 10 kWh",
+                "type": "battery"
+            }
+        ],
+        "plugins": [
+            {
+                "id": "ch",
+                "name": "Switzerland",
+                "version": "1"
+            }
+        ],
+        "quotes": [
+            {
+                "date": 1774008000,
+                "documents": [
+                    {
+                        "kind": "quote",
+                        "path": "off/O2026-03-0041.pdf"
+                    }
+                ],
+                "id": "3d208486-d31c-4c5c-aeda-4aaf95eed603",
+                "number": "O2026-03-0041",
+                "orderId": "09b69c6d-342d-483f-b07b-b76e49533115",
+                "state": "sent"
+            },
+            {
+                "date": 1775131200,
+                "id": "c5e3108e-8e62-44a7-a95b-71f9f041fbf9",
+                "orderId": "09b69c6d-342d-483f-b07b-b76e49533115",
+                "state": "sent"
+            }
+        ],
+        "site": {
+            "address": {
+                "city": "Musterwil",
+                "street": "Kirchweg",
+                "streetNumber": "26",
+                "zip": "4314"
+            },
+            "ext": {
+                "ch": {
+                    "egid": [
+                        190335642
+                    ],
+                    "lv95": {
+                        "e": 2632561.2,
+                        "n": 1265432.8
+                    },
+                    "v": 1,
+                    "zone": {
+                        "code": "11",
+                        "name": "Wohnzonen"
+                    }
+                },
+                "gnusolar": {
+                    "v": 1,
+                    "v2": {
+                        "buildingState": "existing"
+                    }
+                }
+            },
+            "gridOperator": {
+                "address": {
+                    "address1": "Kirchweg 1",
+                    "city": "Musterwil",
+                    "zip": "4314"
+                },
+                "connectionContact": {
+                    "channels": [
+                        {
+                            "kind": "email",
+                            "value": "tag@example.ch"
+                        }
+                    ],
+                    "organization": "Netz AG"
+                },
+                "ext": {
+                    "ch": {
+                        "tagFormId": 4,
+                        "v": 1
+                    }
+                },
+                "id": 402,
+                "name": "Elektra Musterwil",
+                "taken": 1794312000
+            },
+            "latitude": 47.538815,
+            "longitude": 7.871094,
+            "municipality": {
+                "buildingContact": {
+                    "channels": [
+                        {
+                            "kind": "email",
+                            "value": "bau@example.ch"
+                        }
+                    ],
+                    "organization": "Bauverwaltung"
+                },
+                "code": "4264",
+                "countryCode": "CH",
+                "ext": {
+                    "ch": {
+                        "buildingFormId": 2,
+                        "v": 1
+                    }
+                },
+                "id": 1215,
+                "mainContact": {
+                    "channels": [
+                        {
+                            "kind": "phone",
+                            "value": "061 111 11 11"
+                        }
+                    ],
+                    "organization": "Gemeinde Musterwil"
+                },
+                "name": "Musterwil",
+                "stateCode": "AG",
+                "taken": 1794312000,
+                "website": "https://www.example.ch"
+            },
+            "plotNumber": "1060",
+            "supply": {
+                "mainFuse": 40
+            }
+        },
+        "strings": [],
+        "surroundings": [],
+        "types": [
+            {
+                "id": "0198f493-dd72-4ab8-bed1-b37da8b72756",
+                "kind": "panel",
+                "model": "JA Solar 440",
+                "source": {
+                    "db": "manual"
+                },
+                "specs": {
+                    "power": 440
+                }
+            },
+            {
+                "id": "b3bc16eb-2af4-4256-9ecb-3a5f8a2025a0",
+                "kind": "inverter",
+                "model": "Fronius Symo 10.0-3-M",
+                "source": {
+                    "db": "manual"
+                },
+                "specs": {
+                    "powerAc": 10000
+                }
+            }
+        ]
+    },
+    "version": 3
+}

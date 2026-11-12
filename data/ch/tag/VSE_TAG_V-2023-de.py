@@ -1,4 +1,4 @@
-# model.plant is what the current order installs, model.existing what was
+# model.plant is what the current project installs, model.existing what was
 # installed before it and is still there.
 new = model.plant
 old = model.existing

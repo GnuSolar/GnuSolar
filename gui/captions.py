@@ -3,20 +3,19 @@
 
 # Captions of the model parts, for the tree and the drop downs.
 
-from model.PvProject import PvProject
+from model.PvSite import PvSite
 from model.Contact import Contact, ContactList
-from model.Site import Site, Municipality, GridOperator
+from model.Site import Municipality, GridOperator
 from model.Building import Building, Roof, ModuleGroup, Obstacle, Surrounding
 from model.Device import DeviceType, Device, String, Connection, TYPE_KINDS
-from model.Order import Order, Step, Invoice, Quote, Design, INVOICE_KINDS
+from model.Project import Project, Step, Invoice, Quote, Design, INVOICE_KINDS
 from model.compat import SiteView
 from model import values
 
 CAPTIONS = {
-    PvProject: "PV Projekt",
+    PvSite: "Standort",
     ContactList: "Kontakte",
-    SiteView: "Standort",
-    Site: "Netzanschluss und Lage",
+    SiteView: "Adresse und Grundstück",
     Municipality: "Gemeinde",
     GridOperator: "Stromversorger",
 }
@@ -25,7 +24,7 @@ CAPTIONS = {
 # caption of a kind of step, also of plugins which are not enabled
 def _stepName(kind):
     import plugins
-    from model.Order import STEP_KINDS
+    from model.Project import STEP_KINDS
     if kind in STEP_KINDS:
         return STEP_KINDS[kind]
     plugin = plugins.get(str(kind).split(".")[0])
@@ -42,8 +41,8 @@ def caption(obj):
     if isinstance(obj, Contact):
         name = " ".join(p for p in (obj.organization, obj.lastName, obj.firstName) if p)
         return "Kontakt (" + obj.getRoleName() + ")" + (" " + name if name else "")
-    if isinstance(obj, Order):
-        return _join("Auftrag", obj.getCaption())
+    if isinstance(obj, Project):
+        return _join("Projekt", obj.getCaption())
     if isinstance(obj, Step):
         return _join("Schritt", _stepName(obj.kind), "(" + str(obj.state) + ")")
     if isinstance(obj, Invoice):

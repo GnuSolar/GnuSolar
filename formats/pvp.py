@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The native GnuSolar project file (plant.pvp), plain JSON in UTF-8:
+# The native GnuSolar file of a site (plant.pvp), plain JSON in UTF-8:
 #
-#   {"format": "gnusolar-project", "version": 3, "project": {...}}
+#   {"format": "gnusolar-site", "version": 3, "site": {...}}
 #
-#   version 3: doc/file_format.md. "project" is PvProject.toDict()
-#   version 2: one building, one plant, one progress. Migrated when read
+#   version 3: doc/file_format.md. "site" is PvSite.toDict()
+#   version 3 draft: {"format": "gnusolar-project", "version": 3, "project":
+#              {...}}, written by GnuSolar until 2026-11-12: the site was
+#              called project, a project order, and address and grid
+#              connection were a section "site" of their own. Renamed when
+#              read (fromDraft3), the file is kept as plant.pvp.v3-draft.
+#   version 2: {"format": "gnusolar-project", "version": 2, "project": {...}}
+#              one building, one plant, one progress. Migrated when read
 #              (formats/migrate_v2.py) and written as version 3. The first
 #              time, the version 2 file is kept next to it as plant.pvp.v2.
 #   version 1: jsonpickle, no longer read. All projects were converted on
@@ -22,72 +28,113 @@ from datetime import date
 from formats import migrate_v2
 from model import values
 
-FILE_FORMAT = "gnusolar-project"
+FILE_FORMAT = "gnusolar-site"
 FILE_VERSION = 3
 
-# ending of the copy of the file before it was migrated
-BACKUP_ENDING = ".v2"
+# format name of version 2 and of the draft of version 3
+OLD_FILE_FORMAT = "gnusolar-project"
+DRAFT_3 = "3-draft"
+
+# what a file was migrated from => ending of the copy that is kept of it
+BACKUP_ENDINGS = {2: ".v2", DRAFT_3: ".v3-draft"}
 
 
-# the file content of a project
-def dumps(project):
-    data = {"format": FILE_FORMAT, "version": FILE_VERSION, "project": project.toDict()}
+# the file content of a site
+def dumps(site):
+    data = {"format": FILE_FORMAT, "version": FILE_VERSION, "site": site.toDict()}
     return json.dumps(data, indent=4, sort_keys=True, ensure_ascii=False)
 
 
-# Fill a project from file content. taken and files are for the migration of
-# older versions: the date of the file and the files of the project folder.
-def loads(project, text, taken=None, files=None, report=None):
+# Fill a site from file content. taken and files are for the migration of
+# older versions: the date of the file and the files of the site folder.
+def loads(site, text, taken=None, files=None, report=None):
     data = json.loads(text)
-    version = data.get("version")
-    project.fromDict(_migrate(data, taken, files, report))
-    project.link(project)
-    # the version the file had, None for the current one
-    project._migratedFrom = version if version != FILE_VERSION else None
+    plain, migratedFrom = _migrate(data, taken, files, report)
+    site.fromDict(plain)
+    site.link(site)
+    # what the file was, None for the current version
+    site._migratedFrom = migratedFrom
 
 
-# the plain project data of a file, migrated to the current version
+# The plain site data of a file, migrated to the current version, and what
+# it was migrated from (None: nothing).
 def _migrate(data, taken=None, files=None, report=None):
+    version = data.get("version")
     if data.get("format") == FILE_FORMAT:
-        version = data.get("version")
-        project = data.get("project")
-        if not isinstance(version, int) or version > FILE_VERSION or version < 2:
+        if not isinstance(version, int) or version > FILE_VERSION or version < FILE_VERSION:
             raise Exception("File version " + str(version) + " is not supported, a newer GnuSolar is needed")
-        # one migration per version
+        return data.get("site"), None
+    if data.get("format") == OLD_FILE_FORMAT:
         if version == 2:
-            project = migrate_v2.migrate(project, taken=taken, files=files, report=report)
-        return project
+            return migrate_v2.migrate(data.get("project"), taken=taken, files=files, report=report), 2
+        if version == 3:
+            return fromDraft3(data.get("project")), DRAFT_3
+        raise Exception("File version " + str(version) + " is not supported, a newer GnuSolar is needed")
     if "py/state" in data:
         raise Exception("Old file format (version 1), convert it with tools/migrate_pvp.py of GnuSolar commit cbb39e5")
-    raise Exception("Not a GnuSolar project file")
+    raise Exception("Not a GnuSolar file")
 
 
-# the files of the folders with quotes and invoices, relative to the project folder
-def _projectFiles(projectDir):
+# The site of a draft of version 3: "orders" are "projects", "orderId" is
+# "projectId", and the fields of the section "site" are fields of the site
+# itself. Data of plugins (ext) is not looked into.
+def fromDraft3(old):
+    def rename(node):
+        if isinstance(node, list):
+            return [rename(v) for v in node]
+        if not isinstance(node, dict):
+            return node
+        return {{"orderId": "projectId"}.get(key, key): value if key == "ext" else rename(value)
+                for key, value in node.items()}
+
+    new = rename(old or {})
+    if "orders" in new:
+        new["projects"] = new.pop("orders")
+    place = new.pop("site", None) or {}
+    for key, value in place.items():
+        if key != "ext":
+            new[key] = value
+    # both had an ext: one namespace per plugin, their fields put together
+    _fill(new.setdefault("ext", {}), place.get("ext") or {})
+    return new
+
+
+# add the values of other which main doesn't have, dict by dict
+def _fill(main, other):
+    for key, value in other.items():
+        if isinstance(value, dict) and isinstance(main.get(key), dict):
+            _fill(main[key], value)
+        else:
+            main.setdefault(key, value)
+
+
+# the files of the folders with quotes and invoices, relative to the site folder
+def _siteFiles(siteDir):
     ret = []
     for folder in ("off", "fin"):
-        path = os.path.join(projectDir, folder)
+        path = os.path.join(siteDir, folder)
         if os.path.isdir(path):
             ret.extend(folder + "/" + name for name in sorted(os.listdir(path)))
     return ret
 
 
-# fill a project from a file
-def load(project, path, report=None):
+# fill a site from a file
+def load(site, path, report=None):
     with open(path, encoding="utf-8") as f:
         text = f.read()
     taken = values.dayToTimestamp(date.fromtimestamp(os.path.getmtime(path)))
-    loads(project, text, taken=taken, files=_projectFiles(os.path.dirname(os.path.abspath(path))), report=report)
+    loads(site, text, taken=taken, files=_siteFiles(os.path.dirname(os.path.abspath(path))), report=report)
 
 
-# Write a project to a file. Writes a temporary file and renames it,
-# so a crash never leaves a half written project.
-def save(project, path):
-    text = dumps(project)
+# Write a site to a file. Writes a temporary file and renames it,
+# so a crash never leaves a half written site.
+def save(site, path):
+    text = dumps(site)
 
     # keep the file of the older version, once
-    if getattr(project, "_migratedFrom", None) and os.path.isfile(path):
-        backupPath = path + BACKUP_ENDING
+    migratedFrom = getattr(site, "_migratedFrom", None)
+    if migratedFrom and os.path.isfile(path):
+        backupPath = path + BACKUP_ENDINGS[migratedFrom]
         if not os.path.exists(backupPath):
             shutil.copy2(path, backupPath)
 
@@ -95,4 +142,4 @@ def save(project, path):
     with open(tmpPath, "w", encoding="utf-8") as f:
         f.write(text)
     os.replace(tmpPath, path)
-    project._migratedFrom = None
+    site._migratedFrom = None

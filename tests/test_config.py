@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The settings of the installer: the names of the folders in a project folder.
+# The settings of the installer: the names of the folders in a site folder.
 
 import os
 import json
@@ -64,11 +64,11 @@ class FolderNamesTest(unittest.TestCase):
     def test_folder_path(self):
         config = Config.Config()
         config.folders = {"quotes": "Verkauf/Offerten", "invoices": "", "plans": "../cad", "maps": 7}
-        project = os.path.join("root", "Ort", "Strasse 1")
-        self.assertEqual(config.getFolderPath(project, "quotes"), os.path.join(project, "Verkauf", "Offerten"))
-        self.assertEqual(config.getFolderPath(project, "invoices"), project)
+        site = os.path.join("root", "Ort", "Strasse 1")
+        self.assertEqual(config.getFolderPath(site, "quotes"), os.path.join(site, "Verkauf", "Offerten"))
+        self.assertEqual(config.getFolderPath(site, "invoices"), site)
         # a name that can't be used and a missing name: the written out name
-        self.assertEqual(config.getFolderPath(project, "plans"), os.path.join(project, "Pläne"))
+        self.assertEqual(config.getFolderPath(site, "plans"), os.path.join(site, "Pläne"))
         self.assertEqual(config.getFolder("maps"), "Karten")
         self.assertEqual(config.getFolder("documentation"), "Dokumentation")
 

@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# People and companies involved in a project (doc/file_format.md, section 5).
+# People and companies involved in a site (doc/file_format.md, section 5).
 #
 # A Contact has an address, channels (phone, email ...) in the order of their
-# priority, and bank accounts. The contacts of a project have roles; the
+# priority, and bank accounts. The contacts of a site have roles; the
 # contacts inside the snapshots of municipality and grid operator have none.
 #
 # The forms, document templates and form scripts written for file version 2
@@ -91,7 +91,7 @@ class Contact(ModelNode):
     # ---- channels ---------------------------------------------------------
 
     # The number'th (from 0) channel of a kind. A field which created a
-    # channel keeps it while the project is open (_slots), so filling in the
+    # channel keeps it while the site is open (_slots), so filling in the
     # second phone before the first doesn't mix them up.
     def _channel(self, kind, number):
         slots = self.__dict__.setdefault("_slots", {})
@@ -322,7 +322,7 @@ for _name, _key in (("accountOwner", "owner"), ("accountBank", "bank"), ("accoun
     setattr(Contact, _name, _accountProperty(_key))
 
 
-# The contacts of a project: a list of Contact. Owner and electrician are
+# The contacts of a site: a list of Contact. Owner and electrician are
 # always there for forms and documents; while they are empty they are not
 # saved.
 class ContactList(list):

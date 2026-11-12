@@ -11,10 +11,10 @@ import tempfile
 import unittest
 import contextlib
 
-from model.PvProject import PvProject
+from model.PvSite import PvSite
 from tools import migrate_pvp, merge_copies
 from tests import v2_example
-from tests.test_project import v2_text
+from tests.test_site import v2_text
 
 
 def quiet(func, *args):
@@ -32,7 +32,7 @@ class ToolsTest(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.root)
 
-    def project(self, name, data=None):
+    def site(self, name, data=None):
         folder = os.path.join(self.root, name)
         os.makedirs(folder)
         with open(os.path.join(folder, "plant.pvp"), "w", encoding="utf-8") as f:
@@ -40,11 +40,11 @@ class ToolsTest(unittest.TestCase):
         return folder
 
     def test_migrate_all(self):
-        self.project("Musterwil/Kirchweg 26")
-        self.project("Musterwil/Dorfstrasse 1")
+        self.site("Musterwil/Kirchweg 26")
+        self.site("Musterwil/Dorfstrasse 1")
         ret, out = quiet(migrate_pvp.main, [self.root])
         self.assertEqual(ret, 0, out)
-        self.assertIn("projects: 2, already current: 0, to convert: 2, errors: 0", out)
+        self.assertIn("files: 2, already current: 0, to convert: 2, errors: 0", out)
         self.assertIn("lost values: 0", out)
         self.assertIn("CHECK  Musterwil/Kirchweg 26: progress.iaSent", out)
         self.assertEqual(json.load(open(os.path.join(self.root, "Musterwil/Kirchweg 26/plant.pvp")))["version"], 2)
@@ -57,8 +57,25 @@ class ToolsTest(unittest.TestCase):
         ret, out = quiet(migrate_pvp.main, [self.root])
         self.assertIn("already current: 2, to convert: 0", out)
 
+    # files from before the site was called site are converted too
+    def test_migrate_draft_of_version_3(self):
+        folder = os.path.join(self.root, "Musterwil", "Kirchweg 26")
+        os.makedirs(folder)
+        shutil.copy(os.path.join(os.path.dirname(__file__), "v3_draft_example.json"), os.path.join(folder, "plant.pvp"))
+        ret, out = quiet(migrate_pvp.main, [self.root])
+        self.assertEqual(ret, 0, out)
+        self.assertIn("files: 1, already current: 0, to convert: 1, errors: 0", out)
+        self.assertIn("lost values: 0", out)
+        ret, out = quiet(migrate_pvp.main, [self.root, "--write", os.path.join(self.root, "backup.tar.gz")])
+        self.assertEqual(ret, 0, out)
+        with open(os.path.join(folder, "plant.pvp"), encoding="utf-8") as f:
+            data = json.load(f)
+        self.assertEqual((data["format"], len(data["site"]["projects"])), ("gnusolar-site", 2))
+        # a value that the renaming would drop is reported
+        self.assertEqual(migrate_pvp.lost_draft_values({"site": {"ext": {"a": 1}}, "ext": {"a": 2}}), [("site.ext.a", 1)])
+
     def test_merge_copy(self):
-        main = self.project("Musterwil/Kirchweg 26")
+        main = self.site("Musterwil/Kirchweg 26")
         second = v2_example.project()
         second["plant"].update({"panelDesc": "", "totalPanelCount": "", "totalPowerDc": "", "totalArea": "",
                                 "inverterDesc": "Hybrid 10", "totalCost": "12800"})
@@ -67,37 +84,37 @@ class ToolsTest(unittest.TestCase):
                                    "tagSent": "2028-03-05"})
         second["contacts"]["contacts"]["owner"]["email2"] = "neu@example.ch"
         second["comment"] = "Batterie nachrüsten"
-        copy = self.project("Musterwil/Kirchweg 26_2", second)
+        copy = self.site("Musterwil/Kirchweg 26_2", second)
         self.assertEqual(merge_copies.find_copies(self.root), [(main, copy)])
 
-        (project,), out = quiet(lambda: (merge_copies.merge_folders(main, copy, False),))
+        (site,), out = quiet(lambda: (merge_copies.merge_folders(main, copy, False),))
         self.assertEqual(json.load(open(os.path.join(main, "plant.pvp")))["version"], 2)     # dry run
         ret, out = quiet(merge_copies.main, [main, copy, "--write"])
         self.assertEqual(ret, 0, out)
-        self.assertIn("order added: PV-Anlage (running), folder ../Kirchweg 26_2", out)
+        self.assertIn("project added: PV-Anlage (running), folder ../Kirchweg 26_2", out)
 
-        merged = PvProject(os.path.join(main, "plant.pvp"))
-        self.assertEqual([o.folder for o in merged.orders], ["", "../Kirchweg 26_2"])
+        merged = PvSite(os.path.join(main, "plant.pvp"))
+        self.assertEqual([o.folder for o in merged.projects], ["", "../Kirchweg 26_2"])
         self.assertEqual(len(merged.contacts), 1)                     # the same owner
         self.assertEqual([d.kind for d in merged.devices], ["pv_array", "inverter", "meter", "meter", "inverter"])
-        self.assertEqual(merged.devices[-1].orderId, merged.orders[1].id)
+        self.assertEqual(merged.devices[-1].projectId, merged.projects[1].id)
         self.assertEqual(len(merged.types), 3)
         self.assertIn("--- ../Kirchweg 26_2 ---\nBatterie nachrüsten", merged.notes)
-        merged.currentOrder = merged.orders[1]
+        merged.currentProject = merged.projects[1]
         self.assertEqual((merged.progress.tagSent, merged.plant.inverterDesc, merged.plant.totalPowerDc),
                          ("2028-03-05", "Hybrid 10", ""))
         self.assertEqual(merged.existing.totalPowerDc, "10.56")
-        self.assertEqual(merged.getOrderDir(), os.path.join(main, "../Kirchweg 26_2"))
+        self.assertEqual(merged.getProjectDir(), os.path.join(main, "../Kirchweg 26_2"))
         self.assertTrue(os.path.isfile(os.path.join(main, "plant.pvp.before_merge")))
         self.assertTrue(os.path.isfile(os.path.join(copy, "plant.pvp.merged")))
         self.assertFalse(os.path.exists(os.path.join(copy, "plant.pvp")))
 
-        # a second copy of the same project
-        third = self.project("Musterwil/Kirchweg 26_3", second)
+        # a second copy of the same site
+        third = self.site("Musterwil/Kirchweg 26_3", second)
         ret, out = quiet(merge_copies.main, [main, third, "--write"])
         self.assertEqual(ret, 0, out)
-        merged = PvProject(os.path.join(main, "plant.pvp"))
-        self.assertEqual([o.folder for o in merged.orders], ["", "../Kirchweg 26_2", "../Kirchweg 26_3"])
+        merged = PvSite(os.path.join(main, "plant.pvp"))
+        self.assertEqual([o.folder for o in merged.projects], ["", "../Kirchweg 26_2", "../Kirchweg 26_3"])
         self.assertEqual(json.load(open(os.path.join(main, "plant.pvp.before_merge")))["version"], 2)
 
 

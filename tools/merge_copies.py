@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# Merge a project folder that is a copy of another project at the same
-# address ("Heid 2.3_2" next to "Heid 2.3") into the main project: the order
-# of the copy becomes an order of the main project, with its folder pointing
-# to the copy (doc/file_format.md, section 15).
+# Merge the folder of a further project at the same address ("Heid 2.3_2"
+# next to "Heid 2.3") into the main site: the project of the copy becomes a
+# project of the main site, with its folder pointing to the copy
+# (doc/file_format.md, section 15).
 #
 #   python3 tools/merge_copies.py --list <projectRoot>      the copies found, changes nothing
 #   python3 tools/merge_copies.py <main folder> <copy folder>            dry run, changes nothing
@@ -12,13 +12,13 @@
 #
 # With --write the main plant.pvp is saved as plant.pvp.before_merge (once,
 # also when several copies are merged) and then written with both projects in it; the plant.pvp of the copy is renamed to
-# plant.pvp.merged, so the project is no longer listed twice. No other file
+# plant.pvp.merged, so the site is no longer listed twice. No other file
 # is touched, the folder of the copy stays where it is.
 #
-# What is taken from the copy: its orders with steps and invoices, quotes,
+# What is taken from the copy: its projects with steps and invoices, quotes,
 # devices, types, module groups, strings, connections, designs, and contacts
-# and site values the main project doesn't have. The site, the municipality
-# and the grid operator of the main project stay.
+# and values of the place the main site doesn't have. The address, the
+# municipality and the grid operator of the main site stay.
 
 import os
 import re
@@ -81,12 +81,17 @@ def _fill(main, other, path, notes):
         elif isinstance(main[key], dict) and isinstance(value, dict):
             _fill(main[key], value, path + key + ".", notes)
         elif main[key] != value and not isinstance(value, (dict, list)):
-            notes.append("differs, main project kept: %s%s = %r (copy: %r)" % (path, key, main[key], value))
+            notes.append("differs, main site kept: %s%s = %r (copy: %r)" % (path, key, main[key], value))
 
 
-# The plain data of the main project with the copy merged into it.
-# folder is the folder of the copy, relative to the main project folder.
-# Returns (merged project, notes for the user).
+# the fields of a site that describe the place
+PLACE = ("label", "address", "latitude", "longitude", "elevation", "plotNumber", "supply", "annualConsumption",
+         "designTemperature", "horizon", "municipality", "gridOperator")
+
+
+# The plain data of the main site with the copy merged into it.
+# folder is the folder of the copy, relative to the main site folder.
+# Returns (merged site, notes for the user).
 def merge(main, copy, folder):
     main = json.loads(json.dumps(main))
     copy = json.loads(json.dumps(copy))
@@ -122,7 +127,7 @@ def merge(main, copy, folder):
             ids[contact["id"]] = same["id"]
             same["roles"] = same.get("roles", []) + [r for r in contact.get("roles", []) if r not in same.get("roles", [])]
 
-    # module groups go onto the first roof of the main project
+    # module groups go onto the first roof of the main site
     groups = [g for b in copy.get("buildings", []) for r in b.get("roofs", []) for g in r.get("moduleGroups", [])]
     if not main.get("buildings"):
         main["buildings"] = copy.get("buildings", [])
@@ -133,11 +138,11 @@ def merge(main, copy, folder):
             building["roofs"][0]["moduleGroups"] = []
         building["roofs"][0].setdefault("moduleGroups", []).extend(groups)
 
-    orders = copy.get("orders", [])
-    for order in orders:
-        order["folder"] = "/".join(part for part in (folder.replace(os.sep, "/"), order.get("folder")) if part)
-        notes.append("order added: %s (%s), folder %s" % (order.get("title"), order.get("state"), order["folder"]))
-    main.setdefault("orders", []).extend(orders)
+    projects = copy.get("projects", [])
+    for project in projects:
+        project["folder"] = "/".join(part for part in (folder.replace(os.sep, "/"), project.get("folder")) if part)
+        notes.append("project added: %s (%s), folder %s" % (project.get("title"), project.get("state"), project["folder"]))
+    main.setdefault("projects", []).extend(projects)
     main.setdefault("devices", []).extend(devices)
     for key in ("quotes", "strings", "connections", "designs", "surroundings"):
         main.setdefault(key, []).extend(copy.get(key, []))
@@ -146,18 +151,19 @@ def merge(main, copy, folder):
     for quote in copy.get("quotes", []):
         for document in quote.get("documents", []):
             document["path"] = folder.replace(os.sep, "/") + "/" + document["path"]
-    for order in orders:
-        for part in order.get("steps", []) + order.get("invoices", []):
+    for project in projects:
+        for part in project.get("steps", []) + project.get("invoices", []):
             for document in part.get("documents", []):
                 document["path"] = folder.replace(os.sep, "/") + "/" + document["path"]
 
-    _fill(main.setdefault("site", {}), copy.get("site", {}), "site.", notes)
+    # the place: what the copy knows and the main site doesn't
+    _fill(main, {key: copy[key] for key in PLACE if key in copy}, "", notes)
 
     copyNotes = (copy.get("notes") or "").strip()
     if copyNotes and copyNotes not in (main.get("notes") or ""):
         main["notes"] = ((main.get("notes") or "").rstrip() + "\n\n--- " + folder + " ---\n" + copyNotes).lstrip()
 
-    # the plugins which have data in the merged project
+    # the plugins which have data in the merged site
     import plugins
     main["plugins"] = (main.get("plugins") or []) + [
         entry for entry in copy.get("plugins") or [] if entry not in (main.get("plugins") or [])]
@@ -167,14 +173,14 @@ def merge(main, copy, folder):
 
 
 def _load(folder):
-    from model.PvProject import PvProject
-    project = PvProject(os.path.join(folder, "plant.pvp"))
-    project.prepareSave()
-    return project
+    from model.PvSite import PvSite
+    site = PvSite(os.path.join(folder, "plant.pvp"))
+    site.prepareSave()
+    return site
 
 
 def merge_folders(mainFolder, copyFolder, write):
-    from model.PvProject import PvProject
+    from model.PvSite import PvSite
     import formats.pvp
 
     mainFolder, copyFolder = os.path.abspath(mainFolder), os.path.abspath(copyFolder)
@@ -182,18 +188,18 @@ def merge_folders(mainFolder, copyFolder, write):
     folder = os.path.relpath(copyFolder, mainFolder)
     merged, notes = merge(main.toDict(), copy.toDict(), folder)
 
-    # the merged project must load and write the same again
-    project = PvProject()
-    project.fromDict(merged)
-    project.link(project)
-    project._savePath = main._savePath
-    if project.toDict() != merged:
-        raise Exception("merged project does not load to the same project")
+    # the merged site must load and write the same again
+    site = PvSite()
+    site.fromDict(merged)
+    site.link(site)
+    site._savePath = main._savePath
+    if site.toDict() != merged:
+        raise Exception("merged site does not load to the same site")
 
     for note in notes:
         print("  " + note)
     if not write:
-        return project
+        return site
 
     mainPath = os.path.join(mainFolder, "plant.pvp")
     copyPath = os.path.join(copyFolder, "plant.pvp")
@@ -202,11 +208,11 @@ def merge_folders(mainFolder, copyFolder, write):
     # with several copies the file from before the first merge is kept
     if not os.path.exists(mainPath + ".before_merge"):
         shutil.copy2(mainPath, mainPath + ".before_merge")
-    project.prepareSave()
-    formats.pvp.save(project, mainPath)
+    site.prepareSave()
+    formats.pvp.save(site, mainPath)
     os.rename(copyPath, copyPath + ".merged")
     print("  written: " + mainPath)
-    return project
+    return site
 
 
 def main(args):

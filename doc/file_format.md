@@ -1,76 +1,81 @@
-# GnuSolar project file, version 3
+# GnuSolar file of a site, version 3
 
 Version 3 is the format GnuSolar writes (`formats/pvp.py`). It still reads version 2, the format before it.
 
-A project file describes one solar project: the site, the people involved, the buildings and roofs, the devices
-installed over time, and the quotes and orders that brought them there. GnuSolar reads and writes it, and any other
-program can too: the format is plain JSON and documented here.
+A file describes one site: the place, the people involved, the buildings and roofs, the devices installed over
+time, and the projects that brought them there. A project is one piece of work for a client, from the inquiry to
+the final invoice: the first installation, a battery ten years later, a repair. GnuSolar reads and writes the file,
+and any other program can too: the format is plain JSON and documented here.
 
 Version 2 stores the existing model (one building, one plant, one progress) as plain JSON. Version 3 changes the
-model: one project holds several orders, devices with their history, roofs, quotes and plugin data. GnuSolar converts
+model: one site holds several projects, devices with their history, roofs, quotes and plugin data. GnuSolar converts
 version 2 files when it opens them (section 15).
 
 Why the format is as it is, and which questions are still open, is in `design_considerations.md`.
 
 ## 1. Principles
 
-- **One project, one file.** A project is one site, usually one building or a group of buildings at one address.
-  Every order at that site, the first installation as well as a battery ten years later, lives in the same file.
+- **One site, one file.** A site is one place, usually one building or a group of buildings at one address.
+  Every project at that site, the first installation as well as a battery ten years later, lives in the same file.
 - **Readable without GnuSolar.** Plain JSON, English keys, documented units. No class names, no pickled objects.
 - **Complete on its own.** The file holds copies of the device types it uses and a snapshot of the master data it
   relied on (grid operator, municipality), so it can be read without a database.
 - **History, not only the current state.** Devices have a start and an end date. Replaced devices stay in the file.
-- **No secrets.** Passwords, tokens and access codes never go into a project file.
+- **No secrets.** Passwords, tokens and access codes never go into the file.
 - **Country independent.** The fields of this document mean the same in every country. National coordinate systems,
   register numbers, classifications and the steps with a country's authorities belong to a country extension
   (section 13).
 - **The installation, not the simulation.** The file describes what is planned and what is built. The inputs and
   results of a simulation (weather data, loss settings, hourly values, screenshots) stay in the files of the
   simulation tool, which are referenced as documents. Only their outcome, such as the expected yield, is copied.
-- **Keep what you don't know.** A program that reads a project file must write back every field it doesn't know,
+- **Keep what you don't know.** A program that reads the file must write back every field it doesn't know,
   unchanged. This keeps plugin data and fields of newer minor revisions safe.
 
 ## 2. The file
 
 | | |
 |---|---|
-| Name | `plant.pvp`, one per project folder |
+| Name | `plant.pvp`, one per site folder |
 | Encoding | UTF-8, no byte order mark, characters such as umlauts written as they are |
 | Syntax | JSON (RFC 8259), no comments |
 | Formatting | 4 spaces indent, keys sorted, so files diff well (`json.dumps(..., indent=4, sort_keys=True, ensure_ascii=False)`) |
 | Writing | to `plant.pvp.tmp` first, then renamed, so a crash never leaves a half written file |
-| Attachments | Not in the file. Documents stay in the project folder and are referenced by relative path. How the folder is organised is up to the installer: the format knows no folder names, the ones in the examples (`off/`, `fin/`) are one installer's. |
+| Attachments | Not in the file. Documents stay in the site folder and are referenced by relative path. How the folder is organised is up to the installer: the format knows no folder names, the ones in the examples (`off/`, `fin/`) are one installer's. |
 
 ### Envelope
 
 ```json
 {
-    "format": "gnusolar-project",
+    "format": "gnusolar-site",
     "version": 3,
-    "project": {}
+    "site": {}
 }
 ```
 
 | Field | Content |
 |---|---|
-| `format` | Always `"gnusolar-project"` |
+| `format` | Always `"gnusolar-site"` |
 | `version` | The format version. It changes only when existing readers can no longer read the file correctly. Adding optional fields does not change it. |
-| `project` | The project, sections 4 to 13 |
+| `site` | The site, sections 4 to 13 |
 
 A reader that finds a higher `version` than it knows refuses the file instead of guessing, so an older GnuSolar never
 damages a newer file. A reader that finds a lower `version` migrates it, one version step at a time, on the plain
 data (`formats/pvp.py: _migrate()`).
 
-### The project object
+Files with the format `"gnusolar-project"` are older: version 2, and a draft of version 3 from before the site was
+called site (section 15).
+
+### The site object
 
 ```json
-"project": {
+"site": {
     "id": "uuid",
     "created": 1794315600,
     "modified": 1794315600,
     "generator": "GnuSolar git...c96ce2c",
     "currency": "CHF",
-    "site": {},
+    "label": "",
+    "address": {},
     "contacts": [],
     "buildings": [],
     "surroundings": [],
@@ -80,14 +85,15 @@ data (`formats/pvp.py: _migrate()`).
     "connections": [],
     "designs": [],
     "quotes": [],
-    "orders": [],
+    "projects": [],
     "notes": "",
     "plugins": [],
     "ext": {}
 }
 ```
 
-`currency` is the currency of every amount in the project (ISO 4217).
+`currency` is the currency of every amount in the site (ISO 4217). `label`, `address` and the other fields of the
+place are in section 4.
 
 ## 3. Conventions
 
@@ -114,7 +120,7 @@ Every date and every point in time is a Unix timestamp: the seconds since 1970-0
 
 - A value that is not known is left out or `null`. The empty string `""` means an empty text, never "not known";
   numbers and dates are never `""`. GnuSolar leaves unknown values and empty lists out, except the lists of the
-  project object.
+  site object.
 
 ### Units
 
@@ -134,7 +140,7 @@ Every date and every point in time is a Unix timestamp: the seconds since 1970-0
 | Temperature | °C | |
 | Date, time | Unix timestamp, seconds, integer | `"from": 1426939200` |
 | Percent | % (0–100) | `"efficiency": 21.3` |
-| Money | the amount as a number, in the project's `currency`. An amount in another currency carries its own `currency` field. | `"amount": 18450.00` |
+| Money | the amount as a number, in the site's `currency`. An amount in another currency carries its own `currency` field. | `"amount": 18450.00` |
 | Geographic position | WGS84 latitude and longitude, degrees | `"latitude": 47.5419` |
 
 Numbers are JSON numbers, never strings, and use a decimal point. Field names never carry a unit (`powerAc`, not
@@ -145,9 +151,9 @@ Numbers are JSON numbers, never strings, and use a decimal point. Field names ne
 - Enumerations are lower-case strings in `snake_case`, for example `"heat_pump"`.
 - Text in the file is in the language of its users. Keys and enumeration values are English.
 
-## 4. Site
+## 4. The place
 
-The place where the system stands.
+Where the system stands. These are fields of the site object itself, next to its lists (section 2).
 
 ```json
 "site": {
@@ -182,7 +188,7 @@ The place where the system stands.
 
 ### Master data snapshots
 
-`municipality` and `gridOperator` are copies of GnuSolar's master data (`master.db`) as they were when the project
+`municipality` and `gridOperator` are copies of GnuSolar's master data (`master.db`) as they were when the site
 used them, so a connection request from 2019 still shows the grid operator contact of 2019. `taken` is the date of the copy; `id`
 refers to the master data row it came from. GnuSolar may refresh a snapshot, and then sets a new `taken`.
 
@@ -212,7 +218,7 @@ operator. Which forms a municipality or grid operator uses is national and sits 
 
 ## 5. Contacts
 
-People and companies involved in the project, each with one or more roles.
+People and companies involved in the site, each with one or more roles.
 
 ```json
 "contacts": [
@@ -268,7 +274,7 @@ to the right, `y` up the slope. The roof's `x`, `y`, `z` give that origin in the
 `azimuth` and `inclination` they place the surface in space. `azimuth` is the direction the surface faces, which is
 opposite to the horizontal direction of its `y` axis; this also defines the axes of a flat roof.
 
-All positions are optional. A project without a layout has buildings and roofs with only their orientation, and
+All positions are optional. A site without a layout has buildings and roofs with only their orientation, and
 module groups with only a count.
 
 ```json
@@ -326,7 +332,7 @@ module groups with only a count.
 | `obstacle.shape` | `rect` (`x`, `y` = lower left corner, `width`, `height`), `circle` (`x`, `y` = centre, `radius`), `polygon` (`points`) |
 | `moduleGroup.mounting` | `on_roof`, `in_roof`, `flat_roof_east_west`, `flat_roof_south`, `facade`, `ground` |
 | `moduleGroup.orientation` | `portrait`, `landscape` |
-| `moduleGroup.designId` | The design this group belongs to (section 11). Left out when the project has only one layout. |
+| `moduleGroup.designId` | The design this group belongs to (section 11). Left out when the site has only one layout. |
 | `moduleGroup.tilt`, `azimuth` | Tilt and direction of the modules themselves, where they differ from the roof: racked rows on a flat roof, east-west systems. Left out when the modules lie in the roof plane. |
 | `moduleGroup.rowPitch` | Distance from one racked row to the next, mm |
 
@@ -340,7 +346,7 @@ them or to record a serial number or a replaced module:
 ]
 ```
 
-A module group belongs to the order that installed it through a device of kind `pv_array` (section 8).
+A module group belongs to the project that installed it through a device of kind `pv_array` (section 8).
 
 A dormer that carries modules is a roof of its own, and at the same time an obstacle of kind `dormer` on the roof it
 sits on.
@@ -349,7 +355,7 @@ Where a roof came from (a public 3D building dataset, a laser measurement, a PV*
 
 ### Building model
 
-A building may point to a 3D model file in the project folder, for example a mesh from a public 3D building dataset or from a
+A building may point to a 3D model file in the site folder, for example a mesh from a public 3D building dataset or from a
 planning tool. The roofs above stay the reference for the layout; the model is for display and shading.
 
 ```json
@@ -423,12 +429,12 @@ it uses, so it stays complete without a database.
 | `mounting_system` | `moduleGap`, `endClampEdge`, `maxRailLength`, `frameHeightMin`, `frameHeightMax` |
 
 A type entered by hand has `source.db: "manual"` and only the fields that are known, often only `manufacturer` and
-`model`. This is how version 2 projects are migrated: `panelDesc` and `inverterDesc` become manual types.
+`model`. This is how version 2 files are migrated: `panelDesc` and `inverterDesc` become manual types.
 
 ## 8. Devices
 
 A device is one installed thing: an inverter, a battery, a charger. Devices make up the system's history: a device is
-added by an order, and removed or replaced by a later one.
+added by a project, and removed or replaced by a later one.
 
 ```json
 "devices": [
@@ -441,7 +447,7 @@ added by an order, and removed or replaced by a later one.
         "serial": "HV2150123456",
         "firmware": "V100R001C10SPC140",
         "location": "Keller",
-        "orderId": "uuid",
+        "projectId": "uuid",
         "from": 1426939200,
         "to": null,
         "replacesId": null,
@@ -465,7 +471,7 @@ The kinds follow ModbusSpec's device families, plus the parts of a solar system 
 
 | Kind | Device |
 |---|---|
-| `pv_array` | The modules of an order, as one device: `moduleGroupIds` lists its module groups |
+| `pv_array` | The modules of a project, as one device: `moduleGroupIds` lists its module groups |
 | `inverter` | PV or hybrid inverter |
 | `battery` | Battery storage (with its battery inverter if separate) |
 | `meter` | Energy meter: the grid operator's or one of the system's own |
@@ -518,14 +524,14 @@ The name of a fuse or breaker as written on the board and in the diagram ("F1", 
 
 | Field | Content |
 |---|---|
-| `orderId` | The order that installed the device |
+| `projectId` | The project that installed the device |
 | `from` | Date the device went into operation |
 | `to` | Date it was removed, `null` while it is installed |
 | `replacesId` | The device this one replaces, for example a replacement inverter after a repair |
 | `parentId` | The device this one is built into or mounted in: a breaker in a distribution board, the meter built into an inverter |
 
 The **installed system** on a date is every device with `from` on or before that date and `to` empty or after it. A
-device without `from` belongs to an order that isn't finished yet.
+device without `from` belongs to a project that isn't finished yet.
 
 ### Access
 
@@ -556,7 +562,7 @@ IDs, belongs to the portal's plugin (section 13). Login data never goes into the
 
 ## 9. Strings
 
-How modules are wired to inverters. Optional; most migrated projects have none.
+How modules are wired to inverters. Optional; most migrated files have none.
 
 ```json
 "strings": [
@@ -581,7 +587,7 @@ distribution boards, fuses, breakers, residual current devices, switches, busbar
 batteries and chargers themselves. `connections` says how they are wired, for power, protective earth and signal.
 Devices and connections together are the circuit diagram of the installation.
 
-A project doesn't need this part. Without connections the devices are simply a list.
+A site doesn't need this part. Without connections the devices are simply a list.
 
 ### Ports
 
@@ -628,7 +634,7 @@ A connection is one cable, or one set of wires, between two ports.
         "conductors": ["L1", "L2", "L3", "N", "PE"],
         "cable": { "designation": "5G6", "cores": 5, "crossSection": 6, "outerDiameter": 15, "length": 8000, "material": "copper" },
         "label": "W3",
-        "orderId": "uuid",
+        "projectId": "uuid",
         "from": 1781956800,
         "to": null
     }
@@ -643,7 +649,7 @@ A connection is one cable, or one set of wires, between two ports.
 | `cable` | `designation` (the cable type as ordered), `cores`, `crossSection` of one conductor in mm², `outerDiameter` in mm, `length` in mm, `material`: `copper` or `aluminium` |
 | `protocol` | For `signal`: `rs485`, `can`, `ethernet`, `ct` (the leads of a current transformer), `digital` (a switching contact: remote shutdown, ripple control receiver, load control), `analog`, `other` |
 | `label` | The cable's name in the diagram |
-| `orderId`, `from`, `to` | As for devices: the order that installed it and the time it was in place |
+| `projectId`, `from`, `to` | As for devices: the project that installed it and the time it was in place |
 
 The strings of section 9 are the DC connections between modules and inverter. They are not repeated here.
 
@@ -769,12 +775,12 @@ Simulation tools keep one file per variant. Here a design is a named entry that 
 | `expectedYield` | Expected energy per year in Wh, with the tool and the date it was calculated |
 | `documents` | The files of this variant: the simulation project, the layout drawing |
 
-- A module group with a `designId` belongs to that design. A project with a single layout needs no designs, and its
+- A module group with a `designId` belongs to that design. A site with a single layout needs no designs, and its
   module groups have no `designId`.
 - A quote names the design it offers in its `designId`.
 - The file doesn't mark a design as built. The built module groups are the ones listed in the `pv_array` device of an
-  order (section 8). Module groups of designs that were not built can stay as a record or be removed.
-- Devices and strings exist only for orders. A design that is only quoted lists its devices as quote items.
+  project (section 8). Module groups of designs that were not built can stay as a record or be removed.
+- Devices and strings exist only for projects. A design that is only quoted lists its devices as quote items.
 
 ### Quotes
 
@@ -788,7 +794,7 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
         "date": 1793880000,
         "variant": "Aufdach mit Batterie",
         "designId": "uuid",
-        "orderId": "uuid",
+        "projectId": "uuid",
         "validUntil": 1798718400,
         "state": "sent",
         "items": [
@@ -808,19 +814,19 @@ A quote is a document sent to the client. Once sent it doesn't change; a new ver
 | `items[].kind` | `device`, `material`, `service`, `discount`, `text` |
 | `items[].unit` | `piece`, `m`, `m2`, `h`, `lump_sum`. The order of the items is their position number. |
 | `variant` | Free text shown on the quote. `designId` points to the layout that goes with it. |
-| `orderId` | The order (job) the quote was made for. An order exists from the inquiry on, so every quote has one. The order's `quoteId` names the quote the client accepted. |
+| `projectId` | The project (job) the quote was made for. A project exists from the inquiry on, so every quote has one. The project's `quoteId` names the quote the client accepted. |
 
 A migrated quote may have only a `date` (from version 2 `quoteNSent`) and no number, items or total. A quote
 GnuSolar created from a template starts as `draft` with its `number` and document, and gets its `date` when it is
 sent.
 
-## 12. Orders
+## 12. Projects
 
-An order is a job at the site: the first installation, a battery, a replacement. It has its own process steps,
+A project is a job at the site: the first installation, a battery, a replacement. It has its own process steps,
 documents and invoices.
 
 ```json
-"orders": [
+"projects": [
     {
         "id": "uuid",
         "type": "new_system",
@@ -867,16 +873,16 @@ documents and invoices.
 | Field | Content |
 |---|---|
 | `state` | `inquiry`, `quoted`, `running`, `in_operation`, `completed`, `rejected`, `inactive`. GnuSolar derives it from the dates; it is stored for other readers. |
-| `folder` | The order's subfolder in the project folder, relative to it (for example `2026_Bat`). An empty string is the project folder itself, which is the case for the first installation. GnuSolar suggests a name for every later order (`2026 Batterie`) and creates the folder with its first document. |
+| `folder` | The project's subfolder in the site folder, relative to it (for example `2026_Bat`). An empty string is the site folder itself, which is the case for the first installation. GnuSolar suggests a name for every later project (`2026 Batterie`) and creates the folder with its first document. |
 | `roofMeasure`, `roofMeasured` | Roof measurement planned, done |
 | `constructionSort` | Date used only to sort the construction planning, defaults to `ordered` |
 | `constructionFixed` | The construction date can not be moved |
 | `commissioned` | First day of operation (Inbetriebnahme) |
 | `completed` | Everything done, including subsidy payment and final invoice |
 | `constructionType` | `on_roof`, `in_roof`, `facade`, `flat_roof`, `ground` |
-| `totalCost` | Total cost of the order, as needed for subsidy and permit forms |
+| `totalCost` | Total cost of the project, as needed for subsidy and permit forms |
 
-### Types of order
+### Types of project
 
 | `type` | Job |
 |---|---|
@@ -890,7 +896,7 @@ documents and invoices.
 | `inspection` | Inspection, safety certificate, measurement |
 | `service` | Other work |
 
-`items` holds the order's positions in the format of quote items. When the client accepts a quote, its items are
+`items` holds the project's positions in the format of quote items. When the client accepts a quote, its items are
 copied here; the quote itself stays as it was sent. Changes after the order go into `items`, never into the quote.
 
 ### Steps
@@ -906,9 +912,9 @@ A step is something done with an authority, the grid operator, a subsidy office 
 | `<country>.<name>` | A step with an authority, the grid operator or a subsidy office. These differ from country to country, so their kinds are defined by the country extension and carry its prefix, for example `ch.tag` (section 13). |
 
 `state` goes through `ordered` → `filled` → `signed` → `submitted` → `approved` → `paid`, or ends in `rejected`; a step
-uses only the states that apply to it. A step not yet started has state `open`; one that doesn't apply to this order
+uses only the states that apply to it. A step not yet started has state `open`; one that doesn't apply to this project
 is left out. `dates` holds the date each state was reached, and `state` is the furthest one that has a date. `notes`
-is free text. `documents` lists files of the step, with their path relative to the project folder:
+is free text. `documents` lists files of the step, with their path relative to the site folder:
 
 ```json
 { "path": "evu/2026-05-10_tag_bew.pdf", "kind": "approved", "date": 1778414400 }
@@ -939,8 +945,8 @@ suppliers, data sources. Each plugin stores its data in the `ext` field of the o
 }
 ```
 
-Every object may have an `ext` field: the project, `site`, contacts, buildings, roofs, obstacles, module groups,
-types, devices, strings, quotes, orders, steps and invoices.
+Every object may have an `ext` field: the site, contacts, buildings, roofs, obstacles, module groups,
+types, devices, strings, quotes, projects, steps and invoices.
 
 ### Rules
 
@@ -984,11 +990,11 @@ The extension for Switzerland, `ch`:
 A reader that doesn't know a country extension keeps its data and shows its steps by their `kind` and dates.
 
 In GnuSolar the extension is `plugins/ch.py`. Which plugins are enabled is a setting of the program (`plugins` in
-`config.json`), not of the project: a plugin that is not enabled offers nothing, and its data stays in the file.
+`config.json`), not of the site: a plugin that is not enabled offers nothing, and its data stays in the file.
 
 ### Plugin list
 
-The project's `plugins` lists every plugin that wrote data to the file, so a reader without the plugin knows what the
+The site's `plugins` lists every plugin that wrote data to the file, so a reader without the plugin knows what the
 data is:
 
 ```json
@@ -1006,30 +1012,38 @@ How GnuSolar implements this document:
 | Reading and writing the file, refusing newer versions, migrating older ones | `formats/pvp.py` |
 | Plain data ↔ model: unknown fields are kept (`_unknown`), lists of parts get their class from the field (`_parts`), values have a type (`_types`) | `model/ModelNode.py` |
 | Dates and numbers ↔ the text of forms and documents | `model/values.py` |
-| The objects of sections 4 to 12 | `model/Site.py`, `Contact.py`, `Building.py`, `Device.py`, `Order.py`, `PvProject.py` |
-| The fields of version 2 on top of the new model, for the page Standort, the project list, and document templates and form scripts written for it: `project.building`, `.plant`, `.progress`, and `.existing` for what was installed before the order at hand | `model/compat.py` |
+| The objects of sections 4 to 12 | `model/Site.py`, `Contact.py`, `Building.py`, `Device.py`, `Project.py`, `PvSite.py` |
+| The fields of version 2 on top of the new model, for the page of the address, the project list, and document templates and form scripts written for it: `site.building`, `.plant`, `.progress`, and `.existing` for what was installed before the project at hand | `model/compat.py` |
 | Checks: references that point nowhere, ports a device doesn't have, connectors that don't fit | `model/checks.py` |
 | Country extension for Switzerland | `plugins/ch.py` |
 | The folders new documents are created in: named by the installer in the preferences (tab Ordner), stored in `config.json` as `folders`. A config file without them is from before the setting and gets the short names GnuSolar used then (`off`, `fin`, `doc`, `evu`, `gov`, `cad`, `gis`, `sim`, `pic`, `etc`), a new installation the written out ones. Documents the file already lists are never moved. | `Config.py` (`FOLDERS`), `documents/templates.py`, `gui/pages.py` |
-| Every page of the project window, made from field lists; the buttons of the pages | `gui/fields.py`, `gui/forms.py`; `gui/tree.py`, `gui/pages.py` |
+| Every page of the site window, made from field lists; the buttons of the pages | `gui/fields.py`, `gui/forms.py`; `gui/tree.py`, `gui/pages.py` |
 | Tests, including the examples of sections 10 and 17 of this document | `tests/` |
 
 Forms show a day as `2015-03-21` and also take `21.03.2015`. Text that is no date or number is not stored.
 
 The program doesn't do everything the format can hold yet. Roofs, obstacles, module groups, strings and connections
-are entered as values, there is no drawing. Quote and order `items`, `panels`, `warranties` and plugin data are
+are entered as values, there is no drawing. Quote and project `items`, `panels`, `warranties` and plugin data are
 edited as JSON. There is no import from PV*SOL, PVsyst or swissBUILDINGS3D (section 16), and no plugin besides the
 country extension.
 
 ## 15. Migration from version 2
 
-GnuSolar converts a version 2 project when it reads it (`formats/migrate_v2.py`, on the plain data) and writes it
+GnuSolar converts a version 2 file when it reads it (`formats/migrate_v2.py`, on the plain data) and writes it
 as version 3 when it is saved. The first time, the version 2 file is kept next to it as `plant.pvp.v2`.
-`tools/migrate_pvp.py` converts all projects at once, with a backup of all files. Its dry run reads every converted
-project back through the fields of version 2 and compares it with the old file, and lists what didn't fit.
+`tools/migrate_pvp.py` converts all files at once, with a backup of all files. Its dry run reads every converted
+file back through the fields of version 2 and compares it with the old file, and lists what didn't fit.
 
-Version 2 has one building, one plant and one progress per file. In version 3 they become the site, one building with
-one roof, and one order of type `new_system`.
+Version 2 has one project per file, with one building, one plant and one progress. In version 3 they become the
+site, one building with one roof, and one project of type `new_system`.
+
+### Drafts of version 3
+
+Until 12 November 2026 GnuSolar wrote version 3 with other names: `{"format": "gnusolar-project", "version": 3,
+"project": {}}`. The site was called project, a project was an order (`orders`, `orderId`), and the fields of the
+place (section 4) were a section `site` of their own with its own `ext`. Such a file is renamed when it is read
+(`formats/pvp.py: fromDraft3()`), no value changes. Where the site and its section both had plugin data, the two are
+put together. When it is saved, the draft is kept next to the file as `plant.pvp.v3-draft`.
 
 ### Field mapping
 
@@ -1042,7 +1056,7 @@ one roof, and one order of type `new_system`.
 | `building.municipalityCode`, `municipalityName` | `site.municipality.code`, `.name` |
 | `building.areZoneCode`, `areZoneName` | `site.ext.ch.zone.code`, `.name` |
 | `building.mainFuseSize` | `site.supply.mainFuse` (number, A) |
-| `building.meterNumberOld`, `meterNumberNew` | two devices of kind `meter` with `owner` `grid_operator` and the `number`: the old one with `to` = order `commissioned`, the new one with `from` = it |
+| `building.meterNumberOld`, `meterNumberNew` | two devices of kind `meter` with `owner` `grid_operator` and the `number`: the old one with `to` = project `commissioned`, the new one with `from` = it |
 | `building.buildingState` | `ext.gnusolar.v2.buildingState` (kept, no v3 meaning yet) |
 | `municipality.id`, `code`, `name`, `countryCode`, `stateCode`, `districtCode`, `website`, `mainContact`, `buildingContact` | `site.municipality` snapshot with the same names, `taken` = file date |
 | `municipality.fkFormBuilding` | `site.municipality.ext.ch.buildingFormId` |
@@ -1062,10 +1076,10 @@ one roof, and one order of type `new_system`.
 | `plant.panelDesc`, `totalPanelCount`, `totalPowerDc` | a manual panel type (`model` = `panelDesc`, `power` = `totalPowerDc` / count), one roof with one module group (`count`), a `pv_array` device |
 | `plant.totalArea` | the module group's `ext.gnusolar.v2.totalArea` (m²) until the roof has a real outline |
 | `plant.inverterDesc`, `totalPowerAc` | a manual inverter type and an `inverter` device |
-| `plant.constructionType` | order `constructionType`: `builton` → `on_roof`, `integrated` → `in_roof`, `facade` → `facade` |
-| `plant.totalCost` | order `totalCost` |
-| `progress.inquiryReceived`, `roofMeasure`, `roofMeasured`, `orderReceived`, `orderRejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `launch`, `archived`, `inactiv` | order `inquiry`, `roofMeasure`, `roofMeasured`, `ordered`, `rejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `commissioned`, `archived`, `inactive` |
-| `progress.quote1Sent`, `quote2Sent`, `quote3Sent`, `quote4Sent` | one quote each, with `date`, `state: "sent"` and the order as `orderId`; numbers from the files `off/O<year>-<month>-<number>.*`, where a month has as many such numbers as quotes |
+| `plant.constructionType` | project `constructionType`: `builton` → `on_roof`, `integrated` → `in_roof`, `facade` → `facade` |
+| `plant.totalCost` | project `totalCost` |
+| `progress.inquiryReceived`, `roofMeasure`, `roofMeasured`, `orderReceived`, `orderRejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `launch`, `archived`, `inactiv` | project `inquiry`, `roofMeasure`, `roofMeasured`, `ordered`, `rejected`, `constructionStart`, `constructionSort`, `constructionFixed`, `commissioned`, `archived`, `inactive` |
+| `progress.quote1Sent`, `quote2Sent`, `quote3Sent`, `quote4Sent` | one quote each, with `date`, `state: "sent"` and the project as `projectId`; numbers from the files `off/O<year>-<month>-<number>.*`, where a month has as many such numbers as quotes |
 | `progress.tagSent`, `tagReceived` | step `ch.tag`: `submitted`, `approved` |
 | `progress.iaSent`, `iaReceived` | step `ch.ia`: `submitted`, `approved` |
 | `progress.bauSent`, `bauReceived` | step `ch.building_permit`: `submitted`, `approved` |
@@ -1077,8 +1091,8 @@ one roof, and one order of type `new_system`.
 | `progress.partialInvoiceSent`, `partialInvoiceReceived` | invoice of kind `partial`, `date` and `paid` |
 | `progress.partialInvoice2Sent`, `partialInvoice2Received` | a second invoice of kind `partial` |
 | `progress.finalInvoiceSent`, `finalInvoiceReceived` | invoice of kind `final`; invoice numbers from the files `fin/R<year>-<month>-<number>.*`, matched like the quotes |
-| `state` (`Running`, …) | dropped: the order `state` is derived from the dates |
-| `comment` | project `notes` |
+| `state` (`Running`, …) | dropped: the project `state` is derived from the dates |
+| `comment` | site `notes` |
 
 ### Cleaning values
 
@@ -1089,9 +1103,9 @@ Version 2 values are text as typed. The migration converts them:
 - **Empty strings** of numbers, dates and optional fields become `null`.
 - **Dates:** version 2 stores days as text like 2015-03-21. They become timestamps of that day (section 3).
   Values that are not such a date:
-  - a year only (`"2021"`): the date `null`, the text kept in the step's or order's `notes` as `eivPayed: 2021`
-  - two dates (`"2022-09-27/2023-06-28"`): the first date in the field as a timestamp, the whole text in `notes`; such a project
-    most likely had two orders and needs a manual look (the dry run lists them)
+  - a year only (`"2021"`): the date `null`, the text kept in the step's or project's `notes` as `eivPayed: 2021`
+  - two dates (`"2022-09-27/2023-06-28"`): the first date in the field as a timestamp, the whole text in `notes`; such a file
+    most likely holds two projects and needs a manual look (the dry run lists them)
   - other text (`"other"`): `null`, the text in `notes`
 - **IDs:** every object gets a new UUID.
 
@@ -1106,16 +1120,16 @@ The dry run of `tools/migrate_pvp.py` lists every such value.
 
 ### Folder copies
 
-Project folders that are copies of another project at the same address (`Heid 2.3_2`) are merged by a separate tool,
-`tools/merge_copies.py`, not by the file migration: their order becomes an order of the main project with `folder`
-pointing to the copy (`../Heid 2.3_2`, as long as the copy is not moved into the project folder). Types, meters and
+Folders that hold a further project at the same address (`Heid 2.3_2` next to `Heid 2.3`) are merged by a separate
+tool, `tools/merge_copies.py`, not by the file migration: their project becomes a project of the main site with `folder`
+pointing to the copy (`../Heid 2.3_2`, as long as the copy is not moved into the site folder). Types, meters and
 contacts that are the same in both are not added twice.
 
 ## 16. Reading other formats
 
 GnuSolar can take over data from planning tools and from public data. This section records how their data maps, as
 found in the example projects of PV*SOL premium 2026 (file versions 4 to 24) and PVsyst 8.1, and in swissBUILDINGS3D
-3.0. None of them holds customers, orders or history. An import fills the site, buildings and roofs, one design,
+3.0. None of them holds customers, projects or history. An import fills the site, buildings and roofs, one design,
 types, and strings where the source has them.
 
 | GnuSolar | PV*SOL (`.pvprj`: zip with XML and JSON) | PVsyst (`.PRJ` plus one `.VC*` per variant: text) | swissBUILDINGS3D |
@@ -1133,7 +1147,7 @@ types, and strings where the source has them.
 | `cable` | `AllCables`, in old files `Kabel`; `Visu3D/Kabel.xml` | `WiringResistance`, AC wire fields | – |
 | battery device | `Batteriesystem`: coupling, connected inverter | battery file and count in `pvSystem`; `pvGridStorage` | – |
 | charger, heat pump | `ElektroAuto`, `ThermalSystem` | – | – |
-| quote or order `items` | `Stueckliste` (bill of materials) | – | – |
+| quote or project `items` | `Stueckliste` (bill of materials) | – | – |
 | `expectedYield` | `SimResults.xml` | results in the variant file | – |
 
 Conventions that differ from this format:
@@ -1146,7 +1160,7 @@ Conventions that differ from this format:
 
 Rules for an import:
 
-- The source file stays in the project folder as a document of the design. The imported objects record where they
+- The source file stays in the site folder as a document of the design. The imported objects record where they
   came from in their `ext` (`valentin.pvsol`, `pvsyst`, `ch.swisstopo.buildings3d`): file, checksum and the object's ID
   in the source. A later import of a changed file then updates the same objects.
 - Not imported: weather data, loss settings, tariffs, charge schedules, consumption and hot water profiles, and
@@ -1163,8 +1177,15 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
 
 ```json
 {
-    "format": "gnusolar-project",
-    "project": {
+    "format": "gnusolar-site",
+    "site": {
+        "address": {
+            "city": "Zeiningen",
+            "country": "CH",
+            "street": "Kirchweg",
+            "streetNumber": "26",
+            "zip": "4314"
+        },
         "buildings": [
             {
                 "id": "0a1b2c3d-0000-4000-8000-000000000010",
@@ -1229,13 +1250,13 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "moduleGroupIds": [
                     "0a1b2c3d-0000-4000-8000-000000000012"
                 ],
-                "orderId": "0a1b2c3d-0000-4000-8000-000000000050"
+                "projectId": "0a1b2c3d-0000-4000-8000-000000000050"
             },
             {
                 "from": 1426939200,
                 "id": "0a1b2c3d-0000-4000-8000-000000000031",
                 "kind": "inverter",
-                "orderId": "0a1b2c3d-0000-4000-8000-000000000050",
+                "projectId": "0a1b2c3d-0000-4000-8000-000000000050",
                 "to": 1781956800,
                 "typeId": "0a1b2c3d-0000-4000-8000-000000000021"
             },
@@ -1244,7 +1265,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "id": "0a1b2c3d-0000-4000-8000-000000000032",
                 "kind": "inverter",
                 "label": "Hybrid-WR",
-                "orderId": "0a1b2c3d-0000-4000-8000-000000000051",
+                "projectId": "0a1b2c3d-0000-4000-8000-000000000051",
                 "replacesId": "0a1b2c3d-0000-4000-8000-000000000031"
             },
             {
@@ -1262,16 +1283,50 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "from": 1781956800,
                 "id": "0a1b2c3d-0000-4000-8000-000000000033",
                 "kind": "battery",
-                "orderId": "0a1b2c3d-0000-4000-8000-000000000051",
+                "projectId": "0a1b2c3d-0000-4000-8000-000000000051",
                 "typeId": "0a1b2c3d-0000-4000-8000-000000000022"
             }
         ],
-        "ext": {},
+        "ext": {
+            "ch": {
+                "lv95": {
+                    "e": 2632561.2,
+                    "n": 1265432.8
+                },
+                "v": 1
+            }
+        },
         "generator": "GnuSolar git...c96ce2c",
+        "gridOperator": {
+            "ext": {
+                "ch": {
+                    "tagFormId": 4,
+                    "v": 1
+                }
+            },
+            "id": 402,
+            "name": "Elektra Zeiningen",
+            "taken": 1794312000
+        },
         "id": "3f0c2a9e-6a1b-4c8e-9d3f-1b2a3c4d5e6f",
+        "latitude": 47.5419,
+        "longitude": 7.8696,
         "modified": 1794315600,
+        "municipality": {
+            "code": "4264",
+            "name": "Zeiningen",
+            "taken": 1794312000
+        },
         "notes": "",
-        "orders": [
+        "plotNumber": "1060",
+        "plugins": [
+            {
+                "id": "ch",
+                "name": "Switzerland",
+                "version": "1"
+            }
+        ],
+        "projects": [
             {
                 "commissioned": 1426939200,
                 "completed": 1472040000,
@@ -1332,13 +1387,6 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "type": "battery"
             }
         ],
-        "plugins": [
-            {
-                "id": "ch",
-                "name": "Switzerland",
-                "version": "1"
-            }
-        ],
         "quotes": [
             {
                 "currency": "CHF",
@@ -1356,51 +1404,14 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
                 "total": 12800.0
             }
         ],
-        "site": {
-            "address": {
-                "city": "Zeiningen",
-                "country": "CH",
-                "street": "Kirchweg",
-                "streetNumber": "26",
-                "zip": "4314"
-            },
-            "ext": {
-                "ch": {
-                    "lv95": {
-                        "e": 2632561.2,
-                        "n": 1265432.8
-                    },
-                    "v": 1
-                }
-            },
-            "gridOperator": {
-                "ext": {
-                    "ch": {
-                        "tagFormId": 4,
-                        "v": 1
-                    }
-                },
-                "id": 402,
-                "name": "Elektra Zeiningen",
-                "taken": 1794312000
-            },
-            "latitude": 47.5419,
-            "longitude": 7.8696,
-            "municipality": {
-                "code": "4264",
-                "name": "Zeiningen",
-                "taken": 1794312000
-            },
-            "plotNumber": "1060",
-            "supply": {
-                "earthingSystem": "tn_c_s",
-                "frequency": 50,
-                "mainFuse": 40,
-                "phases": 3,
-                "voltage": 400
-            }
-        },
         "strings": [],
+        "supply": {
+            "earthingSystem": "tn_c_s",
+            "frequency": 50,
+            "mainFuse": 40,
+            "phases": 3,
+            "voltage": 400
+        },
         "surroundings": [],
         "types": [
             {
@@ -1448,7 +1459,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
 
 ## 18. Open points
 
-- **Designs before an order:** devices and strings exist only for orders, so a quoted design has its wiring only in
+- **Designs before a project:** devices and strings exist only for projects, so a quoted design has its wiring only in
   the simulation file. If string plans are needed at the quote stage, designs get their own planned devices.
 - **Terminals inside a device:** a connection ends at a port, not at a single terminal. Terminal numbers, and which
   core of a cable goes to which terminal, are not recorded.
@@ -1456,7 +1467,7 @@ A house with a solar system from 2015 and a battery added in 2026, written as Gn
   but neither has a position or a route in space yet.
 - **Curved and irregular roofs** (barrel roofs, roofs that are not one plane) have no form here; they would be
   approximated by several roofs.
-- **Pricing of items:** whether quotes and orders carry full positions with prices, or only the devices and a total,
+- **Pricing of items:** whether quotes and projects carry full positions with prices, or only the devices and a total,
   until GnuSolar calculates quotes itself.
 - **Owner export:** which parts of the file an owner gets (likely everything except prices, notes and installer-only
   plugin data), and in which form.

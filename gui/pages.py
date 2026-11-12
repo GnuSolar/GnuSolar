@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The buttons of the pages of the project window which do more than adding
+# The buttons of the pages of the site window which do more than adding
 # and deleting parts (gui/tree.py): creating documents, lookups, calls and
 # e-mails.
 #
@@ -13,7 +13,7 @@
 #   page.actions                    the buttons above the fields
 #   page.fieldActions               path of a field => the button beside it
 #
-# obj is the model object shown (PvProject, Contact, ...), app the GnuSolar
+# obj is the model object shown (PvSite, Contact, ...), app the GnuSolar
 # application (None in the address book).
 
 import os
@@ -31,7 +31,7 @@ from gui.tree import Action
 from Config import config
 from Usefull import openFolder, openFolderIfExists, composeEmail, callSip
 
-from model.PvProject import PvProject
+from model.PvSite import PvSite
 from model.Contact import Contact
 from model.Site import Municipality, GridOperator
 from model.compat import SiteView
@@ -59,7 +59,7 @@ class Page:
     def __init__(self, obj, app):
         self.obj = obj
         self.app = app
-        self.project = obj if isinstance(obj, PvProject) else getattr(obj, "_top", None)
+        self.site = obj if isinstance(obj, PvSite) else getattr(obj, "_top", None)
         self.actions = [self._action(text, func) for text, func in self.buttons()]
         self.fieldActions = {path: self._action(text, func) for path, (text, func) in self.fieldButtons().items()}
 
@@ -74,7 +74,7 @@ class Page:
     def fieldButtons(self):
         return {}
 
-    # the project was changed: mark it, build the tree and the page anew
+    # the site was changed: mark it, build the tree and the page anew
     def changed(self):
         if self.app is not None:
             self.app.action_changed()
@@ -83,7 +83,7 @@ class Page:
     # Create a document from a template, show problems, open the new file
     def createDocument(self, templateType):
         try:
-            path = documents.templates.createFromTemplate(templateType, self.project._savePath, self.project, config)
+            path = documents.templates.createFromTemplate(templateType, self.site._savePath, self.site, config)
         except DocumentError as e:
             QtWidgets.QMessageBox.warning(None, e.title, str(e))
             return None
@@ -91,17 +91,17 @@ class Page:
         openFolderIfExists(path)
         return path
 
-    # Note a created document in the project and show it in the tree
+    # Note a created document in the site and show it in the tree
     def recordDocument(self, kind, path):
-        part = self.project.addDocument(kind, path)
+        part = self.site.addDocument(kind, path)
         if part is not None:
             self.changed()
 
 
-class PvProjectPage(Page):
+class PvSitePage(Page):
     def buttons(self):
         return [
-            ("Projektordner öffnen", self.action_openProjectFolder),
+            ("Ordner öffnen", self.action_openFolder),
             ("neue Offerte", self.action_createQuote),
             ("Anlagedoku erstellen", self.action_createDocumentation),
             ("Akontorechnung", self.action_createPartialInvoice),
@@ -110,7 +110,7 @@ class PvProjectPage(Page):
             ("QR Bill erstellen", self.action_createQrBill),
         ]
 
-    def action_openProjectFolder(self):
+    def action_openFolder(self):
         if not self.obj._savePath:
             return
         folder = os.path.dirname(self.obj._savePath)
@@ -151,7 +151,7 @@ class PvProjectPage(Page):
         if not os.path.isdir(projectDir):
             QtWidgets.QMessageBox.warning(None, 'QR Bill', 'Pfad nicht gefunden\n' + self.obj._savePath)
             return
-        projectDir = self.obj.getOrderDir()
+        projectDir = self.obj.getProjectDir()
 
         answer = askTexts("QR Bill", ["Betrag", "Info"])
         if answer is None:
@@ -234,7 +234,7 @@ class BuildingPage(Page):
         ]
 
     def action_updateFromAddress(self):
-        ret = self.project.updateFromAddress()
+        ret = self.site.updateFromAddress()
 
         self.changed()
         if isinstance(ret, str):
@@ -254,11 +254,11 @@ class BuildingPage(Page):
             QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', resp_txt)
             return
         
-        projectDir = self.project.getProjectDir()
-        if not projectDir:
-            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'Projekt zuerst speichern')
+        siteDir = self.site.getSiteDir()
+        if not siteDir:
+            QtWidgets.QMessageBox.warning(None, 'Get 3D Model Error', 'Standort zuerst speichern')
             return
-        cad_folder = config.getFolderPath(projectDir, "plans")
+        cad_folder = config.getFolderPath(siteDir, "plans")
         if not os.path.isdir(cad_folder):
             os.makedirs(cad_folder)
         
@@ -342,11 +342,11 @@ class BuildingPage(Page):
         pdf_url = response.text
 
         # download the pdf
-        projectDir = self.project.getProjectDir()
-        if not projectDir:
-            QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'Projekt zuerst speichern')
+        siteDir = self.site.getSiteDir()
+        if not siteDir:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Ortho', 'Standort zuerst speichern')
             return
-        gis_folder = config.getFolderPath(projectDir, "maps")
+        gis_folder = config.getFolderPath(siteDir, "maps")
         if not os.path.isdir(gis_folder):
             os.makedirs(gis_folder)
         today = date.today()
@@ -429,11 +429,11 @@ class BuildingPage(Page):
         pdf_url = response.text
 
         # download the pdf
-        projectDir = self.project.getProjectDir()
-        if not projectDir:
-            QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'Projekt zuerst speichern')
+        siteDir = self.site.getSiteDir()
+        if not siteDir:
+            QtWidgets.QMessageBox.warning(None, 'Get Agis Survey', 'Standort zuerst speichern')
             return
-        gis_folder = config.getFolderPath(projectDir, "maps")
+        gis_folder = config.getFolderPath(siteDir, "maps")
         if not os.path.isdir(gis_folder):
             os.makedirs(gis_folder)
         today = date.today()
@@ -457,7 +457,7 @@ class MunicipalityPage(Page):
 
     # Erzeuge Gebäudeversicherung Zürich Formular
     def action_createGvzDocumentation(self):
-        projectDir = self.project.getOrderDir()
+        projectDir = self.site.getProjectDir()
         if not projectDir:
             return
 
@@ -501,7 +501,7 @@ class PowerCompanyPage(Page):
     def action_createTag(self):
         global config
 
-        projectDir = self.project.getOrderDir()
+        projectDir = self.site.getProjectDir()
         if not projectDir:
             return
         
@@ -516,21 +516,21 @@ class PowerCompanyPage(Page):
         if not os.path.isdir(tagDir):
             os.makedirs(tagDir)
         
-        ret = self.obj.createTag(self.project, tagPath)
+        ret = self.obj.createTag(self.site, tagPath)
         if isinstance(ret, str):
             QtWidgets.QMessageBox.information(None, 'Error Creating TAG', ret)
             return
             
         openFolderIfExists(tagPath)
         now = date.today()
-        self.project.progress.tagSent = now.isoformat()
-        self.project.addDocument("tag", tagPath)
+        self.site.progress.tagSent = now.isoformat()
+        self.site.addDocument("tag", tagPath)
         self.changed()
 
     # Sende Tag
     def action_composeTagEmail(self):
         global config
-        model = self.project
+        model = self.site
         
         to = model.powerCompany.tagContact.email
         b = model.building
@@ -545,7 +545,7 @@ class PowerCompanyPage(Page):
         self.createDocument("mundpp")
 
 PAGES = {
-    PvProject: PvProjectPage,
+    PvSite: PvSitePage,
     Contact: ContactPage,
     SiteView: BuildingPage,
     Municipality: MunicipalityPage,

@@ -3,13 +3,13 @@
 
 # The project as file version 2 saw it: one building, one plant, one progress.
 #
-# The page Standort, the project list, the document templates and the form
+# The page of the address, the project list, the document templates and the form
 # scripts in data/ were written for that model. The views here give
 # them the same fields on top of the version 3 model:
 #
-#   project.building   SiteView       the site, as text fields
-#   project.plant      PlantView      modules and inverters of one order, summed up
-#   project.progress   ProgressView   the dates of one order, its steps, quotes and invoices
+#   site.building   SiteView       the site, as text fields
+#   site.plant      PlantView      modules and inverters of one project, summed up
+#   site.progress   ProgressView   the dates of one project, its steps, quotes and invoices
 #
 # All values of a view are text, as they were in version 2: dates as
 # 2015-03-21, power in kW, missing values as "". A setter raises ValueError
@@ -19,7 +19,7 @@ import sqlite3
 
 from model import values
 from model.Site import getExt, setExt, getV2, setV2
-from formats.migrate_v2 import ORDER_DATES, STEP_DATES, INVOICE_DATES, QUOTE_DATES, CONSTRUCTION_TYPES
+from formats.migrate_v2 import PROJECT_DATES, STEP_DATES, INVOICE_DATES, QUOTE_DATES, CONSTRUCTION_TYPES
 from plugins import ch
 
 
@@ -35,12 +35,13 @@ def _clean(text):
 
 class SiteView:
 
-    def __init__(self, project):
-        self._top = project
+    def __init__(self, site):
+        self._top = site
 
+    # the fields of the place are fields of the site itself
     @property
     def _site(self):
-        return self._top.site
+        return self._top
 
     # ---- coordinates, as LV03 like version 2 stored them --------------------
 
@@ -111,21 +112,21 @@ class SiteView:
     def _meters(self):
         return [d for d in self._top.devices if d.kind == "meter" and d.get("owner") == "grid_operator"]
 
-    # the meter the current order brought
+    # the meter the current project brought
     def _newMeter(self):
-        order = self._top.currentOrder
+        project = self._top.currentProject
         for meter in self._meters():
-            if meter.orderId == order.id:
+            if meter.projectId == project.id:
                 return meter
         return None
 
-    # the meter that was there before the current order
+    # the meter that was there before the current project
     def _oldMeter(self):
-        order = self._top.currentOrder
+        project = self._top.currentProject
         new = self._newMeter()
         if new and new.replacesId:
             return self._top.byId("devices", new.replacesId)
-        found = [m for m in self._meters() if m.orderId != order.id]
+        found = [m for m in self._meters() if m.projectId != project.id]
         return found[-1] if found else None
 
     @property
@@ -169,13 +170,13 @@ class SiteView:
                     old.to = None
             return
         if meter is None:
-            order = self._top.currentOrder
+            project = self._top.currentProject
             meter = self._top.addPart("devices", kind="meter", owner="grid_operator", role="grid",
-                                      orderId=order.id)
-            meter.set("from", order.commissioned)
+                                      projectId=project.id)
+            meter.set("from", project.commissioned)
             if old:
                 meter.replacesId = old.id
-                old.to = order.commissioned
+                old.to = project.commissioned
         meter.set("number", _clean(text))
 
     # ---- other fields -----------------------------------------------------
@@ -322,18 +323,18 @@ V2_CONSTRUCTION_TYPES = {v: k for k, v in CONSTRUCTION_TYPES.items()}
 
 class PlantView:
 
-    # existing=True: not the devices of the order, but what was installed
+    # existing=True: not the devices of the project, but what was installed
     # before it and is still there. Read only.
-    def __init__(self, project, order, existing=False):
-        self._top = project
-        self._order = order
+    def __init__(self, site, project, existing=False):
+        self._top = site
+        self._project = project
         self._existing = existing
 
     def _devices(self, kind):
         if not self._existing:
-            return self._order.getDevices(kind)
+            return self._project.getDevices(kind)
         return [d for d in self._top.devices
-                if d.kind == kind and d.orderId != self._order.id and d.get("from") is not None and d.to is None]
+                if d.kind == kind and d.projectId != self._project.id and d.get("from") is not None and d.to is None]
 
     def _groups(self):
         ret = []
@@ -360,7 +361,7 @@ class PlantView:
         building = top.buildings[0] if top.buildings else top.addPart("buildings")
         roof = building.roofs[0] if building.roofs else building.addPart("roofs")
         group = roof.addPart("moduleGroups")
-        top.addToGenerator(group, self._order)
+        top.addToGenerator(group, self._project)
         return group
 
     # The type of a group or device, which must be one entered by hand and
@@ -480,8 +481,8 @@ class PlantView:
             raise ValueError("mehrere Wechselrichter: bitte im Baum bearbeiten")
         if inverters or not create:
             return inverters[0] if inverters else None
-        device = self._top.addPart("devices", kind="inverter", orderId=self._order.id)
-        device.set("from", self._order.commissioned)
+        device = self._top.addPart("devices", kind="inverter", projectId=self._project.id)
+        device.set("from", self._project.commissioned)
         return device
 
     @property
@@ -570,20 +571,20 @@ class PlantView:
     def devices(self, kind):
         return list(self._devices(kind))
 
-    # ---- order ------------------------------------------------------------
+    # ---- project ------------------------------------------------------------
 
     @property
     def totalCost(self):
-        return values.numberToText(self._order.totalCost)
+        return values.numberToText(self._project.totalCost)
 
     @totalCost.setter
     def totalCost(self, text):
         self._readOnly()
-        self._order.totalCost = values.textToNumber(text)
+        self._project.totalCost = values.textToNumber(text)
 
     @property
     def constructionType(self):
-        return V2_CONSTRUCTION_TYPES.get(self._order.constructionType, "")
+        return V2_CONSTRUCTION_TYPES.get(self._project.constructionType, "")
 
     @constructionType.setter
     def constructionType(self, text):
@@ -591,29 +592,29 @@ class PlantView:
         text = _clean(text)
         if text is not None and text not in CONSTRUCTION_TYPES:
             raise ValueError("unbekannte Bauart: " + text)
-        self._order.constructionType = CONSTRUCTION_TYPES.get(text)
+        self._project.constructionType = CONSTRUCTION_TYPES.get(text)
         for group in self._groups():
             if group.mounting in (None, "on_roof", "in_roof", "facade"):
-                group.mounting = self._order.constructionType
+                group.mounting = self._project.constructionType
 
 
 # ---------------------------------------------------------------------------
 
 class ProgressView:
 
-    def __init__(self, project, order):
-        self._top = project
-        self._order = order
+    def __init__(self, site, project):
+        self._top = site
+        self._project = project
 
-    # ---- quotes: quote1Sent is the date of the first quote of the order -----
+    # ---- quotes: quote1Sent is the date of the first quote of the project -----
 
     def _getQuote(self, number):
-        quotes = self._order.getQuotes()
+        quotes = self._project.getQuotes()
         return values.dateToText(quotes[number].date) if number < len(quotes) else ""
 
     def _setQuote(self, number, text):
         day = values.textToDate(text)
-        quotes = self._order.getQuotes()
+        quotes = self._project.getQuotes()
         if number < len(quotes):
             quote = quotes[number]
             quote.date = day
@@ -622,51 +623,51 @@ class ProgressView:
             if day is None and not quote.hasContent():
                 self._top.removePart(quote)
         elif day is not None:
-            self._top.addPart("quotes", date=day, state="sent", orderId=self._order.id)
+            self._top.addPart("quotes", date=day, state="sent", projectId=self._project.id)
 
     # ---- steps ------------------------------------------------------------
 
     def _getStep(self, kind, state):
-        step = self._order.getStep(kind)
+        step = self._project.getStep(kind)
         return values.dateToText(step.dates.get(state)) if step else ""
 
     def _setStep(self, kind, state, text):
         day = values.textToDate(text)
-        step = self._order.getStep(kind)
+        step = self._project.getStep(kind)
         if step is None:
             if day is None:
                 return
-            step = self._order.addPart("steps", kind=kind)
+            step = self._project.addPart("steps", kind=kind)
         step.setDate(state, day)
         if not step.hasContent():
-            self._order.removePart(step)
+            self._project.removePart(step)
 
     # ---- invoices ---------------------------------------------------------
 
     def _getInvoice(self, kind, number, field):
-        invoice = self._order.getInvoice(kind, number)
+        invoice = self._project.getInvoice(kind, number)
         return values.dateToText(invoice.get(field)) if invoice else ""
 
     def _setInvoice(self, kind, number, field, text):
         day = values.textToDate(text)
-        invoice = self._order.getInvoice(kind, number)
+        invoice = self._project.getInvoice(kind, number)
         if invoice is None:
             if day is None:
                 return
-            invoice = self._order.addPart("invoices", kind=kind)
+            invoice = self._project.addPart("invoices", kind=kind)
         invoice.set(field, day)
         if not invoice.hasContent():
-            self._order.removePart(invoice)
+            self._project.removePart(invoice)
 
     # ---- the construction date can not be moved ---------------------------
 
     @property
     def constructionFixed(self):
-        return bool(self._order.constructionFixed)
+        return bool(self._project.constructionFixed)
 
     @constructionFixed.setter
     def constructionFixed(self, value):
-        self._order.constructionFixed = True if value else None
+        self._project.constructionFixed = True if value else None
 
     # returns state of the project:
     #  activ: Something needs to be done at some point
@@ -702,7 +703,7 @@ class ProgressView:
 
         # Auftrag noch nicht erhalten und letzte Aktion nicht älter als
         # 3? Monate => aktiv
-        lastQuote = max([values.dateToText(q.date) for q in self._order.getQuotes() if q.date] or [""])
+        lastQuote = max([values.dateToText(q.date) for q in self._project.getQuotes() if q.date] or [""])
         if lastQuote:
             return "4 - quoted " + lastQuote
 
@@ -750,17 +751,17 @@ class ProgressView:
         return self.constructionSort
 
 
-def _orderDateProperty(field):
+def _projectDateProperty(field):
     def getter(self):
-        return values.dateToText(self._order.get(field))
+        return values.dateToText(self._project.get(field))
 
     def setter(self, text):
-        self._order.set(field, values.textToDate(text))
+        self._project.set(field, values.textToDate(text))
     return property(getter, setter)
 
 
-for _name, _field in ORDER_DATES.items():
-    setattr(ProgressView, _name, _orderDateProperty(_field))
+for _name, _field in PROJECT_DATES.items():
+    setattr(ProgressView, _name, _projectDateProperty(_field))
 for _number, _name in enumerate(QUOTE_DATES):
     setattr(ProgressView, _name, property(lambda self, n=_number: self._getQuote(n),
                                           lambda self, text, n=_number: self._setQuote(n, text)))

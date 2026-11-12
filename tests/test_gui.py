@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The project window, without a screen: open a project, show every page,
+# The site window, without a screen: open a site, show every page,
 # type into fields, save.
 
 import os
@@ -19,7 +19,7 @@ import gui.tree
 import gui.pages
 import documents.templates
 from Config import folderPreset
-from tests.test_project import v2_text
+from tests.test_site import v2_text
 
 app = None
 
@@ -87,7 +87,7 @@ class ProjectWindowTest(unittest.TestCase):
         shutil.rmtree(self.folder)
 
     def saved(self):
-        return json.load(open(self.path, encoding="utf-8"))["project"]
+        return json.load(open(self.path, encoding="utf-8"))["site"]
 
     def test_every_page_opens(self):
         tree = self.app.ui.tree
@@ -101,7 +101,7 @@ class ProjectWindowTest(unittest.TestCase):
 
     def test_edit_and_save(self):
         tree = self.app.ui.tree
-        tree.setCurrentItem(find(self.app, "Auftrag: PV-Anlage"))
+        tree.setCurrentItem(find(self.app, "Projekt: PV-Anlage"))
         self.assertEqual(field(self.app, "commissioned").text(), "2026-06-20")
         self.run_action(tree.currentItem(), "Schritt hinzufügen", "Sicherheitsnachweis DC")
         field(self.app, "dates.ordered").setText("2026-06-21")
@@ -118,18 +118,18 @@ class ProjectWindowTest(unittest.TestCase):
         field(self.app, "lastName").setText("Beispiel")
         field(self.app, "email2").setText("zwei@example.ch")
 
-        tree.setCurrentItem(find(self.app, "Standort"))
+        tree.setCurrentItem(find(self.app, "Adresse und Grundstück"))
         field(self.app, "mainFuseSize").setText("63")
 
         self.assertTrue(self.app.action_save())
         self.assertFalse(self.app.unsavedChanges)
         saved = self.saved()
-        order = saved["orders"][0]
-        self.assertEqual([s["dates"] for s in order["steps"] if s["kind"] == "ch.sina_dc"], [{"ordered": 1782043200}])
+        project = saved["projects"][0]
+        self.assertEqual([s["dates"] for s in project["steps"] if s["kind"] == "ch.sina_dc"], [{"ordered": 1782043200}])
         self.assertEqual(saved["buildings"][0]["roofs"][0]["moduleGroups"][0]["count"], 26)
         self.assertEqual(saved["contacts"][0]["lastName"], "Beispiel")
         self.assertEqual(saved["contacts"][0]["channels"][-1], {"kind": "email", "value": "zwei@example.ch"})
-        self.assertEqual(saved["site"]["supply"]["mainFuse"], 63)
+        self.assertEqual(saved["supply"]["mainFuse"], 63)
         self.assertTrue(os.path.exists(self.path + ".v2"))
 
     def test_invalid_text_is_not_stored(self):
@@ -186,78 +186,78 @@ class ProjectWindowTest(unittest.TestCase):
                     if type(obj).__name__ == "Device":
                         known = known or key in [k[0].split(".")[0] for k in gui.fields.Device.KIND_FIELDS.get(obj.kind, [])]
                     self.assertTrue(known, type(obj).__name__ + "." + f.path)
-        self.assertLessEqual({"PvProject", "Contact", "SiteView", "Municipality", "GridOperator", "Order", "Site"},
+        self.assertLessEqual({"PvSite", "Contact", "SiteView", "Municipality", "GridOperator", "Project"},
                              seen)
         # the summaries of file version 2 have no page any more
         self.assertFalse({"ProgressView", "PlantView"} & seen)
 
     def test_views_and_snapshots(self):
         tree = self.app.ui.tree
-        project = GnuSolar.model
-        tree.setCurrentItem(find(self.app, "Standort"))
+        site = GnuSolar.model
+        tree.setCurrentItem(find(self.app, "Adresse und Grundstück"))
         state = field(self.app, "buildingState")
         state.setCurrentIndex(state.findData("existing"))
-        self.assertEqual(project.building.buildingState, "existing")
+        self.assertEqual(site.building.buildingState, "existing")
         field(self.app, "swissGridX").setText("12")
         self.assertNotEqual(field(self.app, "swissGridX").styleSheet(), "")
         field(self.app, "swissGridX").setText("645000")
         self.assertEqual(field(self.app, "swissGridX").styleSheet(), "")
-        self.assertEqual(project.site.ext["ch"]["lv95"]["e"], 2645000)
+        self.assertEqual(site.ext["ch"]["lv95"]["e"], 2645000)
 
-        tree.setCurrentItem(find(self.app, "Auftrag: PV-Anlage"))
+        tree.setCurrentItem(find(self.app, "Projekt: PV-Anlage"))
         fixed = field(self.app, "constructionFixed")
         fixed.setChecked(not fixed.isChecked())
-        self.assertEqual(project.progress.constructionFixed, fixed.isChecked())
+        self.assertEqual(site.progress.constructionFixed, fixed.isChecked())
         field(self.app, "totalCost").setText("19'000")
-        self.assertEqual(project.plant.totalCost, "19000")
+        self.assertEqual(site.plant.totalCost, "19000")
 
         tree.setCurrentItem(find(self.app, "Gemeinde"))
-        self.assertEqual(field(self.app, "name").text(), project.municipality.name or "")
+        self.assertEqual(field(self.app, "name").text(), site.municipality.name or "")
         field(self.app, "website").setText("https://www.example.ch")
-        self.assertEqual(project.municipality.website, "https://www.example.ch")
+        self.assertEqual(site.municipality.website, "https://www.example.ch")
 
         tree.setCurrentItem(find(self.app, "Stromversorger"))
         field(self.app, "connectionContact.email").setText("tag@example.ch")
-        self.assertEqual(project.powerCompany.tagContact.email, "tag@example.ch")
+        self.assertEqual(site.powerCompany.tagContact.email, "tag@example.ch")
 
         tree.setCurrentItem(tree.topLevelItem(0))
         field(self.app, "comment").setPlainText("")
-        self.assertEqual(project.notes, "")
+        self.assertEqual(site.notes, "")
         field(self.app, "comment").setPlainText("Hund im Garten")
-        self.assertEqual(project.notes, "Hund im Garten")
+        self.assertEqual(site.notes, "Hund im Garten")
 
-    # a module group is added to the generator of the order and leaves it
+    # a module group is added to the generator of the project and leaves it
     # when deleted
     def test_module_groups(self):
         tree = self.app.ui.tree
-        project = GnuSolar.model
-        array = [d for d in project.devices if d.kind == "pv_array"][0]
-        first = project.allModuleGroups()[0]
+        site = GnuSolar.model
+        array = [d for d in site.devices if d.kind == "pv_array"][0]
+        first = site.allModuleGroups()[0]
         group = self.run_action(find(self.app, "Dach"), "Modulgruppe hinzufügen")
         self.assertEqual(array.get("moduleGroupIds"), [first.id, group.id])
         types = field(self.app, "typeId")
         types.setCurrentIndex(types.findData(first.typeId))
         field(self.app, "count").setText("4")
-        self.assertEqual((project.plant.totalPanelCount, project.plant.totalPowerDc), ("28", "12.32"))
+        self.assertEqual((site.plant.totalPanelCount, site.plant.totalPowerDc), ("28", "12.32"))
 
         # a string keeps its module group
-        string = project.addPart("strings", moduleGroupId=group.id)
+        string = site.addPart("strings", moduleGroupId=group.id)
         self.run_action(tree.currentItem(), "Löschen")
         self.assertIn("Wird noch verwendet von:\nString", messages[-1])
-        self.assertIn(group, project.allModuleGroups())
-        project.removePart(string)
+        self.assertIn(group, site.allModuleGroups())
+        site.removePart(string)
         self.run_action(find(self.app, "Modulgruppe: 4 x"), "Löschen")
-        self.assertNotIn(group, project.allModuleGroups())
+        self.assertNotIn(group, site.allModuleGroups())
         self.assertEqual(array.get("moduleGroupIds"), [first.id])
-        self.assertEqual(project.plant.totalPanelCount, "24")
+        self.assertEqual(site.plant.totalPanelCount, "24")
 
-        # a new project: the first module group makes the generator
-        new = GnuSolar.PvProject()
+        # a new site: the first module group makes the generator
+        new = GnuSolar.PvSite()
         roof = new.addPart("buildings").addPart("roofs")
         only = roof.addPart("moduleGroups", count=10)
         device = new.addToGenerator(only)
-        self.assertEqual((device.kind, device.orderId, device.get("moduleGroupIds")),
-                         ("pv_array", new.currentOrder.id, [only.id]))
+        self.assertEqual((device.kind, device.projectId, device.get("moduleGroupIds")),
+                         ("pv_array", new.currentProject.id, [only.id]))
         self.assertEqual(new.plant.totalPanelCount, "10")
 
     def test_field_buttons(self):
@@ -276,31 +276,31 @@ class ProjectWindowTest(unittest.TestCase):
         click(self.app, "Webseite öffnen website")
         self.assertEqual(calls, ["079 000 00 00", "eins@example.ch", "https://www.example.ch"])
 
-    # a button which changes nothing doesn't mark the project as changed
+    # a button which changes nothing doesn't mark the site as changed
     def test_page_buttons(self):
         tree = self.app.ui.tree
-        project = GnuSolar.model
+        site = GnuSolar.model
         tree.setCurrentItem(tree.topLevelItem(0))
         self.assertEqual(list(self.app.currentForm.buttons), [
-            "Projektordner öffnen", "neue Offerte", "Anlagedoku erstellen", "Akontorechnung", "Schlussrechnung",
-            "Kleinrechnung", "QR Bill erstellen", "Neuer Auftrag", "Projekt prüfen"])
-        click(self.app, "Projektordner öffnen")
+            "Ordner öffnen", "neue Offerte", "Anlagedoku erstellen", "Akontorechnung", "Schlussrechnung",
+            "Kleinrechnung", "QR Bill erstellen", "Neues Projekt", "Standort prüfen"])
+        click(self.app, "Ordner öffnen")
         self.assertEqual(opened[-1], self.folder)
         gui.pages.askTexts = lambda title, captions: None
         click(self.app, "QR Bill erstellen")
         self.assertFalse(self.app.unsavedChanges)
 
         # the page is built anew after a lookup
-        tree.setCurrentItem(find(self.app, "Standort"))
+        tree.setCurrentItem(find(self.app, "Adresse und Grundstück"))
         self.assertEqual(list(self.app.currentForm.buttons),
                          ["Update von Adresse", "Get 3D Model", "Get Agis Ortho", "Get Agis Survey"])
 
         def lookup():
-            project.building.plotNumber = "1234"
-        project.updateFromAddress = lookup
+            site.building.plotNumber = "1234"
+        site.updateFromAddress = lookup
         click(self.app, "Update von Adresse")
         self.assertTrue(self.app.unsavedChanges)
-        self.assertEqual(tree.currentItem().text(0), "Standort")
+        self.assertEqual(tree.currentItem().text(0), "Adresse und Grundstück")
         self.assertEqual(field(self.app, "plotNumber").text(), "1234")
 
     def test_address_book_contact(self):
@@ -333,19 +333,19 @@ class ProjectWindowTest(unittest.TestCase):
     def input(self, path):
         return self.app.currentForm.inputs[path]
 
-    def test_second_order(self):
+    def test_second_project(self):
         tree = self.app.ui.tree
-        project = GnuSolar.model
-        order = self.run_action(tree.topLevelItem(0), "Neuer Auftrag", "Batterie")
-        self.assertIs(order, project.orders[1])
-        self.assertIs(project.currentOrder, order)
+        site = GnuSolar.model
+        project = self.run_action(tree.topLevelItem(0), "Neues Projekt", "Batterie")
+        self.assertIs(project, site.projects[1])
+        self.assertIs(site.currentProject, project)
         self.input("title").setText("Batterie 10 kWh")
         self.input("folder").setText("2026_Bat")
         self.input("inquiry").setText("2026-08-01")
-        self.assertEqual(tree.currentItem().text(0), "Auftrag: Batterie 10 kWh")
+        self.assertEqual(tree.currentItem().text(0), "Projekt: Batterie 10 kWh")
         self.assertEqual(self.input("state").text(), "inquiry")
 
-        step = self.run_action(find(self.app, "Auftrag: Batterie"), "Schritt hinzufügen", "Technisches Anschlussgesuch (TAG)")
+        step = self.run_action(find(self.app, "Projekt: Batterie"), "Schritt hinzufügen", "Technisches Anschlussgesuch (TAG)")
         self.assertEqual((step.kind, step.state), ("ch.tag", "open"))
         self.input("dates.submitted").setText("2026-08-10")
         self.assertEqual(step.state, "submitted")
@@ -354,42 +354,42 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertNotEqual(self.input("dates.submitted").styleSheet(), "")
         self.assertEqual(step.dates, {"submitted": 1786363200})
 
-        invoice = self.run_action(find(self.app, "Auftrag: Batterie"), "Rechnung hinzufügen", "Schlussrechnung")
+        invoice = self.run_action(find(self.app, "Projekt: Batterie"), "Rechnung hinzufügen", "Schlussrechnung")
         self.input("amount").setText("12'800.00")
         self.assertEqual(invoice.amount, 12800)
 
-        battery = self.run_action(find(self.app, "Auftrag: Batterie"), "Gerät hinzufügen", "Batterie")
-        self.assertEqual((battery.kind, battery.orderId), ("battery", order.id))
+        battery = self.run_action(find(self.app, "Projekt: Batterie"), "Gerät hinzufügen", "Batterie")
+        self.assertEqual((battery.kind, battery.projectId), ("battery", project.id))
         self.input("coupling").setCurrentIndex(self.input("coupling").findData("dc_link"))
-        inverter = [d for d in project.devices if d.kind == "inverter"][0]
+        inverter = [d for d in site.devices if d.kind == "inverter"][0]
         self.input("connectedToId").setCurrentIndex(self.input("connectedToId").findData(inverter.id))
         self.assertEqual(battery.get("coupling"), "dc_link")
-        self.assertEqual(project.byId("devices", battery.get("connectedToId")).kind, "inverter")
+        self.assertEqual(site.byId("devices", battery.get("connectedToId")).kind, "inverter")
 
-        # the pages of the first order still show the first order
-        tree.setCurrentItem(find(self.app, "Auftrag: PV-Anlage").child(0))
-        self.assertIs(project.currentOrder, project.orders[0])
-        self.assertEqual((project.plant.totalPowerDc, project.progress.inquiryReceived), ("10.56", "2026-03-01"))
-        tree.setCurrentItem(find(self.app, "Auftrag: Batterie").child(0))
-        self.assertIs(project.currentOrder, order)
-        self.assertEqual((project.plant.totalPowerDc, project.progress.inquiryReceived), ("", "2026-08-01"))
+        # the pages of the first project still show the first project
+        tree.setCurrentItem(find(self.app, "Projekt: PV-Anlage").child(0))
+        self.assertIs(site.currentProject, site.projects[0])
+        self.assertEqual((site.plant.totalPowerDc, site.progress.inquiryReceived), ("10.56", "2026-03-01"))
+        tree.setCurrentItem(find(self.app, "Projekt: Batterie").child(0))
+        self.assertIs(site.currentProject, project)
+        self.assertEqual((site.plant.totalPowerDc, site.progress.inquiryReceived), ("", "2026-08-01"))
 
         self.assertTrue(self.app.action_save())
         saved = self.saved()
-        self.assertEqual([o["type"] for o in saved["orders"]], ["new_system", "battery"])
-        self.assertEqual(saved["orders"][1]["folder"], "2026_Bat")
-        self.assertEqual(saved["orders"][1]["steps"][0]["dates"], {"submitted": 1786363200})
-        self.assertEqual(saved["orders"][1]["invoices"][0]["amount"], 12800)
+        self.assertEqual([o["type"] for o in saved["projects"]], ["new_system", "battery"])
+        self.assertEqual(saved["projects"][1]["folder"], "2026_Bat")
+        self.assertEqual(saved["projects"][1]["steps"][0]["dates"], {"submitted": 1786363200})
+        self.assertEqual(saved["projects"][1]["invoices"][0]["amount"], 12800)
         self.assertEqual(saved["devices"][-1]["coupling"], "dc_link")
 
-        # an order with devices can not be deleted
-        self.run_action(find(self.app, "Auftrag: Batterie"), "Löschen")
-        self.assertEqual(len(project.orders), 2)
+        # a project with devices can not be deleted
+        self.run_action(find(self.app, "Projekt: Batterie"), "Löschen")
+        self.assertEqual(len(site.projects), 2)
         self.assertIn("Wird noch verwendet von:\nBatterie", messages[-1])
 
     def test_every_kind_of_part(self):
         tree = self.app.ui.tree
-        project = GnuSolar.model
+        site = GnuSolar.model
         for kind in gui.tree.DEVICE_KINDS:
             device = self.run_action(find(self.app, "Geräte"), "Gerät hinzufügen", gui.tree.DEVICE_KINDS[kind])
             self.assertEqual(device.kind, kind)
@@ -418,15 +418,15 @@ class ProjectWindowTest(unittest.TestCase):
             self.assertIs(self.app.currentObj, item.pvpObj)
             count += 1
         self.assertGreater(count, 70)
-        self.assertEqual(project.designs[0].expectedYield, {"annual": 10200000})
+        self.assertEqual(site.designs[0].expectedYield, {"annual": 10200000})
         self.assertTrue(self.app.action_save())
-        reloaded = GnuSolar.PvProject(self.path)
-        self.assertEqual(len(reloaded.devices), len(project.devices))
+        reloaded = GnuSolar.PvSite(self.path)
+        self.assertEqual(len(reloaded.devices), len(site.devices))
         self.assertEqual(reloaded.buildings[1].roofs[0].obstacles[0].kind, "chimney")
 
     def test_electrical_installation(self):
         tree = self.app.ui.tree
-        project = GnuSolar.model
+        site = GnuSolar.model
         board = self.run_action(find(self.app, "Geräte"), "Gerät hinzufügen", "Verteilung")
         self.input("label").setText("Hauptverteilung")
         fuse = self.run_action(tree.currentItem(), "Eingebautes Gerät hinzufügen", "Sicherung")
@@ -447,7 +447,7 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertIs(fuse.get("switchesNeutral"), True)
 
         connection = self.run_action(find(self.app, "Verbindungen"), "Verbindung hinzufügen", "ac")
-        inverter = [d for d in project.devices if d.kind == "inverter"][0]
+        inverter = [d for d in site.devices if d.kind == "inverter"][0]
         self.input("ends.0.deviceId").setCurrentIndex(self.input("ends.0.deviceId").findData(fuse.id))
         self.input("ends.0.port").setText("out")
         self.input("ends.1.deviceId").setCurrentIndex(self.input("ends.1.deviceId").findData(inverter.id))
@@ -463,55 +463,55 @@ class ProjectWindowTest(unittest.TestCase):
             "cable": {"designation": "5G6", "crossSection": 6, "length": 8000}})
         self.assertEqual(tree.currentItem().text(0), "Verbindung: ac F1.out – Wechselrichter: Fronius Symo 10.0-3-M.GRID")
 
-        self.run_action(tree.topLevelItem(0), "Projekt prüfen")
+        self.run_action(tree.topLevelItem(0), "Standort prüfen")
         self.assertEqual(messages[-1], "Nichts gefunden: Verweise und Verbindungen sind in Ordnung.")
         tree.setCurrentItem(find(self.app, "Verbindung: ac"))
         self.input("ends.0.port").setText("top")
-        self.run_action(tree.topLevelItem(0), "Projekt prüfen")
+        self.run_action(tree.topLevelItem(0), "Standort prüfen")
         self.assertIn("hat keinen Anschluss 'top' (in, out)", messages[-1])
         self.assertFalse(self.app.currentObj is None)
 
         # a device with a cable can not be deleted
         self.run_action(find(self.app, "Leitungsschutzschalter: F1"), "Löschen")
-        self.assertIn(fuse, project.devices)
+        self.assertIn(fuse, site.devices)
         self.run_action(find(self.app, "Verbindung: ac"), "Löschen")
         self.run_action(find(self.app, "Leitungsschutzschalter: F1"), "Löschen")
-        self.assertNotIn(fuse, project.devices)
+        self.assertNotIn(fuse, site.devices)
 
-    def test_documents_go_to_the_order(self):
+    def test_documents_go_to_the_project(self):
         tree = self.app.ui.tree
-        project = GnuSolar.model
-        order = self.run_action(tree.topLevelItem(0), "Neuer Auftrag", "Batterie")
-        # the first order works in the project folder, a later one gets a folder as a suggestion
+        site = GnuSolar.model
+        project = self.run_action(tree.topLevelItem(0), "Neues Projekt", "Batterie")
+        # the first project works in the site folder, a later one gets a folder as a suggestion
         year = time.localtime().tm_year
-        self.assertEqual([o.folder for o in project.orders], ["", "%d Batterie" % year])
-        self.assertEqual(project.newOrderFolder("battery"), "%d Batterie 2" % year)
+        self.assertEqual([o.folder for o in site.projects], ["", "%d Batterie" % year])
+        self.assertEqual(site.newProjectFolder("battery"), "%d Batterie 2" % year)
         self.assertEqual(os.listdir(self.folder), ["plant.pvp"])
         self.input("folder").setText("2026_Bat")
         tree.setCurrentItem(tree.topLevelItem(0))
-        self.assertIs(project.currentOrder, order)
+        self.assertIs(site.currentProject, project)
 
         click(self.app, "neue Offerte")
         number = os.path.splitext(os.path.basename(opened[-1]))[0]
         self.assertTrue(os.path.isfile(os.path.join(self.folder, "2026_Bat", "Offerten", number + ".odt")))
-        quote = project.quotes[-1]
-        self.assertEqual((quote.number, quote.state, quote.orderId, quote.date), (number, "draft", order.id, None))
+        quote = site.quotes[-1]
+        self.assertEqual((quote.number, quote.state, quote.projectId, quote.date), (number, "draft", project.id, None))
         self.assertEqual(quote.documents, [{"path": "2026_Bat/Offerten/" + number + ".odt", "kind": "quote"}])
         self.assertTrue(self.app.unsavedChanges)
-        self.assertEqual(order.deriveState(), "inquiry")
+        self.assertEqual(project.deriveState(), "inquiry")
         # the date it was sent comes from the progress page
-        project.progress.quote1Sent = "2026-08-05"
-        self.assertEqual((quote.state, quote.date, order.deriveState()), ("sent", 1785931200, "quoted"))
+        site.progress.quote1Sent = "2026-08-05"
+        self.assertEqual((quote.state, quote.date, project.deriveState()), ("sent", 1785931200, "quoted"))
 
         click(self.app, "Akontorechnung")
-        invoice = order.invoices[0]
+        invoice = project.invoices[0]
         self.assertEqual((invoice.kind, invoice.documents[0]["path"]),
                          ("partial", "2026_Bat/Rechnungen/" + invoice.number + ".odt"))
-        project.progress.partialInvoiceSent = "2026-09-01"
+        site.progress.partialInvoiceSent = "2026-09-01"
         self.assertEqual(invoice.date, 1788264000)
 
         click(self.app, "Anlagedoku erstellen")
-        step = order.getStep("documentation")
+        step = project.getStep("documentation")
         self.assertEqual((step.state, step.documents[0]["path"]), ("open", "2026_Bat/Dokumentation/Dokumentation.odt"))
         self.assertIsNotNone(find(self.app, "Schritt: Dokumentation"))
 
@@ -519,12 +519,12 @@ class ProjectWindowTest(unittest.TestCase):
     def test_folder_names(self):
         config = GnuSolar.config
         tree = self.app.ui.tree
-        project = GnuSolar.model
+        site = GnuSolar.model
 
         def newQuote():
             tree.setCurrentItem(tree.topLevelItem(0))
             click(self.app, "neue Offerte")
-            return project.quotes[-1].documents[0]["path"], project.quotes[-1].number
+            return site.quotes[-1].documents[0]["path"], site.quotes[-1].number
 
         config.folders = folderPreset("short")
         path, number = newQuote()
@@ -533,7 +533,7 @@ class ProjectWindowTest(unittest.TestCase):
         path, number = newQuote()
         self.assertEqual(path, "Verkauf/Offerten/" + number + ".odt")
         self.assertTrue(os.path.isfile(os.path.join(self.folder, "Verkauf", "Offerten", number + ".odt")))
-        # no name: the project folder itself
+        # no name: the site folder itself
         config.folders["quotes"] = ""
         path, number = newQuote()
         self.assertEqual(path, number + ".odt")
@@ -542,7 +542,7 @@ class ProjectWindowTest(unittest.TestCase):
         path, number = newQuote()
         self.assertEqual(path, "off/" + number + ".odt")
         # documents created before stay where they are
-        self.assertEqual(project.quotes[-4].documents[0]["path"], "off/" + project.quotes[-4].number + ".odt")
+        self.assertEqual(site.quotes[-4].documents[0]["path"], "off/" + site.quotes[-4].number + ".odt")
 
         # the installer's own templates lie in the folder of the same name
         used = []
@@ -584,8 +584,8 @@ class ProjectWindowTest(unittest.TestCase):
         self.assertEqual(json.load(open(config.configPath, encoding="utf-8"))["folders"], config.folders)
 
     def test_replacement_device(self):
-        project = GnuSolar.model
-        old = [d for d in project.devices if d.kind == "inverter"][0]
+        site = GnuSolar.model
+        old = [d for d in site.devices if d.kind == "inverter"][0]
         new = self.run_action(find(self.app, "Wechselrichter"), "Ersatzgerät hinzufügen")
         self.assertEqual((new.kind, new.replacesId, new.typeId), ("inverter", old.id, old.typeId))
 

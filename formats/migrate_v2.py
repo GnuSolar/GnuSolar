@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# Migration of a project from file version 2 to version 3, on the plain data
+# Migration of a project of file version 2 to a site of version 3, on the plain data
 # (doc/file_format.md, section 15).
 #
 #   new = migrate(old, taken=..., files=[...], report=Report())
 #
-# old is the "project" object of a version 2 file, new the one of version 3.
+# old is the "project" object of a version 2 file, new the "site" of version 3.
 # Nothing is read or written here. Version 2 has one building, one plant and
-# one progress; they become the site, a building with one roof, and one order
+# one progress; they become the site, a building with one roof, and one project
 # of type new_system.
 #
 # Version 2 values are text as typed. Values that are not what version 3
@@ -20,15 +20,15 @@ import re
 import uuid
 
 from model import values
-from model.states import orderState, stepState
+from model.states import projectState, stepState
 import plugins
 from plugins import ch
 
 CONSTRUCTION_TYPES = {"builton": "on_roof", "integrated": "in_roof", "facade": "facade"}
 ROLES = {"owner": "owner", "installer_ac": "electrician"}
 
-# progress field => field of the order
-ORDER_DATES = {
+# progress field => field of the project
+PROJECT_DATES = {
     "inquiryReceived": "inquiry",
     "roofMeasure": "roofMeasure",
     "roofMeasured": "roofMeasured",
@@ -276,7 +276,8 @@ class _Migration:
             new["taken"] = self.taken
         return new
 
-    def site(self):
+    # the fields of the place: address, coordinates, grid connection, master data
+    def place(self):
         old = self.old.get("building") or {}
         site = {"address": {key: _text(old.get(key)) for key in
                             ("street", "streetNumber", "zip", "city", "region", "country")},
@@ -311,36 +312,36 @@ class _Migration:
             site.setdefault("ext", {})["ch"] = ext
         return _clean(site)
 
-    # ---- order ------------------------------------------------------------
+    # ---- project ------------------------------------------------------------
 
-    def order(self, new):
+    def project(self, new):
         progress = self.old.get("progress") or {}
         plant = self.old.get("plant") or {}
         notes = []
-        order = {"id": self.newId(), "type": "new_system", "folder": ""}
+        project = {"id": self.newId(), "type": "new_system", "folder": ""}
 
-        for key, field in ORDER_DATES.items():
-            order[field] = self.date("progress." + key, progress.get(key), notes)
-        order["constructionFixed"] = True if progress.get("constructionFixed") else None
+        for key, field in PROJECT_DATES.items():
+            project[field] = self.date("progress." + key, progress.get(key), notes)
+        project["constructionFixed"] = True if progress.get("constructionFixed") else None
 
         constructionType = _text(plant.get("constructionType"))
         if constructionType in CONSTRUCTION_TYPES:
-            order["constructionType"] = CONSTRUCTION_TYPES[constructionType]
+            project["constructionType"] = CONSTRUCTION_TYPES[constructionType]
         else:
-            self.keep(order, "plant.constructionType", constructionType)
-        order["totalCost"] = self.number(order, "plant.totalCost", plant.get("totalCost"))
+            self.keep(project, "plant.constructionType", constructionType)
+        project["totalCost"] = self.number(project, "plant.totalCost", plant.get("totalCost"))
 
         # steps
         steps = {}
         for key, (kind, state) in STEP_DATES.items():
             step = steps.setdefault(kind, {"dates": {}, "notes": []})
             step["dates"][state] = self.date("progress." + key, progress.get(key), step["notes"])
-        order["steps"] = []
+        project["steps"] = []
         for kind in STEP_ORDER:
             step = _clean(steps[kind])
             if not step:
                 continue
-            order["steps"].append(_clean({
+            project["steps"].append(_clean({
                 "id": self.newId(), "kind": kind, "state": stepState(step.get("dates")),
                 "dates": step.get("dates"), "notes": "\n".join(step.get("notes", [])) or None}))
 
@@ -349,25 +350,25 @@ class _Migration:
         for key, (kind, number, field) in INVOICE_DATES.items():
             invoice = invoices.setdefault((kind, number), {"kind": kind})
             invoice[field] = self.date("progress." + key, progress.get(key), notes)
-        order["invoices"] = []
+        project["invoices"] = []
         for invoice in invoices.values():
             if invoice.get("date") or invoice.get("paid"):
                 invoice["id"] = self.newId()
-                order["invoices"].append(_clean(invoice))
-        self.numberDocuments(order["invoices"], "fin", "R", "invoice", "date")
+                project["invoices"].append(_clean(invoice))
+        self.numberDocuments(project["invoices"], "fin", "R", "invoice", "date")
 
         # quotes
         for key in QUOTE_DATES:
             day = self.date("progress." + key, progress.get(key), notes)
             if day:
-                new["quotes"].append({"id": self.newId(), "date": day, "state": "sent", "orderId": order["id"]})
+                new["quotes"].append({"id": self.newId(), "date": day, "state": "sent", "projectId": project["id"]})
         self.numberDocuments(new["quotes"], "off", "O", "quote", "date")
 
-        known = set(ORDER_DATES) | set(STEP_DATES) | set(INVOICE_DATES) | set(QUOTE_DATES) | {"constructionFixed"}
-        self.leftovers(order, "progress", progress, known)
-        order["notes"] = "\n".join(notes) or None
-        order["state"] = orderState(order, quoted=bool(new["quotes"]))
-        return order
+        known = set(PROJECT_DATES) | set(STEP_DATES) | set(INVOICE_DATES) | set(QUOTE_DATES) | {"constructionFixed"}
+        self.leftovers(project, "progress", progress, known)
+        project["notes"] = "\n".join(notes) or None
+        project["state"] = projectState(project, quoted=bool(new["quotes"]))
+        return project
 
     # Give quotes or invoices their number from the files O2026-11-0042.pdf /
     # R2026-06-0123.pdf in folder, where the files of a month and the entries
@@ -400,10 +401,10 @@ class _Migration:
 
     # ---- plant ------------------------------------------------------------
 
-    def plant(self, new, order):
+    def plant(self, new, project):
         plant = self.old.get("plant") or {}
         building = self.old.get("building") or {}
-        commissioned = order.get("commissioned")
+        commissioned = project.get("commissioned")
 
         # modules: a manual type, a roof with one module group, a pv_array
         group = {"id": self.newId()}
@@ -427,15 +428,15 @@ class _Migration:
                 group.setdefault("ext", {}).setdefault("gnusolar", {"v": 1}).setdefault("v2", {})["totalArea"] = area
             group["count"] = count
             group["typeId"] = panelType["id"]
-            group["mounting"] = order.get("constructionType") if order.get("constructionType") != "flat_roof" else None
+            group["mounting"] = project.get("constructionType") if project.get("constructionType") != "flat_roof" else None
             new["types"].append(_clean(panelType))
             new["buildings"].append({"id": self.newId(), "roofs": [
                 {"id": self.newId(), "moduleGroups": [_clean(group)]}]})
-            new["devices"].append(_clean({"id": self.newId(), "kind": "pv_array", "orderId": order["id"],
+            new["devices"].append(_clean({"id": self.newId(), "kind": "pv_array", "projectId": project["id"],
                                           "moduleGroupIds": [group["id"]], "from": commissioned}))
 
         # inverter: a manual type and a device
-        inverter = {"id": self.newId(), "kind": "inverter", "orderId": order["id"], "from": commissioned}
+        inverter = {"id": self.newId(), "kind": "inverter", "projectId": project["id"], "from": commissioned}
         powerAc = self.number(inverter, "plant.totalPowerAc", plant.get("totalPowerAc"), factor=1000)
         inverterDesc = _text(plant.get("inverterDesc"))
         if powerAc is not None or inverterDesc or inverter.get("ext"):
@@ -445,7 +446,7 @@ class _Migration:
             new["types"].append(_clean(inverterType))
             new["devices"].append(_clean(inverter))
 
-        # the grid operator's meters: the old one was there before the order,
+        # the grid operator's meters: the old one was there before the project,
         # the new one came with it
         oldMeter = None
         if not _empty(building.get("meterNumberOld")):
@@ -454,7 +455,7 @@ class _Migration:
             new["devices"].append(oldMeter)
         if not _empty(building.get("meterNumberNew")):
             meter = {"id": self.newId(), "kind": "meter", "owner": "grid_operator", "role": "grid",
-                     "number": _text(building["meterNumberNew"]), "orderId": order["id"], "from": commissioned}
+                     "number": _text(building["meterNumberNew"]), "projectId": project["id"], "from": commissioned}
             if oldMeter:
                 meter["replacesId"] = oldMeter["id"]
                 oldMeter["to"] = commissioned
@@ -462,21 +463,21 @@ class _Migration:
         if oldMeter:
             new["devices"][new["devices"].index(oldMeter)] = _clean(oldMeter)
 
-        self.leftovers(order, "plant", plant, ("constructionType", "totalPowerDc", "totalArea", "totalPanelCount",
+        self.leftovers(project, "plant", plant, ("constructionType", "totalPowerDc", "totalArea", "totalPanelCount",
                                                "panelDesc", "totalPowerAc", "inverterDesc", "totalCost"))
 
         if power is not None:
-            order["title"] = "PV-Anlage " + values.numberToText(round(power / 1000, 2)) + " kWp"
+            project["title"] = "PV-Anlage " + values.numberToText(round(power / 1000, 2)) + " kWp"
         else:
-            order["title"] = "PV-Anlage"
+            project["title"] = "PV-Anlage"
 
-    # ---- project ----------------------------------------------------------
+    # ---- site ----------------------------------------------------------
 
     def run(self):
-        new = {
+        new = self.place()
+        new.update({
             "id": self.newId(),
             "currency": "CHF",
-            "site": self.site(),
             "contacts": self.contacts(),
             "buildings": [],
             "surroundings": [],
@@ -486,14 +487,14 @@ class _Migration:
             "connections": [],
             "designs": [],
             "quotes": [],
-            "orders": [],
+            "projects": [],
             "notes": self.old.get("comment") or "",
             "plugins": [],
-            "ext": {},
-        }
-        order = self.order(new)
-        self.plant(new, order)
-        new["orders"].append(_clean(order))
+        })
+        new.setdefault("ext", {})
+        project = self.project(new)
+        self.plant(new, project)
+        new["projects"].append(_clean(project))
         self.leftovers(new, "", self.old, ("building", "comment", "contacts", "municipality", "plant",
                                            "powerCompany", "progress", "state"))
         if not _empty(self.old.get("state")):
@@ -507,9 +508,9 @@ class _Migration:
         return new
 
 
-# The version 3 project of a version 2 project.
+# The version 3 site of a version 2 project.
 #   taken   date of the master data snapshots (timestamp): the date of the file
-#   files   paths of the files in the project folder, relative to it, to find
+#   files   paths of the files in the site folder, relative to it, to find
 #           the numbers of quotes and invoices
 #   report  a Report, filled with what didn't fit
 #   newId   function returning a new id, for tests

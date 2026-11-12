@@ -9,7 +9,7 @@ import os
 import json
 import unittest
 
-from model.PvProject import PvProject
+from model.PvSite import PvSite
 from model.checks import check
 from model import values
 
@@ -24,7 +24,7 @@ def example():
 
 
 def load(data):
-    p = PvProject()
+    p = PvSite()
     p.fromDict(data)
     p.link(p)
     return p
@@ -88,15 +88,15 @@ class ElectricalInstallationTest(unittest.TestCase):
         text = open(path, encoding="utf-8").read()
         block = re.search(r"```json\n(.*?)```", text[text.index("## 17. Example"):], re.S).group(1)
         data = json.loads(block)
-        p = load(data["project"])
-        self.assertEqual(p.toDict(), data["project"])
+        p = load(data["site"])
+        self.assertEqual(p.toDict(), data["site"])
         self.assertEqual(check(p), [])
         installed = lambda day: [d.kind for d in p.devices if d.isInstalled(values.textToDate(day))]
         self.assertEqual(installed("2014-01-01"), [])
         self.assertEqual(installed("2020-01-01"), ["pv_array", "inverter"])
         self.assertEqual(installed("2026-12-01"), ["pv_array", "inverter", "battery"])
         self.assertEqual(p.devices[2].replacesId, p.devices[1].id)
-        p.currentOrder = p.orders[1]
+        p.currentProject = p.projects[1]
         self.assertEqual((p.plant.batteryCapacity, p.existing.totalPowerDc), ("10.24", "6.24"))
 
 

@@ -1,20 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Checks of a project: references that point nowhere, and the electrical
+# Checks of a site: references that point nowhere, and the electrical
 # installation (doc/file_format.md, section 10): ports that the device
 # doesn't have, connectors that don't fit, cables without a second end.
 #
-#   check(project)  ->  list of texts, empty if nothing was found
+#   check(site)  ->  list of texts, empty if nothing was found
 
 from model.ModelNode import ModelNode
 
-# field => list of the project it points into
+# field => list of the site it points into
 REFERENCES = {
     "typeId": "types",
     "mountingSystemTypeId": "types",
     "designId": "designs",
-    "orderId": "orders",
+    "projectId": "projects",
     "quoteId": "quotes",
     "replacesId": "devices",
     "parentId": "devices",
@@ -39,12 +39,12 @@ def _parts(node):
         yield from _parts(child)
 
 
-def check(project):
+def check(site):
     found = []
 
     # every id only once
     seen = {}
-    for part in _parts(project):
+    for part in _parts(site):
         partId = part.__dict__.get("id")
         if partId is None:
             continue
@@ -53,21 +53,21 @@ def check(project):
         seen[partId] = part
 
     # references
-    for part in _parts(project):
+    for part in _parts(site):
         for field, collection in REFERENCES.items():
             value = part.get(field)
             for objectId in (value if isinstance(value, list) else [value]):
-                if objectId is not None and project.byId(collection, objectId) is None:
+                if objectId is not None and site.byId(collection, objectId) is None:
                     found.append("%s: %s zeigt auf nichts" % (_name(part), field))
 
     # devices
-    for device in project.devices:
+    for device in site.devices:
         since, until = device.get("from"), device.to
         if since is not None and until is not None and until < since:
             found.append("%s: entfernt vor der Inbetriebnahme" % _name(device))
         parent = device
-        for _ in range(len(project.devices) + 1):
-            parent = project.byId("devices", parent.parentId)
+        for _ in range(len(site.devices) + 1):
+            parent = site.byId("devices", parent.parentId)
             if parent is None:
                 break
             if parent is device:
@@ -75,13 +75,13 @@ def check(project):
                 break
 
     # connections
-    for connection in project.connections:
+    for connection in site.connections:
         ends = [end for end in connection.ends if end.get("deviceId")]
         if len(ends) != 2:
             found.append("%s: braucht zwei Enden" % _name(connection))
         connectors = []
         for end in ends:
-            device = project.byId("devices", end.get("deviceId"))
+            device = site.byId("devices", end.get("deviceId"))
             if device is None:
                 found.append("%s: ein Ende zeigt auf kein Gerät" % _name(connection))
                 continue
@@ -99,18 +99,18 @@ def check(project):
             found.append("%s: verschiedene Stecker (%s)" % (_name(connection), ", ".join(sorted(plugs))))
 
     # meters with current transformers
-    for device in project.devices:
+    for device in site.devices:
         if device.kind != "meter" or device.get("measuring") != "ct":
             continue
         measures = device.get("measures") or {}
         if not measures.get("connectionId"):
             found.append("%s: Stromwandler ohne Kabel (measures)" % _name(device))
-        elif project.byId("connections", measures["connectionId"]) is None:
+        elif site.byId("connections", measures["connectionId"]) is None:
             found.append("%s: die Stromwandler sitzen auf einem Kabel, das es nicht gibt" % _name(device))
 
     # strings
-    for string in project.strings:
-        inverter = project.byId("devices", string.inverterId)
+    for string in site.strings:
+        inverter = site.byId("devices", string.inverterId)
         if inverter is not None and inverter.kind != "inverter":
             found.append("%s: %s ist kein Wechselrichter" % (_name(string), _name(inverter)))
         mpptCount = inverter.getSpec("mpptCount") if inverter is not None else None

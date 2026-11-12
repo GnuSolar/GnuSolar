@@ -31,7 +31,7 @@ class MigrateV2Test(unittest.TestCase):
 
     def test_site(self):
         new, report = run()
-        site = new["site"]
+        site = new
         self.assertEqual(site["address"], {"street": "Kirchweg", "streetNumber": "26", "zip": "4314", "city": "Musterwil"})
         self.assertEqual(site["plotNumber"], "1060")
         self.assertEqual(site["supply"], {"mainFuse": 40})
@@ -43,13 +43,13 @@ class MigrateV2Test(unittest.TestCase):
 
     def test_snapshots(self):
         new, report = run()
-        mun = new["site"]["municipality"]
+        mun = new["municipality"]
         self.assertEqual(mun["taken"], 1794312000)
         self.assertEqual((mun["id"], mun["code"], mun["name"], mun["stateCode"]), (1215, "4264", "Musterwil", "AG"))
         self.assertEqual(mun["ext"]["ch"], {"v": 1, "buildingFormId": 2})
         self.assertEqual(mun["buildingContact"], {"organization": "Bauverwaltung",
                                                   "channels": [{"kind": "email", "value": "bau@example.ch"}]})
-        grid = new["site"]["gridOperator"]
+        grid = new["gridOperator"]
         self.assertEqual(grid["address"], {"address1": "Kirchweg 1", "zip": "4314", "city": "Musterwil"})
         self.assertEqual(grid["connectionContact"]["organization"], "Netz AG")
         self.assertEqual(grid["ext"]["ch"], {"v": 1, "tagFormId": 4})
@@ -85,35 +85,35 @@ class MigrateV2Test(unittest.TestCase):
         devices = {d["kind"]: d for d in new["devices"] if d["kind"] != "meter"}
         self.assertEqual(devices["pv_array"]["moduleGroupIds"], [group["id"]])
         self.assertEqual(devices["pv_array"]["from"], day("2026-06-20"))
-        self.assertEqual(devices["inverter"]["orderId"], new["orders"][0]["id"])
+        self.assertEqual(devices["inverter"]["projectId"], new["projects"][0]["id"])
 
     def test_meters(self):
         new, report = run()
         old, newMeter = [d for d in new["devices"] if d["kind"] == "meter"]
         self.assertEqual((old["number"], old["to"]), ("12345678", day("2026-06-20")))
-        self.assertNotIn("orderId", old)
+        self.assertNotIn("projectId", old)
         self.assertEqual((newMeter["number"], newMeter["from"], newMeter["replacesId"]),
                          ("87654321", day("2026-06-20"), old["id"]))
 
-    def test_order(self):
+    def test_project(self):
         new, report = run()
-        order = new["orders"][0]
-        self.assertEqual(order["type"], "new_system")
-        self.assertEqual(order["title"], "PV-Anlage 10.56 kWp")
-        self.assertEqual(order["state"], "in_operation")
-        self.assertEqual(order["folder"], "")
-        self.assertEqual(order["inquiry"], day("2026-03-01"))
-        self.assertEqual(order["ordered"], day("2026-04-15"))
-        self.assertEqual(order["commissioned"], day("2026-06-20"))
-        self.assertIs(order["constructionFixed"], True)
-        self.assertEqual(order["constructionType"], "on_roof")
-        self.assertEqual(order["totalCost"], 18450)
-        self.assertNotIn("roofMeasure", order)
+        project = new["projects"][0]
+        self.assertEqual(project["type"], "new_system")
+        self.assertEqual(project["title"], "PV-Anlage 10.56 kWp")
+        self.assertEqual(project["state"], "in_operation")
+        self.assertEqual(project["folder"], "")
+        self.assertEqual(project["inquiry"], day("2026-03-01"))
+        self.assertEqual(project["ordered"], day("2026-04-15"))
+        self.assertEqual(project["commissioned"], day("2026-06-20"))
+        self.assertIs(project["constructionFixed"], True)
+        self.assertEqual(project["constructionType"], "on_roof")
+        self.assertEqual(project["totalCost"], 18450)
+        self.assertNotIn("roofMeasure", project)
         self.assertEqual(new["notes"], "Hund im Garten")
 
     def test_steps(self):
         new, report = run()
-        steps = {s["kind"]: s for s in new["orders"][0]["steps"]}
+        steps = {s["kind"]: s for s in new["projects"][0]["steps"]}
         self.assertEqual(steps["ch.tag"]["dates"], {"submitted": day("2026-04-20"), "approved": day("2026-05-10")})
         self.assertEqual(steps["ch.tag"]["state"], "approved")
         self.assertNotIn("material", steps)
@@ -131,12 +131,12 @@ class MigrateV2Test(unittest.TestCase):
         files = ["off/O2026-03-0041.odt", "off/O2026-03-0041.pdf", "off/O2026-04-0050.odt",
                  "fin/R2026-06-0123.pdf", "fin/R2026-06-0130_Schluss.pdf", "fin/QR2026-06-01.pdf"]
         new, report = run(files=files)
-        order = new["orders"][0]
-        self.assertEqual([(q["date"], q["number"], q["state"], q["orderId"]) for q in new["quotes"]],
-                         [(day("2026-03-20"), "O2026-03-0041", "sent", order["id"]),
-                          (day("2026-04-02"), "O2026-04-0050", "sent", order["id"])])
+        project = new["projects"][0]
+        self.assertEqual([(q["date"], q["number"], q["state"], q["projectId"]) for q in new["quotes"]],
+                         [(day("2026-03-20"), "O2026-03-0041", "sent", project["id"]),
+                          (day("2026-04-02"), "O2026-04-0050", "sent", project["id"])])
         self.assertEqual(new["quotes"][0]["documents"], [{"path": "off/O2026-03-0041.pdf", "kind": "quote"}])
-        self.assertEqual([(i["kind"], i["date"], i.get("paid"), i["number"]) for i in order["invoices"]],
+        self.assertEqual([(i["kind"], i["date"], i.get("paid"), i["number"]) for i in project["invoices"]],
                          [("partial", day("2026-06-01"), day("2026-06-20"), "R2026-06-0123"),
                           ("final", day("2026-06-25"), None, "R2026-06-0130")])
 
@@ -155,13 +155,13 @@ class MigrateV2Test(unittest.TestCase):
         self.assertNotIn("count", group)
         self.assertEqual(group["ext"]["gnusolar"]["v2"]["totalPowerDc"], 10560)
         self.assertNotIn("specs", [t for t in new["types"] if t["kind"] == "panel"][0])
-        order = new["orders"][0]
-        self.assertEqual(order["ext"]["gnusolar"]["v2"], {"totalCost": "ca. 18000", "constructionType": "carport"})
-        site = new["site"]
-        self.assertEqual(site["ext"]["gnusolar"]["v2"], {"buildingState": "existing", "swissGridX": "abc",
-                                                         "swissGridY": "265432.8", "mainFuseSize": "3x40"})
-        self.assertNotIn("lv95", site["ext"]["ch"])
-        self.assertEqual(new["ext"]["gnusolar"]["v2"], {"newField": "x"})
+        project = new["projects"][0]
+        self.assertEqual(project["ext"]["gnusolar"]["v2"], {"totalCost": "ca. 18000", "constructionType": "carport"})
+        # what the building had and what the project had lie together now
+        self.assertEqual(new["ext"]["gnusolar"]["v2"], {"buildingState": "existing", "swissGridX": "abc",
+                                                         "swissGridY": "265432.8", "mainFuseSize": "3x40",
+                                                         "newField": "x"})
+        self.assertNotIn("lv95", new["ext"]["ch"])
 
     def test_empty_project(self):
         old = v2_example.project()
@@ -173,7 +173,7 @@ class MigrateV2Test(unittest.TestCase):
         self.assertEqual(new["buildings"], [])
         self.assertEqual(new["devices"], [])
         self.assertEqual(new["types"], [])
-        self.assertEqual(new["orders"], [{"id": new["orders"][0]["id"], "type": "new_system", "folder": "",
+        self.assertEqual(new["projects"], [{"id": new["projects"][0]["id"], "type": "new_system", "folder": "",
                                           "state": "inquiry", "title": "PV-Anlage"}])
 
     def test_coordinates(self):

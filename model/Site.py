@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# The place where the system stands (doc/file_format.md, section 4), with
-# the snapshots of the master data it relied on: municipality and grid
-# operator.
+# Parts of the place where the system stands (doc/file_format.md, section 4):
+# the grid connection, the design temperatures, and the snapshots of the
+# master data the site relied on, municipality and grid operator. The place
+# itself, with its address and coordinates, is the PvSite (model/PvSite.py).
 
 import os
 import sqlite3
@@ -398,24 +399,3 @@ class GridOperator(ModelNode):
                         "fillpdf_data"):
                 self.__dict__.pop(key, None)
 
-
-class Site(ModelNode):
-
-    _types = {"latitude": "number", "longitude": "number", "elevation": "number", "annualConsumption": "number",
-              "horizon": "points", "ext": "json"}
-
-    def __init__(self, top=None):
-        self._top = top
-        self.label = None
-        self.address = Address(top)
-        self.latitude = None            # WGS84, degrees: the origin of the coordinate system
-        self.longitude = None
-        self.elevation = None           # m above sea level
-        self.plotNumber = None          # Parzelle Nummer
-        self.supply = Supply(top)
-        self.annualConsumption = None   # Wh per year
-        self.designTemperature = DesignTemperature(top)
-        self.horizon = []               # [[azimuth, elevation], ...]
-        self.municipality = Municipality(top)
-        self.gridOperator = GridOperator(top)
-        self.ext = {}

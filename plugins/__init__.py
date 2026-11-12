@@ -23,13 +23,13 @@ def get(pluginId):
 
 # The modules of the plugins the user enabled ("plugins" in config.json).
 # A plugin that is not enabled offers nothing in the program; its data in a
-# project file is kept all the same.
+# site file is kept all the same.
 def enabled():
     from Config import config
     return [get(pluginId) for pluginId in config.plugins if pluginId in AVAILABLE]
 
 
-# all ext namespaces used anywhere in plain project data
+# all ext namespaces used anywhere in plain site data
 def usedNamespaces(node, found=None):
     found = set() if found is None else found
     if isinstance(node, dict):
@@ -43,7 +43,7 @@ def usedNamespaces(node, found=None):
     return found
 
 
-# The entries of the project's "plugins" list: every plugin that has data in
+# The entries of the site's "plugins" list: every plugin that has data in
 # the file. Entries of plugins GnuSolar doesn't know are kept as they are.
 def pluginList(projectData):
     known = {p.get("id"): p for p in projectData.get("plugins") or [] if isinstance(p, dict)}

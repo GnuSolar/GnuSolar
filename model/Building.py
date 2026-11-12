@@ -130,7 +130,7 @@ class Building(ModelNode):
         self.z = None
         self.azimuth = None
         self.roofs = []
-        self.model = {}             # a 3D model file in the project folder
+        self.model = {}             # a 3D model file in the site folder
         self.ext = {}
 
 

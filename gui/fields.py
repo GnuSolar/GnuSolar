@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The fields of the pages of the project window. gui/forms.py builds the
-# detail page of every part of the project from the lists here.
+# The fields of the pages of the site window. gui/forms.py builds the
+# detail page of every part of the site from the lists here.
 #
 #   fieldsOf(obj)  ->  [(title of the group, [Field, ...]), ...]
 #
 # A Field shows the value at a path below the object ("cable.length",
 # "ends.0.port"). Its type decides the input: text, number, int, date, bool,
 # list (comma separated), points, json, multiline, readonly. A field with
-# choices is a drop down; ref names the list of the project it points into.
+# choices is a drop down; ref names the list of the site it points into.
 #
 # The page Standort shows the view of model/compat.py with the names of file
 # version 2, which take and give text.
 
 import plugins
-from model import Building, Device, Order, Site
-from model.PvProject import PvProject
+from model import Building, Device, Project, Site
+from model.PvSite import PvSite
 from model.Contact import Contact, ROLES
 from model.compat import SiteView
 
@@ -27,7 +27,7 @@ class Field:
         self.caption = caption + (" [" + unit + "]" if unit else "")
         self.type = type
         self.choices = choices      # list of values, or dict value => caption
-        self.ref = ref              # name of a list of the project
+        self.ref = ref              # name of a list of the site
         self.hint = hint            # shown in the empty input
 
 
@@ -114,7 +114,7 @@ def _named(path, name, fieldType="text", **more):
     return Field(path, caption, fieldType, unit=unit, **more)
 
 _LIFETIME = [
-    F("orderId", "Auftrag", ref="orders"),
+    F("projectId", "Projekt", ref="projects"),
     F("from", "in Betrieb seit", "date"),
     F("to", "entfernt am", "date"),
 ]
@@ -123,17 +123,10 @@ _LIFETIME = [
 # all kinds of steps: the common ones and those of the enabled country
 # extensions
 def stepKinds():
-    kinds = dict(Order.STEP_KINDS)
+    kinds = dict(Project.STEP_KINDS)
     for plugin in plugins.enabled():
         kinds.update(getattr(plugin, "STEP_KINDS", {}))
     return kinds
-
-
-def _project(obj):
-    return [
-        # the property keeps the notes a text
-        ("Projekt", [F("comment", "Bemerkungen", "multiline")]),
-    ]
 
 
 def _contact(obj):
@@ -212,6 +205,8 @@ def _site(obj):
     return [
         ("Standort", [
             F("label", "Bezeichnung"),
+            # the property keeps the notes a text
+            F("comment", "Bemerkungen", "multiline"),
             F("latitude", "Breite (WGS84)", "number", unit="°"),
             F("longitude", "Länge (WGS84)", "number", unit="°"),
             F("elevation", "Höhe über Meer", "number", unit="m"),
@@ -233,15 +228,15 @@ def _site(obj):
     ]
 
 
-def _order(obj):
+def _project(obj):
     return [
-        ("Auftrag", [
-            F("type", "Art", choices=Order.ORDER_TYPES),
+        ("Projekt", [
+            F("type", "Art", choices=Project.PROJECT_TYPES),
             F("title", "Titel"),
             F("state", "Status", "readonly"),
             F("folder", "Unterordner"),
             F("quoteId", "angenommene Offerte", ref="quotes"),
-            F("constructionType", "Bauart", choices=Order.CONSTRUCTION_TYPES),
+            F("constructionType", "Bauart", choices=Project.CONSTRUCTION_TYPES),
             F("totalCost", "Gesamtkosten", "number"),
             F("notes", "Notizen", "multiline"),
         ]),
@@ -284,7 +279,7 @@ def _step(obj):
 def _invoice(obj):
     return [
         ("Rechnung", [
-            F("kind", "Art", choices=Order.INVOICE_KINDS),
+            F("kind", "Art", choices=Project.INVOICE_KINDS),
             F("number", "Nummer"),
             F("date", "Datum", "date"),
             F("amount", "Betrag", "number"),
@@ -300,8 +295,8 @@ def _quote(obj):
         ("Offerte", [
             F("number", "Nummer"),
             F("date", "Datum", "date"),
-            F("state", "Status", choices=Order.QUOTE_STATES),
-            F("orderId", "Auftrag", ref="orders"),
+            F("state", "Status", choices=Project.QUOTE_STATES),
+            F("projectId", "Projekt", ref="projects"),
             F("variant", "Variante"),
             F("designId", "Auslegung", ref="designs"),
             F("validUntil", "gültig bis", "date"),
@@ -526,17 +521,16 @@ def _connection(obj):
 
 
 FIELDS = {
-    PvProject: _project,
+    PvSite: _site,
     Contact: _contact,
     SiteView: _siteView,
     Site.Municipality: _municipality,
     Site.GridOperator: _gridOperator,
-    Site.Site: _site,
-    Order.Order: _order,
-    Order.Step: _step,
-    Order.Invoice: _invoice,
-    Order.Quote: _quote,
-    Order.Design: _design,
+    Project.Project: _project,
+    Project.Step: _step,
+    Project.Invoice: _invoice,
+    Project.Quote: _quote,
+    Project.Design: _design,
     Building.Building: _building,
     Building.Roof: _roof,
     Building.ModuleGroup: _moduleGroup,

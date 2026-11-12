@@ -1,16 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Designs, quotes and orders (doc/file_format.md, sections 11 and 12).
+# Designs, quotes and projects (doc/file_format.md, sections 11 and 12).
 #
-# An order is a job at the site: the first installation, a battery, a
+# A project is a job at the site: the first installation, a battery, a
 # replacement. It has its own steps with authorities, documents and invoices.
 
 from model.ModelNode import ModelNode
 from model import states
 
 # type => caption
-ORDER_TYPES = {
+PROJECT_TYPES = {
     "new_system": "PV-Anlage",
     "extension": "Erweiterung",
     "battery": "Batterie",
@@ -21,7 +21,7 @@ ORDER_TYPES = {
     "inspection": "Kontrolle",
     "service": "Service",
 }
-ORDER_STATES = ("inquiry", "quoted", "running", "in_operation", "completed", "rejected", "inactive")
+PROJECT_STATES = ("inquiry", "quoted", "running", "in_operation", "completed", "rejected", "inactive")
 CONSTRUCTION_TYPES = ("on_roof", "in_roof", "facade", "flat_roof", "ground")
 
 # kind => caption of the steps every country has. The steps with authorities
@@ -68,7 +68,7 @@ class Quote(ModelNode):
         self.date = None
         self.variant = None
         self.designId = None
-        self.orderId = None         # the order (job) the quote was made for
+        self.projectId = None         # the project (job) the quote was made for
         self.validUntil = None
         self.state = None           # see QUOTE_STATES
         self.items = []
@@ -78,7 +78,7 @@ class Quote(ModelNode):
         self.ext = {}
 
     def hasContent(self):
-        return any(key not in ("id", "date", "state", "orderId") for key in self.toDict())
+        return any(key not in ("id", "date", "state", "projectId") for key in self.toDict())
 
 
 # Something done with an authority, the grid operator, a subsidy office or a
@@ -134,7 +134,7 @@ class Invoice(ModelNode):
         return any(key not in ("id", "kind") for key in self.toDict())
 
 
-class Order(ModelNode):
+class Project(ModelNode):
 
     _parts = {"steps": Step, "invoices": Invoice}
     _types = {"inquiry": "date", "roofMeasure": "date", "roofMeasured": "date", "ordered": "date",
@@ -146,11 +146,11 @@ class Order(ModelNode):
     def __init__(self, top=None):
         self._top = top
         self.id = None
-        self.type = None            # see ORDER_TYPES
+        self.type = None            # see PROJECT_TYPES
         self.title = None
-        self.state = None           # see ORDER_STATES, derived from the dates
+        self.state = None           # see PROJECT_STATES, derived from the dates
         self.quoteId = None         # the quote the client accepted
-        self.folder = ""            # subfolder of the order in the project folder, "" is the project folder
+        self.folder = ""            # subfolder of the project in the site folder, "" is the site folder
 
         self.inquiry = None
         self.roofMeasure = None
@@ -173,14 +173,14 @@ class Order(ModelNode):
         self.notes = None
         self.ext = {}
 
-    # the quotes made for this order
+    # the quotes made for this project
     def getQuotes(self):
         if not self._top:
             return []
-        return [q for q in self._top.quotes if q.orderId == self.id]
+        return [q for q in self._top.quotes if q.projectId == self.id]
 
     def deriveState(self):
-        self.state = states.orderState(self.__dict__, quoted=any(q.date for q in self.getQuotes()))
+        self.state = states.projectState(self.__dict__, quoted=any(q.date for q in self.getQuotes()))
         return self.state
 
     def changed(self):
@@ -188,7 +188,7 @@ class Order(ModelNode):
             self.folder = ""
         self.deriveState()
 
-    # The devices of the order go into operation with it, and the devices
+    # The devices of the project go into operation with it, and the devices
     # they replace are removed that day.
     def set(self, key, value):
         before = self.__dict__.get(key)
@@ -202,7 +202,7 @@ class Order(ModelNode):
             if replaced is not None and replaced.to in (None, before):
                 replaced.to = value
 
-    # the step of a kind, None if the order doesn't have it
+    # the step of a kind, None if the project doesn't have it
     def getStep(self, kind):
         for step in self.steps:
             if step.kind == kind:
@@ -214,11 +214,11 @@ class Order(ModelNode):
         found = [i for i in self.invoices if i.kind == kind]
         return found[number] if number < len(found) else None
 
-    # the devices this order installed
+    # the devices this project installed
     def getDevices(self, kind=None):
         if not self._top:
             return []
-        return [d for d in self._top.devices if d.orderId == self.id and (kind is None or d.kind == kind)]
+        return [d for d in self._top.devices if d.projectId == self.id and (kind is None or d.kind == kind)]
 
     def getCaption(self):
-        return self.title or ORDER_TYPES.get(self.type, str(self.type))
+        return self.title or PROJECT_TYPES.get(self.type, str(self.type))

@@ -19,7 +19,7 @@ from Ui.Preferences import *
 # Every installer names them their own way (Preferences, tab "Ordner"):
 #   kind => (written out name, short name)
 # A name may be a path ("Finanzen/Rechnungen"), an empty name is the project
-# folder itself. Only new documents follow the names, the project file keeps
+# folder itself. Only new documents follow the names, the file of the site keeps
 # the path of every document it knows.
 FOLDERS = {
     "quotes":        ("Offerten", "off"),
@@ -155,7 +155,7 @@ class Config():
             name = FOLDERS[kind][1 if short > long else 0]
         return name
 
-    # the folder of a kind in a project or order folder
+    # the folder of a kind in the folder of a site or of a project
     def getFolderPath(self, projectDir, kind):
         name = self.getFolder(kind)
         return os.path.join(projectDir, *name.split("/")) if name else projectDir

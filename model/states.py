@@ -1,25 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# States of orders and steps (doc/file_format.md, section 12), derived from
+# States of projects and steps (doc/file_format.md, section 12), derived from
 # their dates. Works on plain values, so the migration can use it too.
 
 # the states of a step, in the order they are reached
 STEP_STATES = ("ordered", "filled", "signed", "submitted", "approved", "paid")
 
 
-# State of an order from its dates. order: field => value, quoted: True if a
+# State of a project from its dates. project: field => value, quoted: True if a
 # quote was sent for it.
-def orderState(order, quoted=False):
-    if order.get("rejected"):
+def projectState(project, quoted=False):
+    if project.get("rejected"):
         return "rejected"
-    if order.get("completed") or order.get("archived"):
+    if project.get("completed") or project.get("archived"):
         return "completed"
-    if order.get("inactive"):
+    if project.get("inactive"):
         return "inactive"
-    if order.get("commissioned"):
+    if project.get("commissioned"):
         return "in_operation"
-    if order.get("ordered"):
+    if project.get("ordered"):
         return "running"
     if quoted:
         return "quoted"

@@ -165,7 +165,7 @@ class Device(ModelNode):
         self.location = None
 
         # lifetime
-        self.orderId = None                 # the order that installed it
+        self.projectId = None                 # the project that installed it
         self.__dict__["from"] = None        # date it went into operation
         self.to = None                      # date it was removed
         self.replacesId = None
@@ -260,7 +260,7 @@ class Connection(ModelNode):
         self.cable = {}
         self.protocol = None            # for signal, see PROTOCOLS
         self.label = None
-        self.orderId = None
+        self.projectId = None
         self.__dict__["from"] = None
         self.to = None
         self.ext = {}

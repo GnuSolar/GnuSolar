@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The form scripts in data/: what they fill in for the order at hand.
+# The form scripts in data/: what they fill in for the project at hand.
 
 import os
 import shutil
@@ -9,8 +9,8 @@ import zipfile
 import tempfile
 import unittest
 
-from model.PvProject import PvProject
-from tests.test_project import v2_text
+from model.PvSite import PvSite
+from tests.test_site import v2_text
 
 
 class ConnectionRequestTest(unittest.TestCase):
@@ -25,7 +25,7 @@ class ConnectionRequestTest(unittest.TestCase):
             path = os.path.join(folder, "plant.pvp")
             with open(path, "w", encoding="utf-8") as f:
                 f.write(v2_text())
-            p = PvProject(path)
+            p = PvSite(path)
             p.powerCompany.fkFormTag = 4            # VSE TAG 2023
             from Config import config
             config.installer_signature = ""
@@ -35,10 +35,10 @@ class ConnectionRequestTest(unittest.TestCase):
             self.assertIn("Photovoltaik", new)
             self.assertNotIn("Elektrischer Energiespeicher 1", new)
 
-            order = p.addOrder("battery", "Batterie")
+            project = p.addProject("battery", "Batterie")
             batteryType = p.addPart("types", kind="battery", manufacturer="BYD", model="HVS 10.2",
                                     specs={"capacity": 10240, "powerDischarge": 10240})
-            p.addPart("devices", kind="battery", orderId=order.id, typeId=batteryType.id, coupling="dc_link")
+            p.addPart("devices", kind="battery", projectId=project.id, typeId=batteryType.id, coupling="dc_link")
             self.assertIsNone(p.powerCompany.createTag(p, os.path.join(folder, "battery.xlsx")))
             battery = self.cells(os.path.join(folder, "battery.xlsx"))
             self.assertIn("Elektrischer Energiespeicher 1", battery)

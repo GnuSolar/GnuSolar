@@ -4,4 +4,4 @@
 # plain data and back (ModelNode.toDict / fromDict). The modules here turn
 # that plain data into files and back. They do not use Qt.
 #
-#   pvp.py   the native GnuSolar project file (plant.pvp)
+#   pvp.py   the native GnuSolar site file (plant.pvp)

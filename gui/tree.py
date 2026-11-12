@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The tree of the project window: building the tree from the model, and the
-# actions of its nodes (add an order, a step, a device ..., delete a part).
+# The tree of the site window: building the tree from the model, and the
+# actions of its nodes (add a project, a step, a device ..., delete a part).
 #
 # Every tree item has the model object it shows in item.pvpObj.
 
 from PyQt5.QtWidgets import QTreeWidgetItem
 
 from model.ModelNode import ModelNode
-from model.PvProject import PvProject
+from model.PvSite import PvSite
 from model.Contact import Contact, ContactList, ROLE_NAMES
 from model.Building import Building, Roof, ModuleGroup, Obstacle, Surrounding, OBSTACLE_KINDS, SURROUNDING_KINDS
 from model.Device import DeviceType, Device, String, Connection, DEVICE_KINDS, TYPE_KINDS, CONNECTION_KINDS
-from model.Order import Order, Step, Invoice, Quote, Design, ORDER_TYPES, INVOICE_KINDS
+from model.Project import Project, Step, Invoice, Quote, Design, PROJECT_TYPES, INVOICE_KINDS
 from model.compat import SiteView
 from model.checks import check
 from gui.captions import caption
 from gui.fields import stepKinds
 
-# the devices an order usually brings
-ORDER_DEVICE_KINDS = ("inverter", "battery", "meter", "charger", "heat_pump", "heating_rod", "energy_manager",
+# the devices a project usually brings
+PROJECT_DEVICE_KINDS = ("inverter", "battery", "meter", "charger", "heat_pump", "heating_rod", "energy_manager",
                       "optimizer")
 
 
-# A list of the project shown as a node of the tree
+# A list of the site shown as a node of the tree
 class Section:
     def __init__(self, top, key, caption, text):
         self._top = top
@@ -41,7 +41,7 @@ SECTIONS = (
     ("surroundings", "Umgebung", "Was neben den Gebäuden Schatten wirft: Bäume, Nachbarhäuser, Mauern."),
     ("devices", "Geräte", "Alles Installierte: Wechselrichter, Batterien, Zähler, Verteilungen, Sicherungen ... "
                           "Ersetzte Geräte bleiben mit ihrem Enddatum erhalten."),
-    ("types", "Typen", "Die Produkte, die das Projekt verwendet: Module, Wechselrichter, Batterien, Montagesysteme."),
+    ("types", "Typen", "Die Produkte, die am Standort verwendet werden: Module, Wechselrichter, Batterien, Montagesysteme."),
     ("strings", "Strings", "Wie die Module an die Wechselrichter angeschlossen sind."),
     ("connections", "Verbindungen", "Kabel zwischen den Geräten: Leistung, Schutzleiter und Signal. Geräte und "
                                     "Verbindungen zusammen sind das Schema der Installation."),
@@ -55,7 +55,7 @@ class Message(Exception):
 
 # One entry of a context menu or button of a page: func does it and returns
 # the object to show afterwards. entries makes it a submenu. confirm is a
-# question to ask first. refresh=False: func doesn't change the project, or
+# question to ask first. refresh=False: func doesn't change the site, or
 # shows the change itself (gui/pages.py).
 class Action:
     def __init__(self, text, func=None, entries=None, confirm=None, refresh=True):
@@ -68,56 +68,55 @@ class Action:
 
 # ---- building the tree ------------------------------------------------------
 
-# fill the tree widget with the project
-def buildTree(tree, project):
+# fill the tree widget with the site
+def buildTree(tree, site):
     tree.setColumnCount(1)
-    top = QTreeWidgetItem(None, ["PV-Anlage"])
-    top.pvpObj = project
+    top = QTreeWidgetItem(None, [caption(site)])
+    top.pvpObj = site
     expand = [top]
 
     # owner and electrician are always there
-    project.contacts.owner
-    project.contacts.installer_ac
-    contacts = _addItem(top, project.contacts)
+    site.contacts.owner
+    site.contacts.installer_ac
+    contacts = _addItem(top, site.contacts)
     expand.append(contacts)
-    for contact in project.contacts:
+    for contact in site.contacts:
         _addItem(contacts, contact)
 
-    site = _addItem(top, project.building)
-    _addItem(site, project.site)
-    municipality = _addItem(top, project.municipality)
-    _addItem(municipality, project.municipality.mainContact, "Kontakt (Haupt)")
-    _addItem(municipality, project.municipality.buildingContact, "Kontakt (Baubehörde)")
-    powerCompany = _addItem(top, project.powerCompany)
-    _addItem(powerCompany, project.powerCompany.mainContact, "Kontakt (Haupt)")
-    _addItem(powerCompany, project.powerCompany.tagContact, "Kontakt (TAG's)")
-    expand += [site, municipality, powerCompany]
+    address = _addItem(top, site.building)
+    municipality = _addItem(top, site.municipality)
+    _addItem(municipality, site.municipality.mainContact, "Kontakt (Haupt)")
+    _addItem(municipality, site.municipality.buildingContact, "Kontakt (Baubehörde)")
+    powerCompany = _addItem(top, site.powerCompany)
+    _addItem(powerCompany, site.powerCompany.mainContact, "Kontakt (Haupt)")
+    _addItem(powerCompany, site.powerCompany.tagContact, "Kontakt (TAG's)")
+    expand += [address, municipality, powerCompany]
 
-    # a project always has an order
-    project.currentOrder
-    for order in project.orders:
-        item = _addItem(top, order)
+    # a site always has a project
+    site.currentProject
+    for project in site.projects:
+        item = _addItem(top, project)
         expand.append(item)
-        for step in order.steps:
+        for step in project.steps:
             _addItem(item, step)
-        for invoice in order.invoices:
+        for invoice in project.invoices:
             _addItem(item, invoice)
 
     for key, text, help in SECTIONS:
-        section = _addItem(top, Section(project, key, text, help))
+        section = _addItem(top, Section(site, key, text, help))
         if key == "buildings":
-            for building in project.buildings:
+            for building in site.buildings:
                 buildingItem = _addItem(section, building)
                 for roof in building.roofs:
                     roofItem = _addItem(buildingItem, roof)
                     for part in roof.moduleGroups + roof.obstacles:
                         _addItem(roofItem, part)
         elif key == "devices":
-            _addDevices(section, project, None)
+            _addDevices(section, site, None)
         else:
-            for part in project.collection(key):
+            for part in site.collection(key):
                 _addItem(section, part)
-        section.setText(0, text + " (" + str(len(project.collection(key))) + ")")
+        section.setText(0, text + " (" + str(len(site.collection(key))) + ")")
 
     tree.addTopLevelItems([top])
     for item in expand:
@@ -125,13 +124,13 @@ def buildTree(tree, project):
 
 
 # the devices built into parent (None: the ones built into nothing)
-def _addDevices(parentItem, project, parent):
-    ids = {d.id for d in project.devices}
-    for device in project.devices:
+def _addDevices(parentItem, site, parent):
+    ids = {d.id for d in site.devices}
+    for device in site.devices:
         inside = device.parentId if device.parentId in ids else None
         if inside == (parent.id if parent else None) and device is not parent:
             item = _addItem(parentItem, device)
-            _addDevices(item, project, device)
+            _addDevices(item, site, device)
 
 
 def _addItem(parent, obj, name=None):
@@ -172,10 +171,10 @@ def findItem(tree, obj):
     return None
 
 
-# the order a tree item belongs to, None if it is not below an order
-def orderOf(item):
+# the project a tree item belongs to, None if it is not below a project
+def projectOf(item):
     while item is not None:
-        if isinstance(item.pvpObj, Order):
+        if isinstance(item.pvpObj, Project):
             return item.pvpObj
         item = item.parent()
     return None
@@ -203,7 +202,7 @@ def _uses(value, ids):
 
 # captions of the parts outside of obj which refer to it or to a part of it.
 # ignore: generators whose list of module groups doesn't count.
-def usedBy(project, obj, ignore=()):
+def usedBy(site, obj, ignore=()):
     ids = set()
     _ids(obj, ids)
     inside = set()
@@ -228,21 +227,21 @@ def usedBy(project, obj, ignore=()):
             found.append(caption(node))
         for child in node.children():
             walk(child)
-    walk(project)
+    walk(site)
     return found
 
 
-def _delete(project, owner, obj):
+def _delete(site, owner, obj):
     def func():
         # a module group leaves the generators it is part of; they are no
         # reason to keep it
         member = []
         if isinstance(obj, ModuleGroup):
-            for device in project.devices:
+            for device in site.devices:
                 ids = device.get("moduleGroupIds") or []
                 if obj.id in ids:
                     member.append((device, [i for i in ids if i != obj.id]))
-        users = usedBy(project, obj, ignore=[device for device, ids in member])
+        users = usedBy(site, obj, ignore=[device for device, ids in member])
         if users:
             raise ValueError("Wird noch verwendet von:\n" + "\n".join(users[:10]))
         if isinstance(owner, ContactList):
@@ -251,7 +250,7 @@ def _delete(project, owner, obj):
             owner.removePart(obj)
         for device, ids in member:
             device.set("moduleGroupIds", ids or None)
-        return owner if not isinstance(owner, (PvProject, ContactList)) else None
+        return owner if not isinstance(owner, (PvSite, ContactList)) else None
     return Action("Löschen", func, confirm="'" + caption(obj) + "' wirklich löschen?")
 
 
@@ -271,16 +270,16 @@ def _addKinds(text, owner, key, kinds, field="kind", **values):
 # The actions of a tree item
 def contextMenu(item):
     obj = item.pvpObj
-    project = obj if isinstance(obj, PvProject) else getattr(obj, "_top", None)
+    site = obj if isinstance(obj, PvSite) else getattr(obj, "_top", None)
     parent = item.parent().pvpObj if item.parent() else None
 
-    if isinstance(obj, PvProject):
-        def checkProject():
+    if isinstance(obj, PvSite):
+        def checkSite():
             found = check(obj)
             raise Message("\n".join(found) if found else "Nichts gefunden: Verweise und Verbindungen sind in Ordnung.")
-        return [Action("Neuer Auftrag", entries=[
-                    Action(name, lambda t=orderType: obj.addOrder(t)) for orderType, name in ORDER_TYPES.items()]),
-                Action("Projekt prüfen", checkProject)]
+        return [Action("Neues Projekt", entries=[
+                    Action(name, lambda t=projectType: obj.addProject(t)) for projectType, name in PROJECT_TYPES.items()]),
+                Action("Standort prüfen", checkSite)]
 
     if isinstance(obj, ContactList):
         return [Action("Kontakt hinzufügen", entries=[
@@ -288,71 +287,71 @@ def contextMenu(item):
 
     # only contacts of the contact list, not the ones of the snapshots
     if isinstance(obj, Contact):
-        return [_delete(project, parent, obj)] if isinstance(parent, ContactList) else []
+        return [_delete(site, parent, obj)] if isinstance(parent, ContactList) else []
 
-    if isinstance(obj, Order):
+    if isinstance(obj, Project):
         missing = {kind: name for kind, name in stepKinds().items() if obj.getStep(kind) is None}
         actions = [
             _addKinds("Schritt hinzufügen", obj, "steps", missing),
             _addKinds("Rechnung hinzufügen", obj, "invoices", INVOICE_KINDS),
-            _add("Offerte hinzufügen", project, "quotes", orderId=obj.id, state="draft"),
-            _addKinds("Gerät hinzufügen", project, "devices",
-                      {kind: DEVICE_KINDS[kind] for kind in ORDER_DEVICE_KINDS}, orderId=obj.id),
+            _add("Offerte hinzufügen", site, "quotes", projectId=obj.id, state="draft"),
+            _addKinds("Gerät hinzufügen", site, "devices",
+                      {kind: DEVICE_KINDS[kind] for kind in PROJECT_DEVICE_KINDS}, projectId=obj.id),
         ]
-        if len(project.orders) > 1:
-            actions.append(_delete(project, project, obj))
+        if len(site.projects) > 1:
+            actions.append(_delete(site, site, obj))
         return actions
 
     if isinstance(obj, (Step, Invoice)):
-        return [_delete(project, parent, obj)]
+        return [_delete(site, parent, obj)]
 
     if isinstance(obj, Section):
         key = obj.key
         if key == "quotes":
-            return [_add("Offerte hinzufügen", project, key, orderId=project.currentOrder.id, state="draft")]
+            return [_add("Offerte hinzufügen", site, key, projectId=site.currentProject.id, state="draft")]
         if key == "designs":
-            return [_add("Auslegung hinzufügen", project, key)]
+            return [_add("Auslegung hinzufügen", site, key)]
         if key == "buildings":
-            return [_add("Gebäude hinzufügen", project, key)]
+            return [_add("Gebäude hinzufügen", site, key)]
         if key == "surroundings":
-            return [_addKinds("Umgebung hinzufügen", project, key, SURROUNDING_KINDS)]
+            return [_addKinds("Umgebung hinzufügen", site, key, SURROUNDING_KINDS)]
         if key == "devices":
-            return [_addKinds("Gerät hinzufügen", project, key, DEVICE_KINDS)]
+            return [_addKinds("Gerät hinzufügen", site, key, DEVICE_KINDS)]
         if key == "types":
-            return [_addKinds("Typ hinzufügen", project, key, TYPE_KINDS, source={"db": "manual"})]
+            return [_addKinds("Typ hinzufügen", site, key, TYPE_KINDS, source={"db": "manual"})]
         if key == "strings":
-            return [_add("String hinzufügen", project, key)]
+            return [_add("String hinzufügen", site, key)]
         if key == "connections":
-            return [_addKinds("Verbindung hinzufügen", project, key, CONNECTION_KINDS)]
+            return [_addKinds("Verbindung hinzufügen", site, key, CONNECTION_KINDS)]
         return []
 
     if isinstance(obj, Building):
-        return [_add("Dach hinzufügen", obj, "roofs"), _delete(project, project, obj)]
+        return [_add("Dach hinzufügen", obj, "roofs"), _delete(site, site, obj)]
 
     if isinstance(obj, Roof):
-        # a new module group is part of the generator of the order at hand
+        # a new module group is part of the generator of the project at hand
         def addGroup():
             group = obj.addPart("moduleGroups")
-            project.addToGenerator(group)
+            site.addToGenerator(group)
             return group
         return [Action("Modulgruppe hinzufügen", addGroup),
                 _addKinds("Hindernis hinzufügen", obj, "obstacles", OBSTACLE_KINDS),
-                _delete(project, parent, obj)]
+                _delete(site, parent, obj)]
 
     if isinstance(obj, (ModuleGroup, Obstacle)):
-        return [_delete(project, parent, obj)]
+        return [_delete(site, parent, obj)]
 
     if isinstance(obj, Device):
         def replacement():
-            new = project.addPart("devices", kind=obj.kind, typeId=obj.typeId, label=obj.label,
+            new = site.addPart("devices", kind=obj.kind, typeId=obj.typeId, label=obj.label,
                                   location=obj.location, parentId=obj.parentId, replacesId=obj.id,
-                                  orderId=project.currentOrder.id)
+                                  projectId=site.currentProject.id)
             return new
-        return [_addKinds("Eingebautes Gerät hinzufügen", project, "devices", DEVICE_KINDS, parentId=obj.id),
+        return [_addKinds("Eingebautes Gerät hinzufügen", site, "devices", DEVICE_KINDS, parentId=obj.id),
                 Action("Ersatzgerät hinzufügen", replacement),
-                _delete(project, project, obj)]
+                _delete(site, site, obj)]
 
     if isinstance(obj, (Quote, Design, Surrounding, DeviceType, String, Connection)):
-        return [_delete(project, project, obj)]
+        return [_delete(site, site, obj)]
 
     return []

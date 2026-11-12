@@ -6,7 +6,7 @@
 #
 # A template is searched first in config.templatePath, in the folder the
 # installer uses for this kind of document (Config.FOLDERS), then in
-# data/ch/templates. In the template "o" is the project, "c" its contacts.
+# data/ch/templates. In the template "o" is the site, "c" its contacts.
 
 import os
 from datetime import date
@@ -18,7 +18,7 @@ from documents import DocumentError
 DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 
 # template type => (folder and file of the template in data/ch/templates,
-# kind of folder in the project (Config.FOLDERS), numbering or file name)
+# kind of folder in the site (Config.FOLDERS), numbering or file name)
 TEMPLATES = {
     "partial_invoice": (("fin", "partial_invoice.odt"), "invoices", "invoice"),
     "final_invoice":   (("fin", "final_invoice.odt"),   "invoices", "invoice"),
@@ -38,7 +38,7 @@ def templateCopyReplace(src, dest, model):
     f.close()
 
 
-# Create a document of templateType in the folder of the project saved under
+# Create a document of templateType in the folder of the site saved under
 # savePath. Returns the path of the new file, raises DocumentError.
 def createFromTemplate(templateType, savePath, model, config):
     # another window may have used a quote/invoice number in the meantime
@@ -69,8 +69,8 @@ def createFromTemplate(templateType, savePath, model, config):
     projectDir = os.path.dirname(savePath)
     if not os.path.isdir(projectDir):
         raise DocumentError(templateType + ' erstellen', 'Pfad nicht gefunden\n' + savePath)
-    # the documents of an order go into its folder
-    projectDir = model.getOrderDir() or projectDir
+    # the documents of a project go into its folder
+    projectDir = model.getProjectDir() or projectDir
 
     outDir = config.getFolderPath(projectDir, folderKind)
     outPath = outDir + os.sep + out_file
