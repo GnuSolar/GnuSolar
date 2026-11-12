@@ -62,8 +62,8 @@ A reader that finds a higher `version` than it knows refuses the file instead of
 damages a newer file. A reader that finds a lower `version` migrates it, one version step at a time, on the plain
 data (`formats/pvp.py: _migrate()`).
 
-Files with the format `"gnusolar-project"` are older: version 2, and a draft of version 3 from before the site was
-called site (section 15).
+Version 2 has another format name and top level: `{"format": "gnusolar-project", "version": 2, "project": {}}`
+(section 15).
 
 ### The site object
 
@@ -1036,14 +1036,6 @@ file back through the fields of version 2 and compares it with the old file, and
 
 Version 2 has one project per file, with one building, one plant and one progress. In version 3 they become the
 site, one building with one roof, and one project of type `new_system`.
-
-### Drafts of version 3
-
-Until 12 November 2026 GnuSolar wrote version 3 with other names: `{"format": "gnusolar-project", "version": 3,
-"project": {}}`. The site was called project, a project was an order (`orders`, `orderId`), and the fields of the
-place (section 4) were a section `site` of their own with its own `ext`. Such a file is renamed when it is read
-(`formats/pvp.py: fromDraft3()`), no value changes. Where the site and its section both had plugin data, the two are
-put together. When it is saved, the draft is kept next to the file as `plant.pvp.v3-draft`.
 
 ### Field mapping
 

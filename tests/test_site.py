@@ -84,56 +84,8 @@ class FileFormatTest(unittest.TestCase):
             self.assertFalse(os.path.exists(path + ".v2"))
             self.assertIsNone(PvSite(path)._migratedFrom)
 
-    # a file written before the site was called site and a project an order
-    def test_draft_of_version_3(self):
-        with open(os.path.join(os.path.dirname(__file__), "v3_draft_example.json"), encoding="utf-8") as f:
-            draft = f.read()
-        old = json.loads(draft)["project"]
-        with tempfile.TemporaryDirectory() as folder:
-            path = os.path.join(folder, "plant.pvp")
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(draft)
-            p = PvSite(path)
-            self.assertEqual(p._migratedFrom, formats.pvp.DRAFT_3)
-
-            # the orders are the projects, and what pointed to them still does
-            self.assertEqual([x.id for x in p.projects], [o["id"] for o in old["orders"]])
-            self.assertEqual([q.projectId for q in p.quotes], [q["orderId"] for q in old["quotes"]])
-            self.assertEqual([d.projectId for d in p.devices], [d.get("orderId") for d in old["devices"]])
-            self.assertEqual([d.kind for d in p.projects[1].getDevices()], ["battery"])
-            self.assertNotIn("orders", p.toDict())
-            self.assertNotIn("orderId", json.dumps(p.toDict()))
-
-            # the section "site" is the site itself, the plugin data of both lies together
-            self.assertNotIn("site", p.toDict())
-            self.assertEqual(p.address.toDict(), old["site"]["address"])
-            self.assertEqual(p.supply.mainFuse, old["site"]["supply"]["mainFuse"])
-            self.assertEqual(p.gridOperator.name, old["site"]["gridOperator"]["name"])
-            self.assertEqual(p.ext["ch"], old["site"]["ext"]["ch"])
-            self.assertEqual(p.ext["gnusolar"]["v2"], {"buildingState": "existing", "topLevelLeftover": "kept"})
-
-            # the fields of version 2 give what they give for the version 2 file
-            v2 = load()
-            p.currentProject = p.projects[0]
-            for view, names in (("building", ("street", "city", "plotNumber", "swissGridX", "mainFuseSize",
-                                              "buildingState", "meterNumberNew")),
-                                ("plant", ("totalPowerDc", "totalPanelCount", "panelDesc", "inverterDesc")),
-                                ("progress", ("inquiryReceived", "orderReceived", "launch", "tagSent"))):
-                for name in names:
-                    self.assertEqual(getattr(getattr(p, view), name), getattr(getattr(v2, view), name), name)
-
-            # saved under the new names, the draft is kept
-            p.save()
-            saved = json.load(open(path, encoding="utf-8"))
-            self.assertEqual((saved["format"], saved["version"], sorted(saved)), ("gnusolar-site", 3,
-                                                                                  ["format", "site", "version"]))
-            self.assertEqual(json.load(open(path + ".v3-draft", encoding="utf-8")), json.loads(draft))
-            again = PvSite(path)
-            self.assertIsNone(again._migratedFrom)
-            self.assertEqual(again.toDict(), p.toDict())
-
     def test_older_and_unknown_formats(self):
-        for data in ({"format": "gnusolar-project", "version": 4, "project": {}},
+        for data in ({"format": "gnusolar-project", "version": 3, "project": {}},
                      {"format": "gnusolar-site", "version": 2, "site": {}},
                      {"format": "something", "version": 3, "site": {}}):
             with self.assertRaises(Exception):

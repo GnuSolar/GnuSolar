@@ -127,32 +127,6 @@ def lost_values(old, site, report):
     return lost
 
 
-# The values of a draft of version 3 which are not where they belong after the
-# renaming (formats.pvp.fromDraft3). It only moves values: what was at
-# site.x is at x, orders are projects, orderId is projectId.
-def lost_draft_values(old):
-    def leaves(node, path=()):
-        if isinstance(node, dict):
-            return [leaf for key, value in node.items() for leaf in leaves(value, path + (key,))]
-        if isinstance(node, list):
-            return [leaf for i, value in enumerate(node) for leaf in leaves(value, path + (i,))]
-        return [(path, node)]
-
-    def moved(path):
-        if path[0] == "site":
-            path = path[1:]
-        elif path[0] == "orders":
-            path = ("projects",) + path[1:]
-        if "ext" not in path and path[-1] == "orderId":
-            path = path[:-1] + ("projectId",)
-        return path
-
-    new = dict(leaves(formats.pvp.fromDraft3(old)))
-    missing = object()
-    return [(".".join(str(key) for key in path), value) for path, value in leaves(old)
-            if new.get(moved(path), missing) != value]
-
-
 def convert(path):
     old_json = open(path, encoding="utf-8").read()
     old = json.loads(old_json)
@@ -163,10 +137,7 @@ def convert(path):
         return "current", None, [], report
 
     site._savePath = path
-    if site._migratedFrom == 2:
-        lost = lost_values(old.get("project"), site, report)
-    else:
-        lost = lost_draft_values(old.get("project"))
+    lost = lost_values(old.get("project"), site, report)
     site.prepareSave()
     new_json = formats.pvp.dumps(site)
 

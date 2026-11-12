@@ -211,8 +211,9 @@ What stays:
 
 "Project" changed its meaning rather than disappearing, so an old text that says project may mean the site.
 
-Three real files had already been saved with the old names. They are read as before and renamed on the way
-(`file_format.md`, section 15); the old file is kept next to the new one.
+Three real files had already been saved with the old names. They were rewritten under the new names on
+12 November 2026, with nothing but the names changed, and the old files kept next to them as `plant.pvp.v3-draft`.
+GnuSolar does not read the old names of version 3.
 
 In the window the site is "Standort" and a project is "Projekt" (before: "PV Projekt" and "Auftrag").
 

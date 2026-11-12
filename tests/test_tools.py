@@ -57,23 +57,6 @@ class ToolsTest(unittest.TestCase):
         ret, out = quiet(migrate_pvp.main, [self.root])
         self.assertIn("already current: 2, to convert: 0", out)
 
-    # files from before the site was called site are converted too
-    def test_migrate_draft_of_version_3(self):
-        folder = os.path.join(self.root, "Musterwil", "Kirchweg 26")
-        os.makedirs(folder)
-        shutil.copy(os.path.join(os.path.dirname(__file__), "v3_draft_example.json"), os.path.join(folder, "plant.pvp"))
-        ret, out = quiet(migrate_pvp.main, [self.root])
-        self.assertEqual(ret, 0, out)
-        self.assertIn("files: 1, already current: 0, to convert: 1, errors: 0", out)
-        self.assertIn("lost values: 0", out)
-        ret, out = quiet(migrate_pvp.main, [self.root, "--write", os.path.join(self.root, "backup.tar.gz")])
-        self.assertEqual(ret, 0, out)
-        with open(os.path.join(folder, "plant.pvp"), encoding="utf-8") as f:
-            data = json.load(f)
-        self.assertEqual((data["format"], len(data["site"]["projects"])), ("gnusolar-site", 2))
-        # a value that the renaming would drop is reported
-        self.assertEqual(migrate_pvp.lost_draft_values({"site": {"ext": {"a": 1}}, "ext": {"a": 2}}), [("site.ext.a", 1)])
-
     def test_merge_copy(self):
         main = self.site("Musterwil/Kirchweg 26")
         second = v2_example.project()
