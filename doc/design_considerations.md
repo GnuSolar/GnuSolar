@@ -3,8 +3,9 @@
 `file_format.md` says what the format is. This document says why, which questions came up while defining it, what
 was decided and what is still open. It records the state of 12 November 2026.
 
-In this document a **project** is one piece of work for a client, from the inquiry to the final invoice. The file
-calls it an `order` for now; the name is one of the open questions (section 4).
+A **site** is one place with what stands there; one file is one site. A **project** is one piece of work for a
+client, from the inquiry to the final invoice. Until 12 November 2026 the file called the site `project` and a
+project `order` (section 4).
 
 ## 1. Purpose
 
@@ -39,14 +40,14 @@ several projects at the same address there are three things where there was one:
 
 | Thing | What it is | In the file |
 |---|---|---|
-| The place | Address, plot, buildings, roofs, grid operator | `site`, `buildings` |
+| The place | Address, plot, buildings, roofs, grid operator | fields of the site, `buildings` |
 | What stands there | The devices over time | `devices`, `strings`, `connections` |
-| A piece of work | From inquiry to final invoice | `orders`, with `quotes` |
+| A piece of work | From inquiry to final invoice | `projects`, with `quotes` |
 
 The question is which of them a file, and its folder, stands for.
 
-**State: open.** The specification as written assumes the site. Whether to keep that, or to go back to one file per
-project, is not decided.
+**State: decided on 12 November 2026.** One file is one site (variant A), and the names say so (section 4). The
+variants and arguments below are kept as the record of the decision.
 
 ### A. One file per site, several projects in it
 
@@ -143,7 +144,7 @@ stands on a day is calculated, not stored.
 
 | Condition of a device | In the file |
 |---|---|
-| Planned | belongs to a project (`orderId`), has no `from` |
+| Planned | belongs to a project (`projectId`), has no `from` |
 | Installed | has `from`, no `to` |
 | Removed | has `to` |
 
@@ -180,23 +181,40 @@ its `to` by hand.
 
 ## 4. Names
 
-**State: open.**
+**State: decided on 12 November 2026.** The top level is the `site`, a piece of work is a `project`.
 
-`order` is misleading. It suggests the moment the client signs, or an order of material from a supplier, but the
-thing exists from the first inquiry on and can end rejected.
+| | Before | Now |
+|---|---|---|
+| Format name | `gnusolar-project` | `gnusolar-site` |
+| Top level | `project` | `site` |
+| Piece of work | `orders`, `orderId` | `projects`, `projectId` |
+| Address, coordinates, grid connection, municipality, grid operator | a section `site` inside the project | fields of the site itself |
 
-"Project" and "plant" were used for the same thing so far, as the file name `plant.pvp` shows: the name says
-plant, the extension stands for PV project.
+Why the old names had to go:
 
-| Option | Top level | Piece of work | Cost |
-|---|---|---|---|
-| Small | stays `project` | `order` → `job` | A rename of one section and its references |
-| Clean | `project` → `plant` | `order` → `project` | "Project" changes its meaning everywhere: the top key, the main class, "project folder". Anything missed is misleading, not just old. |
+- `order` was misleading. It suggests the moment the client signs, or an order of material from a supplier, but
+  the thing exists from the first inquiry on and can end rejected.
+- "Project" and "plant" were used for the same thing, as the file name `plant.pvp` shows: the name says plant, the
+  extension stands for PV project. With several pieces of work in one file the top level needed a name of its own.
+- A section `site` inside a site made no sense, so its fields moved up. This is the one change of structure; all
+  else is names.
 
-With either option the date `ordered` and the step state `ordered` stay: they name the one moment that is the order.
-The German caption in the window ("Auftrag") is a separate choice.
+What was considered instead: `job` for the piece of work with the top level left as `project` (a smaller rename,
+but "project" would have kept meaning the file), and `plant` for the top level.
 
-No real file is converted to version 3 yet, so a rename costs only code and documentation now.
+What stays:
+
+- The date `ordered` and the step state `ordered`: they name the one moment that is the order.
+- The file name `plant.pvp`.
+- The fields of version 2 that document templates and form scripts use (`orderReceived`, `orderRejected`, …).
+- GnuSolar's setting `projectRoot` and its window with the list of projects, which shows one row per project.
+
+"Project" changed its meaning rather than disappearing, so an old text that says project may mean the site.
+
+Three real files had already been saved with the old names. They are read as before and renamed on the way
+(`file_format.md`, section 15); the old file is kept next to the new one.
+
+In the window the site is "Standort" and a project is "Projekt" (before: "PV Projekt" and "Auftrag").
 
 ## 5. Folders
 
@@ -224,8 +242,7 @@ names (the plant documentation, the measurement protocol) collide with those of 
 | Link | A naming convention | The folder structure |
 
 Today GnuSolar suggests a subfolder such as `2026 Batterie` for every project after the first, and the tool that
-merges existing copies points to them where they are (`../Heid 2.3_2`). This follows from variant A and falls away
-with variant B.
+merges existing copies points to them where they are (`../Heid 2.3_2`).
 
 Still fixed in GnuSolar's code: the place of a project folder (`<root>/<city>/<street> <number>`) and the file
 names of the documents it creates.
@@ -254,9 +271,9 @@ guessed at, and the file is formatted so that it diffs well.
 | Purpose: a format for several tools, a web viewer and several people | Decided |
 | Unix timestamps, country independence, plugins with data in the file | Decided |
 | Folder names are the installer's setting; the first project gets no folder | Decided |
-| What one file represents: site, project, or project with a link | Open |
-| Names: `order`, `project`, `plant` | Open |
-| Where a later project's documents go | Open, follows from the first |
+| What one file represents: the site | Decided |
+| Names: `site` for the top level, `project` for a piece of work | Decided |
+| Where a later project's documents go: folder side by side or subfolder | Open |
 | The six rules for shared use | Proposed, not specified |
 | Cancelled projects, history of site facts | Open, wait for a real case |
 
