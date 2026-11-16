@@ -58,9 +58,6 @@ class Projects(QApplication):
 
         self.ui = Ui_Projects()
         self.ui.setupUi(self.window)
-        
-        self.fillTableProjects()
-        self.fillLastNames()
 
         self.ui.action_Preferences.triggered.connect(self.openConfig)
         self.ui.createProject.clicked.connect(self.createProject)
@@ -92,7 +89,20 @@ class Projects(QApplication):
             window_height = screen_height - 25
         self.window.resize(window_width, window_height)
 
+        # show the window first, the projects are read right after it appears
         self.window.show()
+        QTimer.singleShot(0, self.loadProjects)
+
+    # read the projects and the last file names into the window
+    def loadProjects(self):
+        self.setOverrideCursor(Qt.WaitCursor)
+        try:
+            # let the window draw itself before the folders are read
+            self.processEvents()
+            self.fillTableProjects()
+            self.fillLastNames()
+        finally:
+            self.restoreOverrideCursor()
 
     def rightMenu(self, pos):
         if self.ui.tableWidgetProjects.selectionModel().selection().indexes():
