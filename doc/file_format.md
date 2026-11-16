@@ -390,7 +390,7 @@ it uses, so it stays complete without a database.
         "kind": "panel",
         "manufacturer": "JA Solar",
         "model": "JAM54D40-440/GB",
-        "source": { "db": "OpenPanelDatabase", "datasheetSha256": "9f2c…", "url": "https://…" },
+        "source": { "db": "OpenSolarPanelDatabase", "datasheetSha256": "9f2c…", "url": "https://…" },
         "specs": {
             "power": 440, "voc": 39.1, "isc": 14.0, "vmp": 32.6, "imp": 13.5,
             "efficiency": 22.5, "width": 1134, "height": 1762, "depth": 30, "weight": 21.5,
@@ -411,7 +411,7 @@ it uses, so it stays complete without a database.
 | Field | Content |
 |---|---|
 | `kind` | The device kind the type is for (section 8), or `panel`, `mounting_system`, `part` |
-| `source.db` | Where the type came from: `OpenPanelDatabase`, `OpenInverterDatabase`, `PVSOL`, `PVsyst`, `manual` |
+| `source.db` | Where the type came from: `OpenSolarPanelDatabase`, `OpenSolarInverterDatabase`, `PVSOL`, `PVsyst`, `manual` |
 | `source.id`, `source.version` | The type's identifier in that source, where it has one: the GUID and version in PV*SOL, the file name (`.PAN`, `.OND`) in PVsyst |
 | `source.datasheetSha256` | SHA-256 of the datasheet PDF. This identifies the type across database versions; database row numbers are not used. |
 | `specs` | The specifications, in the units of section 3. Common values have the names of the table below; any other value keeps the name it has in its source. |
@@ -1164,7 +1164,7 @@ Rules for an import:
   results other than the yield.
 - PV*SOL and PVsyst both ship a component database that is not open; PVsyst's is encrypted. Types come from the copy
   inside the PV*SOL project, or from PVsyst only as a name, and are then matched by manufacturer and model to
-  OpenPanelDatabase and OpenInverterDatabase.
+  OpenSolarPanelDatabase and OpenSolarInverterDatabase.
 - Old PV*SOL premium files (versions 4 to 6) keep module areas and inverters only in the 3D files; current ones also
   list them in `Project.xml`.
 

@@ -422,7 +422,7 @@ def _deviceType(obj):
             F("kind", "Art", choices=Device.TYPE_KINDS),
             F("manufacturer", "Hersteller"),
             F("model", "Modell"),
-            F("source.db", "Quelle", choices=("manual", "OpenPanelDatabase", "OpenInverterDatabase", "PVSOL", "PVsyst")),
+            F("source.db", "Quelle", choices=("manual", "OpenSolarPanelDatabase", "OpenSolarInverterDatabase", "PVSOL", "PVsyst")),
             F("source.url", "URL"),
             F("source.datasheetSha256", "SHA-256 des Datenblatts"),
         ]),
