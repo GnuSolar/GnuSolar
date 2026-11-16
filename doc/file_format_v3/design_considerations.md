@@ -3,6 +3,9 @@
 `file_format.md` says what the format is. This document says why, which questions came up while defining it, what
 was decided and what is still open. It records the state of 12 November 2026.
 
+On 16 November 2026 the three real files of version 3 were written back as version 2, and the program used on the
+real data went back to the branch `main`, which writes version 2. Work on version 3 continues on the branch `file-format-v3`.
+
 A **site** is one place with what stands there; one file is one site. A **project** is one piece of work for a
 client, from the inquiry to the final invoice. Until 12 November 2026 the file called the site `project` and a
 project `order` (section 4).

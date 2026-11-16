@@ -1,6 +1,8 @@
 # GnuSolar file of a site, version 3
 
-Version 3 is the format GnuSolar writes (`formats/pvp.py`). It still reads version 2, the format before it.
+Version 3 is the next format. GnuSolar on the branch `main` still reads and writes version 2
+(`../file_format_v2/file_format.md`). Version 3 is implemented on the branch `file-format-v3`: where this document
+names GnuSolar's code or what GnuSolar does, it means that branch.
 
 A file describes one site: the place, the people involved, the buildings and roofs, the devices installed over
 time, and the projects that brought them there. A project is one piece of work for a client, from the inquiry to
@@ -1010,7 +1012,7 @@ data is:
 
 ## 14. Implementation
 
-How GnuSolar implements this document:
+How GnuSolar implements this document on the branch `file-format-v3`:
 
 | Part | Where |
 |---|---|
@@ -1033,6 +1035,8 @@ edited as JSON. There is no import from PV*SOL, PVsyst or swissBUILDINGS3D (sect
 country extension.
 
 ## 15. Migration from version 2
+
+Version 2 is described in `../file_format_v2/file_format.md`.
 
 GnuSolar converts a version 2 file when it reads it (`formats/migrate_v2.py`, on the plain data) and writes it
 as version 3 when it is saved. The first time, the version 2 file is kept next to it as `plant.pvp.v2`.
