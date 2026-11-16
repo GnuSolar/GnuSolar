@@ -13,7 +13,6 @@ from model.ModelNode import ModelNode
 import os
 import json
 import sqlite3
-import requests
 from datetime import date
 
 from Config import *
@@ -53,6 +52,7 @@ class Building(ModelNode):
         self.areZoneCode = None
 
     def coordinatesFromAddress(self):
+        import requests     # imported here, it takes 0.15 s to import
         url = r"https://api3.geo.admin.ch/rest/services/api/MapServer/find"
         params = {
             "layer": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis",
@@ -81,6 +81,7 @@ class Building(ModelNode):
         return
         
     def queryPlotNumber(self):
+        import requests     # imported here, it takes 0.15 s to import
         if not self.swissGridX or not self.swissGridY:
             return
         x = float("2" + self.swissGridX)
@@ -107,6 +108,7 @@ class Building(ModelNode):
             self.plotNumber = results[0]["properties"]["number"]
 
     def queryZoneing(self):
+        import requests     # imported here, it takes 0.15 s to import
         if not self.swissGridX or not self.swissGridY:
             return
         x = float("2" + self.swissGridX)

@@ -8,7 +8,6 @@ import os
 import sqlite3
 import datetime
 from datetime import date
-from selenium import webdriver
 
 import fillpdf
 from model.Contact import Contact
@@ -98,6 +97,7 @@ class Municipality(ModelNode):
 
         exec(s)
 
+        from selenium import webdriver     # imported here, it is slow to import
         browser = webdriver.Firefox()
         browser.get(self.fillform_url)
         for k,v in self.fillform_data.items():
