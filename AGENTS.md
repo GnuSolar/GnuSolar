@@ -1,7 +1,8 @@
 # GnuSolar: instructions for agents
 
 The software for installers of solar systems: planning, building, maintaining and upgrading a system, and its
-finances and orders. `doc/file_format.md` describes its file format.
+finances and orders. `doc/file_format_v2/file_format.md` describes the file format this branch reads and
+writes. `doc/file_format_v3/` describes the next version, which the branch `file-format-v3` implements.
 
 Read `../Harness/MAP.md` and `../Harness/RULES.md` first, if they are there: the map of the projects that belong
 together and the rules that hold in all of them. The first of those rules: edit only this project. A change
@@ -26,6 +27,10 @@ needed in another project is not made from here; it is written into `../Harness/
 
 ## Check your work
 
+This branch has no automated tests; they are on the branch `file-format-v3`. Start the program with its home
+folder pointed at a scratch folder, so it reads and writes `.gnusolar/config.json` there, and set the folder of
+the projects in its preferences to a copy of the data:
+
 ```sh
-python3 -m pytest -q tests
+HOME=/tmp/gnusolar-test python3 GnuSolar.py
 ```
