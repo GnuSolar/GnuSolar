@@ -23,6 +23,7 @@ needed in another project is not made from here; it is written into `../Harness/
   worktree and bring them in when they are whole.
 - The folder layout of a project is a setting of each installer, not fixed in the code.
 - Device values use the names of ModbusSpec's `vocabulary.yaml` where one exists.
+- Commit only when asked.
 - Push only when asked.
 
 ## Check your work
