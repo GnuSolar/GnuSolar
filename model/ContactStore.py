@@ -34,6 +34,14 @@ def label(contact):
     return text or "(ohne Namen)"
 
 
+# copy the fields of one contact to another, except the role, which belongs to
+# the place the contact has in a project
+def copyFields(source, target):
+    for field in FIELDS:
+        if field != "role":
+            setattr(target, field, getattr(source, field, None))
+
+
 class ContactStore:
 
     def __init__(self, path):
@@ -71,6 +79,16 @@ class ContactStore:
             result.append((row["id"], label(self._toContact(row))))
         result.sort(key=lambda r: r[1].lower())
         return result
+
+    # id of a stored contact with the same company, last and first name, or None
+    def find(self, contact):
+        keys = ["company", "lastName", "firstName"]
+        conditions = " AND ".join('IFNULL("%s", \'\')=?' % k for k in keys)
+        values = [(getattr(contact, k, None) or "").strip() for k in keys]
+        if not any(values):
+            return None
+        row = self.con.execute('SELECT "id" FROM "address" WHERE ' + conditions, values).fetchone()
+        return row["id"] if row else None
 
     # the contact with this id, or None
     def load(self, contactId):

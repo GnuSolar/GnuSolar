@@ -25,7 +25,9 @@ from PyQt5 import QtWidgets
 import documents.templates
 from documents import DocumentError
 from gui.binding import updateUi
-from Config import config
+from Config import Config, config
+from gui.contactPicker import pickContact
+from model.ContactStore import ContactStore, copyFields, label as contactLabel
 from Usefull import openFolder, openFolderIfExists, composeEmail, callSip
 
 from model.PvProject import PvProject
@@ -170,6 +172,57 @@ class ContactPage(Page):
         ui.callPhone.clicked.connect(self.action_callPhone)
         ui.callPhone2.clicked.connect(self.action_callPhone2)
         ui.callMobile.clicked.connect(self.action_callMobile)
+        # exchanging with the address book makes sense only in a project
+        if self.app is None:
+            ui.toAddressBook.hide()
+            ui.fromAddressBook.hide()
+        else:
+            ui.toAddressBook.clicked.connect(self.action_toAddressBook)
+            ui.fromAddressBook.clicked.connect(self.action_fromAddressBook)
+
+    # save this contact in the address book; a contact with the same company
+    # and name is updated or kept, as the user chooses
+    def action_toAddressBook(self):
+        if not any(getattr(self.obj, f, None) for f in ("company", "lastName", "firstName")):
+            QtWidgets.QMessageBox.information(self.app.window, "Ins Adressbuch",
+                                              "Der Kontakt hat weder Firma noch Namen.")
+            return
+        name = contactLabel(self.obj)
+        store = ContactStore(Config.getUserDbPath())
+        try:
+            entry = Contact()
+            entry._id = store.find(self.obj)
+            if entry._id is not None:
+                box = QtWidgets.QMessageBox(self.app.window)
+                box.setWindowTitle("Ins Adressbuch")
+                box.setText("«" + name + "» ist schon im Adressbuch.")
+                update = box.addButton("Aktualisieren", QtWidgets.QMessageBox.AcceptRole)
+                add = box.addButton("Neu hinzufügen", QtWidgets.QMessageBox.ActionRole)
+                box.addButton(QtWidgets.QMessageBox.Cancel)
+                box.exec_()
+                if box.clickedButton() == add:
+                    entry._id = None
+                elif box.clickedButton() != update:
+                    return
+            copyFields(self.obj, entry)
+            store.save(entry)
+        finally:
+            store.close()
+        self.app.window.statusBar().showMessage("«" + name + "» im Adressbuch gespeichert", 5000)
+
+    # replace this contact with one chosen from the address book; the role stays
+    def action_fromAddressBook(self):
+        store = ContactStore(Config.getUserDbPath())
+        try:
+            contactId = pickContact(self.app.window, store)
+            chosen = store.load(contactId) if contactId is not None else None
+        finally:
+            store.close()
+        if chosen is None:
+            return
+        copyFields(chosen, self.obj)
+        updateUi(self.ui, self.obj, "obj")
+        self.app.action_changed()
 
     def action_callPhone(self):
         global config

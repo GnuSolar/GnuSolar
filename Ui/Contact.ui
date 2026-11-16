@@ -268,6 +268,31 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="addressBookLayout">
+     <item>
+      <widget class="QPushButton" name="toAddressBook">
+       <property name="text">
+        <string>Ins Adressbuch</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="fromAddressBook">
+       <property name="text">
+        <string>Aus Adressbuch</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="addressBookSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
   </layout>
  </widget>
  <resources/>
