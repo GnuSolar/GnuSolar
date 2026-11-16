@@ -132,115 +132,112 @@ class Projects(QApplication):
         highestInvoicePath = ""
         highestInvoiceNumber = 0
 
-        
-        # get all filenames into array
-        
-        # walk filenames and check for higher pattern
-        for dirname, dirnames, filenames in os.walk(config.projectRoot):
-            for filename in filenames:
-                # a quote ?
-                if filename.startswith("O20"):
-                    arr = filename.split(".")
-                    if len(arr) != 2:
-                        continue
-                    
-                    arr2 = arr[0].split("-")
-                    if len(arr2) != 3:
-                        continue
-                    
-                    # appending anything with undersocres is valid
-                    arr3 = arr2[2].split("_")
-                    quoteNumberStr = arr3[0]
-                    
-                    if len(quoteNumberStr) != 4:
-                        continue
-                    
-                    quoteNumber = 0
-                    try:
-                        quoteNumber = int(quoteNumberStr)
-                    except Exception:
-                        print("malformed quote filename: " + dirname + "/" + filename)
-                                
-                    # quotes over 1999 are for temporary workers
-                    if quoteNumber > 1999:
-                        continue
-                        
-                    if highestQuoteNumber > quoteNumber:
-                        continue
-                        
-                    highestQuoteNumber = quoteNumber
-                    highestQuoteName = filename
-                    highestQuotePath = dirname + "/" + filename
-                    
-                    continue
 
-                # an invoice
-                if filename.startswith("R20"):
-                    arr = filename.split(".")
-                    if len(arr) != 2:
-                        continue
-                    
-                    arr2 = arr[0].split("-")
-                    if len(arr2) != 3:
-                        continue
-                    
-                    # appending anything with underscores is valid
-                    arr3 = arr2[2].split("_")
-                    invoiceNumberStr = arr3[0]
-                    
-                    if len(invoiceNumberStr) != 4:
-                        continue
-                    
-                    invoiceNumber = 0
-                    try:
-                        invoiceNumber = int(invoiceNumberStr)
-                    except Exception:
-                        print("malformed invoice filename: " + dirname + "/" + filename)
-                                
-                    # invoices over 5000 are for temporary workers
-                    if invoiceNumber > 5000:
-                        continue
-                        
-                    if highestInvoiceNumber > invoiceNumber:
-                        continue
-                        
-                    highestInvoiceNumber = invoiceNumber
-                    highestInvoiceName = filename
-                    highestInvoicePath = dirname + "/" + filename
-                    
+        # check the file names fillTableProjects collected for a higher number
+        for dirname, filename in self.numberedFiles:
+            # a quote ?
+            if filename.startswith("O20"):
+                arr = filename.split(".")
+                if len(arr) != 2:
+                    continue
+                
+                arr2 = arr[0].split("-")
+                if len(arr2) != 3:
+                    continue
+                
+                # appending anything with undersocres is valid
+                arr3 = arr2[2].split("_")
+                quoteNumberStr = arr3[0]
+                
+                if len(quoteNumberStr) != 4:
+                    continue
+                
+                quoteNumber = 0
+                try:
+                    quoteNumber = int(quoteNumberStr)
+                except Exception:
+                    print("malformed quote filename: " + dirname + "/" + filename)
+                            
+                # quotes over 1999 are for temporary workers
+                if quoteNumber > 1999:
                     continue
                     
-                # a picture
-                if filename.startswith("IMG_") or filename.startswith("img_"):
-                    
-                    #remove extension
-                    arr = filename.split(".")
-                    if len(arr) != 2:
-                        continue
-                    
-                    arr2 = arr[0].split("_")
-                    if len(arr2) != 3:
-                        continue
-
-                    if len(arr2[1]) != 8 or len(arr2[2]) != 6:
-                        print("malformed picture filename: " + dirname + "/" + filename)
-                        continue
-
-                    pictureNumber = 0
-                    try:
-                        pictureNumber = int(arr2[1] + arr2[2])
-                    except Exception:
-                        print("malformed picture filename: " + dirname + "/" + filename)
-
-                    if highestPictureNumber > pictureNumber:
-                        continue
-                        
-                    highestPictureNumber = pictureNumber
-                    highestPictureName = filename
-                    highestPicturePath = dirname + "/" + filename
-                    
+                if highestQuoteNumber > quoteNumber:
                     continue
                     
+                highestQuoteNumber = quoteNumber
+                highestQuoteName = filename
+                highestQuotePath = dirname + "/" + filename
+                
+                continue
+
+            # an invoice
+            if filename.startswith("R20"):
+                arr = filename.split(".")
+                if len(arr) != 2:
+                    continue
+                
+                arr2 = arr[0].split("-")
+                if len(arr2) != 3:
+                    continue
+                
+                # appending anything with underscores is valid
+                arr3 = arr2[2].split("_")
+                invoiceNumberStr = arr3[0]
+                
+                if len(invoiceNumberStr) != 4:
+                    continue
+                
+                invoiceNumber = 0
+                try:
+                    invoiceNumber = int(invoiceNumberStr)
+                except Exception:
+                    print("malformed invoice filename: " + dirname + "/" + filename)
+                            
+                # invoices over 5000 are for temporary workers
+                if invoiceNumber > 5000:
+                    continue
+                    
+                if highestInvoiceNumber > invoiceNumber:
+                    continue
+                    
+                highestInvoiceNumber = invoiceNumber
+                highestInvoiceName = filename
+                highestInvoicePath = dirname + "/" + filename
+                
+                continue
+                
+            # a picture
+            if filename.startswith("IMG_") or filename.startswith("img_"):
+                
+                #remove extension
+                arr = filename.split(".")
+                if len(arr) != 2:
+                    continue
+                
+                arr2 = arr[0].split("_")
+                if len(arr2) != 3:
+                    continue
+
+                if len(arr2[1]) != 8 or len(arr2[2]) != 6:
+                    print("malformed picture filename: " + dirname + "/" + filename)
+                    continue
+
+                pictureNumber = 0
+                try:
+                    pictureNumber = int(arr2[1] + arr2[2])
+                except Exception:
+                    print("malformed picture filename: " + dirname + "/" + filename)
+
+                if highestPictureNumber > pictureNumber:
+                    continue
+                    
+                highestPictureNumber = pictureNumber
+                highestPictureName = filename
+                highestPicturePath = dirname + "/" + filename
+                
+                continue
+                
         self.ui.lastPictureName.setText(highestPicturePath)
         self.ui.lastQuoteName.setText(highestQuotePath)
         self.ui.lastInvoiceName.setText(highestInvoicePath)
@@ -296,6 +293,10 @@ class Projects(QApplication):
     def fillTableProjects(self):
         global config
         
+        # quotes, invoices and pictures for fillLastNames, found in the same
+        # walk, so the project folders are read only once
+        self.numberedFiles = []
+
         # recursive scan all folders
         if not os.path.exists(config.projectRoot):
             print("path not found: " + config.projectRoot)
@@ -306,6 +307,8 @@ class Projects(QApplication):
                 if filename == "plant.pvp":
                     fn = os.path.join(dirname, filename)
                     self.addProjectEntry(dirname, fn)
+                elif filename.startswith(("O20", "R20", "IMG_", "img_")):
+                    self.numberedFiles.append((dirname, filename))
 
             # Advanced usage:
             # editing the 'dirnames' list will stop os.walk() from recursing into there.
