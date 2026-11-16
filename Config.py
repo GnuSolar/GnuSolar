@@ -85,8 +85,9 @@ class Config():
         self.installer_signature = ""   # image of the signature, for forms
 
     def write(self):
-        # skip the preferences dialog, it is only there while the dialog is open
-        data = {k: v for k, v in self.__dict__.items() if k not in ("ui", "window")}
+        # skip the preferences dialog, it is only there while the dialog is
+        # open, and the path of the file, which is where it is, not a setting
+        data = {k: v for k, v in self.__dict__.items() if k not in ("ui", "window", "configPath")}
         s = json.dumps(data, indent=4, sort_keys=True)
 
         # write to a temporary file and rename it, so other GnuSolar windows
@@ -133,7 +134,10 @@ class Config():
         f = open(self.configPath, "r")
         ret = json.load(f)
         f.close()
-        
+
+        # Files written before held their own path. A copied file would write
+        # back to the original, so the path is never taken from the file.
+        ret.pop("configPath", None)
         self._copyOver(self, ret)
 
         # a config file from before the folder names could be set: GnuSolar
