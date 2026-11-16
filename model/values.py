@@ -4,7 +4,8 @@
 # Values of the model and their text in forms and documents.
 #
 # The model holds numbers as numbers and every date as a Unix timestamp
-# (doc/file_format.md, section 3). A calendar day is 12:00 UTC of that day.
+# (doc/file_format_v3/file_format.md, section 3). A calendar day is 12:00 UTC
+# of that day.
 # Forms show a day as 2015-03-21 and take that or 21.03.2015.
 
 import re

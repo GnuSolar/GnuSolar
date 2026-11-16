@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Migration of a project of file version 2 to a site of version 3, on the plain data
-# (doc/file_format.md, section 15).
+# (doc/file_format_v3/file_format.md, section 15).
 #
 #   new = migrate(old, taken=..., files=[...], report=Report())
 #

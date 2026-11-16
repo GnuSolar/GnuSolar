@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # The site: one place with everything planned and built there over time, and
-# the projects that did it (doc/file_format.md). One file is one site. The
-# attributes are the fields of the file.
+# the projects that did it (doc/file_format_v3/file_format.md). One file is
+# one site. The attributes are the fields of the file.
 #
 # Forms, document templates and form scripts written for file version 2 find
 # the project they know in the properties building, plant, progress,

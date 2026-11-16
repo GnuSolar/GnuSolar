@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Types, devices, strings and connections (doc/file_format.md, sections 7
-# to 10): what is installed, since when, and how it is wired.
+# Types, devices, strings and connections
+# (doc/file_format_v3/file_format.md, sections 7 to 10): what is installed,
+# since when, and how it is wired.
 #
 # A device has the common fields below as attributes. The fields of its kind
 # (KIND_FIELDS: the rating of a fuse, the role of a meter) are read and

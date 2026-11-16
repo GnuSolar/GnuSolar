@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# The electrical installation of doc/file_format.md, section 10, read into
-# the model, and the checks on it.
+# The electrical installation of doc/file_format_v3/file_format.md, section 10,
+# read into the model, and the checks on it.
 
 import re
 import os
@@ -16,7 +16,7 @@ from model import values
 
 # the example of section 10: a hybrid inverter with partial backup
 def example():
-    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "doc", "file_format.md")
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "doc", "file_format_v3", "file_format.md")
     text = open(path, encoding="utf-8").read()
     start = text.index("### Example", text.index("## 10. Electrical installation"))
     block = re.search(r"```json\n(.*?)```", text[start:], re.S).group(1)
@@ -84,7 +84,7 @@ class ElectricalInstallationTest(unittest.TestCase):
 
     def test_installed_on_a_date(self):
         # the example of section 17: an inverter replaced by a hybrid one
-        path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "doc", "file_format.md")
+        path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "doc", "file_format_v3", "file_format.md")
         text = open(path, encoding="utf-8").read()
         block = re.search(r"```json\n(.*?)```", text[text.index("## 17. Example"):], re.S).group(1)
         data = json.loads(block)

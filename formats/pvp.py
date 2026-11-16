@@ -5,7 +5,7 @@
 #
 #   {"format": "gnusolar-site", "version": 3, "site": {...}}
 #
-#   version 3: doc/file_format.md. "site" is PvSite.toDict()
+#   version 3: doc/file_format_v3/file_format.md. "site" is PvSite.toDict()
 #   version 2: {"format": "gnusolar-project", "version": 2, "project": {...}}
 #              one building, one plant, one progress. Migrated when read
 #              (formats/migrate_v2.py) and written as version 3. The first

@@ -1,4 +1,5 @@
-# Plugins and country extensions (doc/file_format.md, section 13).
+# Plugins and country extensions (doc/file_format_v3/file_format.md,
+# section 13).
 #
 # A plugin stores its data in the "ext" field of the object it belongs to,
 # under its own id. A country extension is a plugin named by the country's

@@ -97,7 +97,7 @@ class ModelNodeTest(unittest.TestCase):
 class ValuesTest(unittest.TestCase):
 
     def test_dates(self):
-        # the examples of doc/file_format.md
+        # the examples of doc/file_format_v3/file_format.md
         self.assertEqual(values.dayToTimestamp(date(2026, 11, 10)), 1794312000)
         self.assertEqual(values.textToDate("2015-03-21"), 1426939200)
         self.assertEqual(values.textToDate("21.03.2015"), 1426939200)

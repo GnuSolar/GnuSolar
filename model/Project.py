@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Designs, quotes and projects (doc/file_format.md, sections 11 and 12).
+# Designs, quotes and projects
+# (doc/file_format_v3/file_format.md, sections 11 and 12).
 #
 # A project is a job at the site: the first installation, a battery, a
 # replacement. It has its own steps with authorities, documents and invoices.

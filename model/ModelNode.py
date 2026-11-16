@@ -14,7 +14,8 @@
 # the part it sits in. Both are set by link() after loading and when a part
 # is added.
 #
-# The attribute names are the field names of the file (doc/file_format.md).
+# The attribute names are the field names of the file
+# (doc/file_format_v3/file_format.md).
 # Some of them are Python keywords ("from"): read and write those with
 # get() and set().
 

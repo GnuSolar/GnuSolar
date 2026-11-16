@@ -4,7 +4,7 @@
 # Merge the folder of a further project at the same address ("Heid 2.3_2"
 # next to "Heid 2.3") into the main site: the project of the copy becomes a
 # project of the main site, with its folder pointing to the copy
-# (doc/file_format.md, section 15).
+# (doc/file_format_v3/file_format.md, section 15).
 #
 #   python3 tools/merge_copies.py --list <projectRoot>      the copies found, changes nothing
 #   python3 tools/merge_copies.py <main folder> <copy folder>            dry run, changes nothing

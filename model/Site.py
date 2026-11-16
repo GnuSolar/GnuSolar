@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Parts of the place where the system stands (doc/file_format.md, section 4):
-# the grid connection, the design temperatures, and the snapshots of the
-# master data the site relied on, municipality and grid operator. The place
-# itself, with its address and coordinates, is the PvSite (model/PvSite.py).
+# Parts of the place where the system stands
+# (doc/file_format_v3/file_format.md, section 4): the grid connection, the
+# design temperatures, and the snapshots of the master data the site relied
+# on, municipality and grid operator. The place itself, with its address and
+# coordinates, is the PvSite (model/PvSite.py).
 
 import os
 import sqlite3

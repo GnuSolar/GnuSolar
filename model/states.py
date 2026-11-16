@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# States of projects and steps (doc/file_format.md, section 12), derived from
-# their dates. Works on plain values, so the migration can use it too.
+# States of projects and steps (doc/file_format_v3/file_format.md, section 12),
+# derived from their dates. Works on plain values, so the migration can use it
+# too.
 
 # the states of a step, in the order they are reached
 STEP_STATES = ("ordered", "filled", "signed", "submitted", "approved", "paid")

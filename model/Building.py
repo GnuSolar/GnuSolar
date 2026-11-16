@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Buildings, roofs, obstacles and module groups (doc/file_format.md,
-# section 6). Lengths and positions are in mm, angles in degrees, the azimuth
-# counts from north clockwise.
+# Buildings, roofs, obstacles and module groups
+# (doc/file_format_v3/file_format.md, section 6). Lengths and positions are in
+# mm, angles in degrees, the azimuth counts from north clockwise.
 
 from model.ModelNode import ModelNode
 

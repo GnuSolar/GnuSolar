@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# People and companies involved in a site (doc/file_format.md, section 5).
+# People and companies involved in a site
+# (doc/file_format_v3/file_format.md, section 5).
 #
 # A Contact has an address, channels (phone, email ...) in the order of their
 # priority, and bank accounts. The contacts of a site have roles; the

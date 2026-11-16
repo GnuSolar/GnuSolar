@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
 
-# Country extension for Switzerland, namespace "ch" (doc/file_format.md,
-# section 13).
+# Country extension for Switzerland, namespace "ch"
+# (doc/file_format_v3/file_format.md, section 13).
 #
 #   site.ext.ch                  lv95 {e, n}, egid [..], zone {code, name}
 #   municipality snapshot        buildingFormId

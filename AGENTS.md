@@ -1,7 +1,7 @@
 # GnuSolar: instructions for agents
 
 The software for installers of solar systems: planning, building, maintaining and upgrading a system, and its
-finances and orders. `doc/file_format.md` describes its file format.
+finances and orders. `doc/file_format_v3/file_format.md` describes its file format.
 
 Read `../Harness/MAP.md` and `../Harness/RULES.md` first, if they are there: the map of the projects that belong
 together and the rules that hold in all of them. The first of those rules: edit only this project. A change

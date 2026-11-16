@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Checks of a site: references that point nowhere, and the electrical
-# installation (doc/file_format.md, section 10): ports that the device
-# doesn't have, connectors that don't fit, cables without a second end.
+# installation (doc/file_format_v3/file_format.md, section 10): ports that the
+# device doesn't have, connectors that don't fit, cables without a second end.
 #
 #   check(site)  ->  list of texts, empty if nothing was found
 
