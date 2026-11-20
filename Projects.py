@@ -78,7 +78,7 @@ class Projects(QApplication):
         self.ui.createProject.clicked.connect(self.createProject)
         setChoices(self.ui.newProject_type, PROJECT_TYPES)
         self.ui.exportContacts.clicked.connect(self.exportContacts)
-        self.ui.reload.clicked.connect(self.projectViewChanged)         # TODO: reload from filesystem
+        self.ui.reload.clicked.connect(self.reloadProjects)
         self.ui.constructionSort.clicked.connect(self.constructionSort)         # TODO: reload from filesystem
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
 
@@ -114,15 +114,26 @@ class Projects(QApplication):
         QTimer.singleShot(0, self.loadProjects)
 
     # read the projects and the last file names into the window
-    def loadProjects(self):
+    def loadProjects(self, previousOrder=None):
         self.setOverrideCursor(Qt.WaitCursor)
         try:
             # let the window draw itself before the folders are read
             self.processEvents()
-            self.fillTableProjects()
+            self.fillTableProjects(previousOrder)
             self.fillLastNames()
         finally:
             self.restoreOverrideCursor()
+
+    # read the project folders again, keeping view, filters and sort order
+    def reloadProjects(self):
+        table = self.ui.tableWidgetProjects
+        # rows with equal sort values keep their order
+        previousOrder = {table.item(i, 0).text(): i for i in range(table.rowCount())}
+        table.setSortingEnabled(False)
+        table.setRowCount(0)
+        self.loadProjects(previousOrder)
+        if self.ui.filterFreeText.text():
+            self.filterFreeTextChanged()
 
     def rightMenu(self, pos):
         if self.ui.tableWidgetProjects.selectionModel().selection().indexes():
@@ -323,7 +334,8 @@ class Projects(QApplication):
             else:
                 self.ui.tableWidgetProjects.hideRow(i)
 
-    def fillTableProjects(self):
+    # rows in previousOrder (name => row) first, new ones after, by name
+    def fillTableProjects(self, previousOrder=None):
         global config
         
         # quotes, invoices and pictures for fillLastNames, found in the same
@@ -335,11 +347,11 @@ class Projects(QApplication):
             print("path not found: " + config.projectRoot)
             return
 
+        projectDirs = []
         for dirname, dirnames, filenames in os.walk(config.projectRoot):
             for filename in filenames:
                 if filename == "plant.pvp":
-                    fn = os.path.join(dirname, filename)
-                    self.addProjectEntry(dirname, fn)
+                    projectDirs.append(dirname)
                 elif filename.startswith(("O20", "R20", "IMG_", "img_")):
                     self.numberedFiles.append((dirname, filename))
 
@@ -348,8 +360,15 @@ class Projects(QApplication):
             if '.git' in dirnames:
                 # don't go into any .git directories.
                 dirnames.remove('.git')
-        
-        self.updateProjectEntries("Default")
+
+        previousOrder = previousOrder or {}
+        def rowOrder(projectDir):
+            name = projectDir.replace(config.projectRoot + os.sep, "")
+            return (previousOrder.get(name, len(previousOrder)), name)
+        for projectDir in sorted(projectDirs, key=rowOrder):
+            self.addProjectEntry(projectDir, os.path.join(projectDir, "plant.pvp"))
+
+        self.updateProjectEntries(self.ui.projectView.currentText())
         
         self.ui.tableWidgetProjects.resizeColumnsToContents()
 

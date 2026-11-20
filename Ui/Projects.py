@@ -325,7 +325,7 @@ class Ui_Projects(object):
         self.filterStatus.setItemText(8, _translate("Projects", "8 - archived"))
         self.filterStatus.setItemText(9, _translate("Projects", "9 - rejected"))
         self.label_11.setText(_translate("Projects", "Freitext Suche"))
-        self.reload.setText(_translate("Projects", "Reload"))
+        self.reload.setText(_translate("Projects", "Rescan"))
         self.constructionSort.setText(_translate("Projects", "Bautermine neu vergeben"))
         self.tableWidgetProjects.setSortingEnabled(True)
         item = self.tableWidgetProjects.horizontalHeaderItem(0)
