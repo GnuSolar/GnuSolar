@@ -61,6 +61,10 @@ class GnuSolar(QApplication):
         
         QApplication.__init__(self, *args)
         self.window = MyMainWindow()
+        # a document made by a button opens in another program, which then
+        # has the focus; the tooltips (e.g. the template of a button) show
+        # also while this window is not the active one
+        self.window.setAttribute(QtCore.Qt.WA_AlwaysShowToolTips)
 
         self.ui = Ui_GnuSolar()
         self.ui.setupUi(self.window)
