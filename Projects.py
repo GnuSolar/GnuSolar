@@ -129,11 +129,28 @@ class Projects(QApplication):
         table = self.ui.tableWidgetProjects
         # rows with equal sort values keep their order
         previousOrder = {table.item(i, 0).text(): i for i in range(table.rowCount())}
+        # the selected cells and the current one, by project name and column
+        name = lambda index: table.item(index.row(), 0).text()
+        selected = [(name(i), i.column()) for i in table.selectedIndexes()]
+        current = table.currentIndex()
+        current = (name(current), current.column()) if current.isValid() else None
+
         table.setSortingEnabled(False)
         table.setRowCount(0)
         self.loadProjects(previousOrder)
         if self.ui.filterFreeText.text():
             self.filterFreeTextChanged()
+
+        rows = {table.item(i, 0).text(): i for i in range(table.rowCount())}
+        if current and current[0] in rows:
+            table.setCurrentCell(rows[current[0]], current[1], QItemSelectionModel.NoUpdate)
+            table.scrollToItem(table.currentItem())
+        selection = QItemSelection()
+        for project, column in selected:
+            if project in rows:
+                index = table.model().index(rows[project], column)
+                selection.select(index, index)
+        table.selectionModel().select(selection, QItemSelectionModel.ClearAndSelect)
 
     def rightMenu(self, pos):
         if self.ui.tableWidgetProjects.selectionModel().selection().indexes():
