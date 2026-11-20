@@ -44,9 +44,10 @@ A reader refuses a file with another `version`. A file of version 1 has no `form
 ## 2. Conventions
 
 - **Every field is always written.** A field that was never set is `null`. So the structure of the file doesn't vary:
-  a version 2 file has 248 fields, more only if a contact of another role was added (section 7). Files saved
-  before 20 November 2026 have 246: they lack `type` and `base`, which GnuSolar reads as `"pvSystem"` and `null`
-  and writes the next time it saves the file.
+  a version 2 file has 254 fields, more only if a contact of another role was added (section 7). Files saved
+  before 20 November 2026 have fewer: 246 lack `type` and `base`, which GnuSolar reads as `"pvSystem"` and `null`;
+  248 lack `formality` in the 6 contacts, which GnuSolar reads as `"formal"`. It writes them the next time it saves
+  the file.
 - **Values are text, as typed.** The forms of the program store what was typed, without checking it. A reader must
   expect any text in any field.
 - **Empty** is `null` or `""`. Both mean the same; `""` is what a form leaves when its text is deleted.
@@ -173,7 +174,8 @@ Every contact in the file, also the ones of the municipality and the grid operat
 |---|---|
 | `role` | The role: `owner`, `installer_ac`, `mun_main`, `mun_building`, `pow_main`, `pow_tag`, `test`. Older files can have `null`. |
 | `company`, `department` | Organisation |
-| `title`, `firstName`, `middleName`, `lastName`, `nickName` | Person |
+| `title`, `firstName`, `middleName`, `lastName`, `nickName` | Person. `title` is the Anrede as typed: `Herr`, `Frau`, `Herr und Frau`, `Familie` |
+| `formality` | How the person is addressed in letters: `formal` (Sie, the default) or `informal` (Du). Older files and contacts have none, which counts as `formal`. |
 | `street`, `streetNumber`, `address1`, `address2`, `zip`, `city`, `country`, `floor`, `room` | Address |
 | `email`, `email2`, `phone`, `phone2`, `mobile` | How to reach them |
 | `accountOwner`, `accountBank`, `accountIban` | Bank account |
@@ -244,7 +246,7 @@ A project with invented data. Contacts with all fields empty are shortened to `{
         "contacts": {
             "contacts": {
                 "installer_ac": { "role": "installer_ac", "company": "Elektro Beispiel AG", "…": null },
-                "owner": { "role": "owner", "firstName": "Hans", "lastName": "Muster", "email": "hans@example.ch", "…": null }
+                "owner": { "role": "owner", "title": "Herr", "firstName": "Hans", "lastName": "Muster", "formality": "formal", "email": "hans@example.ch", "…": null }
             }
         },
         "municipality": {

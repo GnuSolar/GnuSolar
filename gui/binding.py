@@ -25,8 +25,12 @@ def comboValue(combo):
     return combo.currentText() if code is None else code
 
 
-# choose the item of a combo box with the code or text value
+# choose the item of a combo box with the code or text value. No value
+# chooses the first item, the default of the choices.
 def setComboValue(combo, value):
+    if value is None:
+        combo.setCurrentIndex(0 if combo.count() else -1)
+        return
     index = combo.findData(value)
     if index >= 0:
         combo.setCurrentIndex(index)

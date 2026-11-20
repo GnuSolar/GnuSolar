@@ -50,13 +50,30 @@
        <widget class="QLineEdit" name="obj_title"/>
       </item>
       <item row="2" column="0">
+       <widget class="QLabel" name="label_formality">
+        <property name="text">
+         <string>Ansprache</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="obj_formality">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="label_51">
         <property name="text">
          <string>Name / Vorname</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <widget class="QLineEdit" name="obj_lastName"/>
@@ -66,14 +83,14 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_52">
         <property name="text">
          <string>Strasse / Nummer</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <widget class="QLineEdit" name="obj_street">
@@ -87,14 +104,14 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_53">
         <property name="text">
          <string>PLZ / Ort</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
          <widget class="QLineEdit" name="obj_zip">
@@ -108,14 +125,14 @@
         </item>
        </layout>
       </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_50">
         <property name="text">
          <string>E-Mail</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="6" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="QLineEdit" name="obj_email">
@@ -139,14 +156,14 @@
         </item>
        </layout>
       </item>
-      <item row="6" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="label_55">
         <property name="text">
          <string>E-Mail 2</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="7" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLineEdit" name="obj_email2"/>
@@ -163,14 +180,14 @@
         </item>
        </layout>
       </item>
-      <item row="7" column="0">
+      <item row="8" column="0">
        <widget class="QLabel" name="label_54">
         <property name="text">
          <string>Telefon</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="8" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
          <widget class="QLineEdit" name="obj_phone"/>
@@ -187,14 +204,14 @@
         </item>
        </layout>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
        <widget class="QLabel" name="label_56">
         <property name="text">
          <string>Telefon 2</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="1">
+      <item row="9" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QLineEdit" name="obj_phone2"/>
@@ -211,14 +228,14 @@
         </item>
        </layout>
       </item>
-      <item row="9" column="0">
+      <item row="10" column="0">
        <widget class="QLabel" name="label_57">
         <property name="text">
          <string>Mobile</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="1">
+      <item row="10" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
          <widget class="QLineEdit" name="obj_mobile"/>
@@ -235,34 +252,34 @@
         </item>
        </layout>
       </item>
-      <item row="10" column="0">
+      <item row="11" column="0">
        <widget class="QLabel" name="label_59">
         <property name="text">
          <string>Kontoinhaber</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
+      <item row="11" column="1">
        <widget class="QLineEdit" name="obj_accountOwner"/>
       </item>
-      <item row="11" column="0">
+      <item row="12" column="0">
        <widget class="QLabel" name="label_60">
         <property name="text">
          <string>Bankname</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="1">
+      <item row="12" column="1">
        <widget class="QLineEdit" name="obj_accountBank"/>
       </item>
-      <item row="12" column="0">
+      <item row="13" column="0">
        <widget class="QLabel" name="label_61">
         <property name="text">
          <string>IBAN</string>
         </property>
        </widget>
       </item>
-      <item row="12" column="1">
+      <item row="13" column="1">
        <widget class="QLineEdit" name="obj_accountIban"/>
       </item>
      </layout>

@@ -12,6 +12,12 @@ from Config import *
 # An address / contact all in one
 # can be renamed after serializing is independet of the object sttructure
 
+# how a person is addressed: the code saved, the text shown
+FORMALITIES = (
+    ("formal", "Sie"),
+    ("informal", "Du"),
+)
+
 class Contact(ModelNode):
 
     def __init__(self, top=None):
@@ -29,11 +35,15 @@ class Contact(ModelNode):
         self.department = None
         
         # Personal
-        self.title = None
+        self.title = None           # Anrede: Herr, Frau, Herr und Frau, Familie
         self.firstName = None
         self.middleName = None
         self.lastName = None
         self.nickName = None
+
+        # how the person is addressed in letters, a code of FORMALITIES:
+        # "formal" (Sie) or "informal" (Du). None counts as "formal".
+        self.formality = "formal"
 
         # Locational
         self.floor = None
@@ -95,6 +105,32 @@ class Contact(ModelNode):
         self.zip = db_row["zip"]
         self.city = db_row["city"]
         
+    # True if the person is addressed informally (Du)
+    @property
+    def informal(self):
+        return self.formality == "informal"
+
+    # For the templates: the first text for Sie, the second for Du, e.g.
+    # <o.owner.byFormality('Ihnen', 'Dir')>. Both forms are written out, so the
+    # endings and verbs stay right.
+    def byFormality(self, formal, informal):
+        return informal if self.informal else formal
+
+    # For the templates: the first line of a letter. Sie: "Guten Tag" with
+    # the Anrede and the last name, "Guten Tag Herr Kraft". Du: "Hallo" with
+    # the nick name or the first name, "Hallo Alois".
+    @property
+    def greeting(self):
+        clean = lambda v: (v or "").strip()
+        if self.informal:
+            name = clean(self.nickName) or clean(self.firstName)
+            return ("Hallo " + name) if name else "Hallo"
+        title, last = clean(self.title), clean(self.lastName)
+        if title and last:
+            return "Guten Tag " + title + " " + last
+        name = " ".join(n for n in (clean(self.firstName), last) if n)
+        return ("Guten Tag " + name) if name else "Guten Tag"
+
     # get the first phone Number
     def getAnyPhone(self):
         if self.phone and len(self.phone) > 0:

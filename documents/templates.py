@@ -9,6 +9,10 @@
 # data/ch/templates. A template for the type of the project (PROJECT_TYPES)
 # comes first: quote_battery.odt before quote.odt. In the template "o" is the
 # project, "c" its contacts.
+#
+# Du or Sie, as chosen for the contact (Contact.formality):
+#   <o.owner.greeting>                       Guten Tag Herr Kraft / Hallo Alois
+#   <o.owner.byFormality('Ihnen', 'Dir')>    the first text for Sie, the second for Du
 
 import os
 from datetime import date

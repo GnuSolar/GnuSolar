@@ -34,7 +34,7 @@ from Usefull import openFolder, openFolderIfExists, composeEmail, callSip
 
 from model.PvProject import PvProject, PROJECT_TYPES, nextExtensionDir
 from model.Contacts import Contacts
-from model.Contact import Contact
+from model.Contact import Contact, FORMALITIES
 from model.Building import Building
 from model.Municipality import Municipality
 from model.PowerCompany import PowerCompany
@@ -268,6 +268,7 @@ class ContactPage(Page):
         ui.callPhone.clicked.connect(self.action_callPhone)
         ui.callPhone2.clicked.connect(self.action_callPhone2)
         ui.callMobile.clicked.connect(self.action_callMobile)
+        setChoices(ui.obj_formality, FORMALITIES)
         # exchanging with the address book makes sense only in a project
         if self.app is None:
             ui.toAddressBook.hide()
