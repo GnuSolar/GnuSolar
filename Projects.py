@@ -52,6 +52,20 @@ def is_float(s):
     except ValueError:
         return False
 
+# the choice of the status filter that hides the archived and rejected projects
+FILTER_OPEN = "All but archived/rejected"
+
+# the state of each row is kept in the item of column 0, so the status filter
+# works in every view, also where column 1 is not the status
+STATE_ROLE = Qt.UserRole
+
+def stateMatches(filterState, state):
+    if filterState == "All":
+        return True
+    if filterState == FILTER_OPEN:
+        return not state.startswith(("8 -", "9 -"))
+    return filterState in state
+
 class Projects(QApplication):
     def __init__(self, *args):
         QApplication.__init__(self, *args)
@@ -67,6 +81,10 @@ class Projects(QApplication):
         self.ui.reload.clicked.connect(self.projectViewChanged)         # TODO: reload from filesystem
         self.ui.constructionSort.clicked.connect(self.constructionSort)         # TODO: reload from filesystem
         self.ui.tableWidgetProjects.doubleClicked.connect(self.projectOpen)
+
+        # by default the open projects, the newest inquiry (Anfrage) first
+        self.ui.filterStatus.setCurrentText(FILTER_OPEN)
+        self.ui.tableWidgetProjects.horizontalHeader().setSortIndicator(3, Qt.DescendingOrder)
 
         self.ui.filterStatus.currentTextChanged.connect(self.filterStatusChanged)
         self.ui.projectView.currentTextChanged.connect(self.projectViewChanged)
@@ -271,8 +289,8 @@ class Projects(QApplication):
         filterState = self.ui.filterStatus.currentText()
         rowN = self.ui.tableWidgetProjects.rowCount()
         for i in range(rowN):
-            state = str(self.ui.tableWidgetProjects.item(i, 1).text())
-            if filterState in state or filterState=="All":
+            state = self.ui.tableWidgetProjects.item(i, 0).data(STATE_ROLE) or ""
+            if stateMatches(filterState, state):
                 self.ui.tableWidgetProjects.showRow(i)
             else:
                 self.ui.tableWidgetProjects.hideRow(i)
@@ -282,8 +300,11 @@ class Projects(QApplication):
         self.updateProjectEntries(projectView)
 
     def filterFreeTextChanged(self):
-        # Reset Filter Status
+        # the text is searched in all projects: reset the status filter
+        # quietly, its change would clear the text being typed
+        self.ui.filterStatus.blockSignals(True)
         self.ui.filterStatus.setCurrentIndex(0)
+        self.ui.filterStatus.blockSignals(False)
         
         searchText = self.ui.filterFreeText.text()
         rowN = self.ui.tableWidgetProjects.rowCount()
@@ -394,8 +415,12 @@ class Projects(QApplication):
             projectName = self.ui.tableWidgetProjects.item(i, 0).text()
             pathPvp = config.projectRoot + os.sep + projectName + os.sep + "plant.pvp"
             self.updateProjectEntry(pathPvp, i, view)
-        
+
         self.ui.tableWidgetProjects.setSortingEnabled(True)
+
+        # a state may have changed: filter again, unless a text is searched
+        if not self.ui.filterFreeText.text():
+            self.filterStatusChanged()
 
 
     def updateProjectEntry(self, pathPvp, rowN, view="Default"):
@@ -404,7 +429,9 @@ class Projects(QApplication):
         except:
             self.ui.tableWidgetProjects.setItem(rowN, 1, QTableWidgetItem("Decode Error"))
             return
-        
+
+        self.ui.tableWidgetProjects.item(rowN, 0).setData(STATE_ROLE, pv.progress.getState())
+
         cs = pv.progress.constructionStart
         if pv.progress.constructionFixed:
             cs = str(cs) + " fix" if cs else "fix"

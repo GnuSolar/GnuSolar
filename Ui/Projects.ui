@@ -340,6 +340,11 @@
               </item>
               <item>
                <property name="text">
+                <string>All but archived/rejected</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
                 <string>3 - lead</string>
                </property>
               </item>
