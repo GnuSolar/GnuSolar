@@ -192,7 +192,17 @@
              <item row="3" column="1">
               <widget class="QLineEdit" name="newProject_city"/>
              </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_type">
+               <property name="text">
+                <string>Typ</string>
+               </property>
+              </widget>
+             </item>
              <item row="4" column="1">
+              <widget class="QComboBox" name="newProject_type"/>
+             </item>
+             <item row="5" column="1">
               <widget class="QPushButton" name="createProject">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -532,6 +542,7 @@
   <tabstop>newProject_streetNumber</tabstop>
   <tabstop>newProject_zipCode</tabstop>
   <tabstop>newProject_city</tabstop>
+  <tabstop>newProject_type</tabstop>
   <tabstop>createProject</tabstop>
   <tabstop>tableWidgetProjects</tabstop>
  </tabstops>

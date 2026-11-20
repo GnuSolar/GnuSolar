@@ -5,7 +5,9 @@ Version 2 is the format GnuSolar on the branch `main` reads and writes (`formats
 
 A version 2 file describes one project: one building, one plant, the dates of its progress, and the people and
 offices involved. A second job at the same address, such as a battery added later, is a copy of the project folder
-with a file of its own (`Heid 2.3_2` next to `Heid 2.3`).
+with a file of its own (`Heid 2.3_2` next to `Heid 2.3`). Its `base` names the folder of the project it extends.
+GnuSolar creates such a project ("Erweiterung erstellen") with the `building`, `contacts`, `municipality` and
+`powerCompany` of the first project; its `plant`, `progress` and `comment` start empty.
 
 The format is the model of the program written out as plain JSON: every field of the classes in `model/` is in the
 file, under the same name.
@@ -42,7 +44,9 @@ A reader refuses a file with another `version`. A file of version 1 has no `form
 ## 2. Conventions
 
 - **Every field is always written.** A field that was never set is `null`. So the structure of the file doesn't vary:
-  a version 2 file has 246 fields, more only if a contact of another role was added (section 7).
+  a version 2 file has 248 fields, more only if a contact of another role was added (section 7). Files saved
+  before 20 November 2026 have 246: they lack `type` and `base`, which GnuSolar reads as `"pvSystem"` and `null`
+  and writes the next time it saves the file.
 - **Values are text, as typed.** The forms of the program store what was typed, without checking it. A reader must
   expect any text in any field.
 - **Empty** is `null` or `""`. Both mean the same; `""` is what a form leaves when its text is deleted.
@@ -69,7 +73,9 @@ A reader refuses a file with another `version`. A file of version 1 has no `form
     "municipality": {},
     "powerCompany": {},
     "comment": null,
-    "state": null
+    "state": null,
+    "type": "pvSystem",
+    "base": null
 }
 ```
 
@@ -83,6 +89,8 @@ A reader refuses a file with another `version`. A file of version 1 has no `form
 | `powerCompany` | The grid operator, copied from the master data (section 9) |
 | `comment` | Free text: notes on the project |
 | `state` | `Request`, `Quote`, `Wait`, `Order`, `Construction`, `Running` or `BuiltOther`. Not kept up to date: GnuSolar derives the state of a project from its dates (`Progress.getState()`). Most files have `null`, the others `Running`. |
+| `type` | What the project builds: `pvSystem` (solar plant), `battery`, `chargingPile` (charging station) or `other` |
+| `base` | The project this one extends, such as the plant a battery is added to: the folder of that project, relative to the folder of this one, with `/` between the parts (`"../Heid 2.3"`). `null` or `""` if it extends none. |
 
 ## 4. building
 
@@ -211,6 +219,7 @@ A project with invented data. Contacts with all fields empty are shortened to `{
 {
     "format": "gnusolar-project",
     "project": {
+        "base": null,
         "building": {
             "areZoneCode": "11",
             "areZoneName": "Wohnzonen",
@@ -314,7 +323,8 @@ A project with invented data. Contacts with all fields empty are shortened to `{
             "tagReceived": "2026-05-10",
             "tagSent": "2026-04-20"
         },
-        "state": null
+        "state": null,
+        "type": "pvSystem"
     },
     "version": 2
 }

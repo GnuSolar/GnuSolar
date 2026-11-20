@@ -14,23 +14,25 @@
 # app the GnuSolar application (None in the address book).
 
 import os
+import sys
 import json
+import subprocess
 import tempfile
 import urllib.request
 from datetime import date
 
 import requests
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 import documents.templates
 from documents import DocumentError
-from gui.binding import updateUi
+from gui.binding import updateUi, setChoices
 from Config import Config, config
 from gui.contactPicker import pickContact
 from model.ContactStore import ContactStore, copyFields, label as contactLabel
 from Usefull import openFolder, openFolderIfExists, composeEmail, callSip
 
-from model.PvProject import PvProject
+from model.PvProject import PvProject, PROJECT_TYPES, nextExtensionDir
 from model.Contacts import Contacts
 from model.Contact import Contact
 from model.Building import Building
@@ -73,6 +75,74 @@ class PvProjectPage(Page):
         ui.createSmallInvoice.clicked.connect(self.action_createSmallInvoice)
         ui.createQrBill.clicked.connect(self.action_createQrBill)
         ui.createDocumentation.clicked.connect(self.action_createDocumentation)
+        ui.chooseBase.clicked.connect(self.action_chooseBase)
+        ui.openBase.clicked.connect(self.action_openBase)
+        ui.clearBase.clicked.connect(self.action_clearBase)
+        ui.createExtension.clicked.connect(self.action_createExtension)
+        setChoices(ui.obj_type, PROJECT_TYPES)
+
+    # Choose the project this one extends by its file. Setting the field
+    # updates the model, like typing into any other field.
+    def action_chooseBase(self):
+        projectDir = self.obj.getProjectDir()
+        if not projectDir:
+            QtWidgets.QMessageBox.warning(None, 'Basisprojekt', 'Das Projekt ist noch nicht gespeichert')
+            return
+        options = QtWidgets.QFileDialog.Options() | QtWidgets.QFileDialog.DontUseNativeDialog
+        path, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Basisprojekt wählen",
+            os.path.dirname(projectDir), "GnuSolar Projekt (plant.pvp)", options=options)
+        if not path:
+            return
+        baseDir = os.path.dirname(os.path.abspath(path))
+        if os.path.normcase(baseDir) == os.path.normcase(os.path.abspath(projectDir)):
+            QtWidgets.QMessageBox.warning(None, 'Basisprojekt', 'Ein Projekt kann nicht sich selbst erweitern')
+            return
+        self.ui.obj_base.setText(self.obj.baseFromFolder(baseDir))
+
+    # open the project this one extends in a window of its own
+    def action_openBase(self):
+        path = self.obj.getBasePath()
+        if not path:
+            return
+        if not os.path.isfile(path):
+            QtWidgets.QMessageBox.warning(None, 'Basisprojekt', 'Projekt nicht gefunden\n' + path)
+            return
+        self.openProjectWindow(path)
+
+    # Create a project for the next job at this place, which extends this one
+    # and takes over its building, contacts, municipality and power company,
+    # and open it in a window of its own
+    def action_createExtension(self):
+        if not self.obj.getProjectDir():
+            QtWidgets.QMessageBox.warning(None, 'Erweiterung', 'Das Projekt ist noch nicht gespeichert')
+            return
+        folder = nextExtensionDir(self.obj.getRootDir())
+        names = [name for code, name in PROJECT_TYPES]
+        name, ok = QtWidgets.QInputDialog.getItem(None, "Erweiterung erstellen",
+            "Neues Projekt in\n" + folder + "\nmit Gebäude, Kontakten, Gemeinde und Stromversorger "
+            "dieses Projekts.\n\nTyp:", names, names.index("Batterie"), False)
+        if not ok:
+            return
+        code = {name: code for code, name in PROJECT_TYPES}[name]
+        try:
+            ext = self.obj.createExtension(code)
+        except OSError as e:
+            QtWidgets.QMessageBox.warning(None, 'Erweiterung', 'Projekt nicht erstellt\n' + str(e))
+            return
+        self.openProjectWindow(ext._savePath)
+
+    # open a project file in a window of its own, a bit right of and above
+    # this window, so both can be seen
+    def openProjectWindow(self, path):
+        program = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "GnuSolar.py")
+        args = [sys.executable, program, path]
+        if self.app is not None:
+            pos = self.app.window.frameGeometry().topLeft() + QtCore.QPoint(60, -60)
+            args.append("--pos=%d,%d" % (pos.x(), pos.y()))
+        subprocess.Popen(args)
+
+    def action_clearBase(self):
+        self.ui.obj_base.setText("")
 
     def action_openProjectFolder(self):
         if not self.obj._savePath:

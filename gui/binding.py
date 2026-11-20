@@ -5,8 +5,33 @@
 #
 # A field named <prefix>_a_b shows the attribute a.b of the object, e.g. with
 # prefix "obj" the field obj_street shows building.street.
+#
+# A combo box shows the text of its items. If its items were added with
+# setChoices, the value is the code of the item instead of its text.
 
 from PyQt5.QtWidgets import QLineEdit, QPlainTextEdit, QComboBox, QCheckBox
+
+
+# fill a combo box with choices, pairs of (code saved, text shown)
+def setChoices(combo, choices):
+    combo.clear()
+    for code, text in choices:
+        combo.addItem(text, code)
+
+
+# the value of a combo box: the code of the chosen item, or its text
+def comboValue(combo):
+    code = combo.currentData()
+    return combo.currentText() if code is None else code
+
+
+# choose the item of a combo box with the code or text value
+def setComboValue(combo, value):
+    index = combo.findData(value)
+    if index >= 0:
+        combo.setCurrentIndex(index)
+    else:
+        combo.setCurrentText(value)
 
 
 # Updates the User Interface from the Model
@@ -27,7 +52,7 @@ def updateUi(ui, obj, prefix):
             elif isinstance(uiEl, QPlainTextEdit):
                 uiEl.setPlainText(modelEl)
             elif isinstance(uiEl, QComboBox):
-                uiEl.setCurrentText(modelEl)
+                setComboValue(uiEl, modelEl)
             elif isinstance(uiEl, QCheckBox):
                 uiEl.setChecked(modelEl)
             else:
@@ -54,7 +79,7 @@ def updateModel(ui, obj, prefix):
         elif isinstance(uiEl, QPlainTextEdit):
             setattr(modelEl, last, uiEl.toPlainText())
         elif isinstance(uiEl, QComboBox):
-            setattr(modelEl, last, uiEl.currentText())
+            setattr(modelEl, last, comboValue(uiEl))
         elif isinstance(uiEl, QCheckBox):
             setattr(modelEl, last, uiEl.isChecked())
         else:

@@ -34,7 +34,7 @@ from Ui.PowerCompany import *
 from Ui.Municipality import *
 
 from model.PvProject import *
-from gui.binding import updateUi, updateModel
+from gui.binding import updateUi, updateModel, comboValue
 from gui.pages import createPage
 import gui.tree
 
@@ -81,13 +81,19 @@ class GnuSolar(QApplication):
 
         
         # Arguments:
-        #   First argument: Path to the Pv-Project File
+        #   --pos=X,Y: optional, place the window there (screen pixels)
+        #   First other argument: Path to the Pv-Project File
         self.path = ""          # path = "" means new project
 #        self.model = PvProject()       # the PvProject Model
         self.unsavedChanges = False
 
-        if len(args[0]) >= 2:
-            path = args[0][1]
+        argv = list(args[0])
+        pos = next((a for a in argv[1:] if a.startswith("--pos=")), None)
+        if pos:
+            argv.remove(pos)
+
+        if len(argv) >= 2:
+            path = argv[1]
             ret = self.openFile(path)
             if not ret:
                 QtWidgets.QMessageBox.warning(None, 'Datei nicht gefunden', "Datei '" + path + "' nicht gefunden.")
@@ -95,7 +101,19 @@ class GnuSolar(QApplication):
         else:
             self.showModel()
 
+        if pos:
+            x, y = pos[len("--pos="):].split(",")
+            self.moveWindow(int(x), int(y))
         self.window.show()
+
+    # Place the window at x, y. It may reach past the edge of the screen, but
+    # its top left part stays on it, so it can still be grabbed and moved.
+    def moveWindow(self, x, y):
+        screen = QApplication.screenAt(QtCore.QPoint(x, y)) or QApplication.primaryScreen()
+        area = screen.availableGeometry()
+        x = max(area.left(), min(x, area.right() - 200))
+        y = max(area.top(), min(y, area.bottom() - 100))
+        self.window.move(x, y)
 
     def action_new(self):
         QtWidgets.QMessageBox.information(None, 'Not implemented', 'Not implemented')
@@ -169,7 +187,7 @@ class GnuSolar(QApplication):
         elif isinstance(el, QPlainTextEdit):
             val = el.toPlainText()
         elif isinstance(el, QComboBox):
-            val = el.currentText()
+            val = comboValue(el)
         elif isinstance(el, QCheckBox):
             val = el.isChecked()
         else:
@@ -205,11 +223,13 @@ class GnuSolar(QApplication):
         if label and hasattr(ui, "groupBox"):
             ui.groupBox.setTitle(label)
        
+        # the page handles the buttons, keep it as long as it is shown.
+        # Created before the fields are filled, it fills the choices of
+        # its combo boxes.
+        self.currentPage = createPage(ui, obj, self)
+
         # fill it with the attributes of the object
         updateUi(ui, obj, "obj")
-        
-        # the page handles the buttons, keep it as long as it is shown
-        self.currentPage = createPage(ui, obj, self)
         
         # connect all obj_ fields with attributeChanged
         # updates the model on the fly from the ui

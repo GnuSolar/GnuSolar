@@ -113,6 +113,86 @@
     </layout>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_project">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Projekt</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_project">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_type">
+        <property name="text">
+         <string>Typ</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="obj_type"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_base">
+        <property name="text">
+         <string>Basisprojekt</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_base">
+        <item>
+         <widget class="QLineEdit" name="obj_base">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="placeholderText">
+           <string>keines</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="chooseBase">
+          <property name="text">
+           <string>Wählen …</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="openBase">
+          <property name="text">
+           <string>Öffnen</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="clearBase">
+          <property name="text">
+           <string>Entfernen</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="createExtension">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Erweiterung erstellen …</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">

@@ -25,6 +25,7 @@ from PyQt5.QtGui import *
 from Ui.Projects import *
 
 from model.PvProject import *
+from gui.binding import setChoices, comboValue
 
 from Config import Config
 from ErrorHandler import *
@@ -61,6 +62,7 @@ class Projects(QApplication):
 
         self.ui.action_Preferences.triggered.connect(self.openConfig)
         self.ui.createProject.clicked.connect(self.createProject)
+        setChoices(self.ui.newProject_type, PROJECT_TYPES)
         self.ui.exportContacts.clicked.connect(self.exportContacts)
         self.ui.reload.clicked.connect(self.projectViewChanged)         # TODO: reload from filesystem
         self.ui.constructionSort.clicked.connect(self.constructionSort)         # TODO: reload from filesystem
@@ -347,6 +349,7 @@ class Projects(QApplication):
             "Default" : [
                 "Projekt",
                 "Status",
+                "Typ",
                 "Anfrage",
                 "offeriert",
                 "Zusage",
@@ -417,12 +420,13 @@ class Projects(QApplication):
         views = {
             "Default" : {
                 1 : pv.progress.getState(),
-                2 : pv.progress.inquiryReceived,
-                3 : pv.progress.quote1Sent,
-                4 : pv.progress.orderReceived,
-                5 : cs,
-                6 : pv.progress.launch,
-                7 : ownerName
+                2 : projectTypeName(pv.type),
+                3 : pv.progress.inquiryReceived,
+                4 : pv.progress.quote1Sent,
+                5 : pv.progress.orderReceived,
+                6 : cs,
+                7 : pv.progress.launch,
+                8 : ownerName
             },
             "Finance" : {
                 1 : ownerName,
@@ -474,14 +478,28 @@ class Projects(QApplication):
         
         pvp_path = pvp_dir + os.sep + "plant.pvp"
 
+        # Another job at an address with a project: an extension of that
+        # project, in the next free folder next to it (<address>_2, _3, ...),
+        # with the building, contacts, municipality and power company of it
         if os.path.exists(pvp_path):
-            QtWidgets.QMessageBox.warning(None, 'Projekt existiert bereits', 'Projekt\n' + pvp_dir + "\nexistiert bereits")
-            return
-
-        # create Project
-        pv = PvProject()
-        pv.initFromAddress(street, streetNumber, zipCode, city)
-        pv.saveAs(pvp_path)
+            ret = QtWidgets.QMessageBox.question(None, 'Projekt existiert bereits',
+                'Projekt\n' + pvp_dir + '\nexistiert bereits.\n\n'
+                'Eine Erweiterung dieses Projekts in\n' + nextExtensionDir(pvp_dir) + '\nerstellen? '
+                'Sie übernimmt Gebäude, Kontakte, Gemeinde und Stromversorger.')
+            if ret != QtWidgets.QMessageBox.Yes:
+                return
+            try:
+                pv = PvProject(pvp_path).createExtension(comboValue(self.ui.newProject_type))
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(None, 'Erweiterung', 'Projekt nicht erstellt\n' + str(e))
+                return
+            pvp_path = pv._savePath
+        else:
+            # create Project
+            pv = PvProject()
+            pv.initFromAddress(street, streetNumber, zipCode, city)
+            pv.type = comboValue(self.ui.newProject_type)
+            pv.saveAs(pvp_path)
         
         self.projectOpenPath(pvp_path)
 
@@ -490,6 +508,7 @@ class Projects(QApplication):
         self.ui.newProject_streetNumber.setText("")
         self.ui.newProject_zipCode.setText("")
         self.ui.newProject_city.setText("")
+        self.ui.newProject_type.setCurrentIndex(0)
 
         return
 
