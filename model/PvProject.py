@@ -7,6 +7,7 @@ from model.ModelNode import ModelNode
 import formats.pvp
 import subprocess
 import os
+import re
 import datetime
 from datetime import date
 
@@ -36,12 +37,13 @@ def projectTypeName(code):
 EXTENSION_COPIES = ("building", "contacts", "municipality", "powerCompany")
 
 # the folder for the next extension of the project in folder projectDir:
-# <projectDir>_2, or _3 and so on if that one exists already
+# <projectDir>_2, or the number after the highest one next to it, so the
+# numbers keep the order of the jobs even where one was removed
 def nextExtensionDir(projectDir):
-    n = 2
-    while os.path.exists(projectDir + "_" + str(n)):
-        n += 1
-    return projectDir + "_" + str(n)
+    parent, name = os.path.split(projectDir)
+    numbered = re.compile(re.escape(name) + r"_(\d+)$")
+    nums = [int(m.group(1)) for m in map(numbered.match, os.listdir(parent)) if m]
+    return projectDir + "_" + str(max(nums, default=1) + 1)
 
 class PvProject(ModelNode):
 
