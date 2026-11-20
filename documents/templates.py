@@ -6,7 +6,9 @@
 #
 # A template is searched first in config.templatePath, in the folder the
 # installer uses for this kind of document (Config.FOLDERS), then in
-# data/ch/templates. In the template "o" is the project, "c" its contacts.
+# data/ch/templates. A template for the type of the project (PROJECT_TYPES)
+# comes first: quote_battery.odt before quote.odt. In the template "o" is the
+# project, "c" its contacts.
 
 import os
 from datetime import date
@@ -38,6 +40,25 @@ def templateCopyReplace(src, dest, model):
     f.close()
 
 
+# The template file for a project of type projectType: <name>_<type> before
+# <name>, each first in the installer's template folder, then in defaultDir.
+# None if there is none.
+def findTemplate(fileName, projectType, defaultDir, config, folderKind):
+    stem, ext = os.path.splitext(fileName)
+    names = [fileName]
+    if projectType:
+        names.insert(0, stem + "_" + projectType + ext)
+    dirs = [defaultDir]
+    if config.templatePath:
+        dirs.insert(0, config.getFolderPath(config.templatePath, folderKind))
+    for name in names:
+        for d in dirs:
+            path = os.path.join(d, name)
+            if os.path.exists(path):
+                return path
+    return None
+
+
 # Create a document of templateType in the folder of the project saved under
 # savePath. Returns the path of the new file, raises DocumentError.
 def createFromTemplate(templateType, savePath, model, config):
@@ -53,17 +74,10 @@ def createFromTemplate(templateType, savePath, model, config):
     if not savePath:
         raise DocumentError(templateType + ' erstellen', 'Kein Pfad')
 
-    defaultPath = os.path.join(DATA_PATH, "ch", "templates", in_dir, in_file)
-    localPath = ""
-    if config.templatePath:
-        localPath = os.path.join(config.getFolderPath(config.templatePath, folderKind), in_file)
-    # first search template in  "local", config path
-    if localPath and os.path.exists(localPath):
-        templatePath = localPath
-    # then default
-    elif os.path.exists(defaultPath):
-        templatePath = defaultPath
-    else:
+    defaultDir = os.path.join(DATA_PATH, "ch", "templates", in_dir)
+    defaultPath = os.path.join(defaultDir, in_file)
+    templatePath = findTemplate(in_file, model.type, defaultDir, config, folderKind)
+    if not templatePath:
         raise DocumentError(templateType + ' Vorlage nicht gefunden', 'def Pfad = ' + defaultPath)
 
     projectDir = os.path.dirname(savePath)
