@@ -59,6 +59,22 @@ def findTemplate(fileName, projectType, defaultDir, config, folderKind):
     return None
 
 
+# The template a document of templateType is made from for a project of type
+# projectType, None if there is none
+def templateFor(templateType, projectType, config):
+    (in_dir, in_file), folderKind, out_file = TEMPLATES[templateType]
+    defaultDir = os.path.join(DATA_PATH, "ch", "templates", in_dir)
+    return findTemplate(in_file, projectType, defaultDir, config, folderKind)
+
+
+# Where a template comes from: "Vorlagen-Ordner" for the installer's template
+# folder, "GnuSolar" for the templates of the program
+def templateSource(path):
+    if path.startswith(os.path.join(DATA_PATH, "")):
+        return "GnuSolar"
+    return "Vorlagen-Ordner"
+
+
 # Create a document of templateType in the folder of the project saved under
 # savePath. Returns the path of the new file, raises DocumentError.
 def createFromTemplate(templateType, savePath, model, config):
@@ -74,11 +90,10 @@ def createFromTemplate(templateType, savePath, model, config):
     if not savePath:
         raise DocumentError(templateType + ' erstellen', 'Kein Pfad')
 
-    defaultDir = os.path.join(DATA_PATH, "ch", "templates", in_dir)
-    defaultPath = os.path.join(defaultDir, in_file)
-    templatePath = findTemplate(in_file, model.type, defaultDir, config, folderKind)
+    templatePath = templateFor(templateType, model.type, config)
     if not templatePath:
-        raise DocumentError(templateType + ' Vorlage nicht gefunden', 'def Pfad = ' + defaultPath)
+        raise DocumentError(templateType + ' Vorlage nicht gefunden',
+                            'def Pfad = ' + os.path.join(DATA_PATH, "ch", "templates", in_dir, in_file))
 
     projectDir = os.path.dirname(savePath)
     if not os.path.isdir(projectDir):

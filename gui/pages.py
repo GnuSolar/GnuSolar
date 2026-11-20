@@ -26,7 +26,7 @@ from PyQt5 import QtCore, QtWidgets
 
 import documents.templates
 from documents import DocumentError
-from gui.binding import updateUi, setChoices
+from gui.binding import updateUi, setChoices, comboValue
 from Config import Config, config
 from gui.contactPicker import pickContact
 from model.ContactStore import ContactStore, copyFields, label as contactLabel
@@ -80,6 +80,32 @@ class PvProjectPage(Page):
         ui.clearBase.clicked.connect(self.action_clearBase)
         ui.createExtension.clicked.connect(self.action_createExtension)
         setChoices(ui.obj_type, PROJECT_TYPES)
+        # the templates depend on the type, also on one just chosen
+        ui.obj_type.currentIndexChanged.connect(lambda index: self.showTemplates(comboValue(ui.obj_type)))
+        self.showTemplates(self.obj.type)
+
+    # the template each button makes its document from, with its full path in
+    # the tooltip of the line and of the button
+    TEMPLATE_BUTTONS = {
+        "quote": "createQuote",
+        "partial_invoice": "createPartialInvoice",
+        "final_invoice": "createFinalInvoice",
+        "small_invoice": "createSmallInvoice",
+        "documentation": "createDocumentation",
+    }
+
+    def showTemplates(self, projectType):
+        for templateType, button in self.TEMPLATE_BUTTONS.items():
+            path = documents.templates.templateFor(templateType, projectType, config)
+            label = getattr(self.ui, "template_" + templateType)
+            if path:
+                text = os.path.basename(path) + "  (" + documents.templates.templateSource(path) + ")"
+                tip = "Vorlage: " + path
+            else:
+                text = tip = "keine Vorlage gefunden"
+            label.setText(text)
+            label.setToolTip(tip)
+            getattr(self.ui, button).setToolTip(tip)
 
     # Choose the project this one extends by its file. Setting the field
     # updates the model, like typing into any other field.
